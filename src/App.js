@@ -5,92 +5,49 @@ import './assets/css/style.css'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import 'react-calendar/dist/Calendar.css'; 
-import { ArcElement, Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Fragment, Suspense, lazy } from "react"; 
-import DashboardLayout from '../src/layout/DashboardLayout';
-import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
-import Login from './pages/Authentication/Login';
-import Dashboard from './pages/views/Dashboard';
-import HiredDevelopers from './pages/views/HiredDevelopers';
-import EditProfile from './pages/views/EditProfile';
-import Documents from './pages/views/Documents';
-import TimeReporting from './pages/views/TimeReporting';
-import EarnedBack from './pages/views/EarnedBack';
-import Invoice from './pages/views/Invoice';
-import AdminDashboard from './pages/admin/Dashboard';
-import DeveloperList from './pages/admin/DeveloperList';
-import ListClient from './pages/admin/ListClient';
-import EditAdminProfile from './pages/admin/EditAdminProfile';
-import AdminDocuments from './pages/admin/AdminDocuments';
-import AdminTimeReporting from './pages/admin/AdminTimeReporting';
-import AdminInvoice from './pages/admin/AdminInvoice';
-import Revenue from './pages/admin/Revenue';
-import AccountDeletionRequest from './pages/admin/AccountDeletionRequest';
-import DeveloperDashboard from './pages/developer/DeveloperDashboard';
-import DeveloperDashboardLayout from '../src/layout/DeveloperDashboardLayout';
-import EditDeveloperProfile from './pages/developer/DeveloperEditProfile';
-import DeveloperDocuments from './pages/developer/DeveloperDocuments';
-import DeveloperTimeReporting from './pages/developer/DeveloperTimeReporting';
-import DeveloperCV from './pages/developer/DeveloperCV';
-import AgencyLogin from './pages/Authentication/AdminLogin';
-import DeveloperLogin from './pages/Authentication/DeveloperLogin';
 import { route } from './router';
 import { ToastContainer } from 'react-toastify';
-import PublicLayout from '../src/layout/PublicLayout';
 import "react-toastify/dist/ReactToastify.css";
-import DeveloperPublicLayout from './layout/DeveloperPublicLayout';
-import JobPost from './pages/views/JobPost';
-import JobListing from './pages/views/JobListing';
-import NotificationDeveloper from './pages/developer/NotificationScreen';
-import SingleJob from './pages/views/SingleJob';
-import NotificationClient from './pages/views/NotificationClient';
-import AdminJobListing from './pages/admin/AdminJobListing';
-import AdminSingleJob from './pages/admin/AdminSingleJob';
-import NotificationAdmin from './pages/admin/NotificationAdmin';
-import VendorDashboardLayout from './layout/VendorDashboardLayout';
-import VendorDashboard from './pages/vendor/Dashboard';
-import VendorDocuments from './pages/vendor/VendorDocuments';
-import VendorRevenue from './pages/vendor/VendorRevenue';
-import VendorInvoice from './pages/vendor/VendorInvoice';
-import VendorTimeReporting from './pages/vendor/TimeReporting';
-import EditVendorProfile from './pages/vendor/EditProfile';
-import AllDeveloperList from './pages/vendor/ListAllDeveloper';
-import RentedDevelopers from './pages/vendor/RentedDevelopers';
-import NotificationVendor from './pages/vendor/NotificationVendor';
-import RegisterDeveloper from './pages/vendor/RegisterDeveloper';
-import ForgotPassword from './pages/Authentication/ForgotPassword';
-import ResetPassword from './pages/Authentication/ResetPassword';
-import Engagements from './pages/admin/Engagements';
-import Applications from './pages/admin/Applications';
-import AdminPublicLayout from './layout/AdminPublicLayout';
-import SingleDeveloper from './components/common/SingleDeveloper/SingleDeveloper';
-import SingleClient from './components/common/SingleClient/SingleClient';
-import VendorPublicLayout from './layout/VendorPublicLayout';
-import VendorLogin from './pages/Authentication/VendorLogin';
-import ClientSingleDeveloper from "./pages/views/ClientSingleDeveloper"
-import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
-import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
-import Otp from './pages/Authentication/Otp';
-import Faq from './pages/views/Faq';
-import TimeReportingDetail from './pages/admin/SingleTimeReporting';
-import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
-import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
-import ContactSupport from './pages/views/ContactSupport';
-import DeveloperInvoice from './pages/developer/DeveloperInvoice';
-import Members from './pages/admin/Members';
-import LeavePlan from './pages/developer/PlanLeave';
 import ScreenLoader from './components/atomic/ScreenLoader';
-import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
-import LeaveRequest from './pages/views/LeaveRequests';
-import PublicHoliday from './pages/views/PublicHolidays';
-import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
+import PrivateLayout from './layout/PrivateLayout';
+import PublicLayout from './layout/PublicLayout';
+import NotFound from './pages/views/NotFound';
+import JoiningVideo from './pages/admin/JoiningVideo';
+import VideoCallScreen from './pages/admin/videoCall';
+import UnregisteredForm from './pages/admin/UnregisteredForm';
+import ScreeningDetails from './pages/admin/StepForm/ScreeningDetails';
+import ThankYou from './pages/admin/StepForm/ThankYou';
+import ResumeStep1 from './pages/admin/ResumeSteps/ResumeStep1';
+import ResumeStep2 from './pages/admin/ResumeSteps/ResumeStep2';
+import ResumeStep2a from './pages/admin/ResumeSteps/ResumeStep2a';
+import WorkSummary from './pages/admin/ResumeSteps/WorkSummary';
+import DescribeWork from './pages/admin/ResumeSteps/DescribeWork';
+import AddSkills from './pages/admin/ResumeSteps/AddSkills';
+import AddSummary from './pages/admin/ResumeSteps/AddSummary';
+import EducationPreview from './pages/admin/ResumeSteps/EducationPreview';
+import AddEducation from './pages/admin/ResumeSteps/AddEducation';
+import EducationSummary from './pages/admin/ResumeSteps/EducationSummary';
+import AddProjects from './pages/admin/ResumeSteps/AddProjects';
+import ProjectSummary from './pages/admin/ResumeSteps/ProjectSummary';
+import FinalizeResume from './pages/admin/ResumeSteps/FinalizeResume';
+import ClientPersonal from './pages/admin/ClientRegister/PersonalDetails';
+import JobInfo from './pages/admin/ClientRegister/JobInfo';
+import JobDescription from './pages/admin/ClientRegister/JobDescription';
+import ScreeningInfo from './pages/admin/ClientRegister/ScreeningInfo';
+import VendorPersonal from './pages/admin/VendorRegister/VendorPersonal';
+import DecisionMakers from './pages/admin/VendorRegister/DecisionMakers';
+import CompanyInfo from './pages/admin/VendorRegister/CompanyInfo';
+import AreaExpertise from './pages/admin/VendorRegister/AreaExpertise';
+import EducationSelect from './pages/admin/ResumeSteps/EducationSelect';
+import SummaryPreview from './pages/admin/ResumeSteps/SummaryPreview';
+import SkillPreview from './pages/admin/ResumeSteps/SkillsPreview';
+import GoodHaveSkills from './pages/admin/ResumeSteps/GoodSkills';
+import ClientStep1 from './pages/admin/ClientRegister/ClientStep1';
+import ClientIndividual from './pages/admin/ClientRegister/ClientIndividual';
 
-Chart.register(ArcElement);
-Chart.register(CategoryScale);
-Chart.register(LinearScale);
-Chart.register(BarElement);
-Chart.register(PointElement);
-Chart.register(LineElement);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
   return (
     <>
@@ -106,98 +63,27 @@ function App() {
         draggable
         pauseOnHover
       />
-      <Router>
-        <Routes>
-          <Route path="/" exact element={<PublicLayout><Login/></PublicLayout> } />
-          <Route path="/otp" exact element={<Otp/> } />
-          <Route path="/admin-login" exact element={<AdminPublicLayout><AgencyLogin/></AdminPublicLayout>} />
-          <Route path="/forgot-password" exact element={<ForgotPassword/>} />
-          <Route path="/reset-password" exact element={<ResetPassword/>} />
-          <Route path="/developer-login" exact element={<DeveloperPublicLayout><DeveloperLogin/></DeveloperPublicLayout> } />
-          <Route path="/dashboard" exact element={<DashboardLayout><Dashboard /></DashboardLayout>} />
-          <Route path="/hired-developers" exact element={<DashboardLayout><HiredDevelopers /></DashboardLayout>} />
-          <Route path="/edit-profile" exact element={<DashboardLayout><EditProfile /></DashboardLayout>} />
-          <Route path="/documents" exact element={<DashboardLayout><Documents /></DashboardLayout>} />
-          <Route path="/time-reporting" exact element={<DashboardLayout><TimeReporting /></DashboardLayout>} />
-          <Route path="/earned-back" exact element={<DashboardLayout><EarnedBack /></DashboardLayout>} />
-          <Route path="/invoice" exact element={<DashboardLayout><Invoice /></DashboardLayout>} />
-          <Route path="/contact-support" exact element={<DashboardLayout><ContactSupport /></DashboardLayout>} />
-          <Route path="/public-holiday" exact element={<DashboardLayout><PublicHoliday /></DashboardLayout>} />
-          <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
-          <Route path="/developer-list" exact element={<AdminDashboardLayout><DeveloperList /></AdminDashboardLayout>} />
-          {/* <Route path="/list-clients" exact element={<AdminDashboardLayout><ListClient /></AdminDashboardLayout>} /> */}
-          <Route path="/edit-admin-profile" exact element={<AdminDashboardLayout><EditAdminProfile /></AdminDashboardLayout>} />
-          <Route path="/admin-documents" exact element={<AdminDashboardLayout><AdminDocuments /></AdminDashboardLayout>} />
-          <Route path="/admin-time-reporting" exact element={<AdminDashboardLayout><AdminTimeReporting /></AdminDashboardLayout>} />
-          <Route path="/revenue" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
-          <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
-          <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
-          <Route path="/profile-updation-request" exact element={<DeveloperDashboardLayout><ProfileUpdationRequest /></DeveloperDashboardLayout>} />
-          <Route path="/developer-dashboard" exact element={<DeveloperDashboardLayout><DeveloperDashboard /></DeveloperDashboardLayout>} />
-          <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />
-          <Route path="/developer-documents" exact element={<DeveloperDashboardLayout><DeveloperDocuments /></DeveloperDashboardLayout>} />
-          <Route path="/developer-time-reporting" exact element={<DeveloperDashboardLayout><DeveloperTimeReporting /></DeveloperDashboardLayout>} />
-          <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
-          <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
-          <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
-          <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
-          <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
-          <Route path="/developer-public-holiday" exact element={<DeveloperDashboardLayout><DeveloperPublicHoliday /></DeveloperDashboardLayout>} />
-          <Route path="/job-post" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
-          <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
-          <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
-          <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
-          <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
-          <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper/></DashboardLayout>} />
-          <Route path="/leave-request" exact element={<DashboardLayout><LeaveRequest/></DashboardLayout>} />
-          <Route path="/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
-          <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
-          <Route path="/time-reporting-detail" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
-          <Route path="/members" exact element={<AdminDashboardLayout><Members /></AdminDashboardLayout>} />
-          <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
-          <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
-          <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
-          <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
-          {/* <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} /> */}
-          <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
-          <Route path="/admin-single-client/:id" exact element={<AdminDashboardLayout><SingleClient /></AdminDashboardLayout>} />
-          <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
-          <Route path="/vendor-login" exact element={<VendorPublicLayout><VendorLogin /></VendorPublicLayout>} />
-          <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
-          <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />
-          <Route path="/vendor-upload-invoice" exact element={<VendorDashboardLayout><VendorInvoice /></VendorDashboardLayout>} />
-          <Route path="/vendor-time-reporting" exact element={<VendorDashboardLayout><VendorTimeReporting /></VendorDashboardLayout>} />
-          <Route path="/edit-vendor-profile" exact element={<VendorDashboardLayout><EditVendorProfile /></VendorDashboardLayout>} />
-          <Route path="/list-all-developers" exact element={<VendorDashboardLayout><AllDeveloperList /></VendorDashboardLayout>} />
-          <Route path="/all-rented-developers" exact element={<VendorDashboardLayout><RentedDevelopers /></VendorDashboardLayout>} />
-          <Route path="/notification-vendor" exact element={<VendorDashboardLayout><NotificationVendor /></VendorDashboardLayout>} />
-          <Route path="/register-developer" exact element={<VendorDashboardLayout><RegisterDeveloper /></VendorDashboardLayout>} />
-          <Route path='/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
-          <Route path='/vendor-faq' exact element={<VendorDashboardLayout><Faq /></VendorDashboardLayout>}></Route>
-          <Route path='/admin-faq' exact element={<AdminDashboardLayout><Faq /></AdminDashboardLayout>}></Route>
-          <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
-        </Routes>
-      </Router>
 
-      {/* <Suspense fallback={<ScreenLoader />}>
+       <Suspense fallback={<ScreenLoader />}>
+       <Router>
         <Routes>
           {route.map((item, index) =>
             item.private ? (
               <Fragment key={index}>
                 {item.isClient ? (
-                  <Route key={index} element={<DashboardLayout />}>
+                  <Route key={index} element={<PrivateLayout />}>
                     <Route path={item.path} element={item.element} />
                   </Route>
                 ) : item.isDeveloper ? (
-                  <Route key={index} element={<DeveloperDashboardLayout />}>
+                  <Route key={index} element={<PrivateLayout />}>
                     <Route path={item.path} element={item.element} />
                   </Route>
                 ) : item.isVendor ? (
-                  <Route key={index} element={<VendorDashboardLayout />}>
+                  <Route key={index} element={<PrivateLayout />}>
                     <Route path={item.path} element={item.element} />
                   </Route>
                 ) : item.isAdmin ? (
-                  <Route key={index} element={<AdminDashboardLayout />}>
+                  <Route key={index} element={<PrivateLayout />}>
                     <Route path={item.path} element={item.element} />
                   </Route>
                 ) : (
@@ -210,38 +96,45 @@ function App() {
               </Route>
             ) 
           )}
+             <Route path="*" element={<NotFound />} />
+             <Route path="/join-meeting" element={<JoiningVideo />} />
+             <Route path="/video-screen" element={<VideoCallScreen />} />
+             <Route path="/apply-job" element={<UnregisteredForm />} />
+             <Route path="/screening-details" element={<ScreeningDetails />} />
+             <Route path="/thank-you" element={<ThankYou />} />
+             {/* Dev Register */}
+             <Route path="/resume-detail" element={<ResumeStep1 />} />
+             <Route path="/resume-work-detail" element={<ResumeStep2 />} />
+             <Route path="/resume-work-history" element={<ResumeStep2a />} />
+             <Route path="/work-summary" element={<WorkSummary />} />
+             <Route path="/describe-work" element={<DescribeWork />} />
+             <Route path="/add-skills" element={<AddSkills />} />
+             <Route path="/add-summary" element={<AddSummary />} />
+             <Route path="/education-preview" element={<EducationPreview />} />
+             <Route path="/add-education" element={<AddEducation />} />
+             <Route path="/education-select" element={<EducationSelect />} />
+             <Route path="/education-summary" element={<EducationSummary />} />
+             <Route path="/add-projects" element={<AddProjects />} />
+             <Route path="/project-summary" element={<ProjectSummary />} />
+             <Route path="/finalize-resume" element={<FinalizeResume />} />
+             <Route path="/summary-preview" element={<SummaryPreview />} />
+             <Route path="/skill-preview" element={<SkillPreview />} />
+             <Route path="/good-have-skills" element={<GoodHaveSkills />} />
+             {/* Client Register */}
+             <Route path="/client-personal" element={<ClientPersonal />} />
+             <Route path="/job-info" element={<JobInfo />} />
+             <Route path="/job-description" element={<JobDescription />} />
+             <Route path="/screening-info" element={<ScreeningInfo />} />
+             <Route path="/client-register" element={<ClientStep1 />} />
+             <Route path="/client-individual" element={<ClientIndividual />} />
+             {/* Vendor Register */}
+             <Route path="/vendor-personal" element={<VendorPersonal />} />
+             <Route path="/desicion-makers" element={<DecisionMakers />} />
+             <Route path="/company-info" element={<CompanyInfo />} />
+             <Route path="/area-expertise" element={<AreaExpertise />} />
         </Routes>
-      </Suspense> */}
-     
-      {/* <Suspense fallback={<Loader />}>
-        <Router>
-          <Routes>
-            {route?.map((item, index) =>
-              item.private ? (
-                <Route key={index} element={<DashboardLayout />}>
-                  <Route path={item.path} element={item.element} />
-                </Route>
-              ) : !item.private && item.notAccess ? (
-                <Route key={index} element={<AuthLayout />}>
-                  <Route path={item.path} element={item.element} />
-                </Route>
-              ) : item.isSuperAdmin && item.isSuperAdminPrivate ? (
-                <Route key={index} element={<AdminSuperLayout />}>
-                  <Route path={item.path} element={item.element} />
-                </Route>
-              ) : item.isSuperAdmin && !item.isSuperAdminPrivate ? (
-                <Route key={index} element={<SuperAdminPublicLayout />}>
-                  <Route path={item.path} element={item.element} />
-                </Route>
-              )
-                : <Route key={index} element={<PublicLayout />}>
-                  <Route path={item.path} element={item.element} />
-                </Route>
-            )}
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
         </Router>
-      </Suspense> */}
+      </Suspense>
     </>
   );
 }

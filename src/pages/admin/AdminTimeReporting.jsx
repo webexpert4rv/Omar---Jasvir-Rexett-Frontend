@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
 import EditTimeReport from "./Modals/EditTimeReportModal";
@@ -16,16 +16,15 @@ import { useNavigate } from "react-router-dom";
 const AdminTimeReporting = () => {
     const dispatch = useDispatch()
     const { adminTimeReportingList, screenLoader, adminClientList } = useSelector(state => state.adminData)
-    const { clientList } = useSelector(state => state.vendorData)
-    const [contractId, setContractID] = useState(null)
+    const { clientList } = useSelector(state => state.vendorData);
+    const [contractId, setContractID] = useState(null);
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
     const { t } = useTranslation()
     const navigate=useNavigate()
 
-
     // useEffect(() => {
-    //     let newContacts = [...adminTimeReportingList]
+    //     let newContacts = [...adminTimeReportingList?.raisedByDeveloperVendor];
     //     let d = newContacts.map((item, index) => {
     //         return {
     //             ...item,
@@ -38,7 +37,6 @@ const AdminTimeReporting = () => {
     // }, [adminTimeReportingList])
 
 
-    console.log(adminClientList, "adminClientList")
     // useEffect(()=>{
     //     dispatch(getClientList())
     //      },[])
@@ -82,8 +80,8 @@ const AdminTimeReporting = () => {
         dispatch(adminTimeReporting(e))
     }
     
-    const redirectToTimeReporting=()=>{
-        navigate("/time-reporting-detail")
+    const redirectToTimeReporting = (clientId) => {
+        navigate(`/admin-time-reporting-detail/${clientId}`)
     }
     return (
         <>
@@ -129,39 +127,40 @@ const AdminTimeReporting = () => {
                                     {t("clientName")}
                                 </th>
                                 <th className="time-table-head">
-                                    Total Hired Developers
+                                    {t("totalHiredDevelopers")}
                                 </th>
                                 <th className="time-table-head">
-                                    Total Projects
+                                    {t("totalProjects")}
                                 </th>
                                 <th className="time-table-head">
-                                    Total Vendor's Dev
+                                    {t("totalVendorDev")}
                                 </th>
                                 <th className="time-table-head">
-                                    Total Individual Dev
+                                    {t("totalIndivisualDev")}
+
                                 </th>
-                                <th className="time-table-head">
+                                {/* <th className="time-table-head">
                                     {t("contract")}
-                                </th>
+                                </th> */}
                             </thead>
                             <tbody>
                                 {screenLoader ? <ScreenLoader /> : <>
-                                    {developerData?.length > 0 ?
-                                        developerData?.map((item, index) => {
+                                    {adminTimeReportingList?.length > 0 ?
+                                        adminTimeReportingList?.map(({client_name,client_id,total_hired_developers,total_individual_dev,total_projects,total_vendors_dev,contracts}, index) => {
                                             return (
-                                                <>
-                                                    <tr className="row-hover" onClick={redirectToTimeReporting}>
-                                                        <td className="time-table-data">{item?.client_details?.name}</td>
-                                                        <td className="time-table-data">{item?.contracts?.length}</td>
-                                                        <td className="time-table-data">5</td>
-                                                        <td className="time-table-data">4</td>
-                                                        <td className="time-table-data">3</td>
-                                                        <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
+                                                <Fragment key={index}>
+                                                    <tr key={index} className="row-hover" onClick={()=>{redirectToTimeReporting(client_id)}}>
+                                                        <td className="time-table-data">{client_name}</td>
+                                                        <td className="time-table-data">{total_hired_developers}</td>
+                                                        <td className="time-table-data">{total_projects}</td>
+                                                        <td className="time-table-data">{total_vendors_dev}</td>
+                                                        <td className="time-table-data">{total_individual_dev}</td>
+                                                        {/* <td className="time-table-data">{}</td> */}
                                                     </tr>
-                                                </>
+                                                </Fragment>
                                             )
                                         })
-                                        : <td colSpan={6}><NoDataFound /></td>}
+                                        :<td colSpan={10}> <div className="simple-no-data">  <NoDataFound/></div>  </td>}
                                 </>}
                             </tbody>
                         </table>

@@ -13,7 +13,7 @@ import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
 import moment from "moment";
 import SingleTimeReporting from "./SingleTimeReporting";
-import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../common/Modals/ConfirmationModal";
 import {
   getReconciliationData,
   timeReporting,
@@ -21,8 +21,10 @@ import {
 import remarkIcon from "../../../assets/img/remarks-icon.svg";
 import { OverlayTrigger } from "react-bootstrap/esm";
 import TimeReportRemark from "./TimeReportRemark";
+import Guidelines from "../../common/Guidelines/Guidelines";
+import { TIME_REPORTING } from "./constant";
 
-const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
+const RexettTable = ({ selectedPeriod, headerColumn, data, role, page,flag }) => {
   const [show, setShow] = useState(false);
   const [contractId, setContractID] = useState(null);
   const [isAnyReportEmpty, setIsAnyReportEmpty] = useState(false);
@@ -61,12 +63,22 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
 
   const [remarkshow, setremarkShow] = useState(false);
   const handleremarkClose = () => setremarkShow(false);
+
+  function filterReportDataByDate(reportData) {
+    const today = new Date().toISOString().split('T')[0];
+    return reportData.filter(entry => 
+        entry.report_date <= today && 
+        (!entry.is_off_day || entry.is_holiday)
+    );
+}
+
   const handleremarkShow = (data, index) => {
+
     let memoDetails = data?.timeReports[index];
     let newData = {
       ...data,
       timeReports: memoDetails,
-      allSelectedTimeReport: data?.timeReports,
+      allSelectedTimeReport: filterReportDataByDate(data?.timeReports),
     };
     if (role == "client") {
       dispatch(getReconciliationData(data?.contractDetails?.contract_id));
@@ -159,6 +171,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   //   ); // The 0th day of the next month is the last day of the current month
   //   return today.getDate() === lastDayOfMonth.getDate();
   // };
+  const isTodayFriday = () => {
+    const today = new Date();
+    // const isFriday = today.getDay() === 5; 
+    return today.getDay() === 5
+  }
   return (
     <>
       <div className={`weekly-report-table ${selectedPeriod}`}>
@@ -192,13 +209,13 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                 {/* <th className="time-table-head">
                                         <span>Project</span>
                                     </th> */}
-                <th className="time-table-head">
+                { role=="developer" &&<th className="time-table-head">
                   <span>Timesheet</span>
-                </th>
-                <th className="time-table-head">
+                </th>}
+              {flag!=="vendor" && <th className="time-table-head">
                   <span>Reconciliation</span>
-                </th>
-                {selectedPeriod == "weekly" ? (
+                </th>}
+                {selectedPeriod == "weekly" && role!=="developer" && flag!=="vendor" ? (
                   <th className="time-table-head">
                     <span>Submit</span>
                   </th>
@@ -206,7 +223,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                   ""
                 )}
               </thead>
-
               <tbody>
                 {data?.length > 0 ? (
                   data?.map((item, index) => {
@@ -243,8 +259,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                   <td
                                     onClick={() => handleShow(item, inx, reprt)}
                                     className={`time-table-data white-nowrap ${
-                                      reprt.is_off_day
-                                        ? "offday-data"
+                                      reprt?.is_public_holiday
+                                        ?  "holiday-data" :
+                                        reprt.is_off_day ?
+                                        "offday-data"
                                         : "workday-data"
                                     }`}
                                   >
@@ -266,7 +284,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                             ).format("h:mm A")} `
                                           : reprt?.is_holiday
                                           ? "Holiday"
-                                          : reprt?.is_off_day && "Off day"}
+                                          :  reprt?.is_public_holiday ? reprt?.holiday_name:reprt?.is_off_day ? "Leave" :""}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">
@@ -329,14 +347,14 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           {/* <td className="time-table-data">
                                                         <span className={item?.is_complete ? "status-progress white-nowrap" : "status-finished white-nowrap"}>{item?.is_complete ? "Progress" : "Finished"}</span>
                                                     </td> */}
-                          <td className="time-table-data">
+                          {role=="developer" &&<td className="time-table-data">
                             <span className="status-progress white-nowrap">
                               {item?.isApproved ? "Reviewed" : "Under Review"}
                             </span>
-                          </td>
-                          <td className="time-table-data">
+                          </td>}
+                          {flag!=="vendor" &&<td className="time-table-data">
                             <button
-                              disabled={item?.isApproved}
+                              disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}
@@ -355,11 +373,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                   />
                                 </OverlayTrigger>
                               )}{" "}
-                              {/* <span className="number-count overlay">1</span> */}
                             </button>
-                          </td>
+                          </td>}
 
-                          {selectedPeriod == "weekly" ? (
+                          {selectedPeriod == "weekly" && role!=="developer" && flag!=="vendor" ? (
                             <td className="time-table-data">
                               {item?.isApproved ? (
                                 <span className="status-finished">
@@ -397,14 +414,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                     );
                   })
                 ) : (
-                  <td colSpan={17}>
-                    <NoDataFound />
-                  </td>
+                  <td colSpan={10}> <div className="simple-no-data"><NoDataFound /></div>  </td>
                 )}
               </tbody>
             </table>
           ) : (
-            <NoDataFound />
+           <div className="simple-no-data"><NoDataFound /></div>
           )}
         </div>
         <Offcanvas
@@ -451,15 +466,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
             currentDetails={currentDetails}
             page={page}
             role={role}
+            selectedPeriod={selectedPeriod}
           />
+
         ) : (
           ""
         )}
         <ConfirmationModal
           text={
             isAnyReportEmpty
-              ? `Are you sure to Approve this time sheet ? It looks like you haven't written your work status for all the days of the week.`
-              : "Are you sure you want to Approve this time sheet?"
+              ? `Are you sure to submit this time sheet ? It looks like you haven't written your work status for all the days of the week.`
+              : "Are you sure you want to submit this time sheet?"
           }
           show={approvedConfirmation?.isApproved}
           startDate={approvedConfirmation?.startDate}
@@ -469,41 +486,32 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
           smallLoader={approvedLoader}
         />
       </div>
-      <div className="helper-text-section">
+      {/* <div className="helper-text-section">
         <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
         <ol className="ps-3 mb-0">
           <li className="mb-2">
-            <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
-            </p>
+            <p>All developers must check in before starting their workday.</p>
           </li>
           <li className="mb-2">
             <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
+              All developers must submit their time-sheets before the end of
+              Friday.
             </p>
           </li>
-          <li className="mb-0">
+          <li className="mb-2">
+            <p>Please Check out at the end of your workday.</p>
+          </li>
+          <li className="mb-2">
+            For Developers, Reconciliation get enable on every Friday.
+          </li>
+          <li className="mb-2">
             <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
+              Developers may work on weekends and reconcile their Time-sheets.
             </p>
           </li>
         </ol>
-      </div>
+      </div> */}
+      <Guidelines heading={"Guiding You Through: Helpful Text to Navigate Time Reporting"} guideLines={TIME_REPORTING}/>
     </>
   );
 };

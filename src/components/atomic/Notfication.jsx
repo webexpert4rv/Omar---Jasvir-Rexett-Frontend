@@ -5,16 +5,22 @@ import { Dropdown } from "react-bootstrap";
 import { NOTIFICATIONBASEURL, getToken } from "../../helper/utlis";
 import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
+import {
+  getNotification,
+  markAsRead,
+  setIsChatOpen,
+} from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Timer from "./Timer";
+import notificationSound from "../../assets/Audio/notificationSound.mp3";
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
+  const role = localStorage.getItem("role");
   const navigate = useNavigate();
   const [nottificationData, setNotificationData] = useState([]);
-  const { notificationList, screenLoader } = useSelector(
+  const { notificationList, screenLoader, isChatOpen } = useSelector(
     (state) => state.adminData
   );
   const [newJobPost, setNewJobPost] = useState(null);
@@ -22,21 +28,30 @@ const Notification = ({ route, job, doc, timeReport }) => {
   const [notifId, setNotifId] = useState();
   const { t } = useTranslation();
   const userId = localStorage.getItem("userId");
+  console.log(isChatOpen,"isChat open inside notification");
 
   useEffect(() => {
     dispatch(getNotification());
-    setNewJobPost(null)
+    setNewJobPost(null);
   }, [newJobPost]);
-
 
   useEffect(() => {
     if (newJobPost !== null) {
-      let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]?.notifications];
+      let mergeRow = [
+        newJobPost,
+        ...notificationList["unreadNotifications"]?.notifications,
+      ];
       setNotificationData([...nottificationData, ...mergeRow]);
+      const audio = new Audio(notificationSound);
+      audio.play().catch((err) => {
+        console.log("audio play failed");
+      });
     } else if (nottificationData?.length > 0) {
       setNotificationData(nottificationData);
     } else {
-      setNotificationData(notificationList["unreadNotifications"]?.notifications);
+      setNotificationData(
+        notificationList["unreadNotifications"]?.notifications
+      );
     }
   }, [notificationList, newJobPost]);
 
@@ -50,6 +65,11 @@ const Notification = ({ route, job, doc, timeReport }) => {
     socket.on("newJobPost_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
     });
+
+    // socket.on(`message_created_${userId}`, (message) => {
+    //   console.log(message,"message")
+    //   // setNewJobPost(message);
+    // });
 
     socket.on("new_job_application_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
@@ -77,6 +97,14 @@ const Notification = ({ route, job, doc, timeReport }) => {
     socket.on("addedRemark_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
     });
+    // for message notifications
+    socket.on(`new_message_${userId}`, (message) => {
+      const chatOpen = localStorage.getItem("isChatOpen");
+      if (chatOpen === "false") {
+        setNewJobPost(message);
+        console.log(message, "inside new message");
+      }
+    });
     socket.on("disconnect", () => {
       console.log("Disconnected from Socket.IO server");
     });
@@ -97,13 +125,17 @@ const Notification = ({ route, job, doc, timeReport }) => {
       })
     );
     if (data == "Documents") {
-      navigate(`/${doc}`);
+      navigate(`/${role}/${doc}`);
     } else if (data == "Jobs") {
-      navigate(`/${job}/${id}`);
+      navigate(`${role}/${job}/${id}`);
     } else if (data == "Time_reports") {
       navigate(`/${timeReport}`);
     } else if (data == "Users") {
-      navigate(`/admin-single-developer/${id}`);
+      if (role === "developer") {
+        navigate(`developer/dashboard`);
+      } else {
+        navigate(`/admin-single-developer/${id}`);
+      }
     }
   };
 
@@ -121,12 +153,10 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null);
     setNotificationModal(true);
   };
-  
 
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   }
-
   return (
     <>
       <header>
@@ -158,8 +188,8 @@ const Notification = ({ route, job, doc, timeReport }) => {
               {notificationModal && (
                 <Dropdown.Menu className="notification-dropdown-menu">
                   <div className="dropdown-notify-wrapper">
-                    {nottificationData?.notifications?.length > 0 ? (
-                      [...nottificationData?.notifications]
+                    {nottificationData?.length > 0 ? (
+                      [...nottificationData]
                         ?.sort(compareDates)
                         ?.map((item) => {
                           return (
@@ -195,15 +225,13 @@ const Notification = ({ route, job, doc, timeReport }) => {
                       </Dropdown.Item>
                     )}
                   </div>
-                    <Dropdown.Item
-                      onClick={redirectToallScreen}
-                      className="see-all-notify mt-4"
-                    >
-                      {" "}
-
-
-                  {t("seeAll")}
-                    </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={redirectToallScreen}
+                    className="see-all-notify mt-4"
+                  >
+                    {" "}
+                    {t("seeAll")}
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               )}
             </Dropdown>

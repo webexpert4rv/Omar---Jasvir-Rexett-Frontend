@@ -60,19 +60,8 @@ const AboutCV = ({ show, handleClose, data, id, role,isEdited }) => {
   }
 
   return (
-    <Modal
-      show={show}
-      onHide={handleCloseAndModalData}
-      centered
-      className="custom-modal"
-      animation
-    >
-      <Modal.Header closeButton className="border-0 pb-3">
-        {/* <Modal.Title>About Section</Modal.Title> */}
-      </Modal.Header>
-
-      <Modal.Body>
-        <h3 className="popup-heading">{t("aboutSection")}</h3>
+    <>
+      <h3 className="popup-heading">{t("aboutSection")}</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Form.Group className="mb-4">
             <Form.Control
@@ -111,8 +100,10 @@ const AboutCV = ({ show, handleClose, data, id, role,isEdited }) => {
             />
           </div>
         </form>
-      </Modal.Body>
-    </Modal>
+    </>
+    
+      
+     
   );
 };
 export default AboutCV;

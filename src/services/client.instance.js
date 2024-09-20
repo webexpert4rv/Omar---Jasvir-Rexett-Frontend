@@ -1,9 +1,12 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
+import { getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
 
 const clientInstance = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
+export const clientFormInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 
 });
@@ -19,6 +22,17 @@ clientInstance.interceptors.request.use(
   }
 );
 
+clientFormInstance.interceptors.request.use(
+  (config) => {
+    config.headers["Authorization"] = `${getToken("token")}`;
+    config.headers["content-type"] = "multipart/form-data";
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response Interceptor
 clientInstance.interceptors.response.use(
   (response) => {
@@ -27,7 +41,7 @@ clientInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         let refreshToken = getRefreshToken("refreshToken");

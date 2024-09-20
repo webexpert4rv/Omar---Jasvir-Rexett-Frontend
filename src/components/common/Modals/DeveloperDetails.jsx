@@ -28,8 +28,11 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
         setValue("total_experience" , experience)
     }, [name, position ,experience])
 
+    console.log(selectedImage,"selectedImage")
+
     const handleChange = (e) => {
         const file = e.target.files[0];
+        console.log(file,'file')
         setFile(file)
         if (file) {
             const reader = new FileReader();
@@ -39,11 +42,11 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
             reader.readAsDataURL(file);
         }
     };
+    console.log(selectedImage,"selectedImage")
 
    
 
     const onSubmit = (values) => {
-        console.log(values , "values")
         let fileData = new FormData();
         fileData.append("file",file);
         if(file==null){
@@ -69,7 +72,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
                     "user_id" : +id
                 };
                 console.log(data,"data")
-                dispatch(updateDeveloperCvDetails(data, () => {
+                dispatch(updateDeveloperCvDetails(data,role, () => {
                     if(role=="developer"){
                         dispatch(fetchDeveloperCv())
                     }else{
@@ -106,7 +109,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
                             {errors.name?.message}
                         </p>
                         <Form.Label className="font-14">Position</Form.Label>
-                        <Form.Control name="professional_title" className="common-field" placeholder="Enter your name"
+                        <Form.Control name="professional_title" className="common-field" placeholder="Enter your Position"
                             {...register("professional_title", {
                                 required: {
                                     value: true,

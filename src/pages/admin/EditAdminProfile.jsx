@@ -1,255 +1,178 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
-import { FaEye } from "react-icons/fa";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import RexettButton from "../../components/atomic/RexettButton";
-import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
-import ScreenLoader from "../../components/atomic/ScreenLoader";
-import { getAdminProfile, updateAdminProfile } from "../../redux/slices/adminDataSlice";
+import AllRoleEditProfile from "../../components/common/EditProfile/AllRoleEditProfile";
+import ProfileWrapper from "../../components/common/EditProfile/ProfileWrapper";
+import React, {useState, useEffect} from "react";
+import { Nav, Tab } from "react-bootstrap";
+import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import CompanyProfile from "../../components/common/EditProfile/CompanyProfile";
+import { useDispatch, useSelector } from "react-redux";
+import { getCoutriesList,getCitiesList,getStatesList, getTimeZoneForCountry} from "../../redux/slices/clientDataSlice";
+import { fileUploadForWeb, getDeveloperProfileDetails } from "../../redux/slices/developerDataSlice";
+import { developerRegistration } from "../../redux/slices/developerDataSlice";
+import { getDeveloperActiveStepFields, getStepDataFromAPI, getAdminActiveFields } from "../Registration flows/registrationConstant";
+// import { clientRegistration } from "../../redux/slices/clientDataSlice";
+// import { getClientProfileDetails } from "../../redux/slices/clientDataSlice";
+import { updateAdminProfile } from "../../redux/slices/adminDataSlice";
+import { getAdminProfile } from "../../redux/slices/adminDataSlice";
 
 const EditAdminProfile = () => {
-    const {
-        register,
-        setValue,
-        handleSubmit,
-        formState: { errors, isDirty, isValid, isSubmitting },
-    } = useForm({});
-    const dispatch = useDispatch();
-    const [isPassword,setPassword]=useState({
-        firstPass:false,
-        secondPass:false
-    })
-    const {smallLoader,profileData,screenLoader}=useSelector(state=>state.adminData)
-    const { t } = useTranslation()
-    useEffect(()=>{
-       dispatch(getAdminProfile())
-    },[dispatch])
 
-    useEffect(()=>{
-        setValue("name",profileData?.data?.name)
-        setValue("email",profileData?.data?.email)
-        setValue("phone_number",profileData?.data?.phone_number)
-        setValue("address",profileData?.data?.address)
-        setValue("address_2",profileData?.data?.address_2)
-        setValue("city",profileData?.data?.city)
-        setValue("country",profileData?.data?.country)
-        setValue("passcode",profileData?.data?.passcode)
-         
-    },[profileData])
+  const {
+    handleSubmit,
+    register,
+    control,
+    reset,
+    formState: { errors },
+    watch,
+    setError,
+    setValue,
+    clearErrors,
+  } = useForm({});
+  const dispatch =useDispatch()
+  const { smallLoader, profileData} = useSelector(
+    (state) => state?.adminData
+  );
+  const [previewImage, setPreviewImage] = useState({
+    profile_picture: "",
+    resume: "",
+    introVideo: "",
+  });
+  const [imageFile, setImageFile] = useState({
+    resume: "",
+    introVideo: "",
+  });
 
-    const onSubmit = (values) => {
-        let formData={
-            ...values,
-            password:values.password?values.password:null,
-            previous_password:values.previous_password?values.previous_password:null
-        }
-     dispatch(updateAdminProfile(formData))
-    }
+  const { t } = useTranslation();
 
-    const validatePassword = (value) => {
-        if (value === "") {
-            return true; // Password is not required, so return true if empty
+  let userId=localStorage.getItem("userId")
+
+  const onSubmit = (values) => {
+    console.log(values, "va");
+
+    const uploadFiles = (files) => {
+      let uploadedUrls = {};
+
+      const uploadPromises = Object.keys(files).map((key) => {
+        if (files[key]) {
+          let fileData = new FormData();
+          fileData.append("file", files[key]);
+
+          return new Promise((resolve) => {
+            dispatch(
+              fileUploadForWeb(fileData, (url) => {
+                console.log(url, `${key} url`);
+                uploadedUrls[key] = url;
+                resolve();
+              })
+            );
+          });
         } else {
-            // Check if password matches the pattern
-            const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-            if (!pattern.test(value)) {
-                return "Password must contain at least a symbol, upper and lower case letters and a number";
-            }
+          return Promise.resolve(); // Resolve immediately if no file to upload
         }
-        return true;
+      });
+
+      Promise.all(uploadPromises).then(() => {
+        let payload = {
+          name: `${values?.first_name} ${values?.last_name}`,
+          first_name: values?.first_name,
+          last_name: values?.last_name,
+          profile_picture: uploadedUrls?.profile_picture,
+          profession: values?.profession,
+          email: values?.email,
+          country: values?.country_code?.label,
+          address: values?.address,
+          password: values?.password,
+          language_preference: values?.language_preference?.value,
+          total_experience: values?.total_experience,
+          city: null,
+          state: values?.state_iso_code?.label,
+          country_iso_code: values?.country_iso_code?.value,
+          state_iso_code: values?.state_iso_code?.value,
+          passcode: values?.passcode,
+          country_code: values?.country_code.value,
+          phone_number: values?.phone_number,
+          language_proficiency: values?.language_proficiency,
+          time_zone: values?.time_zone?.label,
+          resume: uploadedUrls?.resume,
+          linkedin_url: values?.linked_in,
+          github_url: values?.git_hub,
+          intro_video_url: uploadedUrls?.introVideo,
+          user_id: userId,
+          company_name: values?.company_name,
+          company_tax_id: values?.company_tax_id,
+          establishment_year: values?.establishment_year,
+          website_url: values?.website_url,
+          yearly_revenue: values?.yearly_revenue,
+          employee_strength: values?.employee_strength,
+          tax_id: values?.tax_id,
+          cin: values?.cin,
+          address_2: values?.address_2
+        };
+
+        dispatch(updateAdminProfile(payload));
+      });
     };
-    return (
-        <>
-            <section className="card-box">
-                <h2 className="section-head mb-4 pb-3">{t("updateYourProfile")}</h2>
-                <div>
-                  {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                        <Row className="mb-4">
-                            <Col md="6">
-                                <div className="inner-form">
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("adminName")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="name"
-                                            {...register("name", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Name is required",
-                                                },
-                                            })} />
-                                        <p className="error-message">
-                                            {errors.name?.message}
-                                        </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("email")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="email"
-                                            {...register("email", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Email is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                    message: 'Invalid email format',
-                                                  },
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.email?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("phone")} *</Form.Label>
-                                        <Form.Control type="tel" className="common-field"
-                                            name="phone_number"
-                                            {...register("phone_number", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Phone Number is required",
-                                                },
-                                                pattern: {
-                                                    value:  /^[0-9]{10}$/,
-                                                    message: "Please enter a valid phone number"
-                                                }
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.phone_number?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("previousPassword")}</Form.Label>
-                                        <div className="position-relative">
-                                            <Form.Control type={isPassword.firstPass?"text":"password"} className="common-field"
-                                                name="previous_password"
-                                                {...register("previous_password", {
-                                                    validate: validatePassword
-                                                })}
-                                            />
-                                            <span className="eye-btn"onClick={()=>setPassword({...isPassword,firstPass:!isPassword.firstPass})}  ><FaEye /></span>
-                                        </div>
-                                        <p className="error-message">
-                                            {errors.previous_password?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("newPassword")}</Form.Label>
-                                        <div className="position-relative">
-                                            <Form.Control  type={isPassword.secondPass?"text":"password"}  className="common-field"
-                                                name="password"
-                                                {...register("password", {
-                                                    validate: validatePassword
-                                                })}
-                                            />
-                                             <span className="eye-btn" onClick={()=>setPassword({...isPassword,secondPass:!isPassword.secondPass})}><FaEye /></span>
-                                        </div>
-                                        <p className="error-message">
-                                            {errors.password?.message} </p>
-                                    </Form.Group>
-                                </div>
-                            </Col>
-                            <Col md="6">
-                                <div>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("address")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="address"
-                                            {...register("address", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Address 1 is required",
-                                                },
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.address?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("address")} 2</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="address_2"
-                                            {...register("address_2", {
-                                                required: {
-                                                    value: false,
-                                                    message: "Address 2 is required",
-                                                },
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.address_2?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("city")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="city"
-                                            {...register("city", {
-                                                required: {
-                                                    value: true,
-                                                    message: "City is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[A-Za-z\s]+$/,
-                                                    message: "Country should not contain numbers or special character",
-                                                }
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.city?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("postCode")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="passcode"
-                                            {...register("passcode", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Pass code is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[0-9]+$/,
-                                                    message: "Passcode should only contain numbers",
-                                                }
-                                                
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.passcode?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("country")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="country"
-                                            {...register("country", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Country is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[A-Za-z\s]+$/,
-                                                    message: "Country should not contain numbers or special character",
-                                                }
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.country?.message} </p>
-                                    </Form.Group>
-                                </div>
-                            </Col>
-                        </Row>
-                        <div className="text-center">
-                            <RexettButton
-                                type="submit"
-                                text={t("updateProfile")}
-                                className="main-btn px-5"
-                                variant="transparent"
-                                isLoading={smallLoader}
-                            />
-                        </div>
-                    </form>}
-                </div>
-            </section>
-        </>
-    )
-}
+    uploadFiles({
+      resume: imageFile.resume,
+      introVideo: imageFile.introVideo,
+      profile_picture: imageFile.profile_picture,
+    });
+  }
+
+  const watchAllFields = watch();
+
+
+console.log(watchAllFields,'allfieldsssssss hihi');
+
+  const toggleConfirmationModal = (e) => {
+    // Handle toggle confirmation modal
+  };
+
+  const [screenLoader, setScreenLoader] = React.useState(false); // Assuming screenLoader is a state
+
+  const activeStep = 1; // Assuming activeStep is defined somewhere
+  const nestedActiveStep = 0; // Assuming nestedActiveStep is defined somewhere
+  
+  const activeStepFields = getAdminActiveFields();
+  console.log(activeStepFields,'activeStepFields adminnnn');
+  // let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
+  // console.log(clientProfileData,'hihi clientdata')
+
+  let stepData = getStepDataFromAPI(profileData, activeStep);
+  console.log(profileData,'profileData hihi');
+  console.log(stepData,'hihi stepData profileData')
+
+  useEffect(() => {
+
+    // if(userId){
+    dispatch(getAdminProfile());
+    dispatch(getCoutriesList());
+    // }
+  }, []);
+
+  useEffect(() => {
+    if (watch("country")?.value) {
+      dispatch(getStatesList(watch("country")?.value));
+      dispatch(getTimeZoneForCountry(watch("country")?.value));
+    }
+  }, [watch("country")]);
+
+  useEffect(() => {
+    if (watch("state")?.value) {
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
+      setValue("city", null);
+    }
+  }, [watch("state")]);
+
+
+  return (
+    <>
+      <>
+        <ProfileWrapper>
+        <AllRoleEditProfile role="admin" name={'individual'} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={profileData?.data} activeStepFields={activeStepFields}/>
+        </ProfileWrapper>
+      </>
+    </>
+  );
+};
 export default EditAdminProfile;

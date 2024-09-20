@@ -10,7 +10,9 @@ import { useTranslation } from "react-i18next";
 import { timeReporting } from "../../redux/slices/clientDataSlice";
 import RexettPagination from "./RexettPagination";
 
+
 const NotificationList = ({ job, doc }) => {
+  const role=localStorage.getItem("role")
   const [page, setPage] = useState(1);
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,11 +43,15 @@ const NotificationList = ({ job, doc }) => {
     if (data == "Documents") {
       navigate(`/${doc}`);
     } else if (data == "Jobs") {
-      navigate(`/${job}/${id}`);
+      navigate(`/${role}/${job}/${id}`);
     } else if (data == "Time_reports") {
       navigate(`/${timeReporting}`);
     } else if (data == "Users") {
       navigate(`/admin-single-developer/${id}`);
+    }else if(data=="JobApplications"){
+      navigate(`/${role}/${job}/${id}`);
+    }else if(data=="Members"){
+      navigate(``)
     }
   };
 
@@ -60,8 +66,6 @@ const NotificationList = ({ job, doc }) => {
       return true
     }
   }
-
-  console.log(nottificationData,"nottificationData")
 
   // const markAllAsRead = () => {
   //   dispatch(markAsRead(undefined, () => {

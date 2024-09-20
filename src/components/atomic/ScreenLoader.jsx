@@ -1,7 +1,14 @@
-import Spinner from 'react-bootstrap/Spinner';
 
 function ScreenLoader() {
-  return <Spinner animation="border" />;
+  return (
+    <>
+      <div>
+        <section className="loading-screen">
+          <span className="loader-wrapper"></span>
+        </section>
+      </div>
+    </>
+  );
 }
 
 export default ScreenLoader;

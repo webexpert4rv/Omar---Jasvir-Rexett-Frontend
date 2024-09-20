@@ -7,7 +7,7 @@ const Tabs = ({ handleSelect, tabText ,currentTab }) => {
      
         <Tab.Container
           id="left-tabs-example"
-          defaultActiveKey="first"
+          defaultActiveKey={currentTab ? currentTab : "first"}
           onSelect={handleSelect}
         >
            {tabText?.map((item, index) => (
@@ -17,8 +17,8 @@ const Tabs = ({ handleSelect, tabText ,currentTab }) => {
                 {item.value}
               </Nav.Link>
             </Nav.Item>
-          </Nav> ))}
-
+          </Nav> 
+        ))}
         </Tab.Container>
      
     </div>

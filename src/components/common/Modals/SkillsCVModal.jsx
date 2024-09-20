@@ -11,12 +11,10 @@ import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 
-
-
 const createOption = (label) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ""),
-  });
+  label,
+  value: label.toLowerCase().replace(/\W/g, ""),
+});
 
 const SkillsModal = ({ show, handleClose, data, id, role }) => {
   const { skillList } = useSelector((state) => state.clientData);
@@ -25,67 +23,60 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
-  const [skillCate, setSkillsCate] = useState(skillListMapped)
+  const [skillCate, setSkillsCate] = useState(skillListMapped);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  console.log(data,"data,,,,")
+  console.log(data, "data,,,,");
 
   useEffect(() => {
     if (data) {
-      const array = data?.map((tech) => ({ label: tech.skill, value: tech.skill,id:tech.id }));
+      const array = data?.map((tech) => ({
+        label: tech.skill,
+        value: tech.skill,
+        id: tech.id,
+      }));
       setSelectedOption(array);
     }
   }, [data]);
-console.log(selectedOption,"selectedOption")
+  console.log(selectedOption, "selectedOption");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let formattedSkills = [];
     // let convertString = selectedOption.map((item) => item.label);
-     formattedSkills = selectedOption.map((item)=>{
-      return { skill : item.label, experience :""}
-    })
-  
-      let data = {
-        skills: formattedSkills,
-        user_id: +id,
-      };
-      dispatch(
-        updateDeveloperSkills(data, role,() => {
-          if (role === "developer") {
-            dispatch(fetchDeveloperCv());
-          }else{
-            dispatch(getDeveloperDetails(id));
-          }
-          handleClose();
-        })
-      );
+    formattedSkills = selectedOption.map((item) => {
+      return { skill: item.label, experience: "" };
+    });
+
+    let data = {
+      skills: formattedSkills,
+      user_id: +id,
+    };
+    dispatch(
+      updateDeveloperSkills(data, role, () => {
+        if (role === "developer") {
+          dispatch(fetchDeveloperCv());
+        } else {
+          dispatch(getDeveloperDetails(id));
+        }
+        handleClose();
+      })
+    );
   };
-
-
 
   const onChangeSelect = (val) => {
     setTimeout(() => {
       const newOption = createOption(val);
       setSelectedOption((prev) => [...prev, newOption]);
       setSkillsCate((prev) => [...prev, newOption]);
-
     }, 1000);
   };
 
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      centered
-      className="custom-modal"
-      animation
-    >
-      <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
-      <Modal.Body>
-        <h3 className="popup-heading">{t("skills")}</h3>
+    <>
+    <h3 className="popup-heading">{t("skills")}</h3>
         <form onSubmit={handleSubmit}>
           <div className="experience-container">
             <Row>
@@ -117,8 +108,10 @@ console.log(selectedOption,"selectedOption")
             />
           </div>
         </form>
-      </Modal.Body>
-    </Modal>
+    </>
+  
+        
+    
   );
 };
 export default SkillsModal;

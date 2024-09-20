@@ -26,3 +26,6 @@ code {
   border: none;
   outline: none;
 }
+.not-allowed:disabled {
+  cursor:not-allowed 
+}

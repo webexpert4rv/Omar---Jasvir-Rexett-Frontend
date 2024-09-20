@@ -30,7 +30,7 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import CreateFolder from "../../atomic/CreateFolder";
 import RexettUploadFile from "../../atomic/RexettUploadFile";
-import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import NoDataFound from "../../atomic/NoDataFound";
 import { IoGrid } from "react-icons/io5";
@@ -67,6 +67,8 @@ const RexettDocuments = ({ currentRole }) => {
   const { t } = useTranslation();
 
   const handleShowUploadFileModal = (id, name) => {
+    console.log(id,"idddd")
+    console.log(name,"name")
     if (id) {
       setShowUploadFileModal(true);
       setEditFolderName({ id: id, name: name });
@@ -96,6 +98,7 @@ const RexettDocuments = ({ currentRole }) => {
       name: item?.s3_path,
       parent_id: item?.parent_id,
     };
+    console.log(data,"data")
     setBradCrum([...bradCrump, data]);
     setShowFolderView(true);
     let filterData = {

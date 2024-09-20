@@ -4,13 +4,13 @@ import developerImg from "../../../assets/img/user-img.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { timeReporting } from "../../../redux/slices/clientDataSlice";
 import RexettTable from "../../../components/clients/TimeReporiting/RexettTable";
-import { weeklyTimeReports } from "../../../components/clients/TimeReporiting/constant";
+import { monthOptions, weekOptions, weeklyTimeReports, yearOption } from "../../../components/clients/TimeReporiting/constant";
 import RexettButton from "../../../components/atomic/RexettButton";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import RexettPagination from "../../atomic/RexettPagination";
 import { useTranslation } from "react-i18next";
 
-const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
+const RexettTimeReporting = ({ timeReportingData, handleShowModal, role,flag }) => {
     const dispatch = useDispatch();
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({ filter: "weekly" });
@@ -24,26 +24,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         (state) => state.clientData
     );
 
-    const monthOptions = [
-        { label: "January", value: 1 },
-        { label: "Feburary", value: 2 },
-        { label: "March", value: 3 },
-        { label: "April", value: 4 },
-        { label: "May", value: 5 },
-        { label: "June", value: 6 },
-        { label: "July", value: 7 },
-        { label: "August", value: 8 },
-        { label: "September", value: 9 },
-        { label: "October", value: 10 },
-        { label: "November", value: 11 },
-        { label: "December", value: 12 },
-    ];
-    const weekOptions = [
-        { label: "Week 1", value: 1 },
-        { label: "Week 2", value: 2 },
-        { label: "Week 3", value: 3 },
-        { label: "Week 4", value: 4 },
-    ];
+   
     useEffect(() => {
         let filterData = {
             ...selectedFilter,
@@ -56,7 +37,6 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const handlePeriodChange = (value) => {
         setSelectedView(value);
         const selectedPeriodValue = value;
-        console.log(selectedPeriodValue, "selectedPeriodValue");
         setSelectedPeriod(selectedPeriodValue);
         let filterData = {
             ...selectedFilter,
@@ -134,14 +114,9 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                             <option value="" disabled selected>
                                                 {t("selectYear")}
                                             </option>
-                                            <option value="2024">2024</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2022">2022</option>
-                                            <option value="2021">2021</option>
-                                            <option value="2020">2020</option>
-                                            <option value="2019">2019</option>
-                                            <option value="2018">2018</option>
-                                            <option value="2017">2017</option>
+                                            {yearOption?.map((item ) => (
+                                                 <option key={item}>{item}</option>
+                                            ))}
                                         </Form.Select>
                                     </div>
                                     {selectedPeriod !== "yearly" ? (
@@ -275,6 +250,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                         data={timeReportingData}
                         role={role}
                         page={page}
+                        flag={flag}
                     />
 
                     {timeReportingPage?.totalPages > 1 ? (

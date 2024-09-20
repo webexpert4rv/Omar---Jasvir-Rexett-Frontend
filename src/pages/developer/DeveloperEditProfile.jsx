@@ -1,537 +1,280 @@
-import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Form,
-  Button,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
-import { Controller, useForm } from "react-hook-form";
-import { FaEye } from "react-icons/fa";
-import { HiUpload } from "react-icons/hi";
+import React, { useEffect,useState } from "react";
+import ClientStep1 from "../Registration flows/Client Registration flow/ClientStep1";
+import { useForm, Controller } from "react-hook-form";
+import { Row, Col, Form } from "react-bootstrap";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { getDeveloperActiveStepFields, getStepDataFromAPI } from "../Registration flows/registrationConstant";
+import ProfileWrapper from "../../components/common/EditProfile/ProfileWrapper";
+import { fileUploadForWeb, getDeveloperProfileDetails } from "../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
-import {
-  getDeveloperProfileDetails,
-  updateDeveloperProfile,
-} from "../../redux/slices/developerDataSlice";
-import ScreenLoader from "../../components/atomic/ScreenLoader";
-import {
-  createNewFolderAndFile,
-  filePreassignedUrlGenerate,
-  getDeleteAccount,
-  getEnableDisableAccount,
-} from "../../redux/slices/clientDataSlice";
-import EndJobModal from "./../views/Modals/EndJob";
-import { FaTrashCan } from "react-icons/fa6";
-import { useTranslation } from "react-i18next";
-import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import { getCoutriesList,getCitiesList,getStatesList, getTimeZoneForCountry} from "../../redux/slices/clientDataSlice";
+import { developerRegistration } from "../../redux/slices/developerDataSlice";
+import AllRoleEditProfile from "../../components/common/EditProfile/AllRoleEditProfile";
 
-const EditDeveloperProfile = () => {
-  const userId = localStorage.getItem("userId");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const { t } = useTranslation();
-  console.log(userId, "userIs");
+
+
+const DeveloperEditProfile = () => {
   const {
-    register,
-    setValue,
-    control,
     handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitting },
+    register,
+    control,
+    reset,
+    formState: { errors },
+    watch,
+    setError,
+    setValue,
+    clearErrors,
   } = useForm({});
-  const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState("inactive");
-  const [isPassword, setPassword] = useState({
-    firstPass: false,
-    secondPass: false,
-  });
-  const [file, setFile] = useState(null);
-  const { smallLoader, developerProfileData, screenLoader } = useSelector(
-    (state) => state.developerData
+  const dispatch =useDispatch()
+  const { smallLoader, developerRegistrationData } = useSelector(
+    (state) => state?.developerData
   );
+  const [previewImage, setPreviewImage] = useState({
+    profile_picture: "",
+    resume: "",
+    introVideo: "",
+  });
+  const [imageFile, setImageFile] = useState({
+    resume: "",
+    introVideo: "",
+  });
 
-  const handleJobStatusModal = () => {
-    setStatus(!status);
-    setShowModal(false);
-  };
-  console.log(status, "status");
-  const handleToggle = () => {
-    setStatus("active");
-    setShowModal(true);
-  };
-  const handleAction = () => {
-    let data = {
-      user_id: +userId,
-      status: status,
-    };
-    dispatch(getEnableDisableAccount(data));
-  };
-
-  useEffect(() => {
-    dispatch(getDeveloperProfileDetails());
-  }, [dispatch]);
-
-  useEffect(() => {
-    setValue("name", developerProfileData?.data?.name);
-    setValue("email", developerProfileData?.data?.email);
-    setValue("phone_number", developerProfileData?.data?.phone_number);
-    setValue("address", developerProfileData?.data?.address);
-    setValue("address_2", developerProfileData?.data?.address_2);
-    setValue("city", developerProfileData?.data?.city);
-    setValue("country", developerProfileData?.data?.country);
-    setValue("passcode", developerProfileData?.data?.passcode);
-    setValue("profile_picture", developerProfileData?.data?.profile_picture);
-  }, [developerProfileData]);
-  const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
+  let userId=localStorage.getItem("userId")
 
   const onSubmit = (values) => {
-    let formData = new FormData();
-    let fileData = new FormData();
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
+    // debugger;
+    console.log(values, "va");
 
-    fileData.append("file", file);
-    if (file == null) {
-      let data = {
-        ...values,
-        user_id: userId,
-      };
-      dispatch(updateDeveloperProfile(data));
-    } else {
-      dispatch(
-        filePreassignedUrlGenerate(fileData, (url) => {
-          let data = {
-            ...values,
-            profile_picture: url,
-            user_id: userId,
-          };
-          // formData.append("file",data.s3_path);
-          dispatch(updateDeveloperProfile(data));
-        })
-      );
-    }
-  };
-  const validatePassword = (value) => {
-    if (value === "") {
-      return true; // Password is not required, so return true if empty
-    } else {
-      // Check if password matches the pattern
-      const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      if (!pattern.test(value)) {
-        return "Password must contain at least a symbol, upper and lower case letters and a number";
-      }
-    }
-    return true; // Password meets the criteria
+    const uploadFiles = (files) => {
+      let uploadedUrls = {};
+
+      const uploadPromises = Object.keys(files).map((key) => {
+        if (files[key]) {
+          let fileData = new FormData();
+          fileData.append("file", files[key]);
+
+          return new Promise((resolve) => {
+            dispatch(
+              fileUploadForWeb(fileData, (url) => {
+                console.log(url, `${key} url`);
+                uploadedUrls[key] = url;
+                resolve();
+              })
+            );
+          });
+        } else {
+          return Promise.resolve(); // Resolve immediately if no file to upload
+        }
+      });
+
+      Promise.all(uploadPromises).then(() => {
+        let payload = {
+          first_name: values?.first_name,
+          last_name: values?.last_name,
+          profile_picture: uploadedUrls?.profile_picture,
+          profession: values?.professional_title,
+          email: values?.email,
+          country: values?.country_code?.label,
+          address: values?.address,
+          password: values?.password,
+          language_preference: values?.language_preference,
+          total_experience: values?.total_experience,
+          // city: values?.city,
+          city: null,
+          confirm_password:values?.confirm_password,
+          state: values?.state_iso_code?.label,
+          country_iso_code: values?.country_iso_code?.value,
+          state_iso_code: values?.state_iso_code?.value,
+          passcode: values?.passcode,
+          country_code: values?.country_code?.value,
+          phone_number: values?.phone_number,
+          language_proficiency: values?.language_proficiency?.value,
+          time_zone: values?.time_zone?.value,
+          resume: uploadedUrls?.resume ? uploadedUrls?.resume : values?.resume,
+          linkedin_url: values?.linkedin_url,
+          github_url: values?.github_url,
+          intro_video_url: uploadedUrls?.introVideo ? uploadedUrls?.introVideo : values?.intro_video_url,
+          user_id: userId,
+          is_2FA_enabled: values?.is_2FA_enabled,
+          tax_id: values?.tax_id,
+          cin: values?.cin,
+          address_2:values?.address_2,
+          company_name: values?.company_name,
+          company_tax_id: values?.company_tax_id
+        };
+
+        dispatch(developerRegistration(payload));
+      });
+    };
+    uploadFiles({
+      resume: imageFile.resume,
+      introVideo: imageFile.introVideo,
+      profile_picture: imageFile.profile_picture,
+    });
+  }
+
+  const watchAllFields = watch();
+
+
+console.log(watchAllFields,'allfieldsssssss hihi');
+
+  const toggleConfirmationModal = (e) => {
+    // Handle toggle confirmation modal
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const [screenLoader, setScreenLoader] = React.useState(false); // Assuming screenLoader is a state
+
+  const activeStep = 1; // Assuming activeStep is defined somewhere
+  const nestedActiveStep = 0; // Assuming nestedActiveStep is defined somewhere
+ const activeStepFields = getDeveloperActiveStepFields(
+    activeStep,
+    nestedActiveStep
+  );
+console.log(activeStepFields,'active field check')
+
+  let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
+  
+
+  useEffect(() => {
+
+    if(userId){
+    dispatch(getDeveloperProfileDetails(userId));
+    dispatch(getCoutriesList());
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (watch("country")?.value) {
+      dispatch(getStatesList(watch("country")?.value));
+      dispatch(getTimeZoneForCountry(watch("country")?.value));
+    }
+  }, [watch("country")]);
+
+  useEffect(() => {
+    if (watch("state")?.value) {
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
+      setValue("city", null);
+    }
+  }, [watch("state")]);
+
+  console.log(stepData,'stepstep hihi');
+
+
+  // useEffect(()=>{
+  //   if(stepData){
+  //   setValue('first_name',firstName);
+  //   setValue('last_name',lastName);
+  //   setValue("phone_number",stepData?.phone_number);
+  //   setValue("email",stepData?.email);
+  //   setValue("profession",stepData?.professional_title);
+  //   setValue("country",{ label: stepData?.country, value: null });
+  //   setValue("state",{ label: stepData?.state, value: null });
+  //   setValue("city",{ label: stepData?.city, value: null });
+  //   setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
+  //   setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
+  //   setValue("passcode",stepData?.passcode);
+  //   setValue("time_zone",stepData?.time_zone);
+  //   setValue("time_zone",{ label: stepData?.time_zone, value: null });
+  //   setValue("address",stepData?.address);
+  //   setValue('git_hub',stepData?.github_url);
+  //   setValue('linked_in',stepData?.linkedin_url)
+
+  //   setPreviewImage({
+  //     ...previewImage,
+  //     profile_picture: stepData?.profile_picture
+  //   });
+  // }
+  // },[stepData])
+
 
   return (
     <>
-      <section className="card-box">
-        <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
-          <h2 className="section-head-sub mb-0 border-0">
-            {t("updateYourProfile")}
-          </h2>
-          <OverlayTrigger placement="bottom" overlay={disableProfile}>
-            <div class="form-check form-switch toggle-switch-wrapper">
-              <input
-                class="form-check-input toggle-switch-custom"
-                type="checkbox"
-                role="switch"
-                onClick={handleToggle}
-                checked
-              />
-            </div>
-          </OverlayTrigger>
-        </div>
-        <div>
-          {screenLoader ? (
-            <ScreenLoader />
-          ) : (
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <Row className="mb-4">
-                <Col md="6">
-                  <div className="inner-form">
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("clientName")} *
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="name"
-                        {...register("name", {
-                          required: {
-                            value: true,
-                            message: "Name is required",
-                          },
-                        })}
-                      />
-                      <p className="error-message">{errors.name?.message}</p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("email")} *
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="email"
-                        {...register("email", {
-                          required: {
-                            value: true,
-                            message: "Email is required",
-                          },
-                          pattern: {
-                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Invalid email format",
-                          },
-                        })}
-                      />
-                      <p className="error-message">{errors.email?.message} </p>
-                    </Form.Group>
-                    {/* <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("phone")}*</Form.Label> */}
-                    {/* <Form.Control type="tel" className="common-field"
-                                            name="phone_number"
-                                            {...register("phone_number", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Phone Number is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[0-9]{10}$/,
-                                                    message: "Please enter a valid phone number"
-                                                }
-                                        /> */}
-                    {/* <Controller
-                                            name="phone_number"
-                                            control={control}
-                                            rules={{
-                                                required: {
-                                                    value: true,
-                                                    message: t("phoneNumberValidation"),
-                                                },
-                                                pattern: {
-                                                    value: /^[0-9]{10}$/,
-                                                    message: "Please enter a valid phone number",
-                                                },
-                                            }}
-                                            render={({ field }) => (
-                                                <input
-                                                    {...field}
-                                                    type="text"
-                                                    className="common-field form-control"
-                                                    onChange={(e) => {
-                                                        const numericValue = e.target.value.replace(
-                                                            /[^0-9]/g,
-                                                            ""
-                                                        );
-                                                        field.onChange(numericValue);
-                                                    }}
-                                                />
-                                            )}
-                                        />
-                                        <p className="error-message">
-                                            {errors.phone_number?.message} </p>
-                                    </Form.Group> */}
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("previousPassword")}
-                      </Form.Label>
-                      <div className="position-relative">
-                        <Form.Control
-                          type={isPassword.firstPass ? "text" : "password"}
-                          className="common-field"
-                          name="previous_password"
-                          {...register("previous_password", {
-                            validate: validatePassword,
-                          })}
-                        />
-                        <span
-                          className="eye-btn"
-                          onClick={() =>
-                            setPassword({
-                              ...isPassword,
-                              firstPass: !isPassword.firstPass,
-                            })
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                      </div>
-                      <p className="error-message">
-                        {errors.previous_password?.message}{" "}
-                      </p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("newPassword")}
-                      </Form.Label>
-                      <div className="position-relative">
-                        <Form.Control
-                          type={isPassword.secondPass ? "text" : "password"}
-                          className="common-field"
-                          name="password"
-                          {...register("password", {
-                            validate: validatePassword,
-                          })}
-                        />
-                        <span
-                          className="eye-btn"
-                          onClick={() =>
-                            setPassword({
-                              ...isPassword,
-                              secondPass: !isPassword.secondPass,
-                            })
-                          }
-                        >
-                          <FaEye />
-                        </span>
-                      </div>
-                      <p className="error-message">
-                        {errors.password?.message}{" "}
-                      </p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("address")}*
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="address"
-                        {...register("address", {
-                          required: {
-                            value: true,
-                            message: "Address 1 is required",
-                          },
-                        })}
-                      />
-                      <p className="error-message">
-                        {errors.address?.message}{" "}
-                      </p>
-                    </Form.Group>
-                  </div>
-                  <div>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("address")} 2
-                      </Form.Label>
-                      <div className="position-relative">
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          name="address_2"
-                          {...register("address_2", {
-                            required: {
-                              value: false,
-                              message: "Address 2 is required",
-                            },
-                          })}
-                        />
-                      </div>
-                      <p className="error-message">
-                        {errors.address_2?.message}{" "}
-                      </p>
-                    </Form.Group>
-                  </div>
-                </Col>
-                <Col md="6">
-                  <div>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("phone")}*
-                      </Form.Label>
-                      {/* <Form.Control type="tel" className="common-field"
-                                            name="phone_number"
-                                            {...register("phone_number", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Phone Number is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[0-9]{10}$/,
-                                                    message: "Please enter a valid phone number"
-                                                }
-                                        /> */}
-                      <Controller
-                        name="phone_number"
-                        control={control}
-                        rules={{
-                          required: {
-                            value: true,
-                            message: t("phoneNumberValidation"),
-                          },
-                          pattern: {
-                            value: /^[0-9]{10}$/,
-                            message: "Please enter a valid phone number",
-                          },
-                        }}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            className="common-field form-control"
-                            onChange={(e) => {
-                              const numericValue = e.target.value.replace(
-                                /[^0-9]/g,
-                                ""
-                              );
-                              field.onChange(numericValue);
-                            }}
-                          />
-                        )}
-                      />
-                      <p className="error-message">
-                        {errors.phone_number?.message}{" "}
-                      </p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("city")}*
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="city"
-                        {...register("city", {
-                          required: {
-                            value: true,
-                            message: "City is required",
-                          },
-                          pattern: {
-                            value: /^[A-Za-z\s]+$/,
-                            message:
-                              "Country should not contain numbers or special character",
-                          },
-                        })}
-                      />
-                      <p className="error-message">{errors.city?.message} </p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("postCode")}*
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="passcode"
-                        {...register("passcode", {
-                          required: {
-                            value: true,
-                            message: "Postcode is required",
-                          },
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: "Postcode should only contain numbers",
-                          },
-                        })}
-                      />
-                      <p className="error-message">
-                        {errors.passcode?.message}{" "}
-                      </p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("country")}*
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="country"
-                        {...register("country", {
-                          required: {
-                            value: true,
-                            message: "Country is required",
-                          },
-                          pattern: {
-                            value: /^[A-Za-z\s]+$/,
-                            message:
-                              "Country should not contain numbers or special character",
-                          },
-                        })}
-                      />
-                      <p className="error-message">
-                        {errors.country?.message}{" "}
-                      </p>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("image")}*
-                      </Form.Label>
-                      <Form.Control
-                        type="file"
-                        id="developer-image"
-                        name="profile_picture"
-                        {...register("profile_picture", {
-                          onChange: (e) => handleFileChange(e),
-                          required: {
-                            value: false,
-                            message: "Profile Picture is required",
-                          },
-                        })}
-                        className="d-none"
-                      />
-                      <Form.Label
-                        htmlFor="developer-image"
-                        className="upload-image-label d-block"
-                      >
-                        <HiUpload />
-                        {t("uploadImage")}
-                      </Form.Label>
-                    </Form.Group>
-
-                    <div>
-                      <img
-                        src={
-                          selectedImage
-                            ? selectedImage
-                            : developerProfileData?.data?.profile_picture
-                        }
-                        alt="Selected"
-                        className="uploaded-image"
-                      />
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-              <div className="text-center">
-                <RexettButton
-                  type="submit"
-                  text={t("updateProfile")}
-                  className="main-btn px-5"
-                  variant="transparent"
-                  disabled={smallLoader}
-                  isLoading={smallLoader}
-                />
-              </div>
-            </form>
-          )}
-        </div>
-      </section>
-      <ConfirmationModal
-        show={showModal}
-        handleClose={handleJobStatusModal}
-        onClick={handleAction}
-        smallLoader={smallLoader}
-        text={"Are you sure, you want to disable your account"}
-      />
+      <ProfileWrapper>
+      <div>
+        {screenLoader ? (
+          <ScreenLoader />
+        ) : (
+          // <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          //   <Row className="mb-4">
+          //     <Col md="12" className="mb-3">
+          //       <h5 className="fw-semibold mb-3">Security</h5>
+          //       <Form.Group className="mb-3">
+          //         <Row className="gx-4">
+          //           <Col md={8}>
+          //             <Form.Label className="common-label font-16 fw-semibold mb-0">
+          //               Enable Two Factor Authentication
+          //             </Form.Label>
+          //             <p className="font-14 mb-0">
+          //               Two-Factor Authentication (2FA) is a security process in
+          //               which users provide two different authentication factors
+          //               to verify their identity. This method adds an additional
+          //               layer of security, making it more difficult for
+          //               unauthorized individuals to access your accounts.
+          //             </p>
+          //           </Col>
+          //           <Col md={4}>
+          //             <div className="form-check form-switch toggle-switch-wrapper">
+          //               <Controller
+          //                 name="is_2FA_enabled"
+          //                 control={control}
+          //                 render={({ field }) => (
+          //                   <input
+          //                     {...field}
+          //                     onChange={(e) => {
+          //                       toggleConfirmationModal(e);
+          //                     }}
+          //                     checked={watch("is_2FA_enabled") === true}
+          //                     className="form-check-input toggle-switch-custom"
+          //                     type="checkbox"
+          //                     role="switch"
+          //                   />
+          //                 )}
+          //               />
+          //             </div>
+          //           </Col>
+          //         </Row>
+          //       </Form.Group>
+          //     </Col>
+          //     <Col md="12">
+          //       <ClientStep1
+          //         control={control}
+          //         errors={errors}
+          //         activeStep={activeStep}
+          //         nestedActiveStep={nestedActiveStep}
+          //         type="developer"
+          //         register={register}
+          //         stepFields={activeStepFields}
+          //         setError={setError}
+          //         clearErrors={clearErrors}
+          //         watch={watch}
+          //         setValue={setValue}
+          //         previewImage={previewImage}
+          //         imageFile={imageFile}
+          //         setPreviewImage={setPreviewImage}
+          //         setImageFile={setImageFile}
+          //         isProfileSectionRequired={activeStep === 1 && nestedActiveStep === 0}
+          //         isEditMode={true}
+          //       />
+          //     </Col>
+          //   </Row>
+          //   <div className="d-flex justify-content-center">
+          //   <RexettButton
+          //         type="submit"
+          //         text={'Update'}
+          //         className="main-btn px-5 mr-2"
+          //         disabled={smallLoader}
+          //         isLoading={smallLoader}
+          //       />
+          //   </div>
+          // </form>
+          <AllRoleEditProfile role="developer" name={'individual'} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={stepData} activeStepFields={activeStepFields} />
+        )}
+      </div>
+      </ProfileWrapper>
+     
     </>
   );
 };
-export default EditDeveloperProfile;
+
+export default DeveloperEditProfile;

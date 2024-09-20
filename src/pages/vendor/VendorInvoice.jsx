@@ -1,376 +1,120 @@
 import React, { useEffect, useState } from "react";
-import { Button, OverlayTrigger, Tooltip, Col, Form, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux"
-import { addFileInvoice, getDeveloperList, getClientList } from "../../redux/slices/vendorDataSlice";
-import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
-import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
-import timeSheetIcon from '../../assets/img/timesheet_approved.png';
-import companyLogo from "../../assets/img/amazon.png"
-import invoiceIcon from '../../assets/img/invoice_paid.png'
-import timeSheetNotApproved from '../../assets/img/timesheet_notapproved.png';
-import invoiceUnpaid from '../../assets/img/invoice_unpaid.png'
-import { IoSearch } from "react-icons/io5";
-import userImage from "../../assets/img/user-img.jpg"
-const VendorInvoice = () => {
-    const dispatch = useDispatch()
-    const [ids, setIds] = useState({
-        client: '',
-        developer: ''
-    })
-    const [file, setFile] = useState(null)
-    const { clientList, developerList, } = useSelector(state => state.vendorData)
-    const { smallLoader } = useSelector(state => state.clientData)
-    const { t } = useTranslation()
+import { useDispatch, useSelector } from "react-redux";
 
-    useEffect(() => {
-        dispatch(getClientList())
-    }, [])
-
-
-    const handleClient = (e) => {
-        setIds({ ...ids, client: e.target.value })
-        dispatch(getDeveloperList(e.target.value))
-    }
-
-    const handleDeveloper = (e) => {
-        setIds({ ...ids, developer: e.target.value })
-    }
-
-
-    const handleFile = (e) => {
-        setFile(e.target.files[0])
-    }
-
-    const submitFile = (e) => {
-        e.preventDefault()
-        let fileData = new FormData();
-        fileData.append("file", file);
-        console.log(file?.type, "file")
-        if (file?.type !== "application/pdf") {
-            alert("Only PDF files are allowed for Invoices .");
-            return;
-        }
-        if (ids.client !== '' && ids.developer !== '' && file !== null) {
-            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-                let payload = {
-                    "client_id": +ids.client,
-                    "developer_id": +ids.developer,
-                    "file_type": 1,
-                    "parent_id": 0,
-                    "type": 3,
-                    "s3_path": url,
-                    "file_extension": "0"
-                }
-                dispatch(addFileInvoice(payload))
-            }))
-        }
-    }
-    const downloadinvoice = (
-        <Tooltip id="tooltip">
-            Download Invoice
-        </Tooltip>
-    );
-    const downloadtimesheet = (
-        <Tooltip id="tooltip">
-            Download Timesheet
-        </Tooltip>
-    );
-    //   const companyname = (
-
-    //     <Tooltip id="tooltip">
-    //       Aviox Technologies Pvt Ltd
-    //     </Tooltip>
-    //   );
-    return (
-        <>
-            <div className="filter-section d-lg-flex align-items-center mt-3 justify-content-between mb-3">
-                <div className="d-flex align-items-center gap-2 flex-wrap">
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Month</option>
-                            <option>January</option>
-                            <option>Feburary</option>
-                            <option>March</option>
-                            <option>April</option>
-                            <option>May</option>
-                            <option>June</option>
-                            <option>July</option>
-                            <option>August</option>
-                            <option>September</option>
-                            <option>October</option>
-                            <option>November</option>
-                            <option>December</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Year</option>
-                            <option>2024</option>
-                            <option>2023</option>
-                            <option>2022</option>
-                            <option>2021</option>
-                            <option>2020</option>
-                            <option>2019</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Client</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Developer</option>
-                            <option>Rohit Sharma</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
-                            <option>Invoice Status</option>
-                            <option>Paid</option>
-                            <option>Unpaid</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Button className="main-btn py-1_5 px-4" variant="transparent">Filter</Button>
-                    </div>
-                </div>
-                <div className="d-flex align-items-center gap-3">
-                    <Form.Control
-                        type="text"
-                        className="common-field font-14 shadow-none"
-                        placeholder="Enter Keyword..."
-                    />
-                    <Button variant="transparent" className="main-btn px-3 search-btn">
-                        <IoSearch />
-                    </Button>
-                </div>
-            </div>
-            <div className="table-responsive">
-                <table className="table time-table table-bordered table-ui-custom">
-                    <thead>
-                        <th className="time-table-head text-start">
-                            Developer Name
-                        </th>
-                        <th className="time-table-head text-start">
-                            Client Name
-                        </th>
-                        <th className="time-table-head text-start">
-                            Project
-                        </th>
-                        <th className="time-table-head text-start">
-                            Total Hours
-                        </th>
-                        <th className="time-table-head text-start">
-                            Invoice Month
-                        </th>
-                        <th className="time-table-head text-start">
-                            Project Status
-                        </th>
-                        <th className="time-table-head text-start">
-                            Action
-                        </th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">AI Bot Project</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <img src={timeSheetNotApproved} className="approved_icon" />
-                                    <img src={invoiceUnpaid} className="approved_icon" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </>
-    )
+import {
+  DEVELOPER_NAME_OPTIONS,
+  INVOICE_OPTIONS,
+  MONTH_FILTER_OPTIONS,
+  PROJECT_FILTER_OPTIONS,
+  YEAR_FILTER_OPTIONS,
+  buildQueryFromObjects,
+} from "../admin/adminConstant";
+import CommonFilterSection from "../../components/atomic/CommonFilterSection";
+import TableComponentOne from "../../components/atomic/TableComponentOne";
+import CommonInvoiceTable from "../../components/common/CommonInvoiceTable";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { getVendorDetails } from "../../redux/slices/vendorDataSlice";
+const INVOICE_HEADER_DATA = [
+  "developerName",
+  "date",
+  "amount",
+  "status",
+  "action",
+];
+// add these inside constant file
+const CLIENT_INVOICE_PER_PAGE = 5;
+const CLIENT_INVOICE_FILTER_FIELDS = {
+  selectFilters : [
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    },
+  ],
+  searchFilter:{key:"developerName",placeholder:"Enter developer name"}
 }
+
+export const DEVELOPER_INVOICE_COLUMNS = [
+  {
+    label: "Developer Name",
+    key: "developer",
+    subkey: "name",
+    profilePictureKey: "profile_picture",
+  },
+  { label: "Project", key: "project", subkey: "title" },
+  {
+    label: "Total hours",
+    key: "project",
+    subkey: "total_hours",
+    isHours: true,
+  },
+  { label: "Invoice month", key: "invoiceMonth"},
+  { label: "Project status", key: "project", subkey: "status", isStatus: true },
+  {
+    label: "Action",
+    key: "status",
+    isAction: true,
+    timesheetStatusKey: "", 
+    timeSheetUrlKey: "",
+    invoiceStatusKey:"invoiceStatus",
+    invoiceUrlKey:"invoiceUrl"
+  },
+];
+const VendorInvoice = () => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const { invoiceList, screenLoader, totalInvoicePages } = useSelector(
+    (state) => state.clientData
+  );
+  const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState({
+    developerName: "",
+    year: "",
+    month: "",
+    invoiceStatus: "",
+  });
+  const {invoiceData} =useSelector(state=>state.vendorData)
+  const {data}=invoiceData
+console.log(data,"invoiceData")
+  useEffect(() => {
+    const filterQuery = buildQueryFromObjects(filters);
+    const query = `${filterQuery}&page=${page}&perPage=${CLIENT_INVOICE_PER_PAGE}`;
+    handleGetInvoice(query);
+  }, [page, filters]);
+
+  const handleGetInvoice = (query) => {
+   dispatch(getVendorDetails(query))
+  };
+
+  return (
+    <>
+      {screenLoader ? (
+        <ScreenLoader />
+      ) : (
+        <>
+          <CommonFilterSection
+            filters={filters}
+            setFilters={setFilters}
+            filterFields={CLIENT_INVOICE_FILTER_FIELDS}
+            // isSearchFilterRequired={false}
+          />
+          <CommonInvoiceTable data={data}/>
+        </>
+      )}
+    </>
+  );
+};
+
 export default VendorInvoice;

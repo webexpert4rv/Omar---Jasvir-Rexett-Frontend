@@ -7,7 +7,7 @@ import { TiEdit } from "react-icons/ti";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { approveTimeReportReconciliation } from "../../../redux/slices/clientDataSlice";
+import { approveTimeReportReconciliation, rejectTimeReportReconciliation, timeReporting } from "../../../redux/slices/clientDataSlice";
 
 const approveRemark = <Tooltip id="tooltip">Approve</Tooltip>;
 const rejectRemark = <Tooltip id="tooltip">Reject</Tooltip>;
@@ -16,6 +16,8 @@ const ReconciliationModal = ({
   role,
   index,
   handleChangeUpdateWeeklyData,
+  selectedPeriod,
+  page
 }) => {
   const dispatch = useDispatch();
   const [editDetails, setEditDetails] = useState({
@@ -39,14 +41,21 @@ const ReconciliationModal = ({
     ]);
   }, []);
 
-  const approvedReject = (currentStatus) => {
+
+  const approvedReject = async (currentStatus) => {
     let data = {
       contract_id: contract_id,
-      report_date: "2024-05-22",
+      report_date: report_date,
       reconciliation_id: id,
+      client_remark:null,
       is_approved: currentStatus,
     };
-    dispatch(approveTimeReportReconciliation(data));
+    await dispatch(currentStatus?approveTimeReportReconciliation(data):rejectTimeReportReconciliation(data));
+    let filterData={
+      page:page,
+      selectedPeriod:selectedPeriod
+    }
+    dispatch(timeReporting(filterData, role));
   };
   const handleChange = (e, inx) => {
     const { name, value } = e.target;
@@ -76,7 +85,7 @@ const ReconciliationModal = ({
               </p>
             </div>
             <div className="editSec">
-              {role !== "client" ? (
+              {role !== "client" && item?.reconciliation_approved!==true ? (
                 <span className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none" onClick={()=>handleEdit(item)}>
                   <TiEdit />
                 </span>
@@ -84,7 +93,7 @@ const ReconciliationModal = ({
                 ""
               )}
               <div className="d-flex gap-2">
-                {role == "client" ? (
+                {role == "client" && item?.is_approved==null  ? (
                   <>
                     <OverlayTrigger placement="bottom" overlay={approveRemark}>
                       <Button
@@ -131,11 +140,11 @@ const ReconciliationModal = ({
 
               {editDetails?.isEdit ? (
                 <>
-                <input type="time" className="common-field form-control" value={item?.start_time} name="start_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
+                <input type="time" className="common-field form-control" value={moment(item?.start_time, "HH:mm:ss").format("HH:mm")} name="start_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
                 
                 </>
               ) : start_time ? (
-                moment(start_time, "HH:mm:ss").format("h:mm:ss A")
+                moment(start_time, "HH:mm:ss").format("h:mm A")
               ) : (
                 "00:00"
               )}
@@ -145,9 +154,9 @@ const ReconciliationModal = ({
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input type="time" className="common-field form-control" value={item?.end_time} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
+                <input type="time" className="common-field form-control" value={moment(item?.end_time, "HH:mm:ss").format("HH:mm")} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
               ) : end_time ? (
-                moment(end_time, "HH:mm:ss").format("h:mm:ss A")
+                moment(end_time, "HH:mm:ss").format("h:mm A")
               ) : (
                 "00:00"
               )}
@@ -165,9 +174,9 @@ const ReconciliationModal = ({
           </p>
         )}
         <div>
-          {item?.approved_by_client ? (
+          {item?.is_approved || item?.reconciliation_approved ? (
             <span className="status-finished mt-2 mx-1">Approved</span>
-          ) : (item?.approved_by_client === false)&&(
+          ) : (item?.is_approved === false || item?.reconciliation_approved==false )&&(
             <span className="status-rejected mt-2">Rejected</span>
           )}
 
