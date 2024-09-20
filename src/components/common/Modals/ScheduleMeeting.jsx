@@ -88,6 +88,7 @@ const Schedulemeeting = ({
   let id = location.pathname.split("/")[3];
 
   const [firstSlot, setFirstSlot] = useState("");
+  const [meetingPlatform, setMeetingPlatform] = useState()
   const [meetingStatus, setMeetingStatus] = useState()
   const [secondSlot, setSecondSlot] = useState("");
   const [groupedTime, setGroupedTime] = useState([]);
@@ -298,9 +299,13 @@ const Schedulemeeting = ({
     setValue("meeting_type", "instant")
   }, []);
 
+
+  console.log(meetingPlatform,"meetingPlatform")
   const onSubmit = (data) => {
     // setCreatedMeetings(data)
     console.log(data, "valuesss");
+    setMeetingPlatform(data?.meeting_platform?.value)
+
     if (type === "events") {
       let payload = {
         title: data?.title,
@@ -728,7 +733,7 @@ const Schedulemeeting = ({
       <ThirdPartyServices
         show={thirdParty}
         handleClose={handleCloseThirdPary}
-        text={"Link With Google"}
+        text={r?.value == "microsoft_team" ? "Link With Microsoft" : "Link With Google"}
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
       />

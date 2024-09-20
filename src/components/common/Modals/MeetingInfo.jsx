@@ -135,9 +135,6 @@ const MeetingInfo = ({ show, handleClose,details }) => {
               .map(param => parseInt(param.value, 10))
           )
         ).reduce((acc, val) => acc + val, 0);
-    
-        console.log(participants,"part");
-    console.log(duration,"duration");
       };
 
     const checkEventStatus = async () => {
