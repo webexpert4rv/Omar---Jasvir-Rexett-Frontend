@@ -46,11 +46,7 @@ console.log(role,"role")
   )
   const developerCardToolTip = (
     <Tooltip id="tooltip">
-      {type === "interviewing"
-        ? "Hire"
-        : type === "Shortlisted"
-          ? " Move to Interview"
-          : "Shortlist"}
+      {type === "interviewing" ? "Hire" : type === "Shortlisted" ? " Move to Interview" : "Shortlist"}
     </Tooltip>
   );
 

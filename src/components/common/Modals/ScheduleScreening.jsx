@@ -19,8 +19,9 @@ import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../re
 import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
 import { toast } from 'react-toastify';
-
 import ThirdPartyServices from "./ThirdParyServices";
+
+
 const ScheduleScreening = ({ show, handleClose, selectedDeveloper,type, selectedEmail, selectedId }) => {
     const {
         handleSubmit,
@@ -141,7 +142,7 @@ const ScheduleScreening = ({ show, handleClose, selectedDeveloper,type, selected
     console.log(meetingTypeValue, "meetingTypeValue")
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
-        console.log(data, "dat")
+        console.log(data?.meeting_platform?.value, "dat")
          {
             let payload = {
                 "job_id": +id,
@@ -237,7 +238,7 @@ const ScheduleScreening = ({ show, handleClose, selectedDeveloper,type, selected
         setThirdParty(false)
     };
 
-
+    console.log(watch("meeting_platform"),"newMeeting")
     console.log(selectedEmail, 'selectedEmail coming like this')
     return (
         <>
