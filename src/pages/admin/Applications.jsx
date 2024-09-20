@@ -288,8 +288,9 @@ const Applications = () => {
   )
 
 
-  const handleShowScheduleScreening = (email, id) => {
-    setSelectedEmail(email);
+  const handleShowScheduleScreening = (item, id) => {
+    console.log(item,"oppp")
+    setSelectedEmail(item);
     setSelectedId(id);
     showScheduleScreening(true);
   };
@@ -1478,7 +1479,7 @@ const Applications = () => {
                                       {item?.interviews?.length <= 0 ? (
                                         <Button
                                           variant="transparent"
-                                          onClick={() => handleShowScheduleScreening(item?.email, item?.id)}
+                                          onClick={() => handleShowScheduleScreening(item, item?.id)}
                                           className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap"
                                         >
                                           Schedule Screening
@@ -1528,7 +1529,7 @@ const Applications = () => {
                                                   <span className="status-rejected">Invite declined</span>
                                                   <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
                                                     <Button
-                                                      onClick={() => handleShowScheduleScreening(item?.email, item?.id)}
+                                                      onClick={() => handleShowScheduleScreening(item, item?.id)}
                                                       variant="transparent"
                                                       className="reschedule-btn"
                                                     >
@@ -2213,12 +2214,14 @@ const Applications = () => {
               </div>
             </Offcanvas.Body>
           </Offcanvas>
-          <ScheduleScreening
+          {/* <ScheduleScreening
             show={schedulescreeening}
             handleClose={handleCloseScheduleScreening}
             selectedEmail={selectedEmail}
             selectedId={selectedId}
-          />
+          /> */}
+                <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
+
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
         </>
       )}

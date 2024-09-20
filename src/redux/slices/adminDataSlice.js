@@ -1085,23 +1085,23 @@ export function getDeveloperList(){
     }
 }
 
-// export function changesStatus(payload){
-//     return async (dispatch)=>{
-//         // dispatch(setBtnLoader())
-//         try{
-//             let result = await clientInstance.get(`admin/notifications/settings/${id}`)
-//             if (result.status === 200) {
-//                 toast.success(result.data?.message, { position: "top-center" })
-//             }
-//             dispatch(setDeveloperList(result.data))
-//             // return callback();
-//         }catch(error){
-//             const message = error?.response?.data?.message || "Something went wrong";
-//             toast.error(message, { position: "top-center" })
-//             dispatch(setFailAdminData())
-//         }
-//     }
-// }
+export function changesStatus(payload){
+    return async (dispatch)=>{
+        // dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.get(`admin/notifications/settings`)
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            dispatch(setDeveloperList(result.data))
+            // return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
 
 export function postScheduleMeeting(payload,callback){
     return async (dispatch)=>{

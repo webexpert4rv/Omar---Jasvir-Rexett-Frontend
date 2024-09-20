@@ -25,12 +25,15 @@ const DISCOVERY_DOCS = [
   
   const SCOPES = [
     "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-    "https://www.googleapis.com/auth/calendar.events"
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/calendar.events.readonly",
+    'https://www.googleapis.com/auth/admin.reports.audit.readonly',
   ];
   
-  const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+//   const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
-  const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';;
+//   const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';;
 
 
 const MeetingInfo = ({ show, handleClose,details }) => {
@@ -65,8 +68,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
             "profile",
             "OnlineMeetings.ReadWrite",
             "OnlineMeetingRecording.Read.All",
-             "Calendars.ReadWrite",
-             "Calendars.Read",
+            "Calendars.ReadWrite",
+            "Calendars.Read",
           ],
         prompt: "consent",
       });
@@ -88,8 +91,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     useEffect(() => {
         function start() {
           gapi.client.init({
-            apiKey: API_KEY,
-            clientId: CLIENT_ID,
+            apiKey: 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g',
+            clientId: '574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com',
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
           }).then(() => {
@@ -137,10 +140,10 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     console.log(duration,"duration");
       };
 
-    const checkEventStatus = async (eventId) => {
+    const checkEventStatus = async () => {
         const response = await gapi.client.calendar.events.get({
           calendarId: 'primary',
-          eventId: "688ebijbl636qsme6vi95maa8q",
+          eventId: "siq7ht5c512mukvjqag7qgb84k",
         });
     
         if (response.result.status === 'cancelled') {
@@ -149,7 +152,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
           const now = new Date();
           const meetingStart = new Date(response.result.start.dateTime);
           if (meetingStart < now) {
-            fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
+            fetchMeetingDetails("siq7ht5c512mukvjqag7qgb84k");
             // alert('The meeting should have started or is over.');
           } else {
             alert('The meeting is still scheduled.');
@@ -168,7 +171,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
       
         try {
           // Fetch the online meeting details using the meeting ID
-          const meetingResponse = await client.api(`/me/onlineMeetings/AAMkADU2NjE0OWIwLWU1MjAtNGJlNi1hNjc0LTZlYzg0NDk5YzAzMwBGAAAAAACurO6i5qZvQIspx2LtckmfBwAw6FGqZi1CQY5xHP3TIqn7AAAAAAENAAAw6FGqZi1CQY5xHP3TIqn7AABa3yFmAAA=`).get();
+          const meetingResponse = await client.api(`/me/onlineMeetings/MCMxOTptZWV0aW5nX1ltVTVOV00zTkdFdFpqTXlNaTAwWkRnNExUazRPR1V0TWpVek1HSmtaalJoTURobUB0aHJlYWQudjIjMA==`).get();
       
           // Extract meeting details
           const subject = meetingResponse.subject;
