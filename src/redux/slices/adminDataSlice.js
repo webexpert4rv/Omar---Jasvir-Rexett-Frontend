@@ -686,6 +686,26 @@ export function deleteFaq(payload) {
     };
 }
 
+export function deleteJob(id,successCallback, failureCallback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`common/delete-job/${id}`)
+            if (result.status === 200) {
+                toast.success("Job has been deleted successfully", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+              return successCallback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+            return failureCallback()
+
+        }
+    };
+}
+
 export function sendRemarkOnTimeReport(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
