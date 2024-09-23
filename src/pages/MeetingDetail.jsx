@@ -17,11 +17,9 @@ const MeetingDetail = () => {
  const [meetingDetails,setMeetingDetails]=useState({});
  const [isAcceptorReject,setAcceptReject]=useState("accept")
   const {search}=useLocation()
-  let id=search.split("=")[2];
-  let tokenEmp=search.split("=")[1]
-  let token=tokenEmp.split("&")[0]
-
-
+  let id=search?.split("=")[2];
+  let tokenEmp=search?.split("=")[1];
+  let token=tokenEmp?.split("&")[0];    
 
     useEffect(()=>{
       axios.get(`${process.env.REACT_APP_BASE_URL}/common/interview/${id}`).then((dat)=>{
@@ -45,9 +43,9 @@ const MeetingDetail = () => {
 
     return (
         <>
-            <div className="header-single">
+            {/* <div className="header-single">
                 <img src={logoRexett} />
-            </div>
+            </div> */}
             <div className="px-3 single-page-wrapper">
                 <Row className="justify-content-center">
                     <Col lg={6}>

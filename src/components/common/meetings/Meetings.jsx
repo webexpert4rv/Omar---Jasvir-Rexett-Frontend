@@ -145,20 +145,15 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
 
 
 
-   
-
-  const isEventDate = (date) => {
-    return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
-  };
-  const syncCreatedMeetingsWithGoogle = (e,item) => {
+   const syncCreatedMeetingsWithGoogle = (e,item) => {
     console.log(item,"item")
     e.stopPropagation()
-    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    if (!gapi.auth2.getAuthInstance()?.isSignedIn?.get()) {
       console.log('User not authenticated');
       return;
     }
     const newEvent = {
-      'summary': item.summary,
+      'summary': item.summary,  
       'location': item.location,
       'description': item.description,
       'start': {
@@ -179,6 +174,10 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     }).catch((error) => {
       console.error('Error creating event:', error);
     });
+  };
+
+  const isEventDate = (date) => {
+    return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
   };
 
   const getGoogleEventDetails=(event, fieldName)=>{

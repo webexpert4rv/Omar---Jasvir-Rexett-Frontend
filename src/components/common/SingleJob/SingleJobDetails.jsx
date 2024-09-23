@@ -75,6 +75,7 @@ import { gapi } from 'gapi-script';
 import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
+import useEndAndDelete from "../../../hooks/useEndAndDelete";
 
 
 
