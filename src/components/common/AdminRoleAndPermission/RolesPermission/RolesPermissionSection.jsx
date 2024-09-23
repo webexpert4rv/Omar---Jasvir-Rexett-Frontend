@@ -167,7 +167,7 @@ const RolesPermissionSection = () => {
                                                     <FiCheck />
                                                 </span>
                                             </td>
-                                            <td className="text-center">
+                                            {/* <td className="text-center">
                                                 <span className="full-approved">
                                                     <FiCheck />
                                                 </span>
@@ -196,7 +196,7 @@ const RolesPermissionSection = () => {
                                                 <span className="full-approved">
                                                     <FiCheck />
                                                 </span>
-                                            </td>
+                                            </td> */}
                                         </tr>
                                         {item?.permissions?.map((field, index) => {
                                             return (
@@ -217,8 +217,7 @@ const RolesPermissionSection = () => {
                                                     </td>
                                                     {field?.roles?.map((role, idx) => (
                                                         <>
-                                                            {roleNames.map((name) => (
-                                                                <td className="text-center" key={name}>
+                                                                <td className="text-center" key={idx}>
                                                                     <Form.Check
                                                                         type="checkbox"
                                                                         className="permission-checkbox"
@@ -226,10 +225,10 @@ const RolesPermissionSection = () => {
                                                                         checked={role?.checked}
                                                                     />
                                                                 </td>
-                                                            ))}
+                                                          
                                                         </>
                                                     ))}
-                                                    {field?.checked === false &&
+                                                    {/* {field?.checked === false &&
                                                         <>
                                                             {roleNames.map((name) => (
                                                                 <td className="text-center" key={name}>
@@ -237,7 +236,7 @@ const RolesPermissionSection = () => {
                                                                 </td>
                                                             ))}
                                                         </>
-                                                    }
+                                                    } */}
                                                 </tr>)
                                         })}
                                     </>

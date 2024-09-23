@@ -84,7 +84,7 @@ const SingleJobDetails = () => {
     const [selectedTabsData, setSelectedTabsData] = useState([]);
     const [suggestShortList, setSuggestShortList] = useState(false)
     const [appliedShortList, setAppliedShortList] = useState(false)
-    const [currentTabsStatus, setCurrnetTabsStatus] = useState("");
+    const [currentTabsStatus, setCurrnetTabsStatus] = useState("shortlisted");
     const [currentTab, setCurrentTab] = useState("application");
     const [selectedDeveloper, setSelectedDeveloper] = useState({});
     const [devType, setDevType] = useState()
@@ -103,7 +103,7 @@ const SingleJobDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let id = location.pathname.split("/")[3];
-    const job_id = localStorage.setItem("jobId", id)
+    const job_id = localStorage.setItem("jobId",id)
     const [devId, setDevId] = useState()
     const [application, setApplicationId] = useState()
     const clientId = localStorage.getItem("userId")
@@ -133,7 +133,7 @@ const SingleJobDetails = () => {
         function start() {
             gapi.client.init({
                 apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-                clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(() => {
@@ -183,34 +183,26 @@ const SingleJobDetails = () => {
         );
     };
     const handleSelect = (key) => {
-        setCurrentTab(key)
+        setCurrentTab(key);
         setSelectedTabsData(singleJobDescription?.job_applications[key]);
-        if (key == "application") {
-            setCurrnetTabsStatus("application");
-        }
-        if (key == "suggestions") {
+        if (key == "suggested") {
             setCurrnetTabsStatus("shortlisted");
         }
         if (key == "shortlisted") {
             setCurrnetTabsStatus("interviewing");
         }
         if (key == "interviewing") {
-            setCurrnetTabsStatus("interviewing");
-        }
-        if (key == "documentation") {
-            setCurrnetTabsStatus("documentation");
-        }
-        if (key == "hired") {
             setCurrnetTabsStatus("hired");
+        }
+        if (key == "application") {
+            setCurrnetTabsStatus("application");
         }
     };
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
     //     }
-    // };\
-    
-
+    // };
 
     const fetchMeetingDetails = async (meetingCode) => {
         const response = await gapi.client.reports.activities.list({
@@ -261,7 +253,7 @@ const SingleJobDetails = () => {
 
 
     const handleJobStatusAction = (e, data) => {
-        console.log(devId, "devid")
+        console.log(devId,"devid")
         console.log(data?.status, "status")
         e.preventDefault();
         if (data.status == "ended") {
@@ -370,8 +362,7 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
-        console.log(type, "type")
-        console.log(id, "helloId")
+        console.log(id,"helloId")
         setDevType(type)
         setApplicationId(aplnId)
         setDevId(id)
@@ -550,7 +541,7 @@ const SingleJobDetails = () => {
     };
 
     const handleShowaddCandidate = (role) => {
-        localStorage.setItem("job", role)
+        localStorage.setItem("job",role)
         navigate('/admin/register-developer')
     }
 
@@ -746,7 +737,7 @@ const SingleJobDetails = () => {
                                     </ul>
                                 ) : (
                                     "Not Mentioned"
-                                )}
+                                )}{" "}
                             </Col>
                             <Col md="4">
                                 <h3 className="req-heading">{t("optionalSkills")}</h3>
@@ -873,33 +864,33 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role === "admin" &&
-                        <Tab eventKey="suggestions" title={suggest}>
-                            <div className="text-end">
-                                {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
+                    {role === "admin" && 
+                    <Tab eventKey="suggestions" title={suggest}>
+                        <div className="text-end">
+                            {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
                                 isLoading={approvedLoader}
                                 disabled={approvedLoader}
                                 onClick={() => handleSuggestions()} /> */}
 
-                                <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
-                                <Button variant="transparent" onClick={() => handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
-                            </div>
-                            <JobCard
-                                handleJobStatusModal={handleJobStatusModal}
-                                type="applied"
-                                data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
-                                jobStatus={singleJobDescription?.status}
+                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+                            <Button variant="transparent" onClick={()=>handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
+                        </div>
+                        <JobCard
+                            handleJobStatusModal={handleJobStatusModal}
+                            type="applied"
+                            data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
+                            jobStatus={singleJobDescription?.status}
                             // role="admin"
-                            />
-                            <JobCard
-                                handleJobStatusModal={handleJobStatusModal}
-                                type="suggested"
-                                data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
-                                jobStatus={singleJobDescription?.status}
+                        />
+                        <JobCard
+                            handleJobStatusModal={handleJobStatusModal}
+                            type="suggested"
+                            data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
+                            jobStatus={singleJobDescription?.status}
                             // role="admin"
-                            />
-                        </Tab>}
+                        />
+                    </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>
                         <Tab.Container defaultActiveKey={'list-view'}>
                             <div className="mb-4 d-flex justify-content-between align-items-center">
@@ -934,9 +925,9 @@ const SingleJobDetails = () => {
                                     <JobCard
                                         handleJobStatusModal={handleJobStatusModal}
                                         type="Shortlisted"
-                                        data={singleJobDescription?.job_applications?.shortlisted}
+                                        data={singleJobDescription?.job_applications?.shortlisted }
                                         jobStatus={singleJobDescription?.status}
-                                    // role="client"
+                                        // role="client"
                                     />
                                 </Tab.Pane>
                             </Tab.Content>

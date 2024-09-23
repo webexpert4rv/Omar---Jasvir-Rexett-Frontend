@@ -168,7 +168,12 @@ const MeetingInfo = ({ show, handleClose,details }) => {
       
         try {
           // Fetch the online meeting details using the meeting ID
-          const meetingResponse = await client.api(`/me/onlineMeetings/MCMxOTptZWV0aW5nX1ltVTVOV00zTkdFdFpqTXlNaTAwWkRnNExUazRPR1V0TWpVek1HSmtaalJoTURobUB0aHJlYWQudjIjMA==`).get();
+          const id = 'https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d'
+          const meetingResponse = await client.api("/me/onlineMeetings")
+          .filter(`JoinWebUrl eq '${id}'`)
+          .get();
+          
+
       
           // Extract meeting details
           const subject = meetingResponse.subject;
@@ -176,15 +181,10 @@ const MeetingInfo = ({ show, handleClose,details }) => {
           const endTime = meetingResponse.endDateTime;
           const duration = endTime ? new Date(endTime) - new Date(startTime) : 0; // Duration in milliseconds
       
-          // Fetch participants for the specific meeting
-          const participantsResponse = await client.api(`/communications/callRecords?$filter=meetingId eq '${meetingId}'`).get();
-          const participants = participantsResponse.value;
-      
           console.log(`Meeting: ${subject}`);
           console.log(`Start Time: ${startTime}`);
           console.log(`End Time: ${endTime}`);
-          console.log(`Duration: ${duration / 60000} minutes`); // Duration in minutes
-          console.log(`Participants: `, participants);
+          console.log(`Duration: ${duration / 60000} minutes`); // Duration in minute
       
         } catch (error) {
           console.error('Error fetching meeting details:', error);
