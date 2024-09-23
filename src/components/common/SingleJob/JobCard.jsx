@@ -23,16 +23,18 @@ const JobCard = ({
   type,
   data,
   jobStatus,
-  role,
+  // role,
   setPage,
   page,
 }) => {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role")
   const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const { singleJobPagination, screenLoader } = useSelector(
     (state) => state.adminData
   );
-
+console.log(role,"role")
+  console.log(type,"type")
   const scheduleInterview = (
     <Tooltip>Move to Interview</Tooltip>
   )
@@ -44,11 +46,7 @@ const JobCard = ({
   )
   const developerCardToolTip = (
     <Tooltip id="tooltip">
-      {type === "Interviewing"
-        ? "Hire"
-        : type === "Shortlisted"
-          ? " Move to Interview"
-          : "Shortlist"}
+      {type === "interviewing" ? "Hire" : type === "Shortlisted" ? " Move to Interview" : "Shortlist"}
     </Tooltip>
   );
 
@@ -145,11 +143,11 @@ const JobCard = ({
                                                 </li> */}
                           </ul>
                           <div className="job-card-btns">
-                            {role === "admin" &&
+                            {role === "admin" || role === "client" &&
                               (type == "Shortlisted" ||
                                 type === "suggested" ||
                                  type == "applied" ||
-                                type === "Interviewing") &&
+                                type === "interviewing") &&
                               type !== "Hired" ? (
                               <OverlayTrigger
                                 placement="bottom"
@@ -167,7 +165,7 @@ const JobCard = ({
                                   }
                                   className="w-100 main-btn text-black border-white mt-3"
                                 >
-                                  {type === "Interviewing" ? (
+                                  {type === "interviewing" ? (
                                     <RiUserAddFill />
                                   ) : type === "Shortlisted" ? (
                                     <PiUserRectangleFill />
@@ -179,7 +177,7 @@ const JobCard = ({
                             ) : (
                               ""
                             )}
-                            {role === "admin" && (
+                            {/* {role === "admin"    && ( */}
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={rejectedCardToolTip}
@@ -199,8 +197,8 @@ const JobCard = ({
                                   <ImUserMinus />
                                 </Button>
                               </OverlayTrigger>
-                            )}
-                            {role !== "admin" && (
+                            {/* )} */}
+                            {/* {role !== "admin" && (
                               <OverlayTrigger
                                 placement="top"
                                 overlay={suggestedCardToolTip(
@@ -228,21 +226,21 @@ const JobCard = ({
                                   )}
                                 </Button>
                               </OverlayTrigger>
-                            )}
-                            {role !== "admin" && (
-                            <OverlayTrigger placement="top" overlay={approvedApply}>
-                              <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
-                                <FaCheck />
-                              </Button>
-                            </OverlayTrigger>
-                            )}
-                            {role !== "admin" && (
+                            )} */}
+                              {/* {role !== "admin" && (
+                              <OverlayTrigger placement="top" overlay={approvedApply}>
+                                <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
+                                  <FaCheck />
+                                </Button>
+                              </OverlayTrigger>
+                              )} */}
+                            {/* {role !== "admin" && (
                             <OverlayTrigger placement="top" overlay={rejectedApply}>
                               <Button variant="danger" className="w-100">
                                 <FaTimes />
                               </Button>
                             </OverlayTrigger>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       </div>
