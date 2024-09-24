@@ -72,6 +72,7 @@ export const adminDataSlice = createSlice({
             state.smallLoader = false;
             state.screenLoader = false;
             state.approvedLoader = false;
+            state.btnLoader = false;
         },
 
         setSuccessApplicationList: (state, action) => {
@@ -868,11 +869,9 @@ export function getConfigDetails() {
     }
 }
 
-export function getUploadFile(payload){
+export function getUploadFile(payload,callback){
     return async (dispatch)=>{
-        dispatch(setBtnLoader())
-        dispatch(setApprovedLoader())
-
+        dispatch(setScreenLoader())
         try{
             let result = await clientInstance.patch(`admin/configuration` , {...payload})
             // console.log(result.data,"result")
@@ -880,12 +879,12 @@ export function getUploadFile(payload){
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
             }
+            return callback()
         }catch(error){
-            // const message = error?.response.data.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
-            // dispatch(setFailAdminData())
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
 
-            console.log(error,"error")
         }
     }
 }

@@ -121,6 +121,7 @@ const Applications = () => {
   console.log(emailIndx, "emailIndx")
   console.log(allApplications, "allApplications")
   console.log(loading, "loading")
+  console.log(currentTab,"cur")
 
   const handleTimeslotChange = (e) => {
     setSelectedTimeslot(e.target.id);
@@ -148,6 +149,9 @@ const Applications = () => {
   useEffect(() => {
     setApplication(allApplications[currentTab]);
   }, [allApplications]);
+
+  console.log(currentTab,"currentTab")
+
 
   const handleSelect = (key) => {
     setCurrentTab(key);
@@ -289,7 +293,7 @@ const Applications = () => {
 
 
   const handleShowScheduleScreening = (item, id) => {
-    console.log(item,"oppp")
+    console.log(item, "oppp")
     setSelectedEmail(item);
     setSelectedId(id);
     showScheduleScreening(true);
@@ -385,14 +389,14 @@ const Applications = () => {
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                {/* <Nav.Item className="application-item">
-                  <Nav.Link eventKey="developers" className="application-link">
+                <Nav.Item className="application-item">
+                  <Nav.Link eventKey="unregistered" className="application-link">
                     Unregistered
                     <span className="new-app">
-                      {allApplications?.developers?.length}
+                      {allApplications?.unregistered?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item> */}
+                </Nav.Item>
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="clients" className="py-4">
@@ -991,7 +995,6 @@ const Applications = () => {
                                             }
                                           >
                                             <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-
                                               Complete profile
                                               <FiExternalLink />
                                             </span>
@@ -1378,7 +1381,7 @@ const Applications = () => {
                                           }
                                         >
                                           <RxChevronRight />
-                                        </span>{" "}
+                                        </span>
                                         RXT-1234
                                       </div>
                                     </td>
@@ -2079,6 +2082,548 @@ const Applications = () => {
                     ""
                   )}
                 </Tab.Pane>
+                <Tab.Pane eventKey="unregistered" className="py-4">
+                  <div className="table-responsive">
+                    <table className="table w-100 engagement-table table-ui-custom">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>
+                            {t("email")} {t("address")}
+                          </th>
+                          <th>{t("phoneNumber")}</th>
+                          <th>{t("typeOfCompany")}</th>
+                          {/* <th>{t("engagements")}</th>
+                      <th>
+                        {t("engagements")} {t("last")}
+                      </th>
+                      <th>{t("availability")}</th> */}
+                          <th>{t("status")}</th>
+                          <th className="text-center">Send Email</th>
+                          <th>{t("action")}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {screenLoader ? (
+                          <ScreenLoader />
+                        ) : (
+                          <>
+                            {currentTab == "unregistered" &&
+                              application?.length > 0 ? (
+                              application?.map((item, index) => (
+                                <React.Fragment key={index}>
+                                  <tr
+                                    className="application-row"
+                                    onClick={() => handleRowClick(index)}
+                                  >
+                                    <td className="white-nowrap">
+                                      <div className="d-flex align-items-center">
+                                        <span
+                                          className={
+                                            arrowactive == index &&
+                                              currentTab == "unregistered"
+                                              ? "row-arrow active"
+                                              : "row-arrow"
+                                          }
+                                        >
+                                          <RxChevronRight />
+                                        </span>
+                                        <div className="user-imgbx application-userbx">
+                                          <img
+                                            src={
+                                              item?.company_logo
+                                                ? item?.company_logo
+                                                : "/demo-user.png"
+                                            }
+                                            className="user-img"
+                                          />
+                                        </div>
+                                        {item?.name}
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <span className="application-mail">
+                                        {item?.email}
+                                      </span>
+                                    </td>
+                                    <td>{item?.phone_number}</td>
+                                    <td>{item?.company_type}</td>
+                                    {/* <td>{item?.company?.total_employees}</td>
+                                <td>{item?.company?.website}</td>
+                                <td>{item?.company?.yearly_revenue}</td> */}
+                                    <td>
+                                      <span
+                                        className={`white-nowrap ${item?.is_profile_completed
+                                          ? "status-finished"
+                                          : "status-progress"
+                                          }`}
+                                      >
+                                        {item?.is_profile_completed
+                                          ? "Completed"
+                                          : "Incomplete"}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <div className="d-flex align-items-center justify-content-center gap-3">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                            <span className="status-email position-relative"
+                                              onClick={() => {
+                                                if (!loading && item?.verification_reminder_count < 3) {
+                                                  handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                }
+                                              }}
+                                            >
+                                              <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                              {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
+                                            </span>
+                                          </OverlayTrigger>
+                                        </div>
+                                        {/* {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "vendor",
+                                                item?.id,
+                                                item?.verification_reminder_count
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              {item.id === loadingRow
+                                                ? smallLoader && (
+                                                  <RexettSpinner />
+                                                )
+                                                : "Send Email"
+                                              }
+                                              <FiExternalLink />
+                                            </span>
+
+
+                                          </div>
+                                        </div> : "Maximum Limit reached"} */}
+                                      </div>
+                                    </td>
+
+                                    <td>
+                                      {item?.is_profile_completed ? (
+                                        <div className="d-flex gap-3">
+                                          <RexettButton
+                                            icon={
+                                              selectedApprovedBtn === index ? (
+                                                approvedLoader
+                                              ) : (
+                                                <IoCheckmark />
+                                              )
+                                            }
+                                            className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                              "not-allowed"
+                                              }`}
+                                            variant="transparent"
+                                            // disabled={!item?.is_profile_completed}
+                                            onClick={(e) =>
+                                              handleClick(
+                                                e,
+                                                item?.id,
+                                                "approved",
+                                                index
+                                              )
+                                            }
+                                            isLoading={
+                                              selectedApprovedBtn === index
+                                                ? approvedLoader
+                                                : false
+                                            }
+                                          />
+                                          <RexettButton
+                                            icon={
+                                              selectedRejectedBtn === index ? (
+                                                approvedLoader
+                                              ) : (
+                                                <IoCloseOutline />
+                                              )
+                                            }
+                                            // disabled={!item?.is_profile_completed}
+                                            className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                              "not-allowed"
+                                              }`}
+                                            variant={"transparent"}
+                                            onClick={(e) =>
+                                              handleClick(
+                                                e,
+                                                item?.id,
+                                                "rejected",
+                                                index
+                                              )
+                                            }
+                                            isLoading={
+                                              selectedRejectedBtn === index
+                                                ? approvedLoader
+                                                : false
+                                            }
+                                          />
+                                        </div>
+                                      ) : (
+                                        <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "vendor",
+                                                item?.id,
+                                                item,
+                                                3
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                              Complete profile
+                                              <FiExternalLink />
+                                            </span>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </td>
+                                  </tr>
+                                  {expandedRow === index && (
+                                    <tr
+                                      className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                        }`}
+                                    >
+                                      <td colSpan="8">
+                                        <div>
+                                          <Row>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("companyName")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company_name}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("email")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.email}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            {item?.company?.total_employees && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("totalEmployees")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {
+                                                      item?.company
+                                                        ?.total_employees
+                                                    }
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.company?.location && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("location")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.company?.location}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.address && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("address")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.address}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("country")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.country}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            {item?.state && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("state")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.state}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("city")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.city}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("phoneNumber")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company?.phone_number}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("typeOfCompany")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.type_of_company
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Total Recruiter
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.total_it_recruiter
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Website
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company?.website}
+                                                </p>
+                                              </div>
+                                            </Col>
+
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Service offering
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.service_offering
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company email
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company?.email}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company yearly revenue
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.yearly_revenue
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company GST number
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company?.gst_number}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Turn around time to close
+                                                  contract position
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.trun_around_time_to_close_contract_position
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Turn around time to close
+                                                  permanent position
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.trun_around_time_to_close_permanent_position
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Contact phone details
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.proprietor_contact_number
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Contact person email
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.proprietor_contact_person_email
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Contact person name
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.proprietor_contact_person_name
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  CEO email
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.company
+                                                      ?.proprietor_email
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Tax ID
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.tax_id
+
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            {/* <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("status")}
+                                            </h3>
+                                            <p className="status-progress text-capitalize">
+                                              Under Review
+                                            </p>
+                                          </div>
+                                        </Col> */}
+                                          </Row>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </React.Fragment>
+                              ))
+                            ) : (
+                              <td colSpan={8}>
+                                <NoDataFound />
+                              </td>
+                            )}
+                          </>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  {allApplications?.totalVendorPages > 1 ? (
+                    <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+                      {currentTab == "clients" ? (
+                        <p className="showing-result">
+                          {t("showing")} {allApplications?.clients?.length}{" "}
+                          {t("results")}
+                        </p>
+                      ) : (
+                        <p className="showing-result">
+                          {t("showing")} {allApplications?.vendors?.length}{" "}
+                          {t("results")}
+                        </p>
+                      )}
+                      <RexettPagination
+                        number={allApplications?.totalVendorPages}
+                        setPage={setPage}
+                        page={page}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </Tab.Pane>
+              
               </Tab.Content>
             </Tab.Container>
           </div>
@@ -2220,7 +2765,7 @@ const Applications = () => {
             selectedEmail={selectedEmail}
             selectedId={selectedId}
           /> */}
-                <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
+          <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
 
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
         </>
