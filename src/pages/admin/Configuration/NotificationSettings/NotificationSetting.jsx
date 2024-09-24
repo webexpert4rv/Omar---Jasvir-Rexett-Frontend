@@ -1,35 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { FaDesktop, FaEnvelope } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllIntegrationData } from "../../../../redux/slices/adminDataSlice";
 import { changesStatus } from "../../../../redux/slices/adminDataSlice";
+
+
 const NotificationSetting = ({ currentTab }) => {
-    const dispatch =useDispatch()
-    const {allIntegrationData}=useSelector(state=>state.adminData)
+    const dispatch = useDispatch()
+    const { allIntegrationData } = useSelector(state => state.adminData)
 
     // useEffect(()=>{
     //   dispatch(getAllIntegrationData())
     // },[])
+    
 
-    console.log(allIntegrationData,"allIntegrationData")
-
-    const handleChange=(data,item)=>{
-      console.log(data,"data hello")
-      console.log(item,"item hello")
-      let payload={}
-      if(item=="email"){
-        payload={
-        "is_desktop_notification":data?.is_desktop_notification,
-        "is_email_notification":data?.is_email_notification==true?false:true
-        }
-      }else{
-        payload={
-            "is_desktop_notification":data?.is_desktop_notification==true?false:true,
-            "is_email_notification":data?.is_email_notification
+    const handleChange = (data, item) => {
+        let payload = {}
+        if (item == "email") {
+            payload = {
+                "is_desktop_notification": data?.is_desktop_notification,
+                "is_email_notification": data?.is_email_notification == true ? false : true
             }
-      }
-       dispatch(changesStatus(payload,item?.id))
+        } else {
+            payload = {
+                "is_desktop_notification": data?.is_desktop_notification == true ? false : true,
+                "is_email_notification": data?.is_email_notification
+            }
+        }
+        dispatch(changesStatus(payload, data?.id ,()=>{
+            dispatch(getAllIntegrationData())
+        }))
     }
     return (
         <>
@@ -57,26 +58,26 @@ const NotificationSetting = ({ currentTab }) => {
                             </thead>
                             <tbody>
                                 {
-                                    allIntegrationData.settings.map((item)=>{
+                                    allIntegrationData.settings.map((item) => {
                                         return (
                                             <>
-                                               <tr>
-                                    <td className="align-middle">
-                                       {item?.name}
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked={item?.is_email_notification} onChange={()=>handleChange(item,"email")} />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked={item?.is_desktop_notification} onChange={()=>handleChange(item,"desk")} />
-                                    </td>
-                                </tr>
+                                                <tr>
+                                                    <td className="align-middle">
+                                                        {item?.name}
+                                                    </td>
+                                                    <td className="text-center align-middle">
+                                                        <Form.Check type="checkbox" className="primary-checkbox" checked={item?.is_email_notification } onChange={() => handleChange(item, "email")} />
+                                                    </td>
+                                                    <td className="text-center align-middle">
+                                                        <Form.Check type="checkbox" className="primary-checkbox" checked={item?.is_desktop_notification} onChange={() => handleChange(item, "desk")} />
+                                                    </td>
+                                                </tr>
 
                                             </>
                                         )
                                     })
                                 }
-                             
+
 
                             </tbody>
                         </table>
