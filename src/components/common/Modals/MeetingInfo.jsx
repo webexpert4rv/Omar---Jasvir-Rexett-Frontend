@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import {
   changeJobStatus,
   meetingCancel,
+  singleJobPostData,
 } from "../../../redux/slices/clientDataSlice";
 import RejectModal from "./RejectModal";
 import { gapi } from "gapi-script";
@@ -26,6 +27,7 @@ import RadioGroupField from "../../RadioGroupField";
 import { getDifferenceFromTwoDates } from "../../utils";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
+import { updateStatus } from "../../../redux/slices/adminDataSlice";
 
 const MARK_AS_OPTIONS = [
   {
@@ -39,6 +41,10 @@ const MARK_AS_OPTIONS = [
   {
     label: "Canceled",
     value: "canceled",
+  },
+  {
+    label: "Pending",
+    value: "pending",
   },
 ];
 
@@ -129,9 +135,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     function start() {
       gapi.client
         .init({
-          apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-          clientId:
-            "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+            clientId: "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES,
         })
@@ -246,15 +251,20 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   };
 
   const handleMarkAsStatusChange = (newStatus) => {
+    // const payload = {
+    //   applicationId: id,
+    //   developerId: developer_id,
+    //   jobId: jobId,
+    //   newStatus: newStatus,
+    // };
     const payload = {
-      applicationId: id,
-      developerId: developer_id,
-      jobId: jobId,
-      newStatus: newStatus,
-    };
-    console.log(payload,"payload");
+        status:newStatus
+    }
+    console.log(payload, details.interview.id,"payload");
     // dispatch(changeJobStatus(payload));
+    dispatch(updateStatus(payload, details?.interview?.id,handleClose)) //interview id
     setValue("mark_as", newStatus);
+    dispatch(singleJobPostData(jobId, () => { }));
   };
 
   // Call the function with a specific meeting ID

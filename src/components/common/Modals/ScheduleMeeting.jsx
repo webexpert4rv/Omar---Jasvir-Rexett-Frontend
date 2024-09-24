@@ -39,7 +39,6 @@ const Schedulemeeting = ({
   type,
 }) => {
   console.log(selectedDeveloper, "selectedDeveloper");
-  console.log(type, "type");
   const {
     handleSubmit,
     register,
@@ -300,7 +299,6 @@ const Schedulemeeting = ({
     // setCreatedMeetings(data)
     console.log(data, "valuesss");
     setMeetingPlatform(data?.meeting_platform?.value);
-
     if (type === "events") {
       let payload = {
         title: data?.title,
@@ -315,7 +313,7 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         type: "meeting",
-        event_link: "",
+        event_link: meetingLink,
         developer_email: data?.select_candidate?.label,
       };
       dispatch(
@@ -350,7 +348,7 @@ const Schedulemeeting = ({
         interview_duration: "1hr",
         event_id: gogleEventId,
       };
-      // dispatch(postCandidateInterview(payload));
+      dispatch(postCandidateInterview(payload));
     }
     reset();
   };
@@ -439,7 +437,7 @@ const Schedulemeeting = ({
       .then((response) => {
         console.log("Event created:", response.result);
         if (response.result.hangoutLink) {
-          setValue("meeting_platform","");
+          // setValue("meeting_platform","");
           console.log("Google Meet link:", response.result.hangoutLink);
           setMeetingLink(response.result.hangoutLink);
           setGoogleEventID(response?.result?.id)
@@ -447,12 +445,11 @@ const Schedulemeeting = ({
       })
       .catch((error) => {
         console.error("Error creating event:", error);
-        setValue("meeting_platform","");
+        // setValue("meeting_platform","");
 
       });
     setThirdParty(false);
   };
-  console.log(watch("interviewers_list"), "form value");
 
   return (
     <>

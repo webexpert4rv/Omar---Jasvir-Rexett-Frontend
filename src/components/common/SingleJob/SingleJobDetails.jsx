@@ -1030,14 +1030,14 @@ const SingleJobDetails = () => {
                                                                     Show Feedback
 
                                                                 </Button>
-                                                                <Button
+                                                                {/* <Button
                                                                     onClick={() => checkEventStatus(item.interview.id)}
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Check Status
 
-                                                                </Button>
+                                                                </Button> */}
                                                             </>
                                                         )}
                                                         {item.interview.status === 'selected' && (
@@ -1906,10 +1906,10 @@ const SingleJobDetails = () => {
                 type={currentTabsStatus}
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
-            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper}/>
             {showPopup && (
                 <FeedbackPopup
-                    interviewId={selectedInterviewId}
+                    interviewId={selectedInterviewId}       
                     showPopup={showPopup}
                     closePopup={closePopup}
                 />
