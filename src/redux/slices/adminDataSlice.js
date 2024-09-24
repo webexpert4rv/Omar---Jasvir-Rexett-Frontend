@@ -354,7 +354,7 @@ export function updateAdminProfile(payload, callback) {
     };
 }
 
-export function updateEmployeeProfile(payload,id) {
+export function updateEmployeeProfile(payload,id,callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
@@ -363,9 +363,10 @@ export function updateEmployeeProfile(payload,id) {
                 toast.success("Employee is Updated Successfully", { position: "top-center" })
                 dispatch(setSuccessAdminData())
             }
+            return callback()
         } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };
@@ -509,8 +510,8 @@ export function allEmployeeList(searchText="") {
                 dispatch(setSuccessAssignEmployeeList(result.data.data))
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };
@@ -932,8 +933,8 @@ export function getAllPermissionSeeder(){
                 dispatch(setAllPermissionList(result.data))
             }
         }catch(error){
-            const message = error?.response.data.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response.data.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     }
@@ -949,8 +950,8 @@ export function getAllAdminEmployees(callback){
                 return callback(result.data.data)
             
         }catch(error){
-            const message = error?.response?.data?.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             // dispatch(setFailAdminData())
         }
     }
@@ -1047,8 +1048,8 @@ export function getAdminList(){
                 toast.success(result.data?.message, { position: "top-center" })
             }
         }catch(error){
-            const message = error?.response?.data?.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     }
@@ -1152,8 +1153,9 @@ export function changesStatus(payload,id, callback){
         // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.put(`admin/notifications/settings/${id}`,{...payload})
+            console.log(result,"resulted")
             if (result.status === 200) {
-                toast.success(result.data?.message, { position: "top-center" })
+                toast.success("Notification settings updated", { position: "top-center" })
             }
             dispatch(setDeveloperList(result.data))
             return callback();
@@ -1286,7 +1288,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       } catch (error) {
         const message = error.message || "Something went wrong";
         toast.error(message, { position: "top-center" });
-        // dispatch(setFailClientData());
+        dispatch(setFailAdminData());
       }
     };
   }

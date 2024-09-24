@@ -26,6 +26,8 @@ const LocationSection = ({
   const { countriesList, statesList, citiesList, timeZones } = useSelector(
     (state) => state.clientData
   );
+
+  console.log(watch("country_code"),"countryCode")
 useEffect(() => {
   if (watch("country_code")) {
       const countryCode = watch("country_code").value; // Assuming watch("country_code") returns an object with a 'value' property
