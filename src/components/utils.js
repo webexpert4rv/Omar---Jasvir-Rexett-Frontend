@@ -121,3 +121,11 @@ export function convertjobSkillsFromApiResponse(skills) {
   }
   return [];
 }
+export const getDifferenceFromTwoDates = (date1, date2) => {
+  if (date1 && date2) {
+    const startDate = moment(date1);
+    const endDate = moment(date2);
+    const differenceInHours = endDate.diff(startDate, 'hours');
+    return differenceInHours
+  }
+}
