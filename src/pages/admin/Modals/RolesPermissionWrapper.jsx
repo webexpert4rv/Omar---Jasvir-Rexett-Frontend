@@ -9,13 +9,13 @@ import {
   newRoleCreate,
   newEmployeeCreate,
   getAllAdminEmployees,
-  updateEmployeeProfile
+  updateEmployeeProfile,
 } from "../../../redux/slices/adminDataSlice";
 import AddCandidate from "./AddCandidate";
 import NewEmployee from "./NewEmployee";
 import { IoClose, IoCloudUploadOutline } from "react-icons/io5";
 import LocationSection from "../../websiteRegisterForm/developer/LocationSection";
-import { getCoutriesList } from "../../../redux/slices/clientDataSlice";
+import { getCoutriesList, uploadFileToS3Bucket } from "../../../redux/slices/clientDataSlice";
 
 // const PERMISSIONS = [
 //   { label: "Workspace Admin", value: "workspace_admin" },
@@ -34,7 +34,9 @@ const RolesPermissionWrapper = ({
   options,
   modalName,
   id,
-  data
+  data,
+  setIsEdit,
+  isEdit
 }) => {
   const {
     handleSubmit,
@@ -52,10 +54,14 @@ const RolesPermissionWrapper = ({
   const dispatch = useDispatch();
   const [details, setDetails] = useState();
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [previewImg , setPreviewImage] = useState()
 
+
+
+  console.log(isEdit, "editttt")
   console.log(allAdminEmployees, "allAdminEmployees")
   console.log(data, "data")
-  console.log(id,"id---------")
+  console.log(id, "id---------")
 
   let PERMISSIONS = allPermissionList?.roles?.map((val) => (
     { label: val?.name, value: val?.name }
@@ -67,90 +73,88 @@ const RolesPermissionWrapper = ({
   }, [])
 
   useEffect(() => {
-    if (id) {
-      const [firstName,surname ] = data?.name?.split(" ")
-      setValue("first_name",firstName)
-      setValue("last_name",surname)
-      setValue("email",data?.email)
-      setValue("passcode",data?.passcode)
-      setValue("phone_number",data?.phone_number)
-      setValue("role",data?.role)
-      setUploadedImage(data?.profile_picture)
+    if (isEdit === true) {
+      setIsEdit(true)
+      const [firstName, surname] = data?.name?.split(" ")
+      setValue("first_name", firstName)
+      setValue("last_name", surname)
+      setValue("email", data?.email)
+      setValue("passcode", data?.passcode)
+      setValue("phone_number", data?.phone_number)
+      setValue("role", data?.roles[0]?.name)
+      setPreviewImage(data?.profile_picture)
       const newValue = {
         label: data?.country,
-        value: data?.country,
+        value: data?.country_iso_code,
       };
-      setValue("country",newValue)
+      setValue("country_code", newValue)
       const timeZone = {
         label: data?.time_zone,
         value: data?.time_zone,
       }
-      setValue("time_zone",timeZone)
+      setValue("time_zone", timeZone)
+    }else{
+      reset()
+      setPreviewImage(null);
     }
-  }, [data])
-
-
-
-
-
+  }, [data, isEdit])
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    setUploadedImage(file);
     if (file) {
-      setUploadedImage(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
   const removeImage = () => {
-    setUploadedImage(null);
+    setPreviewImage(null);
   };
 
   const onSubmit = async (values) => {
     setDetails(values);
-    if(id){
+    let fileData = new FormData();
+    fileData.append("file", uploadedImage)
+   
+    dispatch(uploadFileToS3Bucket(fileData,(url) => {
       let payload = {
         first_name: values?.first_name,
         last_name: values?.last_name,
         email: values?.email,
         phone_number: values?.phone_number,
-        profile_picture: uploadedImage,
+        profile_picture: url,
         country: values?.country_code?.label,
-        state: values?.state_iso_code?.label,
-        city: values?.city,
+        country_iso_code: values?.country_code?.value,
         passcode: values?.passcode,
         time_zone: values?.time_zone?.value,
-        role: values?.role
+        role: values?.role,
       };
-      dispatch(updateEmployeeProfile(payload ,id))
-    }else{
-    let payload = {
-      first_name: values?.first_name,
-      last_name: values?.last_name,
-      email: values?.email,
-      phone_number: values?.phone_number,
-      profile_picture: uploadedImage,
-      country: values?.country_code?.label,
-      state: values?.state_iso_code?.label,
-      city: values?.city,
-      passcode: values?.passcode,
-      time_zone: values?.time_zone?.value,
-      role: values?.role
-    };
-    if (modalName == "role") {
-      let data = {
-        description: "ddd",
-        name: values?.role
+  
+      if (isEdit) {
+        console.log(payload, "payload for update");
+         dispatch(updateEmployeeProfile(payload, id));
+        dispatch(getAllAdminEmployees());
+      } else {
+        if (modalName === "role") {
+          let data = {
+            description: "Role description here", // You can customize this description
+            name: values?.role,
+          };
+          dispatch(newRoleCreate(data));
+        } else {
+           dispatch(newEmployeeCreate(payload));
+        }
       }
-      await dispatch(newRoleCreate(data))
-    } else {
-      await dispatch(newEmployeeCreate(payload));
-    }
-  }
-
-    dispatch(getAllPermissionSeeder());
-    handleClose();
-    reset();
-    setUploadedImage(null);
+      dispatch(getAllPermissionSeeder());
+      handleClose();
+      reset();
+      setUploadedImage(null);
+    }));
   };
+  
   return (
     <Modal
       show={show}
@@ -171,7 +175,7 @@ const RolesPermissionWrapper = ({
               {/* <h3 className="popup-heading">New Employee</h3> */}
 
               <div className="text-center mb-3">
-                {!uploadedImage && (
+                {!previewImg && (
                   <div className="upload-img">
                     <input
                       type="file"
@@ -187,10 +191,10 @@ const RolesPermissionWrapper = ({
                     </label>
                   </div>
                 )}
-                {uploadedImage && (
+                {previewImg && (
                   <div className="uploaded-img">
                     <img
-                      src={uploadedImage}
+                      src={previewImg}
                       className="img-uploaded"
                       alt="Uploaded"
                     />
@@ -249,8 +253,8 @@ const RolesPermissionWrapper = ({
                     label="Email Address *"
                     name="email"
                     type="text"
-                    disabled={id}
                     placeholder="eg : john@gmail.com"
+                    disabled={isEdit}
                     control={control}
                     rules={{ required: "Email is required" }}
                     error={errors.role}
