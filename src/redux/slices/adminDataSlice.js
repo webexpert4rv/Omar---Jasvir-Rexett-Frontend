@@ -354,6 +354,41 @@ export function updateAdminProfile(payload, callback) {
     };
 }
 
+export function updateEmployeeProfile(payload,id) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.put(`admin/update-employee/${id}`,{...payload})
+            if (result.status === 200) {
+                toast.success("Employee is Updated Successfully", { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function deleteEmployee(id) {
+    console.log(id,"idddddd")
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`admin/delete-employee/${id}`)
+            if (result.status === 200) {
+                toast.success("Employee is deleted Successfully", { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
 export function getSingleClient(id) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
@@ -780,9 +815,7 @@ export function getAllIntegrationData () {
         dispatch(setScreenLoader());
         try{
             let result = await clientInstance.get(`admin/notification-settings/list`)
-
                 dispatch(setAllIntegration(result?.data?.data))
-            
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -906,13 +939,14 @@ export function getAllPermissionSeeder(){
     }
 }
 
-export function getAllAdminEmployees(){
+export function getAllAdminEmployees(callback){
     return async (dispatch)=>{
         // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.get(`admin/employees`)
                 // toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setAdminEmployees(result.data.data))
+                return callback(result.data.data)
             
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1113,7 +1147,7 @@ export function getDeveloperList(){
     }
 }
 
-export function changesStatus(payload,id){
+export function changesStatus(payload,id, callback){
     return async (dispatch)=>{
         // dispatch(setBtnLoader())
         try{
@@ -1122,7 +1156,7 @@ export function changesStatus(payload,id){
                 toast.success(result.data?.message, { position: "top-center" })
             }
             dispatch(setDeveloperList(result.data))
-            // return callback();
+            return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

@@ -8,7 +8,8 @@ import {
   getAllPermissionSeeder,
   newRoleCreate,
   newEmployeeCreate,
-  getAllAdminEmployees
+  getAllAdminEmployees,
+  updateEmployeeProfile
 } from "../../../redux/slices/adminDataSlice";
 import AddCandidate from "./AddCandidate";
 import NewEmployee from "./NewEmployee";
@@ -32,6 +33,8 @@ const RolesPermissionWrapper = ({
   heading,
   options,
   modalName,
+  id,
+  data
 }) => {
   const {
     handleSubmit,
@@ -45,20 +48,52 @@ const RolesPermissionWrapper = ({
     clearErrors,
   } = useForm();
   const { smallLoader } = useSelector((state) => state.adminData);
-  const { allPermissionList } = useSelector((state) => state.adminData)
+  const { allPermissionList, allAdminEmployees } = useSelector((state) => state.adminData)
   const dispatch = useDispatch();
   const [details, setDetails] = useState();
-  console.log(modalName, "modalname");
   const [uploadedImage, setUploadedImage] = useState(null);
-  
-  let PERMISSIONS = allPermissionList?.roles?.map((val)=>(
+
+  console.log(allAdminEmployees, "allAdminEmployees")
+  console.log(data, "data")
+  console.log(id,"id---------")
+
+  let PERMISSIONS = allPermissionList?.roles?.map((val) => (
     { label: val?.name, value: val?.name }
   ))
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getCoutriesList());
-    dispatch(getAllAdminEmployees());
-  },[])
+    dispatch(getAllAdminEmployees())
+  }, [])
+
+  useEffect(() => {
+    if (id) {
+      const [firstName,surname ] = data?.name?.split(" ")
+      setValue("first_name",firstName)
+      setValue("last_name",surname)
+      setValue("email",data?.email)
+      setValue("passcode",data?.passcode)
+      setValue("phone_number",data?.phone_number)
+      setValue("role",data?.role)
+      setUploadedImage(data?.profile_picture)
+      const newValue = {
+        label: data?.country,
+        value: data?.country,
+      };
+      setValue("country",newValue)
+      const timeZone = {
+        label: data?.time_zone,
+        value: data?.time_zone,
+      }
+      setValue("time_zone",timeZone)
+    }
+  }, [data])
+
+
+
+
+
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -71,6 +106,22 @@ const RolesPermissionWrapper = ({
 
   const onSubmit = async (values) => {
     setDetails(values);
+    if(id){
+      let payload = {
+        first_name: values?.first_name,
+        last_name: values?.last_name,
+        email: values?.email,
+        phone_number: values?.phone_number,
+        profile_picture: uploadedImage,
+        country: values?.country_code?.label,
+        state: values?.state_iso_code?.label,
+        city: values?.city,
+        passcode: values?.passcode,
+        time_zone: values?.time_zone?.value,
+        role: values?.role
+      };
+      dispatch(updateEmployeeProfile(payload ,id))
+    }else{
     let payload = {
       first_name: values?.first_name,
       last_name: values?.last_name,
@@ -84,16 +135,17 @@ const RolesPermissionWrapper = ({
       time_zone: values?.time_zone?.value,
       role: values?.role
     };
-    if(modalName=="role"){
-      let data={
-        description:"ddd",
+    if (modalName == "role") {
+      let data = {
+        description: "ddd",
         name: values?.role
       }
-       await dispatch(newRoleCreate(data))
-    }else{
+      await dispatch(newRoleCreate(data))
+    } else {
       await dispatch(newEmployeeCreate(payload));
     }
-  
+  }
+
     dispatch(getAllPermissionSeeder());
     handleClose();
     reset();
@@ -152,81 +204,82 @@ const RolesPermissionWrapper = ({
                   </div>
                 )}
               </div>
-                <Row>
-                  <Col lg={6}>
-                    <div className="mb-2">
-                      <CommonInput
-                        label="First Name *"
-                        name="first_name"
-                        type="text"
-                        placeholder="eg : John Doe"
-                        control={control}
-                        rules={{ required: "First name is required" }}
-                        error={errors.role}
-                      />
-
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-2">
-                      <CommonInput
-                        label="Last Name *"
-                        name="last_name"
-                        type="text"
-                        placeholder="eg : Doe"
-                        control={control}
-                        rules={{ required: "Last name is required" }}
-                        error={errors.role}
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-2">
-                      <CommonInput
-                        label="Phone number *"
-                        name="phone_number"
-                        type="phone"
-                        control={control}
-                        rules={{ required: "Phone is required" }}
-                        error={errors.role}
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
+              <Row>
+                <Col lg={6}>
+                  <div className="mb-2">
                     <CommonInput
-                      label="Email Address *"
-                      name="email"
+                      label="First Name *"
+                      name="first_name"
                       type="text"
-                      placeholder="eg : john@gmail.com"
+                      placeholder="eg : John Doe"
                       control={control}
-                      rules={{ required: "Email is required" }}
+                      rules={{ required: "First name is required" }}
                       error={errors.role}
                     />
-                  </Col>
-                  <Col lg={12}>
+
+                  </div>
+                </Col>
+                <Col lg={6}>
+                  <div className="mb-2">
                     <CommonInput
-                      label="Select Role"
-                      name="role"
-                      type="normal-select"
+                      label="Last Name *"
+                      name="last_name"
+                      type="text"
+                      placeholder="eg : Doe"
                       control={control}
-                      defaultOption="Select Permission"
-                      options={PERMISSIONS}
-                      rules={{ required: "Role is required" }}
+                      rules={{ required: "Last name is required" }}
                       error={errors.role}
                     />
-                  </Col>
-                   <LocationSection
+                  </div>
+                </Col>
+                <Col lg={6}>
+                  <div className="mb-2">
+                    <CommonInput
+                      label="Phone number *"
+                      name="phone_number"
+                      type="phone"
                       control={control}
-                      errors={errors}
-                      watch={watch}
-                      setValue={setValue}
-                      setError={setError}
-                      invalidFieldRequired={true}
-                      clearErrors={clearErrors}
-                      isTimeZoneRequired={true}
-                      isRegistrationStep={true}
+                      rules={{ required: "Phone is required" }}
+                      error={errors.role}
                     />
-                </Row>
+                  </div>
+                </Col>
+                <Col lg={6}>
+                  <CommonInput
+                    label="Email Address *"
+                    name="email"
+                    type="text"
+                    disabled={id}
+                    placeholder="eg : john@gmail.com"
+                    control={control}
+                    rules={{ required: "Email is required" }}
+                    error={errors.role}
+                  />
+                </Col>
+                <Col lg={12}>
+                  <CommonInput
+                    label="Select Role"
+                    name="role"
+                    type="normal-select"
+                    control={control}
+                    defaultOption="Select Permission"
+                    options={PERMISSIONS}
+                    rules={{ required: "Role is required" }}
+                    error={errors.role}
+                  />
+                </Col>
+                <LocationSection
+                  control={control}
+                  errors={errors}
+                  watch={watch}
+                  setValue={setValue}
+                  setError={setError}
+                  invalidFieldRequired={true}
+                  clearErrors={clearErrors}
+                  isTimeZoneRequired={true}
+                  isRegistrationStep={true}
+                />
+              </Row>
             </>
           )}
 
@@ -263,7 +316,7 @@ const RolesPermissionWrapper = ({
           <div className="text-center">
             <RexettButton
               type="submit"
-              text={modalName == "permission" ? "Submit" : modalName=="role"? "Submit" : "Send Invite"}
+              text={modalName == "permission" ? "Submit" : modalName == "role" ? "Submit" : "Send Invite"}
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               isLoading={smallLoader}
