@@ -1414,5 +1414,21 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     };
 }
 
+export function updateStatus(payload,id,callback) {
+
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.put(`/common/interviews/${id}/status`,{...payload});
+            dispatch(setSuccessAdminData());
+            toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
+        } catch (error) {
+            console.log(error,"errrrr");
+        }
+        return callback()
+    };
+}
+
+
  
   
