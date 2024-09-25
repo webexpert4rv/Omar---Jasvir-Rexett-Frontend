@@ -53,13 +53,7 @@ const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest",
 ];
 
-const SCOPES = [
-  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-  "https://www.googleapis.com/auth/calendar",
-  "https://www.googleapis.com/auth/calendar.events",
-  "https://www.googleapis.com/auth/calendar.events.readonly",
-  "https://www.googleapis.com/auth/admin.reports.audit.readonly",
-];
+const SCOPES = 'https://www.googleapis.com/auth/admin.reports.usage.readonly https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/admin.reports.audit.readonly';
 
 //   const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
@@ -239,7 +233,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     } else if (meeting_platform === "google_meet") {
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
-        eventId: "siq7ht5c512mukvjqag7qgb84k",
+        eventId: "00saj72vr2fjp8okgcvokilevl",
       });
 
       if (response.result.status === "cancelled") {
@@ -248,7 +242,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
         if (meetingStart < now) {
-          fetchMeetingDetails("siq7ht5c512mukvjqag7qgb84k");
+          fetchMeetingDetails("00saj72vr2fjp8okgcvokilevl");
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");
@@ -319,7 +313,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     // dispatch(changeJobStatus(payload));
     dispatch(updateStatus(payload, details?.interview?.id, handleClose)); //interview id
     setValue("mark_as", newStatus);
-    dispatch(singleJobPostData(jobId, () => {}));
+    dispatch(singleJobPostData(jobId, () => {}));   
   };
 
   // Call the function with a specific meeting ID
