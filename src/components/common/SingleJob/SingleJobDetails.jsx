@@ -190,7 +190,7 @@ const SingleJobDetails = () => {
     const handleSelect = (key) => {
         setCurrentTab(key);
         setSelectedTabsData(singleJobDescription?.job_applications[key]);
-        if (key == "suggested") {
+        if (key == "suggestions") {
             setCurrnetTabsStatus("shortlisted");
         }
         if (key == "shortlisted") {
@@ -203,6 +203,7 @@ const SingleJobDetails = () => {
             setCurrnetTabsStatus("application");
         }
     };
+    console.log(currentTab,"currentTab")
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
