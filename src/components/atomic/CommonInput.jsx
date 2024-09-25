@@ -41,12 +41,7 @@ const CommonInput = ({
   selectedRecommend
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  console.log(options, "newOptions")
-  console.log(disabled,"disabled")
-  console.log(type,"type")
-  console.log(selectOptions, "selectOptions")
-  console.log(isMinRequired, "isMinRequired")
-  console.log(isMaxRequired, "ismax")
+ 
   const handleTogglePassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
     if (onTogglePassword) {
