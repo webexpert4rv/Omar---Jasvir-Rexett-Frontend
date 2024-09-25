@@ -252,7 +252,7 @@ const ScheduleScreening = ({ show, handleClose, selectedDeveloper,type, selected
                         <div>
                             <Row>
                                 <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
+                                    <p className="font-14 schedule-heading"><span><FaClock /></span></p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>

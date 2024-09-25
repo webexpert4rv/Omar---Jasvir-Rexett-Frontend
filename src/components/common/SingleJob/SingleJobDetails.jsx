@@ -75,10 +75,15 @@ import { gapi } from 'gapi-script';
 import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
+import useEndAndDelete from "../../../hooks/useEndAndDelete";
+
+
 
 
 
 const SingleJobDetails = () => {
+    const { handleEndAndDeleteModal, showDeleteModal, showEndModal, modalLoader, handleDeleteJob } =
+    useEndAndDelete(); // all the logic for delete job and end job is written inside this
     const role = localStorage.getItem("role")
     const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
     const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -627,13 +632,16 @@ const SingleJobDetails = () => {
                                     <OverlayTrigger placement="top" overlay={endjob}>
                                         <Button
                                             variant="transparent"
-                                            onClick={(e) =>
-                                                handleJobStatusModal(
-                                                    e,
-                                                    singleJobDescription?.id,
-                                                    "ended"
-                                                )
-                                            }
+                                            onClick={() => {
+                                                // handleDelete("application", singleJobDescription?.id);
+                                                if (singleJobDescription?.status == "Unpublished" || singleJobDescription?.status == "unpublished") {
+                                                  handleEndAndDeleteModal({
+                                                    action: "openDeleteModal",
+                                                    idToDelete: singleJobDescription?.id,
+                                                  });
+                                                }
+                                              }}
+                                            
                                             className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                                         >
                                             <MdOutlineDoNotDisturbAlt />
@@ -1022,14 +1030,14 @@ const SingleJobDetails = () => {
                                                                     Show Feedback
 
                                                                 </Button>
-                                                                <Button
+                                                                {/* <Button
                                                                     onClick={() => checkEventStatus(item.interview.id)}
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Check Status
 
-                                                                </Button>
+                                                                </Button> */}
                                                             </>
                                                         )}
                                                         {item.interview.status === 'selected' && (
@@ -1858,6 +1866,31 @@ const SingleJobDetails = () => {
         feedbacks={"Feedbacks"}
         submit={"Request"}
       /> */}
+            {/* for delte and end job modals */}
+            {showDeleteModal && (
+        <ConfirmationModal
+          text="Are you sure you want to Delete this job?"
+          show={showDeleteModal}
+          handleClose={() =>
+            handleEndAndDeleteModal({ action: "closeDeleteModal" })
+          }
+          smallLoader={modalLoader} //for end and delete only
+          handleAction={handleDeleteJob}
+        />
+      )}
+      {showEndModal && (
+        <ConfirmationModal
+          text="Are you sure you want to Delete this job?"
+          show={showEndModal}
+          handleClose={() =>
+            handleEndAndDeleteModal({ action: "closeEndModal" })
+          }
+          smallLoader={modalLoader} //for end and delete only
+        />
+      )}
+      {/* for delte and end job modals */}
+
+
             <ConfirmationModal
                 text={jobPostConfirmMessage(currentTab)}
                 show={
@@ -1873,10 +1906,10 @@ const SingleJobDetails = () => {
                 type={currentTabsStatus}
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
-            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper}/>
             {showPopup && (
                 <FeedbackPopup
-                    interviewId={selectedInterviewId}
+                    interviewId={selectedInterviewId}       
                     showPopup={showPopup}
                     closePopup={closePopup}
                 />
