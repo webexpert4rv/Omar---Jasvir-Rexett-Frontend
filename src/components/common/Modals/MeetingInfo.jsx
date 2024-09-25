@@ -66,6 +66,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const { register, errors, values, setValue, watch } = useForm();
   const [showDetailsSection, setShowDetailsSection] = useState(false);
   const [info, setInfo] = useState({});
+  const [joinUrl,setJoinUrl] = useState("");
   const [loader, setLoader] = useState(false);
   const [isCancelModal, setCancelModal] = useState({
     isTrue: false,
@@ -208,7 +209,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     try {
       // Fetch the online meeting details using the meeting ID
       const id =
-        "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
+             joinUrl
+        // "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
       const meetingResponse = await client
         .api("/me/onlineMeetings")
         .filter(`JoinWebUrl eq '${id}'`)

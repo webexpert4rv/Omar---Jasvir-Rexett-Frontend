@@ -9,34 +9,48 @@ import NewEmployee from '../../../../pages/admin/Modals/NewEmployee'
 import { EMPLOYEE_ROLE } from '../../../../helper/constant'
 import { useDispatch, useSelector } from "react-redux";
 import { deleteEmployee, updateEmployeeProfile } from '../../../../redux/slices/adminDataSlice'
+import ConfirmationModal from '../../Modals/ConfirmationModal'
 
 const EmployeeManagement = () => {
     const [newEmployee, setEmployee] = useState(false);
     const [editRoleModal, setRoleModal] = useState(false);
-    const { allAdminEmployees } = useSelector((state) => state.adminData);
-    const [selectedEmpId , setSelectedEmpId]= useState()
-    const [empDetails,setEmpDetails]= useState()
-    const dispatch= useDispatch()
+    const { allAdminEmployees,smallLoader } = useSelector((state) => state.adminData);
+    const [selectedEmpId, setSelectedEmpId] = useState()
+    const [empDetails, setEmpDetails] = useState()
+    const [deleteShowModal, setDeleteShowModal] = useState(false);
+    const [isEdit, setIsEdit] = useState(false)
+    const [empId , setEmpId] = useState()
+    const dispatch = useDispatch()
 
 
     const handleNewEmployee = () => {
-        setEmployee(!newEmployee)
-        setRoleModal(false)
+        setEmployee(true)
     }
+    const handleCloseModal=()=>{
+        setEmployee(false)
+        setRoleModal(false)
+        setIsEdit(false)
+    }
+
+
     const handleShowEditRole = (id) => {
-        const selectedEmp = allAdminEmployees?.find((emp)=>emp?.id===id)
+        const selectedEmp = allAdminEmployees?.find((emp) => emp?.id === id)
         setEmpDetails(selectedEmp)
         setSelectedEmpId(id)
         setRoleModal(true)
+        setIsEdit(true)
     }
-    // const handleHideEditRole = () => {
-    //     setRoleModal(false)
-    // }
+    
 
-    const handleEmpDelete=(id)=>{
-        console.log(id,"id")
-        dispatch(deleteEmployee(id))
+    const handleEmpDelete = (id) => {
+        setEmpId(id)
+        setDeleteShowModal(!deleteShowModal)
 
+    }
+  
+    const handleAction=()=>{
+        dispatch(deleteEmployee(empId))
+        setDeleteShowModal(false)
     }
 
 
@@ -71,8 +85,8 @@ const EmployeeManagement = () => {
                                     </td>
                                     <td className="align-middle">
                                         <div className="d-flex gap-3">
-                                            <Button variant="transparent" className="arrow-btn info-arrow" onClick={()=>handleShowEditRole(val?.id)}><MdOutlineModeEditOutline /></Button>
-                                            <Button variant="transparent" className="arrow-btn danger-arrow"  onClick={()=>handleEmpDelete(val?.id)}><FaTrashCan /></Button>
+                                            <Button variant="transparent" className="arrow-btn info-arrow" onClick={() => handleShowEditRole(val?.id)}><MdOutlineModeEditOutline /></Button>
+                                            <Button variant="transparent" className="arrow-btn danger-arrow" onClick={() => handleEmpDelete(val?.id)}><FaTrashCan /></Button>
                                         </div>
                                     </td>
                                 </tr>
@@ -258,7 +272,14 @@ const EmployeeManagement = () => {
                     </table>
                 </div>
             </div>
-            <RolesPermissionWrapper show={newEmployee || editRoleModal } handleClose={handleNewEmployee} heading="Add Employee" modalName="employee" options={EMPLOYEE_ROLE} id={selectedEmpId}  data={empDetails} />
+            <ConfirmationModal
+            show={deleteShowModal}
+            handleClose={handleEmpDelete}
+            handleAction={handleAction}
+            smallLoader={smallLoader}
+            text={"Are you sure, you want to delete this Employee"}
+          />
+            <RolesPermissionWrapper show={newEmployee || editRoleModal} handleClose={handleCloseModal} heading={isEdit ? "Edit Employee" : "Add Employee"} modalName="employee" options={EMPLOYEE_ROLE} id={selectedEmpId} data={empDetails} setIsEdit={setIsEdit} isEdit={isEdit}/>
         </>
     )
 }

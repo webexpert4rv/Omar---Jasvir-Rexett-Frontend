@@ -455,6 +455,7 @@ const ClientRegistrationStepper = () => {
     const stepData = watch();
     let fileData = new FormData();
     fileData.append("file", imageFile?.profile_picture)
+    console.log( imageFile?.profile_picture,"profile_picture")
     setShowSetUpJobModal(false);
     dispatch(uploadFileToS3Bucket(fileData, (url) => {
       let payload;

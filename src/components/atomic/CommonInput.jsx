@@ -42,6 +42,7 @@ const CommonInput = ({
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   console.log(options, "newOptions")
+  console.log(disabled,"disabled")
   console.log(type,"type")
   console.log(selectOptions, "selectOptions")
   console.log(isMinRequired, "isMinRequired")
@@ -57,6 +58,8 @@ const CommonInput = ({
       return <CloseIcon />;
     }
   };
+
+  console.log(label,"label")
 
   return (
     <Form.Group className="mb-3">
@@ -288,6 +291,7 @@ const CommonInput = ({
                   <Form.Control
                     {...field}
                     as={type}
+                   
                     className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     rows={3}
@@ -315,18 +319,13 @@ const CommonInput = ({
                 <>
                   <Form.Control
                     {...field}
-                    type={
-                      isPassword
-                        ? isPasswordVisible
-                          ? "text"
-                          : "password"
-                        : type
-                    }
+                    type={ isPassword ? isPasswordVisible ? "text" : "password": type }
                     className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     // id='developer-image'
+                    disabled={disabled}
                     placeholder={placeholder}
-                    readOnly={readOnly}
+                    readOnly={disabled}
                     autoComplete={autoComplete}
                     onChange={
                       onChange ? (e) => onChange(e, field) : field.onChange

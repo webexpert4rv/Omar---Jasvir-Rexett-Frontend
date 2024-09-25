@@ -426,7 +426,7 @@ const Schedulemeeting = ({
         },
       },
     };
-    console.log(newEvent, "payload for sync");
+    console.log(newEvent, "payload for sync"); 
 
     gapi.client.calendar.events
       .insert({
