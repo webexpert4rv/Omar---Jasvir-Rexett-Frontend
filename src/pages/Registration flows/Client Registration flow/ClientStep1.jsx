@@ -11,10 +11,10 @@ import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import LocationSection from "../../websiteRegisterForm/developer/LocationSection";
 import CommonProfilePictureSection from "../../../components/common/CommonProfilePictureSection";
 import UploadFile from "../DeveloperRegistrationFlow/UploadFile";
-const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
+// const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
 // const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
-// const GOOGLE_MAP_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+const GOOGLE_MAP_API_KEY = "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU"
 
 const ClientStep1 = ({
   isVendorStep1,
