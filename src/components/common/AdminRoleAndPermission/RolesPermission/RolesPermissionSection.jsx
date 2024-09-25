@@ -49,9 +49,6 @@ const RolesPermissionSection = () => {
         })
     }
     const handleCheckStatus = (role , item_id, role_id) => {
-        console.log(status,"role")
-        console.log(item_id, "item_id")
-        console.log(role_id, "role_id")
         let data = {
             role_id: role_id,
             permission_id: item_id,
