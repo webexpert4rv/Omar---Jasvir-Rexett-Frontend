@@ -274,7 +274,7 @@ const Schedulemeeting = ({
   );
 
   const meetingTypeValue = watch("meeting_type");
-  console.log(meetingTypeValue, "meetingTypeValue");
+  
 
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");

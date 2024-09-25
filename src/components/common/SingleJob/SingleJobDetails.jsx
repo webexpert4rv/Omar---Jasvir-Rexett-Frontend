@@ -204,6 +204,7 @@ const SingleJobDetails = () => {
         }
     };
     console.log(currentTab,"currentTab")
+    console.log(currentTabsStatus,"currentTabsStatus")
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
@@ -260,7 +261,7 @@ const SingleJobDetails = () => {
 
     const handleJobStatusAction = (e, data) => {
         console.log(devId,"devid")
-        console.log(data?.status, "status")
+        console.log(data?.status, "newSttas")
         e.preventDefault();
         if (data.status == "ended") {
             dispatch(
@@ -368,6 +369,8 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
+        console.log(type,"type")
+        console.log(status,"status")
         console.log(id,"helloId")
         setDevType(type)
         setApplicationId(aplnId)

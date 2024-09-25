@@ -2292,61 +2292,28 @@ const Applications = () => {
                                       className={`collapsible-row ${expandedRow === index ? "open" : ""
                                         }`}
                                     >
-                                      <td colSpan="8">
+                                      <td colSpan="10">
                                         <div>
                                           <Row>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("companyName")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company_name}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("email")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.email}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            {item?.company?.total_employees && (
+                                            {item?.name && (
                                               <Col md={3} className="mb-3">
                                                 <div>
                                                   <h3 className="application-heading">
-                                                    {t("totalEmployees")}
+                                                    {t("developerName")}
                                                   </h3>
                                                   <p className="application-text">
-                                                    {
-                                                      item?.company
-                                                        ?.total_employees
-                                                    }
-                                                  </p>
-                                                </div>
-                                              </Col>
-                                            )}
-                                            {item?.company?.location && (
-                                              <Col md={3} className="mb-3">
-                                                <div>
-                                                  <h3 className="application-heading">
-                                                    {t("location")}
-                                                  </h3>
-                                                  <p className="application-text">
-                                                    {item?.company?.location}
+                                                    {item?.name
+                                                      ? item?.name
+                                                      : "Not Mentioned"}
                                                   </p>
                                                 </div>
                                               </Col>
                                             )}
                                             {item?.address && (
-                                              <Col md={3} className="mb-3">
+                                              <Col md={3}>
                                                 <div>
                                                   <h3 className="application-heading">
-                                                    {t("address")}
+                                                    Address
                                                   </h3>
                                                   <p className="application-text">
                                                     {item?.address}
@@ -2354,16 +2321,18 @@ const Applications = () => {
                                                 </div>
                                               </Col>
                                             )}
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("country")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.country}
-                                                </p>
-                                              </div>
-                                            </Col>
+                                            {item?.country && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("country")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.country}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
                                             {item?.state && (
                                               <Col md={3} className="mb-3">
                                                 <div>
@@ -2376,203 +2345,18 @@ const Applications = () => {
                                                 </div>
                                               </Col>
                                             )}
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("city")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.city}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("phoneNumber")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.phone_number}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("typeOfCompany")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.type_of_company
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Total Recruiter
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.total_it_recruiter
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Website
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.website}
-                                                </p>
-                                              </div>
-                                            </Col>
-
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Service offering
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.service_offering
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company email
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.email}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company yearly revenue
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.yearly_revenue
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company GST number
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.gst_number}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Turn around time to close
-                                                  contract position
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.trun_around_time_to_close_contract_position
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Turn around time to close
-                                                  permanent position
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.trun_around_time_to_close_permanent_position
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Contact phone details
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.proprietor_contact_number
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Contact person email
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.proprietor_contact_person_email
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Contact person name
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.proprietor_contact_person_name
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  CEO email
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.company
-                                                      ?.proprietor_email
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Tax ID
-                                                </h3>
-                                                <p className="application-text">
-                                                  {
-                                                    item?.tax_id
-
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
+                                            {item?.city && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("city")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.city}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
                                             {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -2583,6 +2367,307 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col> */}
+
+                                            {item?.email && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("email")}
+                                                  </h3>
+                                                  <p className="application-text">{item?.email}</p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.work_preference && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Work Preference
+                                                  </h3>
+                                                  <p className="application-text">{item?.work_preference}</p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.ready_to_relocate && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Ready to relocate
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.ready_to_relocate}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.time_zone && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Time Zone
+                                                  </h3>
+                                                  <p className="application-text">{item?.time_zone}</p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.language_preference && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Language
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {
+                                                      item?.language_preference
+                                                    }
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.developer_detail
+                                              ?.github_url && (
+                                                <Col md={3} className="mb-3">
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Github Url
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.github_url
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+
+                                            {item?.other_skills?.length > 0 && (
+                                              <Col md={3} className="mb-3 ">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Skills
+                                                  </h3>
+                                                  <ul className="need-skill-list  mb-0">
+                                                    {item?.other_skills?.map(
+                                                      (item, index) => {
+                                                        return (
+                                                          <>
+                                                            <li key={index}>
+                                                              {item?.skill}
+                                                            </li>
+                                                          </>
+                                                        );
+                                                      }
+                                                    )}
+                                                  </ul>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.developer_detail
+                                              ?.professional_title && (
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Designation
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.professional_title
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+
+                                            {item?.developer_detail
+                                              ?.how_did_you_hear_about_rexett && (
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      How Did you hear about
+                                                      rexett?
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.how_did_you_hear_about_rexett
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+                                            {item?.created_at && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Created At
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {moment(
+                                                      item?.created_at
+                                                    ).format("MMMM Do YYYY")}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail
+                                              ?.total_experience && (
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Experience
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.total_experience
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+                                            {(
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Expertise Skills
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {/* {
+                                                      item?.expertises[0]
+                                                        ?.skill
+                                                    } */}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">Screening Round</h3>
+                                                  {item.interviews && item.interviews.length > 0 ? (() => {
+                                                    // Sort interviews by created_at in descending order to get the latest interview first
+                                                    const sortedInterviews = [...item.interviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                                                    const latestInterview = sortedInterviews[0];
+
+                                                    // Calculate average rating if there is feedback
+                                                    const feedbacks = latestInterview.shareFeedbacks || [];
+                                                    const skillRatingsMap = {};
+
+                                                    // Collect ratings by skill name
+                                                    feedbacks.forEach(feedback => {
+                                                      const skillRatings = feedback.skillRatings || [];
+                                                      skillRatings.forEach(rating => {
+                                                        if (!skillRatingsMap[rating.skill_name]) {
+                                                          skillRatingsMap[rating.skill_name] = [];
+                                                        }
+                                                        skillRatingsMap[rating.skill_name].push(rating.rating);
+                                                      });
+                                                    });
+
+                                                    // Calculate average rating per skill
+                                                    const skillAverages = Object.keys(skillRatingsMap).map(skillName => {
+                                                      const ratings = skillRatingsMap[skillName];
+                                                      const avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+                                                      return avgRating;
+                                                    });
+
+                                                    // Calculate overall average rating
+                                                    const overallAverageRating = skillAverages.length > 0 ? (skillAverages.reduce((a, b) => a + b, 0) / skillAverages.length).toFixed(1) : 'N/A';
+
+                                                    return (
+                                                      <div className="d-inline-flex align-items-center gap-2">
+                                                        <span className="status-upcoming lh-1">
+                                                          <span className="d-inline-flex align-items-center gap-1">
+                                                            <FaStar />
+                                                            {overallAverageRating}
+                                                          </span>
+                                                        </span>
+                                                        {/* Show the "View Report" button only if there is feedback */}
+                                                        {feedbacks.length > 0 && (
+                                                          <button
+                                                            onClick={() => handleInterviewReport(latestInterview.id)}
+                                                            className="main-btn font-14 text-decoration-none"
+                                                          >
+                                                            View Report
+                                                          </button>
+                                                        )}
+                                                      </div>
+                                                    );
+                                                  })() : (
+                                                    <div>No Interviews Found</div>
+                                                  )}
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Certifications
+                                                  </h3>
+                                                  <Link to={'#'} className="text-green text-decoration-none">AI certificate <FaEye /> </Link>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            <Col>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Resume
+                                                </h3>
+                                                <RexettButton
+                                                  onClick={(e) =>
+                                                    handleDownload(
+                                                      e,
+                                                      item?.developer_detail?.resume
+                                                    )
+                                                  }
+                                                  disabled={
+                                                    !item?.developer_detail?.resume
+                                                  }
+                                                  icon={
+                                                    selectedRejectedBtn === index ? (
+                                                      approvedLoader
+                                                    ) : (
+                                                      <div ref={targetRef}>
+                                                        <HiDownload />
+                                                      </div>
+                                                    )
+                                                  }
+                                                  className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume &&
+                                                    "not-allowed"
+                                                    }`}
+                                                />
+                                              </div>
+                                            </Col>
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Send Email
+                                                </h3>
+                                                <div className="d-inline-flex gap-1 align-items-center">
+                                                  <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                                    <span className="status-email position-relative"
+                                                      onClick={() => {
+                                                        if (!loading && item?.verification_reminder_count < 3) {
+                                                          handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                        }
+                                                      }}
+                                                    >
+                                                      <span className="email_count"> {emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                                      {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
+                                                    </span>
+                                                  </OverlayTrigger>
+                                                </div>
+                                              </div>
+                                            </Col>
                                           </Row>
                                         </div>
                                       </td>
