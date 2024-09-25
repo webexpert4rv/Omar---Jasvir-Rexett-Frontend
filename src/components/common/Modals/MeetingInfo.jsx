@@ -26,6 +26,7 @@ import RadioGroupField from "../../RadioGroupField";
 import { getDifferenceFromTwoDates } from "../../utils";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
+import { updateStatus } from "../../../redux/slices/adminDataSlice";
 
 const MARK_AS_OPTIONS = [
   {
@@ -38,7 +39,7 @@ const MARK_AS_OPTIONS = [
   },
   {
     label: "Canceled",
-    value: "canceled",
+    value: "cancelled",
   },
 ];
 
@@ -129,9 +130,9 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     function start() {
       gapi.client
         .init({
-          apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+          apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
           clientId:
-            "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES,
         })
@@ -205,7 +206,6 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     }
     setLoader(true);
     const client = Client.initWithMiddleware({ authProvider });
-
     try {
       // Fetch the online meeting details using the meeting ID
       const id =
@@ -246,14 +246,14 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   };
 
   const handleMarkAsStatusChange = (newStatus) => {
+    // 
     const payload = {
-      applicationId: id,
-      developerId: developer_id,
-      jobId: jobId,
-      newStatus: newStatus,
-    };
+      status:newStatus
+    }
+    const interviewId = details?.interview.id
     console.log(payload,"payload");
     // dispatch(changeJobStatus(payload));
+    dispatch(updateStatus(payload,interviewId))
     setValue("mark_as", newStatus);
   };
 
