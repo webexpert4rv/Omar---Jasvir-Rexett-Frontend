@@ -991,13 +991,14 @@ export function newEmployeeCreate(payload){
     }
 }
 
-export function getUpdateRolePermission(payload){
+export function getUpdateRolePermission(payload,callback){
     return async (dispatch)=>{
         try{
             let result = await clientInstance.post(`admin/create-update-role-permissions` ,{...payload})
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
+            return callback()
         }catch(error){
             const message = error?.response.data.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

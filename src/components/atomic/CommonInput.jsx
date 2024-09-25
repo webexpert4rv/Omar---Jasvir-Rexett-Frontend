@@ -59,7 +59,6 @@ const CommonInput = ({
     }
   };
 
-  console.log(label,"label")
 
   return (
     <Form.Group className="mb-3">

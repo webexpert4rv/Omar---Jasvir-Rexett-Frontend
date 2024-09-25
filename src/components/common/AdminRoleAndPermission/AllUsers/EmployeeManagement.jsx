@@ -49,7 +49,7 @@ const EmployeeManagement = () => {
     }
   
     const handleAction=()=>{
-        dispatch(deleteEmployee(empId))
+            dispatch(deleteEmployee(empId))
         setDeleteShowModal(false)
     }
 
@@ -279,7 +279,7 @@ const EmployeeManagement = () => {
             smallLoader={smallLoader}
             text={"Are you sure, you want to delete this Employee"}
           />
-            <RolesPermissionWrapper show={newEmployee || editRoleModal} handleClose={handleCloseModal} heading={isEdit ? "Edit Employee" : "Add Employee"} modalName="employee" options={EMPLOYEE_ROLE} id={selectedEmpId} data={empDetails} setIsEdit={setIsEdit} isEdit={isEdit}/>
+            <RolesPermissionWrapper show={newEmployee || editRoleModal} handleClose={handleCloseModal} heading={editRoleModal ? "Edit Employee" : "Add Employee"} modalName="employee" options={EMPLOYEE_ROLE} id={selectedEmpId} data={empDetails} setIsEdit={setIsEdit} isEdit={isEdit}/>
         </>
     )
 }

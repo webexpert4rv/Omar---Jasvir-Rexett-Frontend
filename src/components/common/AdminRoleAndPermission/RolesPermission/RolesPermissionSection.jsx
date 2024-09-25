@@ -48,16 +48,20 @@ const RolesPermissionSection = () => {
             isTrue: !modalConfiguration.isTrue
         })
     }
-    const handleCheckStatus = (item_id, role_id, status) => {
+    const handleCheckStatus = (role , item_id, role_id) => {
+        console.log(status,"role")
         console.log(item_id, "item_id")
         console.log(role_id, "role_id")
         let data = {
             role_id: role_id,
             permission_id: item_id,
-            status: status
+            status: role?.checked===true ? "active" : "inactive",
+            // status:"active"
 
         }
-        dispatch(getUpdateRolePermission(data))
+        dispatch(getUpdateRolePermission(data,()=>{
+            dispatch(getAllPermissionSeeder())
+        }))
     }
 
     // const action_application = (
@@ -221,8 +225,8 @@ const RolesPermissionSection = () => {
                                                                     <Form.Check
                                                                         type="checkbox"
                                                                         className="permission-checkbox"
-                                                                        onChange={() => handleCheckStatus(item?.id, role?.id, "active")}
-                                                                        checked={role?.checked}
+                                                                        onChange={(e) => handleCheckStatus(e.target.value,item?.id, role?.id)}
+                                                                        // checked={role?.checked}
                                                                     />
                                                                 </td>
                                                           

@@ -57,12 +57,6 @@ const RolesPermissionWrapper = ({
   const [previewImg , setPreviewImage] = useState()
 
 
-
-  console.log(isEdit, "editttt")
-  console.log(allAdminEmployees, "allAdminEmployees")
-  console.log(data, "data")
-  console.log(id, "id---------")
-
   let PERMISSIONS = allPermissionList?.roles?.map((val) => (
     { label: val?.name, value: val?.name }
   ))
