@@ -137,8 +137,8 @@ const SingleJobDetails = () => {
     useEffect(() => {
         function start() {
             gapi.client.init({
-                apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+                apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+                clientId:"982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(() => {
@@ -190,7 +190,7 @@ const SingleJobDetails = () => {
     const handleSelect = (key) => {
         setCurrentTab(key);
         setSelectedTabsData(singleJobDescription?.job_applications[key]);
-        if (key == "suggested") {
+        if (key == "suggestions") {
             setCurrnetTabsStatus("shortlisted");
         }
         if (key == "shortlisted") {
@@ -203,6 +203,8 @@ const SingleJobDetails = () => {
             setCurrnetTabsStatus("application");
         }
     };
+    console.log(currentTab,"currentTab")
+    console.log(currentTabsStatus,"currentTabsStatus")
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
@@ -259,7 +261,7 @@ const SingleJobDetails = () => {
 
     const handleJobStatusAction = (e, data) => {
         console.log(devId,"devid")
-        console.log(data?.status, "status")
+        console.log(data?.status, "newSttas")
         e.preventDefault();
         if (data.status == "ended") {
             dispatch(
@@ -367,6 +369,8 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
+        console.log(type,"type")
+        console.log(status,"status")
         console.log(id,"helloId")
         setDevType(type)
         setApplicationId(aplnId)
@@ -540,7 +544,8 @@ const SingleJobDetails = () => {
     const closeFeedback = () => setShowDetails(false);
 
     const handleFeedbackClick = (interviewId) => {
-        navigate('/client/interview-feedback', {
+        const role = localStorage.getItem("role");
+        navigate(`/${role}/interview-feedback`, {
             state: { interviewId },
         });
     };

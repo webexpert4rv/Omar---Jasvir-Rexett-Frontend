@@ -709,12 +709,12 @@ export function postCandidateInterview(payload, callback) {
       let result = await clientInstance.post(`common/interview`,{...payload});
        toast.success("Interview is scheduled",{ position: "top-center" })
        dispatch(setActionSuccessFully());
-      
     } catch (error) {
       const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
+    return callback();
   };
 }
 

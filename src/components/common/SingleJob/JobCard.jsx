@@ -35,6 +35,7 @@ const JobCard = ({
   );
 console.log(role,"role")
   console.log(type,"type")
+  console.log(jobStatus,"jobStatus")
   const scheduleInterview = (
     <Tooltip>Move to Interview</Tooltip>
   )

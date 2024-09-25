@@ -5,7 +5,7 @@ import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices
 import { useDispatch } from "react-redux";
 const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
    
-   
+   console.log(type,"wrongType")
     const callBackBtn=(e )=>{
         let data={
             status: type,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
-import sidebarLogo2 from "../../assets/img/rexett-logo-white2.png";
+import sidebarLogo2 from "../../assets/img/favicon.png";
 import { Link, NavLink } from "react-router-dom";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";

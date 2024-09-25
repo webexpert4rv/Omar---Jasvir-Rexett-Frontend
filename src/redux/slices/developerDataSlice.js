@@ -223,7 +223,7 @@ export const {
 
 export default developerDataSlice.reducer;
 
-export function fetchDeveloperCv(payload, callback) {
+export function fetchDeveloperCv(callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -231,6 +231,7 @@ export function fetchDeveloperCv(payload, callback) {
       if (result.status === 200) {
         dispatch(setSuccessDeveloperData(result.data.data));
       }
+      return callback(result.data.data)
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -623,6 +624,26 @@ export function deleteEducationCv(id, payload, callback) {
       );
       if (result.status === 200) {
         toast.success("Education is Deleted", { position: "top-center" });
+        dispatch(setSuccessActionData());
+        return callback();
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function deleteCertificate(id,callback) {
+  return async (dispatch) => {
+    //  dispatch(setSmallLoader())
+    try {
+      let result = await clientInstance.delete(
+        `common/delete-certification/${id}`
+      );
+      if (result.status === 200) {
+        toast.success("Certificate is Deleted", { position: "top-center" });
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -1238,9 +1259,8 @@ export function fileUploadForWeb(fileData, callback) {
 }
 
 export const uploadFileToS3Bucket = (payload, callback) => {
-  console.log(payload,"payload")
   return async (dispatch) => {
-    // dispatch(setScreenLoader());
+    dispatch(setSmallLoader())
     try {
       let result = await clientInstance.post(`/web/upload-file/`, payload);
       callback && callback(result?.data?.data?.Location);
@@ -1498,6 +1518,19 @@ export function getChatRoomMembers(id) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       // dispatch(setFailDeveloperData());
+    }
+  };
+}
+export function getUploadCertificate(payload) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("/common/add-certification/",{...payload});
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
     }
   };
 }
