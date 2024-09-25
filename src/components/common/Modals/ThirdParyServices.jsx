@@ -5,7 +5,7 @@ import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
 import { msalInstance } from "../../../services/msalConfig";
 import { DISCOVERY_DOCS, SCOPES } from "../../../helper/utlis";
-const ThirdPartyServices = ({ show, handleClose, onClick, smallLoader, text, syncCreatedMeetingsWithGoogle, meetingLink }) => {
+const ThirdPartyServices = ({ show, handleClose, onClick, loader, text, syncCreatedMeetingsWithGoogle, meetingLink }) => {
   console.log(text, "textqwewqeq")
   const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 
@@ -114,7 +114,7 @@ const ThirdPartyServices = ({ show, handleClose, onClick, smallLoader, text, syn
           : <p>Meeting Link :{meetingLink}</p>
         }
         <div className="text-center">
-          <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink == null ? smallLoader ? <RexettSpinner /> : "Get Link" : "Submit"}  </Button>
+          <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink == null ? loader ? <RexettSpinner /> : "Get Link" : "Submit"}  </Button>
         </div>
       </Modal.Body>
     </Modal>

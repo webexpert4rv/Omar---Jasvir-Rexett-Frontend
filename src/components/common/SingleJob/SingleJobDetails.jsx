@@ -540,7 +540,8 @@ const SingleJobDetails = () => {
     const closeFeedback = () => setShowDetails(false);
 
     const handleFeedbackClick = (interviewId) => {
-        navigate('/client/interview-feedback', {
+        const role = localStorage.getItem("role");
+        navigate(`/${role}/interview-feedback`, {
             state: { interviewId },
         });
     };

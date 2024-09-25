@@ -34,18 +34,18 @@ const MARK_AS_OPTIONS = [
     label: "Completed",
     value: "completed",
   },
-  {
-    label: "Incomplete",
-    value: "incomplete",
-  },
-  {
-    label: "Canceled",
-    value: "canceled",
-  },
-  {
-    label: "Pending",
-    value: "pending",
-  },
+//   {
+//     label: "Incomplete",
+//     value: "incomplete",
+//   },
+//   {
+//     label: "Canceled",
+//     value: "canceled",
+//   },
+//   {
+//     label: "Pending",
+//     value: "pending",
+//   },
 ];
 
 const DISCOVERY_DOCS = [
@@ -67,12 +67,12 @@ const SCOPES = [
 
 const MeetingInfo = ({ show, handleClose, details }) => {
   const dispatch = useDispatch();
-  const {id:jobId} = useParams();
+  const { id: jobId } = useParams();
   const { instance, accounts } = useMsal();
   const { register, errors, values, setValue, watch } = useForm();
   const [showDetailsSection, setShowDetailsSection] = useState(false);
   const [info, setInfo] = useState({});
-  const [joinUrl,setJoinUrl] = useState("");
+  const [joinUrl, setJoinUrl] = useState("");
   const [loader, setLoader] = useState(false);
   const [isCancelModal, setCancelModal] = useState({
     isTrue: false,
@@ -81,19 +81,22 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const {
     interview: {
-      id,// application id
+      id, // application id
       title,
       developer_name,
       interviewers_list,
       meeting_date,
       meeting_time,
       status,
-      developer_id
+      developer_id,
     },
   } = details;
-  console.log(details,"details")
+  console.log(details, "details");
   const cancelMeeting = () => {
     setCancelModal({ isTrue: true });
+  };
+  const closeCancelModal = () => {
+    setCancelModal({ isTrue: false });
   };
   const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
     account: accounts[0],
@@ -136,8 +139,9 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     function start() {
       gapi.client
         .init({
-            apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
-            clientId: "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
+          apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+          clientId:
+            "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES,
         })
@@ -184,24 +188,74 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       .reduce((acc, val) => acc + val, 0);
   };
 
-  const checkEventStatus = async () => {
-    const response = await gapi.client.calendar.events.get({
-      calendarId: "primary",
-      eventId: "siq7ht5c512mukvjqag7qgb84k",
-    });
+  const checkInterviewStatus = async () => {
+    const meeting_platform = details?.interview?.meeting_platform;
+    console.log(meeting_platform, "meeting_platform");
+    setLoader((prev) => true);
+    if (meeting_platform === "microsoft_team") {
+      if (!isAuthenticated) {
+        console.log("User not authenticated");
+        return;
+      }
+      const client = Client.initWithMiddleware({ authProvider });
 
-    if (response.result.status === "cancelled") {
-      alert("This meeting was cancelled.");
-    } else {
-      const now = new Date();
-      const meetingStart = new Date(response.result.start.dateTime);
-      if (meetingStart < now) {
-        fetchMeetingDetails("siq7ht5c512mukvjqag7qgb84k");
-        // alert('The meeting should have started or is over.');
+      try {
+        // Fetch the online meeting details using the meeting ID
+        const joinUrl = details?.interview?.meeting_link;
+        const id = joinUrl;
+        // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
+        const meetingResponse = await client
+          .api("/me/onlineMeetings")
+          .filter(`JoinWebUrl eq '${id}'`)
+          .get();
+
+        if (meetingResponse) {
+          const res = meetingResponse.value[0];
+          setShowDetailsSection(true);
+          const info = {
+            callDuration: `${getDifferenceFromTwoDates(
+              res?.startDateTime,
+              res?.endDateTime
+            )} hours`,
+            attendees: res?.participants?.attendees,
+          };
+          setInfo(info);
+          console.log(meetingResponse, "meetingResponse");
+          console.log(info, "info");
+        }
+        // Extract meeting details
+        const subject = meetingResponse.subject;
+        const startTime = meetingResponse.startDateTime;
+        const endTime = meetingResponse.endDateTime;
+        const duration = endTime ? new Date(endTime) - new Date(startTime) : 0; // Duration in milliseconds 
+
+        console.log(`Meeting: ${subject}`);
+        console.log(`Start Time: ${startTime}`);
+        console.log(`End Time: ${endTime}`);
+        console.log(`Duration: ${duration / 60000} minutes`); // Duration in minute
+      } catch (error) {
+        console.error("Error fetching meeting details:", error);
+      }
+    } else if (meeting_platform === "google_meet") {
+      const response = await gapi.client.calendar.events.get({
+        calendarId: "primary",
+        eventId: "siq7ht5c512mukvjqag7qgb84k",
+      });
+
+      if (response.result.status === "cancelled") {
+        alert("This meeting was cancelled.");
       } else {
-        alert("The meeting is still scheduled.");
+        const now = new Date();
+        const meetingStart = new Date(response.result.start.dateTime);
+        if (meetingStart < now) {
+          fetchMeetingDetails("siq7ht5c512mukvjqag7qgb84k");
+          // alert('The meeting should have started or is over.');
+        } else {
+          alert("The meeting is still scheduled.");
+        }
       }
     }
+    setLoader((prev) => false);
   };
 
   const getMeetingDetails = async (meetingId) => {
@@ -214,9 +268,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
     try {
       // Fetch the online meeting details using the meeting ID
-      const id =
-             joinUrl
-        // "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
+      const id = joinUrl;
+      // "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
       const meetingResponse = await client
         .api("/me/onlineMeetings")
         .filter(`JoinWebUrl eq '${id}'`)
@@ -260,13 +313,13 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     //   newStatus: newStatus,
     // };
     const payload = {
-        status:newStatus
-    }
-    console.log(payload, details.interview.id,"payload");
+      status: newStatus,
+    };
+    console.log(payload, details.interview.id, "payload");
     // dispatch(changeJobStatus(payload));
-    dispatch(updateStatus(payload, details?.interview?.id,handleClose)) //interview id
+    dispatch(updateStatus(payload, details?.interview?.id, handleClose)); //interview id
     setValue("mark_as", newStatus);
-    dispatch(singleJobPostData(jobId, () => { }));
+    dispatch(singleJobPostData(jobId, () => {}));
   };
 
   // Call the function with a specific meeting ID
@@ -450,11 +503,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
-                onClick={() => checkEventStatus()}
+                onClick={() => checkInterviewStatus()}
               >
-                Check Interview Status
+               {loader ? <RexettSpinner /> : "Check Interview Status"}
               </Button>
-              <Button
+              {/* <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
                 onClick={() =>
@@ -464,7 +517,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 }
               >
                 {loader ? <RexettSpinner /> : "Check microsoft"}
-              </Button>
+              </Button> */}
             </div>
           </div>
           {showDetailsSection && (
@@ -487,7 +540,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                       radioOptions={MARK_AS_OPTIONS}
                       register={register}
                       fieldName="mark_as"
-                      handleMarkAsStatusChange ={handleMarkAsStatusChange}
+                      handleMarkAsStatusChange={handleMarkAsStatusChange}
                     />
                   </div>
                 </Col>
@@ -496,7 +549,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           )}
         </Modal.Body>
       </Modal>
-      <RejectModal show={isCancelModal?.isTrue} onClick={onClick} />
+      <RejectModal
+        show={isCancelModal?.isTrue}
+        onClick={onClick}
+        handleClose={closeCancelModal}
+      />
     </>
   );
 };

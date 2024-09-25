@@ -19,8 +19,9 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-
 import {
   getTimeZoneList,
   postCandidateInterview,
+  singleJobPostData,
 } from "../../../redux/slices/clientDataSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   getAllEvents,
   getDeveloperList,
@@ -49,8 +50,10 @@ const Schedulemeeting = ({
     formState: { errors },
   } = useForm({});
   const dispatch = useDispatch();
+  const {id}= useParams();
   const location = useLocation();
   const [data, setData] = useState();
+  const [loader, setLoader] = useState(false);
   const { developerList } = useSelector((state) => state.adminData);
   const { smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
@@ -58,6 +61,7 @@ const Schedulemeeting = ({
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [gogleEventId, setGoogleEventID] = useState(null);
+  const [microsoftEventId, setMicrosoftEventId] = useState(null);
   const [events, setEvents] = useState([]);
 
   const [eventDetails, setEventDetails] = useState({
@@ -82,7 +86,6 @@ const Schedulemeeting = ({
     });
     return newOptions;
   };
-  let id = location.pathname.split("/")[3];
 
   const [firstSlot, setFirstSlot] = useState("");
   const [meetingPlatform, setMeetingPlatform] = useState();
@@ -138,7 +141,7 @@ const Schedulemeeting = ({
       }
     } catch (error) {
       console.error("Error creating event:", error);
-    }
+    } 
   };
 
   useEffect(() => {
@@ -346,15 +349,22 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
-        event_id: gogleEventId,
+        event_id: microsoftEventId,
       };
-      dispatch(postCandidateInterview(payload));
+      dispatch(postCandidateInterview(payload,()=>{
+        dispatch(getAllEvents());
+        handleClose();
+        dispatch(singleJobPostData(id, () => {}));
+      }));
     }
+    setMeetingLink(null);
+    setGoogleEventID(null);
+    setMicrosoftEventId(null);
+    setValue("meeting_type", "instant");
     reset();
   };
 
   let r = watch("meeting_platform");
-  console.log(watch("meeting_platform"), "sdfsdf");
   useEffect(() => {
     setThirdParty(
       r?.value == "google_meet" || r?.value == "microsoft_team" ? true : false
@@ -362,7 +372,7 @@ const Schedulemeeting = ({
   }, [r]);
 
   const handleCloseThirdPary = () => {
-    setValue("meeting_platform","");
+    // setValue("meeting_platform","");
     setThirdParty(false);
   };
 
@@ -388,66 +398,89 @@ const Schedulemeeting = ({
       return result;
     }
   };
-  
+  console.log(meetingLink,"this is meeting link");
   
   console.log(watch("meeting_end_time"), "meeting_start_time ");
-  const syncCreatedMeetingsWithGoogle = (e) => {
-    const { title, meeting_start_time, meeting_end_time, time_zone, instant_date } = watch();
+  const syncCreatedMeetingsWithGoogle = async(e) => {
+    setLoader(true);
+    const { title, meeting_start_time, meeting_end_time, time_zone, instant_date, meeting_platform } = watch();
+    const meetingPlatform = meeting_platform?.value
 
     e.stopPropagation();
-    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      console.log("User not authenticated");
-      return;
-    }
-
-    const newEvent = {
-      summary: title || "Untitled Meeting",
-      location: "jkk",
-      description: "mmmm",
-      start: {
-        // dateTime: "2024-08-26T16:50:00",
-        // timeZone: "America/Los_Angeles",
-        dateTime: getDateTimeString(instant_date, meeting_start_time),
-        timeZone: time_zone?.label,
-      },
-      end: {
-        dateTime: getDateTimeString(instant_date, meeting_end_time),
-        timeZone: time_zone?.label,
-
-        // dateTime: "2024-08-29T16:50:00",
-        // timeZone: "America/Los_Angeles",
-      },
-      conferenceData: {
-        createRequest: {
-          requestId: generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
-          conferenceSolutionKey: {
-            type: "hangoutsMeet", // Use Google Meet
+    if(meetingPlatform === "google_meet"){
+      if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        console.log("User not authenticated");
+        return;
+      }
+  
+      const newEvent = {
+        summary: title || "Untitled Meeting",
+        location: "jkk",
+        description: "mmmm",
+        start: {
+          // dateTime: "2024-08-26T16:50:00",
+          // timeZone: "America/Los_Angeles",
+          dateTime: getDateTimeString(instant_date, meeting_start_time),
+          timeZone: time_zone?.label,
+        },
+        end: {
+          dateTime: getDateTimeString(instant_date, meeting_end_time),
+          timeZone: time_zone?.label,
+  
+          // dateTime: "2024-08-29T16:50:00",
+          // timeZone: "America/Los_Angeles",
+        },
+        conferenceData: {
+          createRequest: {
+            requestId: generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
+            conferenceSolutionKey: {
+              type: "hangoutsMeet", // Use Google Meet
+            },
           },
         },
-      },
-    };
-    console.log(newEvent, "payload for sync"); 
-
-    gapi.client.calendar.events
-      .insert({
-        calendarId: "primary",
-        resource: newEvent,
-        conferenceDataVersion: 1, // Required to create Google Meet link
-      })
-      .then((response) => {
-        console.log("Event created:", response.result);
-        if (response.result.hangoutLink) {
-          // setValue("meeting_platform","");
-          console.log("Google Meet link:", response.result.hangoutLink);
-          setMeetingLink(response.result.hangoutLink);
-          setGoogleEventID(response?.result?.id)
+      };
+  
+      gapi.client.calendar.events
+        .insert({
+          calendarId: "primary",
+          resource: newEvent,
+          conferenceDataVersion: 1, // Required to create Google Meet link
+        })
+        .then((response) => {
+          console.log("Event created:", response.result);
+          if (response.result.hangoutLink) {
+            // setValue("meetingPlatform","");
+            console.log("Google Meet link:", response.result.hangoutLink);
+            setMeetingLink(response.result.hangoutLink);
+            setGoogleEventID(response?.result?.id)
+          }
+          setLoader(false);
+        })
+        .catch((error) => {
+          console.error("Error creating event:", error);
+          setLoader(false);
+          // setValue("meetingPlatform","");
+  
+        });
+    } else if(meetingPlatform === "microsoft_team"){
+      if (!isAuthenticated) {
+        console.log('User not authenticated');
+        return;
+      }
+      const client = Client.initWithMiddleware({ authProvider });
+      try {
+       let response= await client.api('/me/events').post(eventDetails);
+        fetchCalendarEvents(); // Fetch the updated events list
+        if (response.onlineMeeting) {
+          setMeetingLink(response?.onlineMeeting?.joinUrl);
+          setMicrosoftEventId(response?.id)
+          console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
         }
-      })
-      .catch((error) => {
-        console.error("Error creating event:", error);
-        // setValue("meeting_platform","");
-
-      });
+      } catch (error) {
+        console.error('Error creating event:', error);
+      }
+      setLoader(false);
+    }
     setThirdParty(false);
   };
 
@@ -796,6 +829,7 @@ const Schedulemeeting = ({
         }
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
+        loader={loader}
       />
       {/* <Button onClick={createCalendarEvent}>Hlp</Button> */}
     </>
