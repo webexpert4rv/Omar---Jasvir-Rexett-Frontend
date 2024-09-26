@@ -95,6 +95,8 @@ const Schedulemeeting = ({
   const { timeZoneList } = useSelector((state) => state.clientData);
   const defaultInterview = localStorage.getItem("email");
 
+  const isAdminSingleJob = location.pathname.includes('admin-single-job');
+
   useEffect(() => {
     dispatch(getTimeZoneList());
     dispatch(getDeveloperList());
@@ -349,6 +351,7 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
+        type: isAdminSingleJob ? 'interview' : 'screening',
         event_id: microsoftEventId,
       };
       dispatch(postCandidateInterview(payload,()=>{

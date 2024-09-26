@@ -1520,16 +1520,16 @@ const Applications = () => {
                                           return (
                                             <>
                                               {/* Show Invite accepted status if the latest interview is accepted */}
-                                              {latestInterview?.status === "accepted" && latestInterview?.is_accepted && (
+                                              {latestInterview?.status === "scheduled" && (
                                                 <div>
-                                                  <span className="status-finished">Invite accepted</span>
+                                                  <span className="status-finished">Accepted</span>
                                                 </div>
                                               )}
 
                                               {/* Show Invite declined status if the latest interview is pending and not accepted */}
-                                              {latestInterview?.status === "pending" && latestInterview?.is_accepted === false && (
+                                              {latestInterview?.status === "declined" && (
                                                 <div className="d-inline-flex align-items-center gap-2">
-                                                  <span className="status-rejected">Invite declined</span>
+                                                  <span className="status-rejected">Rejected</span>
                                                   <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
                                                     <Button
                                                       onClick={() => handleShowScheduleScreening(item, item?.id)}
@@ -1543,14 +1543,14 @@ const Applications = () => {
                                               )}
 
                                               {/* Show Invite sent status if the latest interview is pending and is_accepted is null */}
-                                              {latestInterview?.status === "pending" && latestInterview?.is_accepted === null && (
+                                              {latestInterview?.status === "pending" && (
                                                 <div>
                                                   <span className="status-upcoming">Invite sent</span>
                                                 </div>
                                               )}
 
                                               {/* Show Share Feedback button if the latest interview is completed, accepted, and no feedbacks */}
-                                              {latestInterview?.status === "completed" && latestInterview?.is_accepted && feedbacks.length <= 0 && (
+                                              {latestInterview?.status === "completed" && feedbacks.length <= 0 && (
                                                 <button
                                                   onClick={() => handleFeedbackClick(latestInterview?.id)}
                                                   className="main-btn font-14 text-decoration-none"
