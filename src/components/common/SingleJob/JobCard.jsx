@@ -86,7 +86,6 @@ console.log(role,"role")
               {data?.map((item, index) => {
                 return (
                   <>
-
                     <div
                       className={
                         item?.recommed
@@ -94,18 +93,15 @@ console.log(role,"role")
                           : "developer-card p-0"
                       }
                     >
-
                       {/* <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div> */}
                       <div className="tag-developer">
-                        {type && type === "suggested"  ? "Suggest" : type}
+                        {type && type === "suggested" ? "Suggest" : type}
                       </div>
-                      <div className="overflow-hidden inner-dev-card">
-                        <div
-                          className="user-imgbx"
-                          onClick={(e) =>
-                            handleDeveloperCard(e, item?.id)
-                          }
-                        >
+                      <div
+                        className="overflow-hidden inner-dev-card"
+                        onClick={(e) => handleDeveloperCard(e, item?.developer_id)}
+                      >
+                        <div className="user-imgbx">
                           <img
                             src={
                               item?.developer?.profile_picture
@@ -119,7 +115,10 @@ console.log(role,"role")
                         <div className="text-center">
                           <h3 className="user-name">{item?.developer?.name}</h3>
                           <div className="text-center mt-2">
-                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>{item?.matchPercentage}%</strong></span>
+                            <span className="status-finished w-auto d-inline-block mb-2">
+                              Profile Match -{" "}
+                              <strong>{item?.matchPercentage}%</strong>
+                            </span>
                           </div>
                           <div className="mb-2">
                             <span className="status-upcoming d-inline-flex align-items-center gap-1">
@@ -127,15 +126,26 @@ console.log(role,"role")
                             </span>
                           </div>
                           {/* <p className="designation-user">{item?.name}</p> */}
-                          <p className="email-user">{item?.developer?.developer?.email}</p>
+                          <p className="email-user">
+                            {item?.developer?.developer?.email}
+                          </p>
                           <ul className="social-icons">
                             <li>
-                              <Link to={item?.developer?.developer_detail?.github_url}>
+                              <Link
+                                to={
+                                  item?.developer?.developer_detail?.github_url
+                                }
+                              >
                                 <FaGithub />
                               </Link>
                             </li>
                             <li>
-                              <Link to={item?.developer?.developer_detail?.linkedin_url}>
+                              <Link
+                                to={
+                                  item?.developer?.developer_detail
+                                    ?.linkedin_url
+                                }
+                              >
                                 <FaLinkedin />
                               </Link>
                             </li>
@@ -144,12 +154,13 @@ console.log(role,"role")
                                                 </li> */}
                           </ul>
                           <div className="job-card-btns">
-                            {role === "admin" || role === "client" &&
+                            {role === "admin" ||
+                            (role === "client" &&
                               (type == "Shortlisted" ||
                                 type === "suggested" ||
-                                 type == "applied" ||
+                                type == "applied" ||
                                 type === "interviewing") &&
-                              type !== "Hired" ? (
+                              type !== "Hired") ? (
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={developerCardToolTip}
@@ -159,11 +170,15 @@ console.log(role,"role")
                                   disabled={
                                     jobStatus === "Ended" ? true : false
                                   }
-                                  onClick={(e) =>{
-                                    handleJobStatusModal(e, item?.developer?.id,"shortlisted", type,item?.id)
-                                  }
-                                   
-                                  }
+                                  onClick={(e) => {
+                                    handleJobStatusModal(
+                                      e,
+                                      item?.developer?.id,
+                                      "shortlisted",
+                                      type,
+                                      item?.id
+                                    );
+                                  }}
                                   className="w-100 main-btn text-black border-white mt-3"
                                 >
                                   {type === "interviewing" ? (
@@ -179,25 +194,27 @@ console.log(role,"role")
                               ""
                             )}
                             {/* {role === "admin"    && ( */}
-                              <OverlayTrigger
-                                placement="bottom"
-                                overlay={rejectedCardToolTip}
+                            <OverlayTrigger
+                              placement="bottom"
+                              overlay={rejectedCardToolTip}
+                            >
+                              <Button
+                                variant="danger"
+                                onClick={(e) =>
+                                  handleJobStatusModal(
+                                    e,
+                                    item?.developer?.id,
+                                    "rejected",
+                                    type,
+                                    item?.id
+                                  )
+                                }
+                                disabled={jobStatus === "Ended" ? true : false}
+                                className="w-100"
                               >
-                                <Button
-                                  variant="danger"
-                                  onClick={(e) =>
-                                    handleJobStatusModal(
-                                      e, item?.developer?.id,  "rejected",type,item?.id
-                                    )
-                                  }
-                                  disabled={
-                                    jobStatus === "Ended" ? true : false
-                                  }
-                                  className="w-100"
-                                >
-                                  <ImUserMinus />
-                                </Button>
-                              </OverlayTrigger>
+                                <ImUserMinus />
+                              </Button>
+                            </OverlayTrigger>
                             {/* )} */}
                             {/* {role !== "admin" && (
                               <OverlayTrigger
@@ -228,7 +245,7 @@ console.log(role,"role")
                                 </Button>
                               </OverlayTrigger>
                             )} */}
-                              {/* {role !== "admin" && (
+                            {/* {role !== "admin" && (
                               <OverlayTrigger placement="top" overlay={approvedApply}>
                                 <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
                                   <FaCheck />
