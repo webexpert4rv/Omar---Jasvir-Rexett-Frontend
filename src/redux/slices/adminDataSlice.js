@@ -1007,11 +1007,11 @@ export function getUpdateRolePermission(payload, callback) {
     }
 }
 
-export function getAllPermissionDetails(payload) {
+export function getAllPermissionDetails() {
     return async (dispatch) => {
         try {
+
             let result = await clientInstance.get(`admin/permissions-details`)
-            console.log(result.data, "oppen")
             dispatch(setAllPermissionDetails(result.data))
 
         } catch (error) {

@@ -39,6 +39,7 @@ const LeavePlan = () => {
   const { screenLoader, leaveDetails, allContracts, holidayList ,smallLoader  } = useSelector(
     (state) => state.developerData
   );
+  console.log(leaveDetails,"LEAVE Details")
 const [selectedLeave ,setSelectedLeave] = useState()
   const [leaveId , setLeaveId] = useState(null)
   const {
@@ -64,7 +65,7 @@ const [selectedLeave ,setSelectedLeave] = useState()
     let data;
     if (currentTab === "first") {
       data = {
-        approval_status: "Under Approval",
+        approval_status: "under_approval",
       };
     }
     dispatch(getLeaveHistory(user_id, data));
@@ -85,9 +86,12 @@ const [selectedLeave ,setSelectedLeave] = useState()
     };
     await dispatch(getCancelLeave(id, data));
     let payload = {
-      approval_status: "Under Approval",
+      approval_status: "under_approval",
     };
     dispatch(getLeaveHistory(user_id, payload));
+  };
+  const transformString = (str) => {
+    return str.replace(/_/g, ' ').replace(/^(.)/, (match) => match.toUpperCase()).replace(/ (.)/g, (match) => match.toUpperCase());
   };
 
  
@@ -164,7 +168,8 @@ const [selectedLeave ,setSelectedLeave] = useState()
                                     {generateLeave(field?.type)}
                                   </h4>
                                   <div>
-                                    <p className="leave-date">
+                                   { field?.start_date === field?.end_date ? 
+                                   <p className="leave-date">
                                       {moment(field?.start_date).format(
                                         "MM-DD-YYYY"
                                       )}
@@ -173,9 +178,16 @@ const [selectedLeave ,setSelectedLeave] = useState()
                                         "MM-DD-YYYY"
                                       )}
                                     </p>
+                                    : 
+                                     <p className="leave-date">
+                                     {moment(field?.start_date).format(
+                                       "MM-DD-YYYY"
+                                     )}
+                                   </p>
+                                    }
                                   </div>
                                   <p className="status-finished mb-0">
-                                    {field?.approval_status}
+                                    {transformString(field?.approval_status)}
                                   </p>
                                 </div>
                                 <div className="d-flex gap-3">

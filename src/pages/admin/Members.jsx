@@ -461,7 +461,7 @@ const Members = () => {
                                       }
                                     >
                                       <RxChevronRight />
-                                    </span>{" "}
+                                    </span>
                                     <div
                                       className="user-imgbx application-userbx"
                                       onClick={() => redirectClient(item?.id)}
@@ -521,7 +521,7 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                      <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm)=>itm?.assignedMember?.email)}</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={()=>handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />

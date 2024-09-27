@@ -1178,7 +1178,7 @@ const clientStepData = [
     readOnly: false
   },
   {
-    label: "cin",
+    label: "Cin",
     fieldName: "cin",
     type: "text",
     placeholder: "CIN",

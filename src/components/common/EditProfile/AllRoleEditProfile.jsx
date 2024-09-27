@@ -58,7 +58,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
   const { smallLoader, userProfileDetails, screenLoader } = useSelector(
-    (state) => state.developerData
+    (state) => state.clientData
   );
   useEffect(() => {
     if (stepData) {
