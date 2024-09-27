@@ -960,13 +960,11 @@ export function getAllAdminEmployees(callback) {
 export function newRoleCreate(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
-        try {
-            let result = await clientInstance.post(`admin/create-role`, { ...payload })
-            if (result.status === 200) {
+        try{
+            let result = await clientInstance.post(`admin/create-role`, {...payload})
                 toast.success(result.data?.message, { position: "top-center" })
-                dispatch(setSuccessAdminData())
-            }
-        } catch (error) {
+                dispatch(setSuccessAdminData())    
+        }catch(error){
             const message = error?.response.data.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
