@@ -28,7 +28,7 @@ import { getDifferenceFromTwoDates } from "../../utils";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
 import { updateStatus } from "../../../redux/slices/adminDataSlice";
-
+import Schedulemeeting from "../Modals/ScheduleMeeting";
 const MARK_AS_OPTIONS = [
   {
     label: "Completed",
@@ -73,6 +73,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     data: {},
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedDeveloper, setSelectedDeveloper] = useState({});
+    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
   const {
     interview: {
       id, // application id
@@ -83,6 +85,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       meeting_time,
       status,
       developer_id,
+      reason
     },
   } = details;
   console.log(details, "details");
@@ -319,6 +322,15 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   // Call the function with a specific meeting ID
   // getMeetingDetails('your-meeting-id-here');
 
+  const handleShowScheduleMeeting = (name, id, email) => {
+    setSelectedDeveloper({ name, id, email })
+    setShowScheduleMeet(!showScheduleMeeting);
+}
+
+const handleCloseScheduleMeeting = () => {
+  setShowScheduleMeet(false);
+}
+
   return (
     <>
       <Modal
@@ -373,15 +385,15 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               {/* <Col lg={4} className="mb-lg-3 mb-1">
                                 <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</p>
                             </Col> */}
-              <Col lg={8} className="mb-3">
-                <div className="d-flex flex-wrap gap-2 align-items-start">
-                  {/* <div className="associate-text d-inline-block">
+              {/* <Col lg={8} className="mb-3"> */}
+              {/* <div className="d-flex flex-wrap gap-2 align-items-start"> */}
+              {/* <div className="associate-text d-inline-block">
                                         <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                             <img src={devImg} />
                                             <p className="mb-0">{interviewers_list}</p>
                                         </div>
                                     </div> */}
-                  {/* <div className="associate-text d-inline-block">
+              {/* <div className="associate-text d-inline-block">
                                         <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                             <span className="prefix-latter">RG</span>
                                             <p className="mb-0">robingautam@gmail.com</p>
@@ -405,8 +417,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                             <p className="mb-0">robingautam@gmail.com</p>
                                         </div>
                                     </div> */}
-                </div>
-              </Col>
+              {/* </div> */}
+              {/* </Col> */}
               <Col lg={4} className="mb-lg-3 mb-1">
                 <p className="font-14 schedule-heading">
                   <span>
@@ -419,7 +431,9 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="d-flex align-items-center gap-3 video-meetbx">
                     <img src={rexettLogo} />
-                    <p className="font-14 mb-0">Video Meeting (Rexett)</p>
+                    <p className="font-14 mb-0">
+                      {details?.interview?.meeting_platform}
+                    </p>
                   </div>
                   <div>
                     <Button variant="transparent" className="copy-link">
@@ -474,8 +488,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                     <div>
                       <p className="fw-semibold font-14 mb-1">Reason</p>
                       <p className="font-14 mb-0">
-                        I have some urgent work, need to go out of station. So
-                        I'll be available on <strong>25-06-2024</strong>
+                        {reason} So
+                        I'll be available on <strong>{meeting_date}</strong>
                       </p>
                     </div>
                   </div>
@@ -493,13 +507,29 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 Cancel Meeting
               </Button>
             </div>
+            {status !== "scheduled" && (
+              <div className="d-flex align-items-center gap-2">
+                <button
+                  className="main-btn font-14 text-decoration-none"
+                  onClick={() =>
+                    handleShowScheduleMeeting(
+                      details?.interview?.developer?.developer_detail?.name,
+                      details?.developer_id,
+                      details?.developer?.email
+                    )
+                  }
+                >
+                  Schedule Interview
+                </button>
+              </div>
+            )}
             <div>
               <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
                 onClick={() => checkInterviewStatus()}
               >
-               {loader ? <RexettSpinner /> : "Check Interview Status"}
+                {loader ? <RexettSpinner /> : "Check Interview Status"}
               </Button>
               {/* <Button
                 variant="transparent"
@@ -547,6 +577,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         show={isCancelModal?.isTrue}
         onClick={onClick}
         handleClose={closeCancelModal}
+      />
+      <Schedulemeeting
+        show={showScheduleMeeting}
+        handleClose={handleCloseScheduleMeeting}
+        selectedDeveloper={selectedDeveloper}
       />
     </>
   );
