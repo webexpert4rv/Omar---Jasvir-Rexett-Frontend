@@ -897,7 +897,7 @@ const SingleJobDetails = () => {
                             </div>
                             <JobCard
                                 handleJobStatusModal={handleJobStatusModal}
-                                type="applied"
+                            type="applied"
                                 data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
                                 jobStatus={singleJobDescription?.status}
                             // role="admin"
