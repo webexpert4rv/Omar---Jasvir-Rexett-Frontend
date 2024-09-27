@@ -65,7 +65,7 @@ const Schedulemeeting = ({
   const [events, setEvents] = useState([]);
 
   const [eventDetails, setEventDetails] = useState({
-    subject: "Koliyarl",
+    subject: "meeting",
     location: { displayName: "Koliyal Truck" },
     body: { content: "Karosal" },
     start: {
@@ -466,13 +466,32 @@ const Schedulemeeting = ({
   
         });
     } else if(meetingPlatform === "microsoft_team"){
+
+      let eventDetailsPayload={
+        subject: title,
+        location: { displayName: "Sweden" },
+        body: { content: "No body associated" },
+        start: {
+          dateTime: getDateTimeString(instant_date, meeting_start_time), 
+          timeZone: "UTC",
+        },
+        end: {
+          dateTime: getDateTimeString(instant_date, meeting_end_time), // Correct ISO 8601 format
+          timeZone: "UTC",
+        },
+        isOnlineMeeting: true,
+        onlineMeetingProvider: "teamsForBusiness",
+        "onlineMeeting": {
+          "joinUrl": null
+      }
+      }
       if (!isAuthenticated) {
         console.log('User not authenticated');
         return;
       }
       const client = Client.initWithMiddleware({ authProvider });
       try {
-       let response= await client.api('/me/events').post(eventDetails);
+       let response= await client.api('/me/events').post(eventDetailsPayload);
         fetchCalendarEvents(); // Fetch the updated events list
         if (response.onlineMeeting) {
           setMeetingLink(response?.onlineMeeting?.joinUrl);
