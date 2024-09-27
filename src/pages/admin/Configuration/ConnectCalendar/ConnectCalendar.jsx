@@ -37,6 +37,7 @@ const ConnectCalendar = ({ currentTab }) => {
 
   };
 
+  console.log(isAuthenticated, "isAuthenticated")
   const handleLoginSuccess = (response) => {
     console.log('Login success:', response);
     setIsAuthenticated(true);
