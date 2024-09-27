@@ -602,6 +602,16 @@ const SingleJobDetails = () => {
         setAgreementDetail(!showagreement);
     }
 
+    const handleChangeJobStatus = (developerId,jobId,status) => {
+        let payload = {
+            developerId: developerId,
+            jobId: jobId,
+            newStatus: status
+        }
+         dispatch(changeJobStatus(currentTab,payload,()=>{
+            dispatch(singleJobPostData(id, () => { }));
+         }));
+    }
 
 
     return (
@@ -1058,6 +1068,7 @@ const SingleJobDetails = () => {
                                                                 <Button
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
+                                                                    onClick={()=>handleChangeJobStatus(item?.developer_id,item?.job_id,'hired')}
                                                                 >
                                                                     Move to offer
                                                                 </Button>
@@ -1228,24 +1239,24 @@ const SingleJobDetails = () => {
                                             </>
                                         )
                                     })}
-
-                                </Row>
-                            </div>
-                        ) : <NoDataFound data={'No Interviews Found'}/>}
-                        {scheduledInterviews.length > 0 && (
+                                    {scheduledInterviews.length > 0 && (
                             <>
-                                <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
-                                <div className="interview-scheduled pt-2 mb-3">
-                                    <Row>
+                                {/* <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5> */}
+                                {/* <div className="interview-scheduled pt-2 mb-3">
+                                    <Row> */}
                                         {scheduledInterviews.map((item) => (
                                             <Col lg={4} key={item.id}>
                                                 <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
                                             </Col>
                                         ))}
-                                    </Row>
-                                </div>
+                                    {/* </Row>
+                                </div> */}
                             </>
                         )}
+
+                                </Row>
+                            </div>
+                        ) : <NoDataFound data={'No Interviews Found'}/>}
 
                         {/* {needToSchedule.length > 0 && (
                             <>
