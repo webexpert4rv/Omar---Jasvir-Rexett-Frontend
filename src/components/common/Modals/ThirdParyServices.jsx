@@ -5,7 +5,7 @@ import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
 import { msalInstance } from "../../../services/msalConfig";
 import { DISCOVERY_DOCS, SCOPES } from "../../../helper/utlis";
-const ThirdPartyServices = ({ show, handleClose, onClick, smallLoader, text, syncCreatedMeetingsWithGoogle, meetingLink }) => {
+const ThirdPartyServices = ({ show, handleClose, onClick, loader, text, syncCreatedMeetingsWithGoogle, meetingLink }) => {
   console.log(text, "textqwewqeq")
   const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 
@@ -42,8 +42,8 @@ const ThirdPartyServices = ({ show, handleClose, onClick, smallLoader, text, syn
   useEffect(() => {
     function start() {
       gapi.client.init({
-        apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-        clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+        apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+        clientId: "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPES
       }).then(() => {
@@ -114,7 +114,7 @@ const ThirdPartyServices = ({ show, handleClose, onClick, smallLoader, text, syn
           : <p>Meeting Link :{meetingLink}</p>
         }
         <div className="text-center">
-          <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink == null ? smallLoader ? <RexettSpinner /> : "Get Link" : "Submit"}  </Button>
+          <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink == null ? loader ? <RexettSpinner /> : "Get Link" : "Submit"}  </Button>
         </div>
       </Modal.Body>
     </Modal>

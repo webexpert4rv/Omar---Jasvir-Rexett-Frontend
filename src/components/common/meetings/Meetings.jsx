@@ -20,11 +20,7 @@ import { useMsal } from '@azure/msal-react';
   "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
 ];
 
- const SCOPES = [
-  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-  "https://www.googleapis.com/auth/calendar.events",
-  'https://www.googleapis.com/auth/admin.reports.audit.readonly',
-];
+const SCOPES = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/admin.reports.audit.readonly https://www.googleapis.com/auth/apps.reports.audit.readonly';
 
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {

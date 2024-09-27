@@ -116,10 +116,6 @@ const SingleDeveloper = ({ data, role }) => {
   }, []);
   console.log(data?.skills, "newSkills")
 
-  const splitSkills = (data) => {
-    let skills = data?.skills?.split(",") || data?.split(",");
-    return skills;
-  };
   const handleShowModal = () => {
     setShowModal(true);
   };
@@ -644,12 +640,12 @@ const SingleDeveloper = ({ data, role }) => {
                                       <div className="d-flex justify-content-between align-items-start">
                                         <div>
                                           <ul className="skills-pill text-start">
-                                            {splitSkills(tech_stacks_used)?.map(
+                                            {tech_stacks_used?.map(
                                               (item, index) => {
                                                 return (
                                                   <>
                                                     <li key={index}>
-                                                      <span>{item}</span>
+                                                      <span>{item.label}</span>
                                                     </li>
                                                   </>
                                                 );

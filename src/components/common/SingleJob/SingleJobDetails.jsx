@@ -76,7 +76,7 @@ import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 import useEndAndDelete from "../../../hooks/useEndAndDelete";
-
+import NoDataFound from "../../atomic/NoDataFound"
 
 
 
@@ -138,8 +138,8 @@ const SingleJobDetails = () => {
     useEffect(() => {
         function start() {
             gapi.client.init({
-                apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-                clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+                apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+                clientId:"982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(() => {
@@ -435,7 +435,7 @@ const SingleJobDetails = () => {
                 return "status-finished";
             case "published":
                 return "status-finished";
-            case "Unpublished":
+            case "unpublished":
                 return "status-rejected";
             default:
                 return;
@@ -550,7 +550,8 @@ const SingleJobDetails = () => {
     const closeFeedback = () => setShowDetails(false);
 
     const handleFeedbackClick = (interviewId) => {
-        navigate('/client/interview-feedback', {
+        const role = localStorage.getItem("role");
+        navigate(`/${role}/interview-feedback`, {
             state: { interviewId },
         });
     };
@@ -909,6 +910,7 @@ const SingleJobDetails = () => {
                             // role="admin"
                             />
                         </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="shortlisted" title={shortlist}>
                         <Tab.Container defaultActiveKey={'list-view'}>
                             <div className="mb-4 d-flex justify-content-between align-items-center">
@@ -976,9 +978,10 @@ const SingleJobDetails = () => {
                         </div>
                     </div> */}
 
-                    </Tab>
+                    </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="interviewing" title={interview}>
-                        {singleJobDescription && (
+                        {singleJobDescription ? (
                             <div>
                                 <h5 className="font-22 mb-4 fw-bold">Interviews</h5>
                                 <Row>
@@ -1102,8 +1105,9 @@ const SingleJobDetails = () => {
                                                                 <h3 className="popup-heading">Feedback</h3>
 
                                                                 <div className="feedback-details mt-3">
-                                                                    {item.interview.shareFeedbacks.map((feedback, fbIndex) => (
+                                                                    {item.interview.shareFeedbacks.length > 0? item.interview.shareFeedbacks.map((feedback, fbIndex) => (
                                                                         <div key={fbIndex} className="feedback">
+                                                                            {fbIndex > 0 && <hr />}
                                                                             <Row>
                                                                                 <Col md={6}>
                                                                                     <p className="font-14 fw-bold mb-2">Feedback Given</p>
@@ -1167,7 +1171,7 @@ const SingleJobDetails = () => {
                                                                                 </Col>
                                                                             </Row>
                                                                         </div>
-                                                                    ))}
+                                                                    )):<NoDataFound data="No Feedback Found yet"/>}
                                                                 </div>
                                                             </Modal.Body>
                                                         </Modal>
@@ -1233,7 +1237,7 @@ const SingleJobDetails = () => {
 
                                 </Row>
                             </div>
-                        )}
+                        ) : <NoDataFound data={'No Interviews Found'}/>}
                         {scheduledInterviews.length > 0 && (
                             <>
                                 <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
@@ -1364,7 +1368,8 @@ const SingleJobDetails = () => {
                             </div>
                         </div>
                     </div> */}
-                    </Tab>
+                    </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="documentation" title={offered}>
                         {/* <Button onClick={handleDownloadPdf}>DownLoad pdf</Button> */}
                         <div>
@@ -1849,7 +1854,8 @@ const SingleJobDetails = () => {
                                 </Tab.Content>
                             </Tab.Container> */}
                         </div>
-                    </Tab>
+                    </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="hired" title={hired}>
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
@@ -1857,7 +1863,7 @@ const SingleJobDetails = () => {
                             data={singleJobDescription?.job_applications?.hired}
                             jobStatus={singleJobDescription?.status}
                         />
-                    </Tab>
+                    </Tab>}
                 </Tabs>
             </div>
             <RejectModal

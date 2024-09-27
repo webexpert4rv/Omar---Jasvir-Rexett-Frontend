@@ -44,7 +44,7 @@ const Step1 = ({
 }) => {
   const { t } = useTranslation();
   const [file, setFile] = useState(null);
-  const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
+  const GOOGLE_MAP_API_KEY = "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g";
 
   const handleFileChange = (event, field) => {
     const file = event.target.files[0];

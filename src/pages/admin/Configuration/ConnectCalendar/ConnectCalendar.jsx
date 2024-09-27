@@ -8,7 +8,7 @@ import { DISCOVERY_DOCS, SCOPES } from "../../../../helper/utlis";
 
 const ConnectCalendar = ({ currentTab }) => {
 
-  const CLIENT_ID = '574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com';
+  const CLIENT_ID = '982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com';
 
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,8 +36,6 @@ const ConnectCalendar = ({ currentTab }) => {
     ],
 
   };
-
-
 
   console.log(isAuthenticated, "isAuthenticated")
   const handleLoginSuccess = (response) => {
@@ -70,8 +68,6 @@ const ConnectCalendar = ({ currentTab }) => {
     });
   };
 
-
-
   return (
     <>
 
@@ -103,10 +99,6 @@ const ConnectCalendar = ({ currentTab }) => {
             >
               Login with Microsoft
             </Button>
-            <div className="d-flex align-items-center gap-2 mt-2">
-              <Button variant="transparent" className="main-btn font-14" disabled>Connected with google</Button>
-              <Button variant="transparent" className="cancel-btn font-14">Disconnect</Button>
-            </div>
           </div><div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
               <h2 className="section-head-sub mb-0 border-0">
                 SMTP Configuration
