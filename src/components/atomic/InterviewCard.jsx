@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { FaLink } from 'react-icons/fa';
 import devImg from '../../assets/img/user-img.jpg';
 
 const InterviewCard = ({ handleShowMeetingInfo, item }) => {
   const [copied, setCopied] = useState(false);
+  const [remainingTime, setRemainingTime] = useState('');
 
   const { interview: { title, developer_name, meeting_date, meeting_time,meeting_link } } = item;
 
@@ -12,11 +13,31 @@ const InterviewCard = ({ handleShowMeetingInfo, item }) => {
     const link = meeting_link;
     navigator.clipboard.writeText(link).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); 
+      setTimeout(() => setCopied(false), 2000);
     }).catch(err => {
       console.error('Failed to copy: ', err);
     });
   };
+
+  const calculateRemainingTime = () => {
+    const meetingDateTime = new Date(`${meeting_date}T${meeting_time}`);
+    const now = new Date();
+    const difference = meetingDateTime - now;
+  
+    if (difference > 0) {
+      const hours = Math.floor(difference / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      setRemainingTime(`Upcoming in ${hours}hr ${minutes}min`);
+    } else {
+      setRemainingTime('Reschedule');
+    }
+  };
+
+  useEffect(() => {
+    calculateRemainingTime();
+    const interval = setInterval(calculateRemainingTime, 60000);
+    return () => clearInterval(interval);
+  }, [meeting_date, meeting_time]);
 
   return (
     <>
@@ -36,7 +57,7 @@ const InterviewCard = ({ handleShowMeetingInfo, item }) => {
           </div>
         </div>
         <div className="mb-2 status-interview">
-          <span className="status-upcoming">Upcoming in 1hr</span>
+          <span className="status-upcoming">{remainingTime}</span>
         </div>
         <div className="d-flex align-items-center justify-content-between">
           <Button variant="transparent" className="link-btn font-14 text-decoration-none" onClick={copyLinkToClipboard}>
