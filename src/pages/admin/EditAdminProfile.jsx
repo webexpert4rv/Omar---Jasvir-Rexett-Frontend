@@ -81,15 +81,16 @@ const EditAdminProfile = () => {
           email: values?.email,
           country: values?.country_code?.label,
           address: values?.address,
+          previous_password: values?.previous_password,
           password: values?.password,
           language_preference: values?.language_preference?.value,
           total_experience: values?.total_experience,
           city: null,
           state: values?.state_iso_code?.label,
-          country_iso_code: values?.country_iso_code?.value,
+          // country_iso_code: values?.country_iso_code?.value,
           state_iso_code: values?.state_iso_code?.value,
           passcode: values?.passcode,
-          country_code: values?.country_code.value,
+          country_iso_code: values?.country_code.value,
           phone_number: values?.phone_number,
           language_proficiency: values?.language_proficiency,
           time_zone: values?.time_zone?.label,
@@ -122,7 +123,6 @@ const EditAdminProfile = () => {
   const watchAllFields = watch();
 
 
-console.log(watchAllFields,'allfieldsssssss hihi');
 
   const toggleConfirmationModal = (e) => {
     // Handle toggle confirmation modal
@@ -139,8 +139,6 @@ console.log(watchAllFields,'allfieldsssssss hihi');
   // console.log(clientProfileData,'hihi clientdata')
 
   let stepData = getStepDataFromAPI(profileData, activeStep);
-  console.log(profileData,'profileData hihi');
-  console.log(stepData,'hihi stepData profileData')
 
   useEffect(() => {
 

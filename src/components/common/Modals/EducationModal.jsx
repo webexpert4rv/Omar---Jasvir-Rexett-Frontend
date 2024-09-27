@@ -130,6 +130,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
   };
 
   const onSubmit = (value) => {
+    console.log(value,"valuess")
     let { educations } = value;
     let data = {
       developer_id: id,
