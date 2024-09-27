@@ -37,9 +37,6 @@ const ConnectCalendar = ({ currentTab }) => {
 
   };
 
-
-
-  console.log(isAuthenticated, "isAuthenticated")
   const handleLoginSuccess = (response) => {
     console.log('Login success:', response);
     setIsAuthenticated(true);
@@ -69,8 +66,6 @@ const ConnectCalendar = ({ currentTab }) => {
       console.error('Error signing out:', error);
     });
   };
-
-
 
   return (
     <>
@@ -103,10 +98,6 @@ const ConnectCalendar = ({ currentTab }) => {
             >
               Login with Microsoft
             </Button>
-            <div className="d-flex align-items-center gap-2 mt-2">
-              <Button variant="transparent" className="main-btn font-14" disabled>Connected with google</Button>
-              <Button variant="transparent" className="cancel-btn font-14">Disconnect</Button>
-            </div>
           </div><div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
               <h2 className="section-head-sub mb-0 border-0">
                 SMTP Configuration
