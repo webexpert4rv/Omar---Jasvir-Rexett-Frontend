@@ -109,6 +109,14 @@ const RolesPermissionWrapper = ({
   };
 
   const onSubmit = async (values) => {
+    if (modalName === "role") {
+      let data = {
+        description: "Role description here", // You can customize this description
+        name: values?.role,
+      };
+      dispatch(newRoleCreate(data));
+    }
+    else{
     setDetails(values);
     let fileData = new FormData();
     fileData.append("file", uploadedImage)
@@ -132,21 +140,23 @@ const RolesPermissionWrapper = ({
          dispatch(updateEmployeeProfile(payload, id));
         dispatch(getAllAdminEmployees());
       } else {
-        if (modalName === "role") {
-          let data = {
-            description: "Role description here", // You can customize this description
-            name: values?.role,
-          };
-          dispatch(newRoleCreate(data));
-        } else {
+        // if (modalName === "role") {
+        //   let data = {
+        //     description: "Role description here", // You can customize this description
+        //     name: values?.role,
+        //   };
+        //   dispatch(newRoleCreate(data));
+        // } else {
            dispatch(newEmployeeCreate(payload));
-        }
+        // }
       }
-      dispatch(getAllPermissionSeeder());
+      
+    }));
+  }
+  dispatch(getAllPermissionSeeder());
       handleClose();
       reset();
       setUploadedImage(null);
-    }));
   };
   
   return (

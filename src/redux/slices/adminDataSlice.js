@@ -962,10 +962,8 @@ export function newRoleCreate(payload){
         dispatch(setBtnLoader())
         try{
             let result = await clientInstance.post(`admin/create-role`, {...payload})
-            if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
-                dispatch(setSuccessAdminData())
-            }
+                dispatch(setSuccessAdminData())    
         }catch(error){
             const message = error?.response.data.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
