@@ -12,7 +12,7 @@ import { FaTrashAlt } from "react-icons/fa";
 const CertificateUpload = ({ show, handleClose, data, id, role }) => {
     console.log(data, "dfata")
     const [previewUrl, setPreviewUrl] = useState()
-    const { smallLoader } = useSelector(state => state.developerData)
+    const { btnLoader } = useSelector(state => state.developerData)
     const [renderModalData, setRenderModalData] = useState(data);
     const user_id = localStorage.getItem("userId")
     const [uploadedDoc, setUploadedDoc] = useState(null);
@@ -35,7 +35,7 @@ const CertificateUpload = ({ show, handleClose, data, id, role }) => {
                     name: item.name,
                     issuing_organization: item.issuing_organization,
                     issuing_date: item.issuing_date?.slice(0, 10),
-                    // certificate_url: item.certificate_url,
+                    certificate_url: item.certificate_url,
                     certificate_id: item?.id,
                 });
             });
@@ -49,30 +49,34 @@ const CertificateUpload = ({ show, handleClose, data, id, role }) => {
 
 
 
-    useEffect(() => {
-        dispatch(fetchDeveloperCv((data) => {
-            const details = data?.developer_certifications
-            details?.map((item) => {
-                for (let key in item) {
-                    if (key === "issuing_date") {
-                        const newDate = item?.issuing_date?.slice(0, 10)
-                        setValue(key, newDate)
-                    } else if (key === "certificate_url") {
-                        setUploadedDoc(item?.certificate_url);
-                    } else {
-                        setValue(key, item[key])
-                    }
-                }
-            })
+    // useEffect(() => {
+    //     dispatch(fetchDeveloperCv((data) => {
+    //         const details = data?.developer_certifications
+    //         details?.map((item) => {
+    //             for (let key in item) {
+    //                 if (key === "issuing_date") {
+    //                     const newDate = item?.issuing_date?.slice(0, 10)
+    //                     setValue(key, newDate)
+    //                 } else if (key === "certificate_url") {
+    //                     setUploadedDoc(item?.certificate_url);
+    //                 } else {
+    //                     setValue(key, item[key])
+    //                 }
+    //             }
+    //         })
 
-        }))
-    }, [])
+    //     }))
+    // }, [])
 
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
-        console.log(file,"file")
-        setUploadedDoc(file);
+        let fileData = new FormData();
+        fileData.append("file", file)
+        dispatch(uploadFileToS3Bucket(fileData, (url) => {
+            console.log(url,"url")
+            setUploadedDoc(url);
+        }))
         // if (file) {
         //     const reader = new FileReader();
         //     reader.onloadend = () => {
@@ -88,21 +92,19 @@ const CertificateUpload = ({ show, handleClose, data, id, role }) => {
 
 
     const onSubmit = (values) => {
-        let fileData = new FormData();
-        fileData.append("file", uploadedDoc)
-        dispatch(uploadFileToS3Bucket(fileData, (url) => {
-            const payload =
-            {
-                "user_id": user_id,
-                "certification": {
-                    "name": values?.name,
-                    "issuing_organization": values?.issuing_organization,
-                    "issuing_date": values?.issuing_date,
-                    "certificate_url": url
-                }
-            }
-            dispatch(getUploadCertificate(payload))
-        }))
+        console.log(values, "valuess")
+        let { certification } = values;
+        // let fileData = new FormData();
+        // fileData.append("file", uploadedDoc)
+        // dispatch(uploadFileToS3Bucket(fileData, (url) => {
+        const payload =
+        {
+            "user_id": user_id,
+            "certification": certification
+        }
+        console.log(payload, "payload")
+        dispatch(getUploadCertificate(payload))
+        // }))
         handleClose()
     }
     const handleAddMore = async () => {
@@ -201,12 +203,13 @@ const CertificateUpload = ({ show, handleClose, data, id, role }) => {
                                     className="upload-custom-field"
                                     name={`certification.${index}.certificate_url`}
                                     id="media-file"
+                                    // value={uploadedDoc}
                                     // accept="image/jpeg, image/png, image/svg+xml"
-                                    onChange={(e)=>handleImageUpload(e)}
+                                    onChange={(e) => handleImageUpload(e)}
                                 />
                                 {uploadedDoc ?
                                     <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
-                                        <span classNam="fs-6"> {uploadedDoc?.name} </span>
+                                        <span classNam="fs-6"> {uploadedDoc} </span>
                                         <span className="cursor-pointer text-danger" onClick={handleClear}>
                                             <IoClose />
                                             {/* {errors?.certification[index].certificate_url && (
@@ -260,8 +263,8 @@ const CertificateUpload = ({ show, handleClose, data, id, role }) => {
                         variant="transparent"
                         className="main-btn px-4 font-14 fw-semibold"
                         text={"Submit"}
-                        isLoading={smallLoader}
-                        disabled={smallLoader}
+                        isLoading={btnLoader}
+                        disabled={btnLoader}
                     />
                 </div>
             </form>

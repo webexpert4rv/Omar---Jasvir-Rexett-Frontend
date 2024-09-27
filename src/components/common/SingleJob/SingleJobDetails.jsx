@@ -82,8 +82,7 @@ import NoDataFound from "../../atomic/NoDataFound"
 
 
 const SingleJobDetails = () => {
-    const { handleEndAndDeleteModal, showDeleteModal, showEndModal, modalLoader, handleDeleteJob } =
-    useEndAndDelete(); // all the logic for delete job and end job is written inside this
+    const { handleEndAndDeleteModal, showDeleteModal, showEndModal, modalLoader, handleDeleteJob } = useEndAndDelete(); // all the logic for delete job and end job is written inside this
     const role = localStorage.getItem("role")
     const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
     const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -98,6 +97,8 @@ const SingleJobDetails = () => {
         id: null,
     });
     const { singleJobPost } = useSelector(state => state.clientData)
+    console.log(singleJobPost, "singleJobPost")
+    console.log(selectedTabsData,"selectedTabsData")
     const printRef = useRef();
     const [showMeetingInfo, setShowMeetingInfo] = useState({
         isMeeting: false,
@@ -108,7 +109,7 @@ const SingleJobDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let id = location.pathname.split("/")[3];
-    const job_id = localStorage.setItem("jobId",id)
+    const job_id = localStorage.setItem("jobId", id)
     const [devId, setDevId] = useState()
     const [application, setApplicationId] = useState()
     const clientId = localStorage.getItem("userId")
@@ -151,6 +152,9 @@ const SingleJobDetails = () => {
         gapi.load('client:auth2', start);
     }, []);
 
+
+
+
     useEffect(() => {
         if (id) {
             dispatch(singleJobPostData(id, () => { }));
@@ -170,7 +174,7 @@ const SingleJobDetails = () => {
     }, [singleJobPost]);
 
 
-
+    console.log(singleJobPost, "singleJobPost")
     const getCategory = (cat) => {
         let data = jobCategoryList.find((item) => item.value == cat);
         return data?.label;
@@ -203,8 +207,9 @@ const SingleJobDetails = () => {
             setCurrnetTabsStatus("application");
         }
     };
-    console.log(currentTab,"currentTab")
-    console.log(currentTabsStatus,"currentTabsStatus")
+    console.log(currentTab, "currentTab")
+    console.log(currentTabsStatus, "currentTabsStatus")
+    console.log(singleJobDescription,"singleJobDescription")
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
@@ -260,7 +265,7 @@ const SingleJobDetails = () => {
 
 
     const handleJobStatusAction = (e, data) => {
-        console.log(devId,"devid")
+        console.log(devId, "devid")
         console.log(data?.status, "newSttas")
         e.preventDefault();
         if (data.status == "ended") {
@@ -369,9 +374,10 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
-        console.log(type,"type")
-        console.log(status,"status")
-        console.log(id,"helloId")
+        console.log(aplnId,"aplnId")
+        console.log(type, "type")
+        console.log(status, "status")
+        console.log(id, "helloId")
         setDevType(type)
         setApplicationId(aplnId)
         setDevId(id)
@@ -551,7 +557,7 @@ const SingleJobDetails = () => {
     };
 
     const handleShowaddCandidate = (role) => {
-        localStorage.setItem("job",role)
+        localStorage.setItem("job", role)
         navigate('/admin/register-developer')
     }
 
@@ -640,13 +646,13 @@ const SingleJobDetails = () => {
                                             onClick={() => {
                                                 // handleDelete("application", singleJobDescription?.id);
                                                 if (singleJobDescription?.status == "Unpublished" || singleJobDescription?.status == "unpublished") {
-                                                  handleEndAndDeleteModal({
-                                                    action: "openDeleteModal",
-                                                    idToDelete: singleJobDescription?.id,
-                                                  });
+                                                    handleEndAndDeleteModal({
+                                                        action: "openDeleteModal",
+                                                        idToDelete: singleJobDescription?.id,
+                                                    });
                                                 }
-                                              }}
-                                            
+                                            }}
+
                                             className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                                         >
                                             <MdOutlineDoNotDisturbAlt />
@@ -877,33 +883,33 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role === "admin" && 
-                    <Tab eventKey="suggestions" title={suggest}>
-                        <div className="text-end">
-                            {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
+                    {role === "admin" &&
+                        <Tab eventKey="suggestions" title={suggest}>
+                            <div className="text-end">
+                                {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
                                 isLoading={approvedLoader}
                                 disabled={approvedLoader}
                                 onClick={() => handleSuggestions()} /> */}
 
-                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
-                            <Button variant="transparent" onClick={()=>handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
-                        </div>
-                        <JobCard
-                            handleJobStatusModal={handleJobStatusModal}
+                                <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+                                <Button variant="transparent" onClick={() => handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
+                            </div>
+                            <JobCard
+                                handleJobStatusModal={handleJobStatusModal}
                             type="applied"
-                            data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
-                            jobStatus={singleJobDescription?.status}
+                                data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
+                                jobStatus={singleJobDescription?.status}
                             // role="admin"
-                        />
-                        <JobCard
-                            handleJobStatusModal={handleJobStatusModal}
-                            type="suggested"
-                            data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
-                            jobStatus={singleJobDescription?.status}
+                            />
+                            <JobCard
+                                handleJobStatusModal={handleJobStatusModal}
+                                type="suggested"
+                                data={suggestShortList ? suggestTabData :  singleJobDescription?.job_applications?.suggestions?.suggested}
+                                jobStatus={singleJobDescription?.status}
                             // role="admin"
-                        />
-                    </Tab>}
+                            />
+                        </Tab>}
                     {role !== 'developer' &&
                     <Tab eventKey="shortlisted" title={shortlist}>
                         <Tab.Container defaultActiveKey={'list-view'}>
@@ -939,9 +945,9 @@ const SingleJobDetails = () => {
                                     <JobCard
                                         handleJobStatusModal={handleJobStatusModal}
                                         type="Shortlisted"
-                                        data={singleJobDescription?.job_applications?.shortlisted }
+                                        data={singleJobDescription?.job_applications?.shortlisted}
                                         jobStatus={singleJobDescription?.status}
-                                        // role="client"
+                                    // role="client"
                                     />
                                 </Tab.Pane>
                             </Tab.Content>
@@ -1878,27 +1884,27 @@ const SingleJobDetails = () => {
       /> */}
             {/* for delte and end job modals */}
             {showDeleteModal && (
-        <ConfirmationModal
-          text="Are you sure you want to Delete this job?"
-          show={showDeleteModal}
-          handleClose={() =>
-            handleEndAndDeleteModal({ action: "closeDeleteModal" })
-          }
-          smallLoader={modalLoader} //for end and delete only
-          handleAction={handleDeleteJob}
-        />
-      )}
-      {showEndModal && (
-        <ConfirmationModal
-          text="Are you sure you want to Delete this job?"
-          show={showEndModal}
-          handleClose={() =>
-            handleEndAndDeleteModal({ action: "closeEndModal" })
-          }
-          smallLoader={modalLoader} //for end and delete only
-        />
-      )}
-      {/* for delte and end job modals */}
+                <ConfirmationModal
+                    text="Are you sure you want to Delete this job?"
+                    show={showDeleteModal}
+                    handleClose={() =>
+                        handleEndAndDeleteModal({ action: "closeDeleteModal" })
+                    }
+                    smallLoader={modalLoader} //for end and delete only
+                    handleAction={handleDeleteJob}
+                />
+            )}
+            {showEndModal && (
+                <ConfirmationModal
+                    text="Are you sure you want to Delete this job?"
+                    show={showEndModal}
+                    handleClose={() =>
+                        handleEndAndDeleteModal({ action: "closeEndModal" })
+                    }
+                    smallLoader={modalLoader} //for end and delete only
+                />
+            )}
+            {/* for delte and end job modals */}
 
 
             <ConfirmationModal
@@ -1916,10 +1922,10 @@ const SingleJobDetails = () => {
                 type={currentTabsStatus}
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
-            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper}/>
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
             {showPopup && (
                 <FeedbackPopup
-                    interviewId={selectedInterviewId}       
+                    interviewId={selectedInterviewId}
                     showPopup={showPopup}
                     closePopup={closePopup}
                 />

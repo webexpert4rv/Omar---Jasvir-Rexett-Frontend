@@ -8237,6 +8237,7 @@ select.apply-field
 .sidebar.collapse-active
 {
     width: 120px;
+    background: #ffff;
     border-top-right-radius: 0px
     ;
     border-bottom-right-radius: 0px;

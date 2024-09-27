@@ -173,7 +173,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                     <h3 className="font-14 fw-semibold">
                                                         {status.charAt(0).toUpperCase() + status.slice(1)}
                                                     </h3>
-                                                    <span className="font-14 fw-semibold">{toDoList[status]?.count}</span>
+                                                    {/* <span className="font-14 fw-semibold">{toDoList[status]?.count}</span> */}
                                                 </div>
                                                 {status === "completed" ? (
                                                     toDoList[status]?.tasks?.length > 0 ? (

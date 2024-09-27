@@ -84,6 +84,7 @@ export const developerDataSlice = createSlice({
 
     setSuccessActionData: (state, action) => {
       state.smallLoader = false;
+      state.btnLoader = false;
     },
     setDeveloperTimeReports: (state, action) => {
       state.smallLoader = false;
@@ -1523,7 +1524,7 @@ export function getChatRoomMembers(id) {
 }
 export function getUploadCertificate(payload) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setBtnLoader());
     try {
       let result = await clientInstance.post("/common/add-certification/",{...payload});
       dispatch(setSuccessActionData());

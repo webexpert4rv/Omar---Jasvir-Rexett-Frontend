@@ -888,6 +888,7 @@ export function _deleteFileAndFolder(payload, callback) {
 }
 
 export function changeJobStatus(currentTb, data, callback) {
+  console.log(data,"data")
   return async (dispatch) => {
     if (data) {
       dispatch(setSmallLoader());

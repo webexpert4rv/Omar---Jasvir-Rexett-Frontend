@@ -38,7 +38,8 @@ const CommonInput = ({
   disabled,
   rows = null,
   className,
-  selectedRecommend
+  selectedRecommend,
+  flowName
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
  
@@ -317,7 +318,7 @@ const CommonInput = ({
                     className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     // id='developer-image'
-                    disabled={disabled}
+                    disabled={disabled || flowName==="edit_profile" && type ==="email"}
                     placeholder={placeholder}
                     readOnly={disabled}
                     autoComplete={autoComplete}
