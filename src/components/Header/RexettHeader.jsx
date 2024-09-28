@@ -69,8 +69,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   }
 
   useEffect(()=>{
-     dispatch(getAllPermissionDetails())
-  },[])
+    if(role==="admin"){
+     dispatch(getAllPermissionDetails(role))
+    }
+  },[role])
 
   console.log(details, "details")
   const handleCloseMeetingInfo = () => {

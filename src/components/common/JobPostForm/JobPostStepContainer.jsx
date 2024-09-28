@@ -73,6 +73,7 @@ const DEFAULT_SCREENING_DATA = [
 ];
 
 const JobPostStepContainer = ({ role }) => {
+const{smallLoader}= useSelector(state=>state.clientData)
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -91,7 +92,6 @@ const JobPostStepContainer = ({ role }) => {
     (state) => state.clientData
   );
   const navigate = useNavigate();
-  const [smallLoader, setSmallLoader] = useState(false);
   const {
     register,
     control,
