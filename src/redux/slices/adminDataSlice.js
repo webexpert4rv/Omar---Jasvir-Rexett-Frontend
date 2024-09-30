@@ -1335,7 +1335,6 @@ export function editMessageTemplate(id, payload, callback) {
         dispatch(setSmallLoader());
         try {
             let result = await clientInstance.put(`admin/message-templates/${id}`, { ...payload });
-            console.log(result.data, "gettemplatebyid")
             return callback()
         } catch (error) {
             const message = error.message || "Something went wrong";
