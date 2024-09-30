@@ -45,6 +45,9 @@ import CertificateUpload from "../Modals/CertificateUpload";
 const SingleDeveloper = ({ data, role }) => {
   const { startTour, closeTour } = useTourContext();
 
+
+  console.log(data,"needed")
+
   const startAppTour = () => {
     const steps = [
       {
