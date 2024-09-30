@@ -62,12 +62,12 @@ const LeaveRequest = () => {
   const handleClick = async (e, reason) => {
     let payload = {
       leaveId: leaveId,
-      approval_status: "Not Approved",
+      approval_status: "not_approved",
       rejection_reason: reason,
     };
     await dispatch(getClientLeaveStatus(payload));
     let data = {
-      approval_status: "Under Approval",
+      approval_status: "under_approval",
     };
     dispatch(getClientLeaveHistory(data));
     setShowRejectModal(!showRejectModal);
@@ -78,7 +78,7 @@ const LeaveRequest = () => {
     console.log(index,"index")
       setApproveIndex(index);
       setLeaveId(id);
-    if (status === "Approved") {
+    if (status === "approved") {
       let payload = {
         leaveId: id,
         approval_status: status,
@@ -86,7 +86,7 @@ const LeaveRequest = () => {
       };
       await dispatch(getClientLeaveStatus(payload));
       let data = {
-        approval_status: "Under Approval",
+        approval_status: "under_approval",
       };
       dispatch(getClientLeaveHistory(data));
     } else {
@@ -98,19 +98,19 @@ const LeaveRequest = () => {
     let data;
     if (currentTab === "first") {
       data = {
-        approval_status: "Under Approval",
+        approval_status: "under_approval",
       };
     } else if (currentTab === "second") {
       data = {
-        approval_status: "Not Approved",
+        approval_status: "not_approved",
       };
     } else if (currentTab === "third") {
       data = {
-        approval_status: "Approved",
+        approval_status: "approved",
       };
     } else {
       data = {
-        approval_status: "Withdrawn",
+        approval_status: "withdrawn",
       };
     }
     console.log(data,"data")
@@ -151,7 +151,7 @@ const LeaveRequest = () => {
     };
     await dispatch(getApproveDisapprove(payload, id));
     let data = {
-      approval_status: "Under Approval",
+      approval_status: "under_approval",
     };
     dispatch(getClientHolidayList(data));
   };

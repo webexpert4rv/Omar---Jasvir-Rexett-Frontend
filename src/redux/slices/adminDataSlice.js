@@ -528,7 +528,7 @@ export function assignEmployee(payload, callback) {
                 dispatch(setSuccessAdminData())
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message = error.response.data.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
@@ -1005,11 +1005,11 @@ export function getUpdateRolePermission(payload, callback) {
     }
 }
 
-export function getAllPermissionDetails(payload) {
+export function getAllPermissionDetails() {
     return async (dispatch) => {
         try {
+
             let result = await clientInstance.get(`admin/permissions-details`)
-            console.log(result.data, "oppen")
             dispatch(setAllPermissionDetails(result.data))
 
         } catch (error) {
@@ -1335,7 +1335,6 @@ export function editMessageTemplate(id, payload, callback) {
         dispatch(setSmallLoader());
         try {
             let result = await clientInstance.put(`admin/message-templates/${id}`, { ...payload });
-            console.log(result.data, "gettemplatebyid")
             return callback()
         } catch (error) {
             const message = error.message || "Something went wrong";
