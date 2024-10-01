@@ -1555,7 +1555,6 @@ const Applications = () => {
                                                   onClick={() => handleFeedbackClick(latestInterview?.id)}
                                                   className="main-btn font-14 text-decoration-none"
                                                 >
-                                                  Share Feedback
                                                 </button>
                                               )}
 
@@ -2024,7 +2023,7 @@ const Applications = () => {
                                                 />
                                               </div>
                                             </Col>
-                                            <Col md={3}>
+                                        { item?.is_profile_completed==false &&    <Col md={3}>
                                               <div>
                                                 <h3 className="application-heading">
                                                   Send Email
@@ -2044,7 +2043,7 @@ const Applications = () => {
                                                   </OverlayTrigger>
                                                 </div>
                                               </div>
-                                            </Col>
+                                            </Col>}
                                           </Row>
                                         </div>
                                       </td>
