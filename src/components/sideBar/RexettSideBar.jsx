@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
-import sidebarLogo2 from "../../assets/img/rexett-logo-white2.png";
+import sidebarLogo2 from "../../assets/img/favicon.png";
 import { Link, NavLink } from "react-router-dom";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -29,18 +29,18 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
         setFloatingShow(!floatingShow);
     }
 
-    useEffect(()=>{
-        if(rolesWithPermissions && rolesWithPermissions?.length>0){
+    // useEffect(()=>{
+    //     if(rolesWithPermissions && rolesWithPermissions?.length>0){
 
-        const updatedSecondArray = sidebarItems.map(item => {
-            const isActive = rolesWithPermissions[0]?.permissions?.some(firstItem => firstItem.slug === item.slug);
-            return { ...item, active: isActive };
-          });
-          setSideBarDataWithPermi(updatedSecondArray)
-        }
+    //     const updatedSecondArray = sidebarItems.map(item => {
+    //         const isActive = rolesWithPermissions[0]?.permissions?.some(firstItem => firstItem.slug === item.slug);
+    //         return { ...item, active: isActive };
+    //       });
+    //       setSideBarDataWithPermi(updatedSecondArray)
+    //     }
         
 
-    },[allPermissionDetails])
+    // },[allPermissionDetails])
 
     return (
         <>
@@ -56,7 +56,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                                 }
                             </a>
                         </div>
-                        {sidebarDataWithPermi.map((item, index) => (
+                        {sidebarItems?.map((item, index) => (
                             <>
                                  {collapseActive ?
                                     <NavLink

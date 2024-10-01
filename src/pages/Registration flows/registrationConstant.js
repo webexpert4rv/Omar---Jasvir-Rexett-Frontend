@@ -140,7 +140,6 @@ export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => 
     if(nestedActiveStep>0 && activeStep==2){
       return DEVELOPER_NESTED_STEPPER_HEADINGS[nestedActiveStep] || { heading: '' }; 
     }else if(nestedActiveStep>0 && activeStep==3){
-      console.log("hello33")
       return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3[nestedActiveStep] || { heading: '' }; 
     }else if(nestedActiveStep>0 && activeStep==4){
       return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4[nestedActiveStep] || { heading: '' }; 
@@ -418,8 +417,6 @@ const CLIENT_ACTIVE_STEP_FIELDS = {
   2: CLIENT_STEP_2_FIELDS,
 };
 export const getActiveStepFields = (activeStep, registrationType) => {
-  console.log(activeStep,"activestep")
-  console.log(registrationType,"registrationType")
   if (activeStep === 1) {
     return CLIENT_ACTIVE_STEP_FIELDS[activeStep][registrationType] || null;
   } else {
@@ -1086,6 +1083,86 @@ const adminStepData = [
     },
     columnWidth: 6,
     isRequired: true,
+    readOnly: true
+  },
+  {
+    isPasswordSection: true,
+  },
+  // {
+  //   label: "taxId",
+  //   fieldName: "tax_id",
+  //   type: "text",
+  //   placeholder: "Enter Tax ID",
+  //   rules: { required: "Phone number is required" },
+  //   columnWidth: 6,
+  //   isRequired: true,
+  // },
+  // {
+  //   label: "cin",
+  //   fieldName: "cin",
+  //   type: "text",
+  //   placeholder: "CIN",
+  //   rules: { required: "CIN is required" },
+  //   columnWidth: 6,
+  //   isRequired: true,
+  // },
+  {
+    label: "address",
+    fieldName: "address",
+    type: "select",
+    placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Address is required" },
+    columnWidth: 12,
+    isRequired: true,
+    isAutocomplete: true,
+  },
+  {
+    isLocation: true,
+  },
+]
+const clientStepData = [
+  {
+    label: "firstName",
+    fieldName: "first_name",
+    type: "text",
+    placeholder: "e.g. John",
+    rules: { required: "First name is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "surname",
+    fieldName: "last_name",
+    type: "text",
+    placeholder: "e.g. Doe",
+    rules: { required: "Surname is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "phoneNumber",
+    fieldName: "phone_number",
+    type: "phone",
+    placeholder: "e.g. +46766921023",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "email",
+    fieldName: "email",
+    type: "email",
+    placeholder: "e.g. johndoe123@gmail.com",
+    rules: {
+      required: "Email is required",
+      pattern: {
+        value: EMAIL_REGEX,
+        message: "Invalid Email",
+      },
+    },
+    columnWidth: 6,
+    isRequired: true,
+    readOnly: true
   },
   {
     isPasswordSection: true,
@@ -1098,29 +1175,21 @@ const adminStepData = [
     rules: { required: "Phone number is required" },
     columnWidth: 6,
     isRequired: true,
+    readOnly: false
   },
   {
-    label: "cin",
+    label: "Cin",
     fieldName: "cin",
     type: "text",
     placeholder: "CIN",
     rules: { required: "CIN is required" },
     columnWidth: 6,
     isRequired: true,
+    readOnly: false
   },
   {
     label: "address",
     fieldName: "address",
-    type: "select",
-    placeholder: "e.g. Street 1341,New area,CA,USA",
-    rules: { required: "Address is required" },
-    columnWidth: 12,
-    isRequired: true,
-    isAutocomplete: true,
-  },
-  {
-    label: "address 2",
-    fieldName: "address_2",
     type: "select",
     placeholder: "e.g. Street 1341,New area,CA,USA",
     rules: { required: "Address is required" },
@@ -1149,7 +1218,6 @@ const DEVELOPER_STEP_FIELDS_FOR_STEP_6={
 
 
 export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
-  console.log(activeStep,nestedActiveStep,"cosn")
   if(nestedActiveStep>0  &&activeStep==2){
     return NESTED_DEVELOPER_STEP_FIELDS[1] || null;
   }else if(nestedActiveStep>0  &&activeStep==3){
@@ -1163,6 +1231,9 @@ export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
 }
 export const getAdminActiveFields = () => {
   return adminStepData;
+}
+export const getClientEditFields = () => {
+  return clientStepData;
 }
   
   

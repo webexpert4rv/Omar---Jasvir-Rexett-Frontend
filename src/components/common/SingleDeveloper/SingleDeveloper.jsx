@@ -105,9 +105,6 @@ const SingleDeveloper = ({ data, role }) => {
   const { t } = useTranslation();
   let { pathname } = useLocation();
   let userId = pathname.split("/")[2];
-  console.log(pathname.split("/")[2], "pathj");
-  console.log(data, "data");
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -117,12 +114,8 @@ const SingleDeveloper = ({ data, role }) => {
     // startAppTour();
     // }
   }, []);
-  console.log(data?.skills,"newSkills")
+  console.log(data?.skills, "newSkills")
 
-  const splitSkills = (data) => {
-    let skills = data?.skills?.split(",") || data?.split(",");
-    return skills;
-  };
   const handleShowModal = () => {
     setShowModal(true);
   };
@@ -236,6 +229,11 @@ const SingleDeveloper = ({ data, role }) => {
   }
   const handleCloseCertificateUpload = () => {
     setShowCertificateUpload(false);
+  }
+
+  const handleCertificateUpload = (values) => {
+    console.log(values, "uploadCertificateValues")
+
   }
   return (
     <>
@@ -642,12 +640,12 @@ const SingleDeveloper = ({ data, role }) => {
                                       <div className="d-flex justify-content-between align-items-start">
                                         <div>
                                           <ul className="skills-pill text-start">
-                                            {splitSkills(tech_stacks_used)?.map(
+                                            {tech_stacks_used?.map(
                                               (item, index) => {
                                                 return (
                                                   <>
                                                     <li key={index}>
-                                                      <span>{item}</span>
+                                                      <span>{item.label}</span>
                                                     </li>
                                                   </>
                                                 );
@@ -885,12 +883,12 @@ const SingleDeveloper = ({ data, role }) => {
                           </div>
                         </div>
                         <div className="mt-2">
-                          <a
-                            href={'#'}
+                          <span
                             className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
+                            onClick={handleShowCertificateUpload}
                           >
                             Show Certificate <FiExternalLink />
-                          </a>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -1073,7 +1071,15 @@ const SingleDeveloper = ({ data, role }) => {
         </ModalWrapper>
       )}
       <IntroVideo show={showIntroVideo} handleClose={handleCloseIntroVideo} />
-      <CertificateUpload show={showcertificateupload} handleClose={handleCloseCertificateUpload} />
+      <ModalWrapper show={showcertificateupload} handleClose={handleCloseCertificateUpload}>
+        <CertificateUpload 
+          data={data?.developer_certifications}
+          handleClose={handleCloseExpertiseModal}
+          id={data?.id}
+          role={role}
+        
+        />
+      </ModalWrapper>
     </>
   );
 };

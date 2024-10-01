@@ -80,7 +80,6 @@ const VendorRegistrationStepper = () => {
     if (userId && [activeStepKeys[activeStep]]) {
       dispatch(getVendorUpdatedDetails(userId, (response) => {
         const data = response[activeStepKeys[activeStep]];
-        console.log(data,"data")
         for (let key in data) {
         
           if (activeStep === 1) {
@@ -181,7 +180,6 @@ const VendorRegistrationStepper = () => {
   };
   const handleProceed = () => {
     const stepData = watch();
-    console.log(stepData,"stepDataNew")
     let formData = new FormData();
     formData.append('file', imageFile?.profile_picture);
     dispatch(uploadFileToS3Bucket(formData, (url) => {
@@ -228,7 +226,6 @@ const VendorRegistrationStepper = () => {
 
   const callAreaOfExpertiseAPI = () => {
     const stepData = watch();
-    console.log(stepData?.success_story,"success_story")
     let payload = {
       user_id : userId,
       specialization: stepData?.specialization,

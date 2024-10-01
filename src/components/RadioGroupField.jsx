@@ -27,7 +27,7 @@ const RadioGroupField = ({
                   handleMarkAsStatusChange(e.target.value);
                 })
               )}
-              type="radio"
+              type="checkbox"
               label={label}
               value={value}
             />

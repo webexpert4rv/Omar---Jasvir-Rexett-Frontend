@@ -85,7 +85,7 @@ const DeveloperUpdatedCV = () => {
     }
 
     useEffect(() => {
-        dispatch(fetchDeveloperCv())
+        dispatch(fetchDeveloperCv(()=>{}))
     }, [dispatch])
 
     const splitSkills = (data) => {

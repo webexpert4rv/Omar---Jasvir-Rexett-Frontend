@@ -14,7 +14,7 @@ const SCREENING_OPTIONS = [
     optionId: 1,
     label: "Work Experience",
     title: "",
-    question_type: "",
+    question_type: "Years",
     question: "How many years of experience do you currently have?",
   },
   {
@@ -22,7 +22,7 @@ const SCREENING_OPTIONS = [
     label: "Education",
     question_type: "Degree",
     title: "",
-    question: "et",
+    question: "Have you completed the following level of education: [Degree]",
     ideal_answer: "Yes",
     uniqueId: "2",
   },
@@ -349,19 +349,19 @@ const JobPostStep3 = ({
                     <Form.Group>
                       <Form.Label className="font-14">Ideal answer</Form.Label>
                       {field?.ideal_answer === "Yes" ? (
-                        <Form.Control
-                          type="text"
-                          readOnly
-                          {...register(
-                            `screening_questions.${idx}.ideal_answer`,
-                            {
-                              required: t("required_message"),
-                            }
-                          )}
-                          value="Yes"
-                          className="common-field font-14"
-                          placeholder="Enter Answer"
-                        />
+                        <Form.Select
+                        {...register(
+                          `screening_questions.${idx}.ideal_answer`,
+                          {
+                            required: t("required_message"),
+                          }
+                        )}
+                      >
+                        <option selected value="yes">
+                          Yes
+                        </option>
+                        <option value="no">No</option>
+                      </Form.Select>
                       ) : field?.question_type === "language" ? (
                         <>
                           <Form.Select
@@ -386,11 +386,11 @@ const JobPostStep3 = ({
                         <Form.Control
                           type={
                             field?.question_type === "Years" ||
-                              "Expertise with Skill"
+                              "Skill"
                               ? "number"
                               : "text"
                           }
-                          min={field?.question_type === "Years" ? 0 : null}
+                          min={field?.question_type === "Years" ||  "Expertise with Skill"?  0 : null}
                           {...register(
                             `screening_questions.${idx}.ideal_answer`,
                             {
@@ -512,7 +512,7 @@ const JobPostStep3 = ({
               onClick={() => {
                 handleAddField(curElem);
               }}
-              disabled={isFieldAlreadyAdded(curElem?.optionId)}
+              // disabled={isFieldAlreadyAdded(curElem?.optionId)}
               // disabled={() => {
               //   isFieldAlreadyAdded(curElem?.title);
               // }}

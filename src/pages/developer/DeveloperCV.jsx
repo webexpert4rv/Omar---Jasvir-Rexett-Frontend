@@ -8,7 +8,7 @@ const DeveloperCV = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchDeveloperCv())
+        dispatch(fetchDeveloperCv(()=>{}))
     }, [dispatch])
 
     

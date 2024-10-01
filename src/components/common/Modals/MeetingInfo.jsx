@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import {
   changeJobStatus,
   meetingCancel,
+  singleJobPostData,
 } from "../../../redux/slices/clientDataSlice";
 import RejectModal from "./RejectModal";
 import { gapi } from "gapi-script";
@@ -27,20 +28,24 @@ import { getDifferenceFromTwoDates } from "../../utils";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
 import { updateStatus } from "../../../redux/slices/adminDataSlice";
-
+import Schedulemeeting from "../Modals/ScheduleMeeting";
 const MARK_AS_OPTIONS = [
   {
     label: "Completed",
     value: "completed",
   },
-  {
-    label: "Incomplete",
-    value: "incomplete",
-  },
-  {
-    label: "Canceled",
-    value: "cancelled",
-  },
+//   {
+//     label: "Incomplete",
+//     value: "incomplete",
+//   },
+//   {
+//     label: "Canceled",
+//     value: "canceled",
+//   },
+//   {
+//     label: "Pending",
+//     value: "pending",
+//   },
 ];
 
 const DISCOVERY_DOCS = [
@@ -48,13 +53,7 @@ const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest",
 ];
 
-const SCOPES = [
-  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-  "https://www.googleapis.com/auth/calendar",
-  "https://www.googleapis.com/auth/calendar.events",
-  "https://www.googleapis.com/auth/calendar.events.readonly",
-  "https://www.googleapis.com/auth/admin.reports.audit.readonly",
-];
+const SCOPES = 'https://www.googleapis.com/auth/admin.reports.usage.readonly https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/admin.reports.audit.readonly';
 
 //   const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
@@ -62,32 +61,39 @@ const SCOPES = [
 
 const MeetingInfo = ({ show, handleClose, details }) => {
   const dispatch = useDispatch();
-  const {id:jobId} = useParams();
+  const { id: jobId } = useParams();
   const { instance, accounts } = useMsal();
   const { register, errors, values, setValue, watch } = useForm();
   const [showDetailsSection, setShowDetailsSection] = useState(false);
   const [info, setInfo] = useState({});
+  const [joinUrl, setJoinUrl] = useState("");
   const [loader, setLoader] = useState(false);
   const [isCancelModal, setCancelModal] = useState({
     isTrue: false,
     data: {},
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedDeveloper, setSelectedDeveloper] = useState({});
+    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
   const {
     interview: {
-      id,// application id
+      id, // application id
       title,
       developer_name,
       interviewers_list,
       meeting_date,
       meeting_time,
       status,
-      developer_id
+      developer_id,
+      reason
     },
   } = details;
-  console.log(details,"details")
+  console.log(details, "details");
   const cancelMeeting = () => {
     setCancelModal({ isTrue: true });
+  };
+  const closeCancelModal = () => {
+    setCancelModal({ isTrue: false });
   };
   const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
     account: accounts[0],
@@ -179,24 +185,74 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       .reduce((acc, val) => acc + val, 0);
   };
 
-  const checkEventStatus = async () => {
-    const response = await gapi.client.calendar.events.get({
-      calendarId: "primary",
-      eventId: "siq7ht5c512mukvjqag7qgb84k",
-    });
+  const checkInterviewStatus = async () => {
+    const meeting_platform = details?.interview?.meeting_platform;
+    console.log(meeting_platform, "meeting_platform");
+    setLoader((prev) => true);
+    if (meeting_platform === "microsoft_team") {
+      if (!isAuthenticated) {
+        console.log("User not authenticated");
+        return;
+      }
+      const client = Client.initWithMiddleware({ authProvider });
 
-    if (response.result.status === "cancelled") {
-      alert("This meeting was cancelled.");
-    } else {
-      const now = new Date();
-      const meetingStart = new Date(response.result.start.dateTime);
-      if (meetingStart < now) {
-        fetchMeetingDetails("siq7ht5c512mukvjqag7qgb84k");
-        // alert('The meeting should have started or is over.');
+      try {
+        // Fetch the online meeting details using the meeting ID
+        const joinUrl = details?.interview?.meeting_link;
+        const id = joinUrl;
+        // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
+        const meetingResponse = await client
+          .api("/me/onlineMeetings")
+          .filter(`JoinWebUrl eq '${id}'`)
+          .get();
+
+        if (meetingResponse) {
+          const res = meetingResponse.value[0];
+          setShowDetailsSection(true);
+          const info = {
+            callDuration: `${getDifferenceFromTwoDates(
+              res?.startDateTime,
+              res?.endDateTime
+            )} hours`,
+            attendees: res?.participants?.attendees,
+          };
+          setInfo(info);
+          console.log(meetingResponse, "meetingResponse");
+          console.log(info, "info");
+        }
+        // Extract meeting details
+        const subject = meetingResponse.subject;
+        const startTime = meetingResponse.startDateTime;
+        const endTime = meetingResponse.endDateTime;
+        const duration = endTime ? new Date(endTime) - new Date(startTime) : 0; // Duration in milliseconds 
+
+        console.log(`Meeting: ${subject}`);
+        console.log(`Start Time: ${startTime}`);
+        console.log(`End Time: ${endTime}`);
+        console.log(`Duration: ${duration / 60000} minutes`); // Duration in minute
+      } catch (error) {
+        console.error("Error fetching meeting details:", error);
+      }
+    } else if (meeting_platform === "google_meet") {
+      const response = await gapi.client.calendar.events.get({
+        calendarId: "primary",
+        eventId: "00saj72vr2fjp8okgcvokilevl",
+      });
+
+      if (response.result.status === "cancelled") {
+        alert("This meeting was cancelled.");
       } else {
-        alert("The meeting is still scheduled.");
+        const now = new Date();
+        const meetingStart = new Date(response.result.start.dateTime);
+        if (meetingStart < now) {
+          fetchMeetingDetails("00saj72vr2fjp8okgcvokilevl");
+          // alert('The meeting should have started or is over.');
+        } else {
+          alert("The meeting is still scheduled.");
+        }
       }
     }
+    setLoader((prev) => false);
   };
 
   const getMeetingDetails = async (meetingId) => {
@@ -208,8 +264,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     const client = Client.initWithMiddleware({ authProvider });
     try {
       // Fetch the online meeting details using the meeting ID
-      const id =
-        "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
+      const id = joinUrl;
+      // "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
       const meetingResponse = await client
         .api("/me/onlineMeetings")
         .filter(`JoinWebUrl eq '${id}'`)
@@ -246,19 +302,33 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   };
 
   const handleMarkAsStatusChange = (newStatus) => {
-    // 
+    // const payload = {
+    //   applicationId: id,
+    //   developerId: developer_id,
+    //   jobId: jobId,
+    //   newStatus: newStatus,
+    // };
     const payload = {
-      status:newStatus
-    }
-    const interviewId = details?.interview.id
-    console.log(payload,"payload");
+      status: newStatus,
+    };
+    console.log(payload, details.interview.id, "payload");
     // dispatch(changeJobStatus(payload));
-    dispatch(updateStatus(payload,interviewId))
+    dispatch(updateStatus(payload, details?.interview?.id, handleClose)); //interview id
     setValue("mark_as", newStatus);
+    dispatch(singleJobPostData(jobId, () => {}));   
   };
 
   // Call the function with a specific meeting ID
   // getMeetingDetails('your-meeting-id-here');
+
+  const handleShowScheduleMeeting = (name, id, email) => {
+    setSelectedDeveloper({ name, id, email })
+    setShowScheduleMeet(!showScheduleMeeting);
+}
+
+const handleCloseScheduleMeeting = () => {
+  setShowScheduleMeet(false);
+}
 
   return (
     <>
@@ -314,15 +384,15 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               {/* <Col lg={4} className="mb-lg-3 mb-1">
                                 <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</p>
                             </Col> */}
-              <Col lg={8} className="mb-3">
-                <div className="d-flex flex-wrap gap-2 align-items-start">
-                  {/* <div className="associate-text d-inline-block">
+              {/* <Col lg={8} className="mb-3"> */}
+              {/* <div className="d-flex flex-wrap gap-2 align-items-start"> */}
+              {/* <div className="associate-text d-inline-block">
                                         <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                             <img src={devImg} />
                                             <p className="mb-0">{interviewers_list}</p>
                                         </div>
                                     </div> */}
-                  {/* <div className="associate-text d-inline-block">
+              {/* <div className="associate-text d-inline-block">
                                         <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                             <span className="prefix-latter">RG</span>
                                             <p className="mb-0">robingautam@gmail.com</p>
@@ -346,8 +416,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                             <p className="mb-0">robingautam@gmail.com</p>
                                         </div>
                                     </div> */}
-                </div>
-              </Col>
+              {/* </div> */}
+              {/* </Col> */}
               <Col lg={4} className="mb-lg-3 mb-1">
                 <p className="font-14 schedule-heading">
                   <span>
@@ -360,7 +430,9 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="d-flex align-items-center gap-3 video-meetbx">
                     <img src={rexettLogo} />
-                    <p className="font-14 mb-0">Video Meeting (Rexett)</p>
+                    <p className="font-14 mb-0">
+                      {details?.interview?.meeting_platform}
+                    </p>
                   </div>
                   <div>
                     <Button variant="transparent" className="copy-link">
@@ -415,8 +487,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                     <div>
                       <p className="fw-semibold font-14 mb-1">Reason</p>
                       <p className="font-14 mb-0">
-                        I have some urgent work, need to go out of station. So
-                        I'll be available on <strong>25-06-2024</strong>
+                        {reason} So
+                        I'll be available on <strong>{meeting_date}</strong>
                       </p>
                     </div>
                   </div>
@@ -434,15 +506,31 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 Cancel Meeting
               </Button>
             </div>
+            {status !== "scheduled" && (
+              <div className="d-flex align-items-center gap-2">
+                <button
+                  className="main-btn font-14 text-decoration-none"
+                  onClick={() =>
+                    handleShowScheduleMeeting(
+                      details?.interview?.developer?.developer_detail?.name,
+                      details?.developer_id,
+                      details?.developer?.email
+                    )
+                  }
+                >
+                  Schedule Interview
+                </button>
+              </div>
+            )}
             <div>
               <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
-                onClick={() => checkEventStatus()}
+                onClick={() => checkInterviewStatus()}
               >
-                Check Interview Status
+                {loader ? <RexettSpinner /> : "Check Interview Status"}
               </Button>
-              <Button
+              {/* <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
                 onClick={() =>
@@ -452,7 +540,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 }
               >
                 {loader ? <RexettSpinner /> : "Check microsoft"}
-              </Button>
+              </Button> */}
             </div>
           </div>
           {showDetailsSection && (
@@ -475,7 +563,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                       radioOptions={MARK_AS_OPTIONS}
                       register={register}
                       fieldName="mark_as"
-                      handleMarkAsStatusChange ={handleMarkAsStatusChange}
+                      handleMarkAsStatusChange={handleMarkAsStatusChange}
                     />
                   </div>
                 </Col>
@@ -484,7 +572,16 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           )}
         </Modal.Body>
       </Modal>
-      <RejectModal show={isCancelModal?.isTrue} onClick={onClick} />
+      <RejectModal
+        show={isCancelModal?.isTrue}
+        onClick={onClick}
+        handleClose={closeCancelModal}
+      />
+      <Schedulemeeting
+        show={showScheduleMeeting}
+        handleClose={handleCloseScheduleMeeting}
+        selectedDeveloper={selectedDeveloper}
+      />
     </>
   );
 };

@@ -690,7 +690,7 @@ export const route = [
 
   {
     path: "/admin/interview-feedback",
-    element: <InterviewFeedback />,
+    element: <ClientInterviewFeedback />,
     isAdmin: true,
     common: true,
   },

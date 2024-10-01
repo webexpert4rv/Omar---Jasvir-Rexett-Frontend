@@ -130,6 +130,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
   };
 
   const onSubmit = (value) => {
+    console.log(value,"valuess")
     let { educations } = value;
     let data = {
       developer_id: id,
@@ -161,9 +162,8 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
 
   const deletetooltip = <Tooltip id="tooltip">Delete Row</Tooltip>;
   const addtooltip = <Tooltip id="tooltip">Add Row</Tooltip>;
-  console.log(fields, "----educationfirld");
   const next = degreeList.find((option) => option.value === fields.degree_id);
-  console.log(next, "next");
+  console.log(fields,"educfields")
   return (
     <>
       <h3 className="popup-heading">Education</h3>
@@ -210,25 +210,11 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                       onCreateOption={handleCreate}
                       options={degreeList}
                     />
-                    {/* <Select
-                                            options={degreeList}
-                                            onCreateOption={handleCreate}
-                                            onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
-                                            defaultValue={degreeList.find(option => option.value === item.degree_id)}
-
-                                        /> */}
                   </Form.Group>
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
                     <Form.Label className="font-14">Address</Form.Label>
-                    {/* <Form.Control
-                                            type="text"
-                                            className="common-field"
-                                            placeholder="Enter Address"
-                                            {...register(`educations.${index}.address`, { required: true })}
-                                            defaultValue={item.address}
-                                        /> */}
                     <Controller
                       name="address"
                       className="common-field "

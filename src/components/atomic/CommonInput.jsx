@@ -38,14 +38,11 @@ const CommonInput = ({
   disabled,
   rows = null,
   className,
-  selectedRecommend
+  selectedRecommend,
+  flowName
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  console.log(options, "newOptions")
-  console.log(type,"type")
-  console.log(selectOptions, "selectOptions")
-  console.log(isMinRequired, "isMinRequired")
-  console.log(isMaxRequired, "ismax")
+ 
   const handleTogglePassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
     if (onTogglePassword) {
@@ -57,6 +54,7 @@ const CommonInput = ({
       return <CloseIcon />;
     }
   };
+
 
   return (
     <Form.Group className="mb-3">
@@ -288,6 +286,7 @@ const CommonInput = ({
                   <Form.Control
                     {...field}
                     as={type}
+                   
                     className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     rows={3}
@@ -315,18 +314,13 @@ const CommonInput = ({
                 <>
                   <Form.Control
                     {...field}
-                    type={
-                      isPassword
-                        ? isPasswordVisible
-                          ? "text"
-                          : "password"
-                        : type
-                    }
+                    type={ isPassword ? isPasswordVisible ? "text" : "password": type }
                     className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     // id='developer-image'
+                    disabled={disabled || flowName==="edit_profile" && type ==="email"}
                     placeholder={placeholder}
-                    readOnly={readOnly}
+                    readOnly={disabled}
                     autoComplete={autoComplete}
                     onChange={
                       onChange ? (e) => onChange(e, field) : field.onChange

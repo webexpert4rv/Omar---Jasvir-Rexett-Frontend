@@ -20,11 +20,7 @@ import { useMsal } from '@azure/msal-react';
   "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
 ];
 
- const SCOPES = [
-  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-  "https://www.googleapis.com/auth/calendar.events",
-  'https://www.googleapis.com/auth/admin.reports.audit.readonly',
-];
+const SCOPES = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/admin.reports.audit.readonly https://www.googleapis.com/auth/apps.reports.audit.readonly';
 
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
@@ -49,8 +45,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     function start() {
       gapi.client.init({
         apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
-        clientId:
-          "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
+            clientId: "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
       }).then(() => {

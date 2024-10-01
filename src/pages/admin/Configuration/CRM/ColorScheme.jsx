@@ -229,10 +229,7 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
                                         placeholder="#000000"
                                         className="colortext-field"
                                         value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : newColorValue}
-
-
                                     />
-
                                 </div>
                             </div>
                         </div>

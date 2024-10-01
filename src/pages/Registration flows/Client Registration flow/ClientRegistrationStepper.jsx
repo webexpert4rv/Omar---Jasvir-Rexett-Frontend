@@ -310,7 +310,7 @@ const ClientRegistrationStepper = () => {
   const jobSkills = jobStepData?.skills?.map(skill => ({
     skill_id: skill?.title?.value,
     skill_name: skill?.title?.label,
-    weight: skill?.level?.label,
+    weight: skill?.level?.value,
   }));
 
   const screeningQuestions = jobStepData?.screening_questions?.map(ques => (
@@ -370,7 +370,6 @@ const ClientRegistrationStepper = () => {
         return (
           // this step will be used for both first and second
           <ClientStep1
-
             screenLoader={screenLoader}
             control={control}
             errors={errors}
@@ -451,7 +450,6 @@ const ClientRegistrationStepper = () => {
     reset();
   };
   const handleProceed = () => {
-    console.log(registrationType,"registrationType")
     const stepData = watch();
     let fileData = new FormData();
     fileData.append("file", imageFile?.profile_picture)

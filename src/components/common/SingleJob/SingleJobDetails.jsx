@@ -76,14 +76,13 @@ import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 import useEndAndDelete from "../../../hooks/useEndAndDelete";
-
+import NoDataFound from "../../atomic/NoDataFound"
 
 
 
 
 const SingleJobDetails = () => {
-    const { handleEndAndDeleteModal, showDeleteModal, showEndModal, modalLoader, handleDeleteJob } =
-    useEndAndDelete(); // all the logic for delete job and end job is written inside this
+    const { handleEndAndDeleteModal, showDeleteModal, showEndModal, modalLoader, handleDeleteJob } = useEndAndDelete(); // all the logic for delete job and end job is written inside this
     const role = localStorage.getItem("role")
     const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
     const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -98,6 +97,8 @@ const SingleJobDetails = () => {
         id: null,
     });
     const { singleJobPost } = useSelector(state => state.clientData)
+    console.log(singleJobPost, "singleJobPost")
+    console.log(selectedTabsData,"selectedTabsData")
     const printRef = useRef();
     const [showMeetingInfo, setShowMeetingInfo] = useState({
         isMeeting: false,
@@ -108,7 +109,7 @@ const SingleJobDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let id = location.pathname.split("/")[3];
-    const job_id = localStorage.setItem("jobId",id)
+    const job_id = localStorage.setItem("jobId", id)
     const [devId, setDevId] = useState()
     const [application, setApplicationId] = useState()
     const clientId = localStorage.getItem("userId")
@@ -137,8 +138,8 @@ const SingleJobDetails = () => {
     useEffect(() => {
         function start() {
             gapi.client.init({
-                apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+                apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+                clientId:"982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(() => {
@@ -150,6 +151,9 @@ const SingleJobDetails = () => {
         }
         gapi.load('client:auth2', start);
     }, []);
+
+
+
 
     useEffect(() => {
         if (id) {
@@ -170,7 +174,7 @@ const SingleJobDetails = () => {
     }, [singleJobPost]);
 
 
-
+    console.log(singleJobPost, "singleJobPost")
     const getCategory = (cat) => {
         let data = jobCategoryList.find((item) => item.value == cat);
         return data?.label;
@@ -190,7 +194,7 @@ const SingleJobDetails = () => {
     const handleSelect = (key) => {
         setCurrentTab(key);
         setSelectedTabsData(singleJobDescription?.job_applications[key]);
-        if (key == "suggested") {
+        if (key == "suggestions") {
             setCurrnetTabsStatus("shortlisted");
         }
         if (key == "shortlisted") {
@@ -203,6 +207,9 @@ const SingleJobDetails = () => {
             setCurrnetTabsStatus("application");
         }
     };
+    console.log(currentTab, "currentTab")
+    console.log(currentTabsStatus, "currentTabsStatus")
+    console.log(singleJobDescription,"singleJobDescription")
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
@@ -258,8 +265,8 @@ const SingleJobDetails = () => {
 
 
     const handleJobStatusAction = (e, data) => {
-        console.log(devId,"devid")
-        console.log(data?.status, "status")
+        console.log(devId, "devid")
+        console.log(data?.status, "newSttas")
         e.preventDefault();
         if (data.status == "ended") {
             dispatch(
@@ -367,7 +374,10 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
-        console.log(id,"helloId")
+        console.log(aplnId,"aplnId")
+        console.log(type, "type")
+        console.log(status, "status")
+        console.log(id, "helloId")
         setDevType(type)
         setApplicationId(aplnId)
         setDevId(id)
@@ -425,7 +435,7 @@ const SingleJobDetails = () => {
                 return "status-finished";
             case "published":
                 return "status-finished";
-            case "Unpublished":
+            case "unpublished":
                 return "status-rejected";
             default:
                 return;
@@ -540,13 +550,14 @@ const SingleJobDetails = () => {
     const closeFeedback = () => setShowDetails(false);
 
     const handleFeedbackClick = (interviewId) => {
-        navigate('/client/interview-feedback', {
+        const role = localStorage.getItem("role");
+        navigate(`/${role}/interview-feedback`, {
             state: { interviewId },
         });
     };
 
     const handleShowaddCandidate = (role) => {
-        localStorage.setItem("job",role)
+        localStorage.setItem("job", role)
         navigate('/admin/register-developer')
     }
 
@@ -597,6 +608,16 @@ const SingleJobDetails = () => {
         setAgreementDetail(!showagreement);
     }
 
+    const handleChangeJobStatus = (developerId,jobId,status) => {
+        let payload = {
+            developerId: developerId,
+            jobId: jobId,
+            newStatus: status
+        }
+         dispatch(changeJobStatus(currentTab,payload,()=>{
+            dispatch(singleJobPostData(id, () => { }));
+         }));
+    }
 
 
     return (
@@ -635,13 +656,13 @@ const SingleJobDetails = () => {
                                             onClick={() => {
                                                 // handleDelete("application", singleJobDescription?.id);
                                                 if (singleJobDescription?.status == "Unpublished" || singleJobDescription?.status == "unpublished") {
-                                                  handleEndAndDeleteModal({
-                                                    action: "openDeleteModal",
-                                                    idToDelete: singleJobDescription?.id,
-                                                  });
+                                                    handleEndAndDeleteModal({
+                                                        action: "openDeleteModal",
+                                                        idToDelete: singleJobDescription?.id,
+                                                    });
                                                 }
-                                              }}
-                                            
+                                            }}
+
                                             className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                                         >
                                             <MdOutlineDoNotDisturbAlt />
@@ -872,33 +893,34 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role === "admin" && 
-                    <Tab eventKey="suggestions" title={suggest}>
-                        <div className="text-end">
-                            {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
+                    {role === "admin" &&
+                        <Tab eventKey="suggestions" title={suggest}>
+                            <div className="text-end">
+                                {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
                                 isLoading={approvedLoader}
                                 disabled={approvedLoader}
                                 onClick={() => handleSuggestions()} /> */}
 
-                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
-                            <Button variant="transparent" onClick={()=>handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
-                        </div>
-                        <JobCard
-                            handleJobStatusModal={handleJobStatusModal}
+                                <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+                                <Button variant="transparent" onClick={() => handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
+                            </div>
+                            <JobCard
+                                handleJobStatusModal={handleJobStatusModal}
                             type="applied"
-                            data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
-                            jobStatus={singleJobDescription?.status}
+                                data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
+                                jobStatus={singleJobDescription?.status}
                             // role="admin"
-                        />
-                        <JobCard
-                            handleJobStatusModal={handleJobStatusModal}
-                            type="suggested"
-                            data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
-                            jobStatus={singleJobDescription?.status}
+                            />
+                            <JobCard
+                                handleJobStatusModal={handleJobStatusModal}
+                                type="suggested"
+                                data={suggestShortList ? suggestTabData :  singleJobDescription?.job_applications?.suggestions?.suggested}
+                                jobStatus={singleJobDescription?.status}
                             // role="admin"
-                        />
-                    </Tab>}
+                            />
+                        </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="shortlisted" title={shortlist}>
                         <Tab.Container defaultActiveKey={'list-view'}>
                             <div className="mb-4 d-flex justify-content-between align-items-center">
@@ -933,9 +955,9 @@ const SingleJobDetails = () => {
                                     <JobCard
                                         handleJobStatusModal={handleJobStatusModal}
                                         type="Shortlisted"
-                                        data={singleJobDescription?.job_applications?.shortlisted }
+                                        data={singleJobDescription?.job_applications?.shortlisted}
                                         jobStatus={singleJobDescription?.status}
-                                        // role="client"
+                                    // role="client"
                                     />
                                 </Tab.Pane>
                             </Tab.Content>
@@ -966,9 +988,10 @@ const SingleJobDetails = () => {
                         </div>
                     </div> */}
 
-                    </Tab>
+                    </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="interviewing" title={interview}>
-                        {singleJobDescription && (
+                        {singleJobDescription ? (
                             <div>
                                 <h5 className="font-22 mb-4 fw-bold">Interviews</h5>
                                 <Row>
@@ -1030,14 +1053,14 @@ const SingleJobDetails = () => {
                                                                     Show Feedback
 
                                                                 </Button>
-                                                                <Button
+                                                                {/* <Button
                                                                     onClick={() => checkEventStatus(item.interview.id)}
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Check Status
 
-                                                                </Button>
+                                                                </Button> */}
                                                             </>
                                                         )}
                                                         {item.interview.status === 'selected' && (
@@ -1051,6 +1074,7 @@ const SingleJobDetails = () => {
                                                                 <Button
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
+                                                                    onClick={()=>handleChangeJobStatus(item?.developer_id,item?.job_id,'hired')}
                                                                 >
                                                                     Move to offer
                                                                 </Button>
@@ -1092,8 +1116,9 @@ const SingleJobDetails = () => {
                                                                 <h3 className="popup-heading">Feedback</h3>
 
                                                                 <div className="feedback-details mt-3">
-                                                                    {item.interview.shareFeedbacks.map((feedback, fbIndex) => (
+                                                                    {item.interview.shareFeedbacks.length > 0? item.interview.shareFeedbacks.map((feedback, fbIndex) => (
                                                                         <div key={fbIndex} className="feedback">
+                                                                            {fbIndex > 0 && <hr />}
                                                                             <Row>
                                                                                 <Col md={6}>
                                                                                     <p className="font-14 fw-bold mb-2">Feedback Given</p>
@@ -1157,7 +1182,7 @@ const SingleJobDetails = () => {
                                                                                 </Col>
                                                                             </Row>
                                                                         </div>
-                                                                    ))}
+                                                                    )):<NoDataFound data="No Feedback Found yet"/>}
                                                                 </div>
                                                             </Modal.Body>
                                                         </Modal>
@@ -1220,24 +1245,24 @@ const SingleJobDetails = () => {
                                             </>
                                         )
                                     })}
-
-                                </Row>
-                            </div>
-                        )}
-                        {scheduledInterviews.length > 0 && (
+                                    {scheduledInterviews.length > 0 && (
                             <>
-                                <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
-                                <div className="interview-scheduled pt-2 mb-3">
-                                    <Row>
+                                {/* <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5> */}
+                                {/* <div className="interview-scheduled pt-2 mb-3">
+                                    <Row> */}
                                         {scheduledInterviews.map((item) => (
                                             <Col lg={4} key={item.id}>
                                                 <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
                                             </Col>
                                         ))}
-                                    </Row>
-                                </div>
+                                    {/* </Row>
+                                </div> */}
                             </>
                         )}
+
+                                </Row>
+                            </div>
+                        ) : <NoDataFound data={'No Interviews Found'}/>}
 
                         {/* {needToSchedule.length > 0 && (
                             <>
@@ -1354,7 +1379,8 @@ const SingleJobDetails = () => {
                             </div>
                         </div>
                     </div> */}
-                    </Tab>
+                    </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="documentation" title={offered}>
                         {/* <Button onClick={handleDownloadPdf}>DownLoad pdf</Button> */}
                         <div>
@@ -1839,7 +1865,8 @@ const SingleJobDetails = () => {
                                 </Tab.Content>
                             </Tab.Container> */}
                         </div>
-                    </Tab>
+                    </Tab>}
+                    {role !== 'developer' &&
                     <Tab eventKey="hired" title={hired}>
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
@@ -1847,7 +1874,7 @@ const SingleJobDetails = () => {
                             data={singleJobDescription?.job_applications?.hired}
                             jobStatus={singleJobDescription?.status}
                         />
-                    </Tab>
+                    </Tab>}
                 </Tabs>
             </div>
             <RejectModal
@@ -1868,27 +1895,27 @@ const SingleJobDetails = () => {
       /> */}
             {/* for delte and end job modals */}
             {showDeleteModal && (
-        <ConfirmationModal
-          text="Are you sure you want to Delete this job?"
-          show={showDeleteModal}
-          handleClose={() =>
-            handleEndAndDeleteModal({ action: "closeDeleteModal" })
-          }
-          smallLoader={modalLoader} //for end and delete only
-          handleAction={handleDeleteJob}
-        />
-      )}
-      {showEndModal && (
-        <ConfirmationModal
-          text="Are you sure you want to Delete this job?"
-          show={showEndModal}
-          handleClose={() =>
-            handleEndAndDeleteModal({ action: "closeEndModal" })
-          }
-          smallLoader={modalLoader} //for end and delete only
-        />
-      )}
-      {/* for delte and end job modals */}
+                <ConfirmationModal
+                    text="Are you sure you want to Delete this job?"
+                    show={showDeleteModal}
+                    handleClose={() =>
+                        handleEndAndDeleteModal({ action: "closeDeleteModal" })
+                    }
+                    smallLoader={modalLoader} //for end and delete only
+                    handleAction={handleDeleteJob}
+                />
+            )}
+            {showEndModal && (
+                <ConfirmationModal
+                    text="Are you sure you want to Delete this job?"
+                    show={showEndModal}
+                    handleClose={() =>
+                        handleEndAndDeleteModal({ action: "closeEndModal" })
+                    }
+                    smallLoader={modalLoader} //for end and delete only
+                />
+            )}
+            {/* for delte and end job modals */}
 
 
             <ConfirmationModal

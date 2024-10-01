@@ -69,8 +69,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   }
 
   useEffect(()=>{
-     dispatch(getAllPermissionDetails())
-  },[])
+    if(role==="admin"){
+     dispatch(getAllPermissionDetails(role))
+    }
+  },[role])
 
   console.log(details, "details")
   const handleCloseMeetingInfo = () => {
@@ -163,7 +165,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       <header className="mb-4 zIndex3">
         <div className="d-flex align-items-center justify-content-between gap-3">
           <div>
-            <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2" : "shadow-none p-0 collapsable_btn me-2 active-collapse"}><TbArrowBarToLeft /></Button>
+            {/* <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2" : "shadow-none p-0 collapsable_btn me-2 active-collapse"}><TbArrowBarToLeft /></Button> */}
             {routePath(isSingleJob) && (
               <Button
                 onClick={backBtn}

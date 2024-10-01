@@ -70,7 +70,7 @@ const Summary = ({
     setFilteredStepData(tempArr);
     setEdit(true)
     if (tempArr?.length > 0) {
-      if (activeStep === 3 || activeStep) {
+      if (activeStep === 3) {
         setFreeArray((prevFreeArray) => Array.isArray(prevFreeArray) ? [...prevFreeArray, ...tempArr] : [...tempArr]);
         console.log(freeArray, "qwerty")
 
@@ -237,5 +237,4 @@ const Summary = ({
     </>
   );
 };
-
 export default Summary;

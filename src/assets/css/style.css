@@ -322,7 +322,8 @@ ul {
     gap: 30px;
     margin-bottom: 20px;
     text-decoration: none;
-    color: var(--white);
+    /* color: var(--white); */
+    color: #107517;
 }
 
 .bottom-link svg {
@@ -8236,6 +8237,7 @@ select.apply-field
 .sidebar.collapse-active
 {
     width: 120px;
+    background: #ffff;
     border-top-right-radius: 0px
     ;
     border-bottom-right-radius: 0px;
@@ -10403,7 +10405,8 @@ select.apply-field
     .dashboard-link {
         padding: 10px 15px;
         margin-bottom: 6px;
-        font-size: var(--sideLink_font_size)
+        font-size: var(--sideLink_font_size);
+        color: #107517;
     }
 
     .side-link {
@@ -10423,6 +10426,7 @@ select.apply-field
     .dashboard-link svg {
         width: 19px;
         height: 19px;
+        color: #107517;
     }
 
     .bottom-link {
