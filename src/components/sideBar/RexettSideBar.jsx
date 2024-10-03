@@ -47,7 +47,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
         <>
             <aside className={collapseActive ? "sidebar" : "sidebar collapse-active"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
-                    <div className="w-100">
+                    <div className="w-100 d-flex flex-column justify-content-between align-items-center">
                         <div className={collapseActive ? "sidebar-logo mt-3 mb-4" : "sidebar-logo mt-3 mb-4 logo-sidebar-wrapper"}>
                             <a href="https://www.rexett.com/">
                                 { !collapseActive ?
@@ -95,13 +95,14 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                         ))}
                     </div>
                     <div className="w-100 px-3 mt-3">
-                        <div>
+                        <div className="d-flex justify-content-center">
                             <Link
                                 onClick={logout}
                                 className="bottom-link"
                                 activeClassName="active"
                             >
-                                <span className="sidebar-icon"><PiSignOutBold /></span> <span className="sidebar-text">{t("signOut")}</span>
+                                <span className="sidebar-icon"><PiSignOutBold /></span>
+                                {/* <span className="sidebar-text">{t("signOut")}</span> */}
                             </Link>
                         </div>
                     </div>

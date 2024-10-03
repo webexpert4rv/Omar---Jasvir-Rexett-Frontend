@@ -181,7 +181,7 @@ ul {
     top: 0;
     left: 0;
     height: 100vh;
-    padding: 20px 0px 10px 30px;
+    /* padding: 20px 0px 10px 30px; */
     transition: .4s ease;
     background: var(--sidebar-bg);
     /* background: var(--solid_color); */
@@ -10397,7 +10397,7 @@ select.apply-field
 
     .sidebar {
         width: 280px;
-        padding: 10px 0px 10px 30px;
+        /* padding: 10px 0px 10px 30px; */
     }
     .collapsable_btn
     {
