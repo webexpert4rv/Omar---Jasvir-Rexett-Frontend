@@ -431,7 +431,6 @@ const Members = () => {
                       </th>
                       <th>Phone Number</th>
                       <th>Company Type</th>
-                      <th>Tax Id</th>
                       <th>Applied on</th>
                       <th>{t("status")}</th>
                       <th className="text-center">Action</th>
@@ -485,7 +484,7 @@ const Members = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td className="text-capitalize">{item?.client_type}</td>
-                                <td>{item?.company_tax_id}</td>
+                                {/* <td>{item?.company_tax_id}</td> */}
                                 <td>{item?.created_at?.slice(0, 10)}</td>
                                 <td>
                                   <span
@@ -756,7 +755,7 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("typeOfCompany")}</th>
-                      <th>{t("engagements")}</th>
+                      {/* <th>{t("engagements")}</th> */}
                       <th>
                         {t("engagements")} {t("last")}
                       </th>
@@ -808,7 +807,7 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
-                                <td>{item?.company?.type_of_company}</td>
+                                {/* <td>{item?.company?.type_of_company}</td> */}
                                 <td>{item?.company?.total_employees}</td>
                                 <td><p className="application-mail mb-0">{item?.company?.website}</p></td>
                                 <td>

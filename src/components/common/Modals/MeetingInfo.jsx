@@ -236,7 +236,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     } else if (meeting_platform === "google_meet") {
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
-        eventId: "00saj72vr2fjp8okgcvokilevl",
+        eventId: "hh4n5od7v37k462e7lmlipc6us",
       });
 
       if (response.result.status === "cancelled") {
@@ -244,8 +244,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       } else {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
-        if (meetingStart < now) {
-          fetchMeetingDetails("00saj72vr2fjp8okgcvokilevl");
+        if (meetingStart > now) {
+          fetchMeetingDetails("hh4n5od7v37k462e7lmlipc6us");
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");

@@ -1360,6 +1360,23 @@ export function messageSendFunc(payload) {
     };
 }
 
+export function deleteProfleAPi(payload,callback) {
+   
+    return async (dispatch) => {
+        dispatch(setSmallLoader());
+        try {
+            let result = await clientInstance.delete(`/admin/delete-applicant/${payload}`);
+            toast.success("Profile is deleted",{ position: "top-center" });
+            dispatch(setSuccessAdminData())
+            return callback()
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" });
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
 
 export function updateChatRoom(id, payload, callback) {
     console.log(payload, "payload")
