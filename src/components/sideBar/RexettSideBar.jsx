@@ -17,6 +17,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
     const [sidebarDataWithPermi,setSideBarDataWithPermi]=useState([])
     let currentRoute = role == "client" ? "/" : `/${role}-login`
     let {rolesWithPermissions}=allPermissionDetails
+    console.log(configDetails,"configDetails")
 
     const logout = () => {
         localStorage.clear();
@@ -49,8 +50,8 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                     <div className="w-100">
                         <div className={collapseActive ? "sidebar-logo mt-3 mb-4" : "sidebar-logo mt-3 mb-4 logo-sidebar-wrapper"}>
                             <a href="https://www.rexett.com/">
-                                { collapseActive ?
-                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo   } alt="Sidebar Logo" />
+                                { !collapseActive ?
+                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo2   } alt="Sidebar Logo" />
                                     :
                                     <img src={sidebarLogo2} alt="Sidebar Logo" />
                                 }
