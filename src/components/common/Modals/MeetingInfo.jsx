@@ -143,11 +143,9 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           scope: SCOPES,
         })
         .then(() => {
-          console.log("GAPI Initialized");
           const authInstance = gapi.auth2.getAuthInstance();
           localStorage.setItem("authentication", authInstance.isSignedIn.get());
           const grantedScopes = authInstance.getGrantedScopes();
-          console.log(grantedScopes, "grantedScopes");
         })
         .catch((error) => {
           console.error("Error initializing GAPI:", error);
@@ -157,14 +155,13 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   }, []);
 
   const fetchMeetingDetails = async (meetingCode) => {
-    alert(meetingCode);
+    // alert(meetingCode);
     const response = await gapi.client.reports.activities.list({
       userKey: "all",
       applicationName: "meet",
       eventName: "call_ended",
       filters: `meeting_code==${meetingCode}`,
     });
-    console.log(response, "newresponse");
     const activities = response.result.items || [];
     const participants = activities.flatMap((activity) =>
       activity.events.flatMap((event) =>
@@ -185,6 +182,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       .reduce((acc, val) => acc + val, 0);
   };
 
+  const googleEventId = localStorage.getItem("googleEventId")
+
   const checkInterviewStatus = async () => {
     const meeting_platform = details?.interview?.meeting_platform;
     console.log(meeting_platform, "meeting_platform");
@@ -200,6 +199,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         // Fetch the online meeting details using the meeting ID
         const joinUrl = details?.interview?.meeting_link;
         const id = joinUrl;
+        
         // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
         const meetingResponse = await client
           .api("/me/onlineMeetings")
@@ -236,16 +236,16 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     } else if (meeting_platform === "google_meet") {
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
-        eventId: "hh4n5od7v37k462e7lmlipc6us",
+        eventId: googleEventId,
       });
 
       if (response.result.status === "cancelled") {
-        alert("This meeting was cancelled.");
+        // alert("This meeting was cancelled.");
       } else {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
-        if (meetingStart > now) {
-          fetchMeetingDetails("hh4n5od7v37k462e7lmlipc6us");
+        if (meetingStart < now) {
+          fetchMeetingDetails(id);
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");

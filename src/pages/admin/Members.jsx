@@ -1201,7 +1201,7 @@ const Members = () => {
                                       }
                                     >
                                       <RxChevronRight />
-                                    </span>{" "}
+                                    </span>
                                     <div
                                       className="user-imgbx application-userbx"
                                       onClick={() => {

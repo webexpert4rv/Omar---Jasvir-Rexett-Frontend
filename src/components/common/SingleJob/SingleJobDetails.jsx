@@ -97,8 +97,6 @@ const SingleJobDetails = () => {
         id: null,
     });
     const { singleJobPost } = useSelector(state => state.clientData)
-    console.log(singleJobPost, "singleJobPost")
-    console.log(selectedTabsData,"selectedTabsData")
     const printRef = useRef();
     const [showMeetingInfo, setShowMeetingInfo] = useState({
         isMeeting: false,

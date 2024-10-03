@@ -60,7 +60,7 @@ const Schedulemeeting = ({
   const [meetingLink, setMeetingLink] = useState(null);
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [gogleEventId, setGoogleEventID] = useState(null);
+  const [googleEventId, setGoogleEventID] = useState(null);
   const [microsoftEventId, setMicrosoftEventId] = useState(null);
   const [events, setEvents] = useState([]);
 
@@ -456,6 +456,8 @@ const Schedulemeeting = ({
             console.log("Google Meet link:", response.result.hangoutLink);
             setMeetingLink(response.result.hangoutLink);
             setGoogleEventID(response?.result?.id)
+            localStorage.setItem("googleEventId",response?.result?.id)
+
           }
           setLoader(false);
         })
