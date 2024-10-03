@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   adminApproveReject,
   allApplicationsList,
+  deleteProfleAPi,
   sendMailForCompleteProfile,
 } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
@@ -49,6 +50,7 @@ import { CiCircleCheck } from "react-icons/ci";
 import { ImUser } from "react-icons/im";
 import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { LuPencil } from "react-icons/lu";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 
 const SECRET_KEY = "abcfuipqw222";
 
@@ -107,22 +109,23 @@ const Applications = () => {
   const [showScreening, setScreeningShow] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
-    order_alphabetically: "asc",
+    // order_alphabetically: "asc",
     order_created_at: "",
-    approval_status: "",
+    // approval_status: "",
     created_at: "",
   });
+
+  const [profileDeleted,setProfileDeleted]=useState({
+    deletedId:null,
+    isDeleted:false
+  })
 
   const handleScreeningClose = () => setScreeningShow(false);
   const handleScreeningShow = () => setScreeningShow(true);
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
   const [emailNum, setEmailNum] = useState()
   const [emailIndx, setEmailIndx] = useState()
-  console.log(emailIndx, "emailIndx")
-  console.log(allApplications, "allApplications")
-  console.log(loading, "loading")
-  console.log(currentTab,"cur")
-
+ 
   const handleTimeslotChange = (e) => {
     setSelectedTimeslot(e.target.id);
   };
@@ -329,6 +332,31 @@ const Applications = () => {
       state: { interviewId },
     });
   };
+
+  const deleteProfile=(id)=>{
+     setProfileDeleted({
+      isDeleted:!profileDeleted.isDeleted,
+      deletedId:id
+     })
+  }
+
+  const handleDeleteProlfile=()=>{
+    let data = {
+      ...filters,
+      page: page,
+      active_tab: currentTab,
+    };
+   
+
+    dispatch(deleteProfleAPi(profileDeleted?.deletedId,()=>{
+      setProfileDeleted({
+        isDeleted:false,
+        deletedId:null
+       })
+      dispatch(allApplicationsList(data));
+
+    }))
+  }
   return (
     <>
       {screenLoader ? (
@@ -572,10 +600,10 @@ const Applications = () => {
                                             </div>
                                           )}
                                           <div className="text-center py-1">
-                                            <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link>
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
                                           <div className="text-center py-1">
-                                            <Link to={'#'} className="font-14 text-danger">Delete <FaTrashCan /> </Link>
+                                          <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
@@ -923,7 +951,7 @@ const Applications = () => {
                                       </div>
                                     </td>
 
-                                    <td>
+                                    {/* <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
                                           <RexettButton
@@ -1001,6 +1029,102 @@ const Applications = () => {
                                           </div>
                                         </div>
                                       )}
+                                    </td> */}
+                                      <td>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "vendor",
+                                                    item?.id,
+                                                    item,
+                                                    3
+
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
+                                          </div>
+                                          <div className="text-center py-1">
+                                          <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
                                     </td>
                                   </tr>
                                   {expandedRow === index && (
@@ -1582,7 +1706,7 @@ const Applications = () => {
                                         })()
                                       )}
                                     </td>
-                                    <td>
+                                    {/* <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
                                           <RexettButton
@@ -1661,7 +1785,106 @@ const Applications = () => {
                                           </div>
                                         </div>
                                       )}
+                                    </td> */}
+                                    <td>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "developer",
+                                                    item?.id,
+                                                    item,
+                                                    3
+
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
+                                          </div>
+                                          <div className="text-center py-1">
+                                            <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
                                     </td>
+
+
                                   </tr>
                                   {expandedRow === index && (
                                     <tr
@@ -2205,7 +2428,7 @@ const Applications = () => {
                                       </div>
                                     </td>
 
-                                    <td>
+                                    {/* <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
                                           <RexettButton
@@ -2284,6 +2507,103 @@ const Applications = () => {
                                           </div>
                                         </div>
                                       )}
+                                    </td> */}
+
+<td>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "developer",
+                                                    item?.id,
+                                                    item,
+                                                    3
+
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
+                                          </div>
+                                          <div className="text-center py-1">
+                                            <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
                                     </td>
                                   </tr>
                                   {expandedRow === index && (
@@ -2849,6 +3169,17 @@ const Applications = () => {
             selectedEmail={selectedEmail}
             selectedId={selectedId}
           /> */}
+
+{     profileDeleted.isDeleted
+ && (
+          <ConfirmationModal
+            show={ profileDeleted.isDeleted}
+            handleClose={deleteProfile}
+            smallLoader={smallLoader}
+            text={"Are you sure to delete this profile?"}
+            handleAction={handleDeleteProlfile}
+          />
+        )}
           <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
 
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />

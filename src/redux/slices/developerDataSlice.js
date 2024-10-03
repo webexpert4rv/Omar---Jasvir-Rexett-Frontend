@@ -430,7 +430,9 @@ export function getLeaveHistory(id, payload) {
         dispatch(setLeaveHistory(result?.data?.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      console.log(error,"new_errr")
+      const message = error.response.data.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
       dispatch(setLeaveHistory([]));
       dispatch(setFailDeveloperData());
     }
@@ -763,7 +765,7 @@ export function getAllContracts(payload, callback) {
         dispatch(setAllContracts(result.data.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error.response.data.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
@@ -973,6 +975,7 @@ export function getHolidaysList() {
       dispatch(setHolidayList(result.data.data));
     } catch (error) {
       console.log(error, "error");
+
     }
   };
 }
@@ -985,6 +988,8 @@ export function getPaySlips(query) {
       dispatch(setPaySlips(result.data));
     } catch (error) {
       console.log(error, "error");
+      const message = error?.response.data.message
+      toast.error(message, { position: "top-center" });
     }
   };
 }

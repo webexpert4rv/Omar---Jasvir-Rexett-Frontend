@@ -29,6 +29,7 @@ const FinalizeResume = ({skillOptions,watch}) => {
     (state) => state?.developerData
   );
   let developerId=localStorage.getItem("developerId")
+  console.log(developerRegistrationData,"developerRegistrationData")
 
   useEffect(()=>{
       if(developerId){

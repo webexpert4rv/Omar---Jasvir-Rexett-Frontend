@@ -20,8 +20,7 @@ import ConfirmationModal from "../../components/common/Modals/ConfirmationModal"
 const VendorEditProfile = () => {
   const dispatch = useDispatch();
   const [companyTypeOptions, setCompanyTypeOptions] = useState([]);
-  const { smallLoader } = useSelector((state) => state.developerData);
-  const { } = useSelector((state) => state.clientData);
+  const { smallLoader} = useSelector((state) => state.vendorData);
   const {
     handleSubmit,
     register,
@@ -283,6 +282,7 @@ const VendorEditProfile = () => {
             setImageFile={setImageFile}
             isProfileSectionRequired={activeStep === 1}
             isVendorStep1={true}
+            flowName={"edit_profile"}
           />
         </div>
         )
