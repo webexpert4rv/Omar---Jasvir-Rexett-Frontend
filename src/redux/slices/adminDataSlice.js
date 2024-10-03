@@ -891,7 +891,7 @@ export function getConfigDetails() {
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
-                dispatch(setConfigDetails(result.data.data))
+                dispatch(setConfigDetails(result?.data?.data))
             }
         } catch (error) {
             // const message = error?.response.data.message || "Something went wrong";
@@ -915,7 +915,7 @@ export function getUploadFile(payload, callback) {
             }
             return callback()
         } catch (error) {
-            const message = error?.response.data.message || "Something went wrong";
+            const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
 

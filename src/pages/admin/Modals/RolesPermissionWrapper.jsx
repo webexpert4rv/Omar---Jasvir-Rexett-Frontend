@@ -266,11 +266,11 @@ const RolesPermissionWrapper = ({
                 </Col>
                 <Col lg={12}>
                   <CommonInput
-                    label="Select Role"
+                    label="Select Position"
                     name="role"
                     type="normal-select"
                     control={control}
-                    defaultOption="Select Permission"
+                    defaultOption="Select Position"
                     options={PERMISSIONS}
                     rules={{ required: "Role is required" }}
                     error={errors.role}

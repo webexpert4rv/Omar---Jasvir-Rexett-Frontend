@@ -1,6 +1,7 @@
 
 import { TbRulerOff } from "react-icons/tb";
 import {
+  DEGREE,
   JOB_TYPES_OPTIONS,
   WORKPLACE_TYPES_OPTIONS,
   LANGUAGE_PREFERENCES_OPTIONS,
@@ -874,43 +875,66 @@ const NESTED_DEVELOPER_STEP_1_FIELDS = [
   },
 ]
 
-const NESTED_DEVELOPER_STEP_2_FIELDS=[
+const NESTED_DEVELOPER_STEP_2_FIELDS = [
   {
-    label: "University Name",
+    label: "Institute Name",
     fieldName: "university_name",
     type: "text",
     placeholder: "e.g. Delhi University",
-    rules: { required: "University name is required" },
+    rules: { 
+      required: "University name is required" ,
+      pattern: {
+        value: /^[A-Za-z\s]+$/,
+        message: "University must contain only letters and spaces"
+      }
+    },
     columnWidth: 6,
     isRequired: true,
   },
   {
-    label: "University Location",
+    label: "Institute Location",
     fieldName: "address",
     type: "text",
+    placeholder: "e.g. Delhi,India",
+    rules: { 
+      required: "University location is required",
+      pattern: {
+        value: /^[A-Za-z\s]+$/,
+        message: "University location must contain only letters and spaces"
+      }
+    },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Degree",
+    fieldName: "degree_id",
+    type: "normal-select",
     placeholder: "e.g. Delhi,India",
     rules: { required: "University location is required" },
     columnWidth: 6,
     isRequired: true,
+    options:DEGREE
   },
-  // {
-  //   label: "Degree",
-  //   fieldName: "degree",
-  //   type: "normal-select",
-  //   placeholder: "e.g. Delhi,India",
-  //   rules: { required: "University location is required" },
-  //   columnWidth: 6,
-  //   isRequired: true,
-  // },
   // {
   //   label: "Enter Degree",
   //   fieldName: "degree",
-  //   type: "text",
-  //   placeholder: "e.g. Delhi,India",
-  //   rules: { required: "University location is required" },
+  //   type: "select",
+  //   placeholder: "e.g. Btech",
+  //   rules: { required: "Degree is required" },
   //   columnWidth: 6,
   //   isRequired: true,
+  //   isAutocomplete: true,
   // },
+  {
+    label: "Enter Degree",
+    fieldName: "degree",
+    type: "text",
+    placeholder: "e.g. Btech",
+    rules: { required: "Degree is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
   {
     label: "Field of Study",
     fieldName: "field_of_study",
@@ -920,22 +944,45 @@ const NESTED_DEVELOPER_STEP_2_FIELDS=[
     columnWidth: 6,
     isRequired: true,
   },
-  
   {
-    label: "Graduation Date",
-    fieldName: "end_month",
-    type: "date",
-    isMinRequired: true,
-    isMaxRequired:false,
+    label: "Start Year",
+    fieldName: "start_year",
+    type: "year-picker",
+
     // placeholder: "e.g. Street 1341,New area,CA,USA",
-    rules: { required: "Job location is required" },
+    // rules: { 
+    //   required:"Job location is required",
+    //   pattern: {
+    //     value: /^[A-Za-z\s]+$/,
+    //     message: "job location must contain only letters and spaces"
+    //   }
+    // },
+    
     columnWidth: 6,
     isRequired: true,
     defaultOption: "Select Month",
   },
 
-]
+  {
+    label: "End Year",
+    fieldName: "end_year",
+    type: "year-picker",
+  
+    // placeholder: "e.g. Street 1341,New area,CA,USA",
+    // rules: { 
+    //   required:"Job location is required",
+    //   pattern: {
+    //     value: /^[A-Za-z\s]+$/,
+    //     message: "job location must contain only letters and spaces"
+    //   }
+    // },
+    
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "Select Month",
+  },
 
+];
 
 const NESTED_DEVELOPER_STEP_6_FIELDS=[
   {

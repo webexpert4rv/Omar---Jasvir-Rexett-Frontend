@@ -50,7 +50,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
     }, [])
 
 
-    const handleClear=()=>{
+    const handleClear = () => {
         reset()
     }
     const onSubmit = async (values) => {
@@ -75,27 +75,27 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                     setIsEdit(false)
                     reset()
                 }));
-            } else {
-                payload = {
-                    title: values?.title,
-                    description: (stripHtmlTags(values?.description)),
-                    status: "pending",
-                    due_date: newDate,
-                    type: "assigned_to_employees",
-                    assignees: [
-                        values?.assignees
-                    ],
-                };
-                await dispatch(getEditToDo(payload, selectedId, () => {
-                    let data = {
-                        tab: currentTab
-                    }
-                    dispatch(getAdminTodos(data));
-                    setIsEdit(false)
-                    reset()
-                }));
-
             }
+            //  else {
+            //     payload = {
+            //         title: values?.title,
+            //         description: (stripHtmlTags(values?.description)),
+            //         status: "pending",
+            //         due_date: newDate,
+            //         type: "assigned_to_employees",
+            //         assignees: [
+            //             values?.assignees
+            //         ],
+            //     };
+            //     await dispatch(getEditToDo(payload, selectedId, () => {
+            //         let data = {
+            //             tab: currentTab
+            //         }
+            //         dispatch(getAdminTodos(data));
+            //         setIsEdit(false)
+            //         reset()
+            //     }));
+            // }
         } else {
             if (currentTab === "my_todo") {
                 console.log("inside my todo")
@@ -204,7 +204,6 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                                         </span>
                                     </ToolTip>
                                 </Dropdown.Toggle>
-
                                 <Dropdown.Menu className="assign-dropdown-menu">
                                     <div>
                                         <span className="font-14 fw-medium d-block mb-2">Quick schedule</span>
@@ -214,7 +213,26 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                                     </div>
                                 </Dropdown.Menu>
                             </Dropdown>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="success"  className = "priority-btn" id="dropdown-basic">
+                                    Select Priority
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu className="assign-dropdown-menu">
+                                    <Form.Select
+                                        className="common-field font-12 mb-2"
+                                        name="Select priority"
+                                        // onChange={(e)=>handleSelectedOption(e.target.value)}
+                                        {...register("priority", { required: "Please select candidate" })}
+                                    >
+                                        <option value="" disabled>Filter...</option>
+                                        <option value="low">Low Priority</option>
+                                        <option value="normal">Normal Priority</option>
+                                        <option value="high">High Priority</option>
+                                    </Form.Select>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </div>
+
                         <div className="d-flex align-items-center gap-2">
                             <RexettButton
                                 variant="transparent"

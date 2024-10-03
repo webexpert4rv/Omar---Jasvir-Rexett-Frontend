@@ -137,3 +137,71 @@ export const TEAM_SIZE = [
   { label: "100+" },
 ];
 export const WEIGHT_OPTIONS = ["Beginner", "Intermediate", "Expert"];
+
+export const DEGREE= [
+  {
+      "value": "1",
+      "label": "Secondary School Diploma",
+    
+  },
+  {
+      "value": "2",
+      "label": "Bachelor of Science",
+    
+  },
+  {
+      "value": "3",
+      "label": "Bachelor of Arts",
+    
+  },
+  {
+      "value": "4",
+      "label": "Bachelor of Computer Science",
+    
+  },
+  {
+      "value": "5",
+      "label": "Bachelor of Computer Applications",
+    
+  },
+  {
+      "value": "6",
+      "label": "Bachelor of Technology",
+    
+  },
+  {
+      "value": "7",
+      "label": "Master of Science",
+    
+  },
+  {
+      "value": "8",
+      "label": "Master of Arts",
+    
+  },
+  {
+      "value": "9",
+      "label": "Master of Computer Science",
+    
+  },
+  {
+      "value": "10",
+      "label": "Master of Computer Applications",
+    
+  },
+  {
+      "value": "11",
+      "label": "Master of Technology",
+    
+  },
+  {
+      "value": "12",
+      "label": "Ph.D. in Electrical Engineering",
+    
+  },
+  {
+      "value": "13",
+      "label": "Master of Business Administration",
+    
+  }
+]
