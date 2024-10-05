@@ -15,7 +15,6 @@ const SkillAndWeightSection = ({
   setValue,
 }) => {
   const [weightSkills, setWeightAndSkills] = useState([]);
-  console.log(weightSkills, "weightSkills");
 
   const handleSelectWeight = (e, idx) => {
     const { value } = e.target;
@@ -23,7 +22,6 @@ const SkillAndWeightSection = ({
     temp[idx]["weight"] = value;
     setTraitSkills(temp);
   };
-  console.log(traitSkill, "traitSkills inside component");
   return (
     <Row>
       <Col md={8}>

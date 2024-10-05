@@ -43,6 +43,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
 
 
     const handleSelect = (selectedTab) => {
+        setIsEdit(false)
         setCurrentTab(selectedTab)
         let data = {
             tab: selectedTab,

@@ -36,6 +36,7 @@ const JobCard = ({
 console.log(role,"role")
   console.log(type,"type")
   console.log(jobStatus,"jobStatus")
+  console.log(data,"data")
   const scheduleInterview = (
     <Tooltip>Move to Interview</Tooltip>
   )
@@ -99,7 +100,7 @@ console.log(role,"role")
                       </div>
                       <div
                         className="overflow-hidden inner-dev-card"
-                        onClick={(e) => handleDeveloperCard(e, item?.developer_id)}
+                        onClick={(e) => handleDeveloperCard(e, item?.developer?.id)}
                       >
                         <div className="user-imgbx">
                           <img
