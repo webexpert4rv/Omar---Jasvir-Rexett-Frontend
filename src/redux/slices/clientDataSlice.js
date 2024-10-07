@@ -48,6 +48,7 @@ const initialClientData = {
   feedbackDetails: {},
   feedbackApproval: {},
   singleJobPost:{},
+  customSkills:{},
   approveFeedbackLoader: false,
 };
 
@@ -236,6 +237,10 @@ export const clientDataSlice = createSlice({
     setSingleJobPostData: (state,action)=>{
       state.singleJobPost = action.payload;
       state. smallLoader = false
+    },
+    setCustomSkills:(state,action) => {
+      state.customSkills = action.payload;
+      state. smallLoader = false
     }
   }
 });
@@ -288,6 +293,7 @@ export const {
   setApproveFeedbackLoader,
   setApproveFeedback,
   setSingleJobPostData,
+  setCustomSkills
 } = clientDataSlice.actions;
 
 
@@ -709,12 +715,12 @@ export function postCandidateInterview(payload, callback) {
       let result = await clientInstance.post(`common/interview`,{...payload});
        toast.success("Interview is scheduled",{ position: "top-center" })
        dispatch(setActionSuccessFully());
-      
     } catch (error) {
       const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
+    return callback();
   };
 }
 
@@ -888,6 +894,7 @@ export function _deleteFileAndFolder(payload, callback) {
 }
 
 export function changeJobStatus(currentTb, data, callback) {
+  console.log(data,"data")
   return async (dispatch) => {
     if (data) {
       dispatch(setSmallLoader());
@@ -1058,6 +1065,7 @@ export function updateDeveloperCvDetails(payload, role, callback) {
             position: "top-center",
           });
         } else {
+
           toast.success("Profile is Updated", { position: "top-center" });
         }
         dispatch(setActionSuccessFully());
@@ -1473,3 +1481,32 @@ export const approveFeedback = (id, status) => {
     }
   };
 };
+// export const addCustomSkills = (payload,callback) => {
+//   console.log(payload,"payload")
+//   return async (dispatch) => {
+//     try {
+//       dispatch(setApproveFeedbackLoader(true));
+//       const response = await clientInstance.post("/common/add-master-skills",{...payload});
+//       dispatch(setCustomSkills(response?.data?.data))
+//       return callback;
+//     } catch (error) {
+//       dispatch(setFailClientData());
+//     }
+//   };
+// };
+
+export const addCustomSkills = (payload, callback) => {
+  console.log(payload, "payload");
+  return async (dispatch) => {
+    try {
+      dispatch(setApproveFeedbackLoader(true));
+      const response = await clientInstance.post("/common/add-master-skills", { ...payload });
+      console.log(response?.data?.data,"response")
+      dispatch(setCustomSkills(response?.data?.data));
+      if (callback) callback(); 
+    } catch (error) {
+      dispatch(setFailClientData());
+    }
+  };
+};
+

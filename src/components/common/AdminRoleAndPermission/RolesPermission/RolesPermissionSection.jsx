@@ -48,16 +48,17 @@ const RolesPermissionSection = () => {
             isTrue: !modalConfiguration.isTrue
         })
     }
-    const handleCheckStatus = (item_id, role_id, status) => {
-        console.log(item_id, "item_id")
-        console.log(role_id, "role_id")
+    const handleCheckStatus = (role , item_id, role_id) => {
         let data = {
             role_id: role_id,
             permission_id: item_id,
-            status: status
+            status: role?.checked===true ? "active" : "inactive",
+            // status:"active"
 
         }
-        dispatch(getUpdateRolePermission(data))
+        dispatch(getUpdateRolePermission(data,()=>{
+            dispatch(getAllPermissionSeeder())
+        }))
     }
 
     // const action_application = (
@@ -167,7 +168,7 @@ const RolesPermissionSection = () => {
                                                     <FiCheck />
                                                 </span>
                                             </td>
-                                            <td className="text-center">
+                                            {/* <td className="text-center">
                                                 <span className="full-approved">
                                                     <FiCheck />
                                                 </span>
@@ -196,7 +197,7 @@ const RolesPermissionSection = () => {
                                                 <span className="full-approved">
                                                     <FiCheck />
                                                 </span>
-                                            </td>
+                                            </td> */}
                                         </tr>
                                         {item?.permissions?.map((field, index) => {
                                             return (
@@ -217,19 +218,18 @@ const RolesPermissionSection = () => {
                                                     </td>
                                                     {field?.roles?.map((role, idx) => (
                                                         <>
-                                                            {roleNames.map((name) => (
-                                                                <td className="text-center" key={name}>
+                                                                <td className="text-center" key={idx}>
                                                                     <Form.Check
                                                                         type="checkbox"
                                                                         className="permission-checkbox"
-                                                                        onChange={() => handleCheckStatus(item?.id, role?.id, "active")}
-                                                                        checked={role?.checked}
+                                                                        onChange={(e) => handleCheckStatus(e.target.value,item?.id, role?.id)}
+                                                                        // checked={role?.checked}
                                                                     />
                                                                 </td>
-                                                            ))}
+                                                          
                                                         </>
                                                     ))}
-                                                    {field?.checked === false &&
+                                                    {/* {field?.checked === false &&
                                                         <>
                                                             {roleNames.map((name) => (
                                                                 <td className="text-center" key={name}>
@@ -237,7 +237,7 @@ const RolesPermissionSection = () => {
                                                                 </td>
                                                             ))}
                                                         </>
-                                                    }
+                                                    } */}
                                                 </tr>)
                                         })}
                                     </>

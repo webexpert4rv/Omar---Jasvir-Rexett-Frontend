@@ -36,8 +36,9 @@ const initialDeveloperData = {
   projectDetail: {},
   developerRegistrationData:{},
   chatRoomMessageList:{},
-  chatData:{},
+  chatData:[],
   memberList:[],
+  chatMessagesPaginationInfo:{},
   jobList:{}
 };
 
@@ -83,6 +84,7 @@ export const developerDataSlice = createSlice({
 
     setSuccessActionData: (state, action) => {
       state.smallLoader = false;
+      state.btnLoader = false;
     },
     setDeveloperTimeReports: (state, action) => {
       state.smallLoader = false;
@@ -141,7 +143,6 @@ export const developerDataSlice = createSlice({
       state.screenLoader = false;
     },
     setPaySlips: (state, action) => {
-      console.log(action.payload.pagination, "payload inside setter");
       state.paySlips = action.payload.data;
       state.screenLoader = false;
       state.totalPaySlipPages = action?.payload?.pagination?.totalPages;
@@ -168,8 +169,14 @@ export const developerDataSlice = createSlice({
       state.screenLoader = false;
     },
     setChatData: (state, action) => {
-      state.chatData = action.payload;
+      // logic for appending newly fetched and previous data for pagination
+      const newPaginatedData = [...action.payload];
+      const previousChatData = [...state.chatData];
+      state.chatData = [...newPaginatedData,...previousChatData];
       state.screenLoader = false;
+    },
+    setChatMessagPaginationInfo:(state,action) => {
+      state.chatMessagesPaginationInfo = action.payload;
     },
     setMemberList:(state,action) =>{
       state.memberList = action.payload;
@@ -211,12 +218,13 @@ export const {
   setMessageRoomList,
   setChatData,
   setMemberList,
+  setChatMessagPaginationInfo,
   setJobListingData
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
 
-export function fetchDeveloperCv(payload, callback) {
+export function fetchDeveloperCv(callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -224,6 +232,7 @@ export function fetchDeveloperCv(payload, callback) {
       if (result.status === 200) {
         dispatch(setSuccessDeveloperData(result.data.data));
       }
+      return callback(result.data.data)
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -412,7 +421,6 @@ export function applyJob(payload,callback) {
 }
 
 export function getLeaveHistory(id, payload) {
-  console.log(payload, "payload");
   return async (dispatch) => {
     try {
       let result = await clientInstance.get(
@@ -422,7 +430,9 @@ export function getLeaveHistory(id, payload) {
         dispatch(setLeaveHistory(result?.data?.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      console.log(error,"new_errr")
+      const message = error.response.data.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
       dispatch(setLeaveHistory([]));
       dispatch(setFailDeveloperData());
     }
@@ -628,6 +638,26 @@ export function deleteEducationCv(id, payload, callback) {
   };
 }
 
+export function deleteCertificate(id,callback) {
+  return async (dispatch) => {
+    //  dispatch(setSmallLoader())
+    try {
+      let result = await clientInstance.delete(
+        `common/delete-certification/${id}`
+      );
+      if (result.status === 200) {
+        toast.success("Certificate is Deleted", { position: "top-center" });
+        dispatch(setSuccessActionData());
+        return callback();
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
 export function updateDeveloperSkills(
   payload,
   role,
@@ -735,7 +765,7 @@ export function getAllContracts(payload, callback) {
         dispatch(setAllContracts(result.data.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error.response.data.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
@@ -945,6 +975,7 @@ export function getHolidaysList() {
       dispatch(setHolidayList(result.data.data));
     } catch (error) {
       console.log(error, "error");
+
     }
   };
 }
@@ -957,6 +988,8 @@ export function getPaySlips(query) {
       dispatch(setPaySlips(result.data));
     } catch (error) {
       console.log(error, "error");
+      const message = error?.response.data.message
+      toast.error(message, { position: "top-center" });
     }
   };
 }
@@ -1232,9 +1265,8 @@ export function fileUploadForWeb(fileData, callback) {
 }
 
 export const uploadFileToS3Bucket = (payload, callback) => {
-  console.log(payload,"payload")
   return async (dispatch) => {
-    // dispatch(setScreenLoader());
+    dispatch(setSmallLoader())
     try {
       let result = await clientInstance.post(`/web/upload-file/`, payload);
       callback && callback(result?.data?.data?.Location);
@@ -1451,13 +1483,23 @@ export function getAllMessages(id ,payload){
 }
 
 
-export function getChatRoomData(id) {
+export function getChatRoomData(id, page=1) {
+  // setting callback default value as empty function if this parameter is not passed
   return async (dispatch) => {
     // dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`messages/chatroom-messages/${id}`);
-      console.log(result,"...")
-      dispatch(setChatData(result?.data?.messages?.data))
+      let result = await clientInstance.get(`messages/chatroom-messages/${id}`,{
+        params:{
+          page:page
+        }
+      });
+      dispatch(setChatData(result?.data?.messages?.data));
+      const paginationInfo = {
+        total_count: result?.data?.messages?.total_count,
+        total_pages:result?.data?.messages?.total_pages,
+        current_page:result?.data?.messages?.current_page
+      };
+      dispatch(setChatMessagPaginationInfo(paginationInfo))
       // dispatch(setSuccessActionData());
     } catch (error) {
       const message = error.message || "Something went wrong";
@@ -1482,6 +1524,19 @@ export function getChatRoomMembers(id) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       // dispatch(setFailDeveloperData());
+    }
+  };
+}
+export function getUploadCertificate(payload) {
+  return async (dispatch) => {
+    dispatch(setBtnLoader());
+    try {
+      let result = await clientInstance.post("/common/add-certification/",{...payload});
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
     }
   };
 }

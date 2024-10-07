@@ -4,15 +4,15 @@ import RexettButton from "../../atomic/RexettButton";
 import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
 import { useDispatch } from "react-redux";
 const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
+   
+   console.log(type,"wrongType")
     const callBackBtn=(e )=>{
         let data={
             status: type,
         }
         onClick(e,data)
     }
-    // const handleAction = () => {
-
-    // }
+   
     return(
         <Modal show={show} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
@@ -28,7 +28,7 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
                         <RexettButton
                             type="button"
                             text={submitText ? submitText : "Yes"}
-                            onClick={type ? callBackBtn : handleAction}
+                            onClick={type !== undefined ? callBackBtn : handleAction}
                             // onClick={callBackBtn}
                             className="main-btn px-4 me-3 font-14 fw-semibold"
                             variant="transparent"

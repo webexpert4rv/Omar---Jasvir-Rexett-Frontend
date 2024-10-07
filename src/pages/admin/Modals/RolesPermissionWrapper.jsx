@@ -8,13 +8,14 @@ import {
   getAllPermissionSeeder,
   newRoleCreate,
   newEmployeeCreate,
-  getAllAdminEmployees
+  getAllAdminEmployees,
+  updateEmployeeProfile,
 } from "../../../redux/slices/adminDataSlice";
 import AddCandidate from "./AddCandidate";
 import NewEmployee from "./NewEmployee";
 import { IoClose, IoCloudUploadOutline } from "react-icons/io5";
 import LocationSection from "../../websiteRegisterForm/developer/LocationSection";
-import { getCoutriesList } from "../../../redux/slices/clientDataSlice";
+import { getCoutriesList, uploadFileToS3Bucket } from "../../../redux/slices/clientDataSlice";
 
 // const PERMISSIONS = [
 //   { label: "Workspace Admin", value: "workspace_admin" },
@@ -32,6 +33,10 @@ const RolesPermissionWrapper = ({
   heading,
   options,
   modalName,
+  id,
+  data,
+  setIsEdit,
+  isEdit
 }) => {
   const {
     handleSubmit,
@@ -45,60 +50,115 @@ const RolesPermissionWrapper = ({
     clearErrors,
   } = useForm();
   const { smallLoader } = useSelector((state) => state.adminData);
-  const { allPermissionList } = useSelector((state) => state.adminData)
+  const { allPermissionList, allAdminEmployees } = useSelector((state) => state.adminData)
   const dispatch = useDispatch();
   const [details, setDetails] = useState();
-  console.log(modalName, "modalname");
   const [uploadedImage, setUploadedImage] = useState(null);
-  
-  let PERMISSIONS = allPermissionList?.roles?.map((val)=>(
+  const [previewImg , setPreviewImage] = useState()
+
+
+  let PERMISSIONS = allPermissionList?.roles?.map((val) => (
     { label: val?.name, value: val?.name }
   ))
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getCoutriesList());
-    dispatch(getAllAdminEmployees());
-  },[])
+    dispatch(getAllAdminEmployees())
+  }, [])
+
+  useEffect(() => {
+    if (isEdit === true) {
+      setIsEdit(true)
+      const [firstName, surname] = data?.name?.split(" ")
+      setValue("first_name", firstName)
+      setValue("last_name", surname)
+      setValue("email", data?.email)
+      setValue("passcode", data?.passcode)
+      setValue("phone_number", data?.phone_number)
+      setValue("role", data?.roles[0]?.name)
+      setPreviewImage(data?.profile_picture)
+      const newValue = {
+        label: data?.country,
+        value: data?.country_iso_code,
+      };
+      setValue("country_code", newValue)
+      const timeZone = {
+        label: data?.time_zone,
+        value: data?.time_zone,
+      }
+      setValue("time_zone", timeZone)
+    }else{
+      reset()
+      setPreviewImage(null);
+    }
+  }, [data, isEdit])
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    setUploadedImage(file);
     if (file) {
-      setUploadedImage(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
   const removeImage = () => {
-    setUploadedImage(null);
+    setPreviewImage(null);
   };
 
   const onSubmit = async (values) => {
-    setDetails(values);
-    let payload = {
-      first_name: values?.first_name,
-      last_name: values?.last_name,
-      email: values?.email,
-      phone_number: values?.phone_number,
-      profile_picture: uploadedImage,
-      country: values?.country_code?.label,
-      state: values?.state_iso_code?.label,
-      city: values?.city,
-      passcode: values?.passcode,
-      time_zone: values?.time_zone?.value,
-      role: values?.role
-    };
-    if(modalName=="role"){
-      let data={
-        description:"ddd",
-        name: values?.role
-      }
-       await dispatch(newRoleCreate(data))
-    }else{
-      await dispatch(newEmployeeCreate(payload));
+    if (modalName === "role") {
+      let data = {
+        description: "Role description here", // You can customize this description
+        name: values?.role,
+      };
+      dispatch(newRoleCreate(data));
     }
+    else{
+    setDetails(values);
+    let fileData = new FormData();
+    fileData.append("file", uploadedImage)
+   
+    dispatch(uploadFileToS3Bucket(fileData,(url) => {
+      let payload = {
+        first_name: values?.first_name,
+        last_name: values?.last_name,
+        email: values?.email,
+        phone_number: values?.phone_number,
+        profile_picture: url,
+        country: values?.country_code?.label,
+        country_iso_code: values?.country_code?.value,
+        passcode: values?.passcode,
+        time_zone: values?.time_zone?.value,
+        role: values?.role,
+      };
   
-    dispatch(getAllPermissionSeeder());
-    handleClose();
-    reset();
-    setUploadedImage(null);
+      if (isEdit) {
+        console.log(payload, "payload for update");
+         dispatch(updateEmployeeProfile(payload, id));
+        dispatch(getAllAdminEmployees());
+      } else {
+        // if (modalName === "role") {
+        //   let data = {
+        //     description: "Role description here", // You can customize this description
+        //     name: values?.role,
+        //   };
+        //   dispatch(newRoleCreate(data));
+        // } else {
+           dispatch(newEmployeeCreate(payload));
+        // }
+      }
+      
+    }));
+  }
+  dispatch(getAllPermissionSeeder());
+      handleClose();
+      reset();
+      setUploadedImage(null);
   };
+  
   return (
     <Modal
       show={show}
@@ -119,7 +179,7 @@ const RolesPermissionWrapper = ({
               {/* <h3 className="popup-heading">New Employee</h3> */}
 
               <div className="text-center mb-3">
-                {!uploadedImage && (
+                {!previewImg && (
                   <div className="upload-img">
                     <input
                       type="file"
@@ -135,10 +195,10 @@ const RolesPermissionWrapper = ({
                     </label>
                   </div>
                 )}
-                {uploadedImage && (
+                {previewImg && (
                   <div className="uploaded-img">
                     <img
-                      src={uploadedImage}
+                      src={previewImg}
                       className="img-uploaded"
                       alt="Uploaded"
                     />
@@ -152,81 +212,82 @@ const RolesPermissionWrapper = ({
                   </div>
                 )}
               </div>
-                <Row>
-                  <Col lg={6}>
-                    <div className="mb-2">
-                      <CommonInput
-                        label="First Name *"
-                        name="first_name"
-                        type="text"
-                        placeholder="eg : John Doe"
-                        control={control}
-                        rules={{ required: "First name is required" }}
-                        error={errors.role}
-                      />
-
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-2">
-                      <CommonInput
-                        label="Last Name *"
-                        name="last_name"
-                        type="text"
-                        placeholder="eg : Doe"
-                        control={control}
-                        rules={{ required: "Last name is required" }}
-                        error={errors.role}
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-2">
-                      <CommonInput
-                        label="Phone number *"
-                        name="phone_number"
-                        type="phone"
-                        control={control}
-                        rules={{ required: "Phone is required" }}
-                        error={errors.role}
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
+              <Row>
+                <Col lg={6}>
+                  <div className="mb-2">
                     <CommonInput
-                      label="Email Address *"
-                      name="email"
+                      label="First Name *"
+                      name="first_name"
                       type="text"
-                      placeholder="eg : john@gmail.com"
+                      placeholder="eg : John Doe"
                       control={control}
-                      rules={{ required: "Email is required" }}
+                      rules={{ required: "First name is required" }}
                       error={errors.role}
                     />
-                  </Col>
-                  <Col lg={12}>
+
+                  </div>
+                </Col>
+                <Col lg={6}>
+                  <div className="mb-2">
                     <CommonInput
-                      label="Select Role"
-                      name="role"
-                      type="normal-select"
+                      label="Last Name *"
+                      name="last_name"
+                      type="text"
+                      placeholder="eg : Doe"
                       control={control}
-                      defaultOption="Select Permission"
-                      options={PERMISSIONS}
-                      rules={{ required: "Role is required" }}
+                      rules={{ required: "Last name is required" }}
                       error={errors.role}
                     />
-                  </Col>
-                   <LocationSection
+                  </div>
+                </Col>
+                <Col lg={6}>
+                  <div className="mb-2">
+                    <CommonInput
+                      label="Phone number *"
+                      name="phone_number"
+                      type="phone"
                       control={control}
-                      errors={errors}
-                      watch={watch}
-                      setValue={setValue}
-                      setError={setError}
-                      invalidFieldRequired={true}
-                      clearErrors={clearErrors}
-                      isTimeZoneRequired={true}
-                      isRegistrationStep={true}
+                      rules={{ required: "Phone is required" }}
+                      error={errors.role}
                     />
-                </Row>
+                  </div>
+                </Col>
+                <Col lg={6}>
+                  <CommonInput
+                    label="Email Address *"
+                    name="email"
+                    type="text"
+                    placeholder="eg : john@gmail.com"
+                    disabled={isEdit}
+                    control={control}
+                    rules={{ required: "Email is required" }}
+                    error={errors.role}
+                  />
+                </Col>
+                <Col lg={12}>
+                  <CommonInput
+                    label="Select Position"
+                    name="role"
+                    type="normal-select"
+                    control={control}
+                    defaultOption="Select Position"
+                    options={PERMISSIONS}
+                    rules={{ required: "Role is required" }}
+                    error={errors.role}
+                  />
+                </Col>
+                <LocationSection
+                  control={control}
+                  errors={errors}
+                  watch={watch}
+                  setValue={setValue}
+                  setError={setError}
+                  invalidFieldRequired={true}
+                  clearErrors={clearErrors}
+                  isTimeZoneRequired={true}
+                  isRegistrationStep={true}
+                />
+              </Row>
             </>
           )}
 
@@ -263,7 +324,7 @@ const RolesPermissionWrapper = ({
           <div className="text-center">
             <RexettButton
               type="submit"
-              text={modalName == "permission" ? "Submit" : modalName=="role"? "Submit" : "Send Invite"}
+              text={modalName == "permission" ? "Submit" : modalName == "role" ? "Submit" : "Send Invite"}
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               isLoading={smallLoader}

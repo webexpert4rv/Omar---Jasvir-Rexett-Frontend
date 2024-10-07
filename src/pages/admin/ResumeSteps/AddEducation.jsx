@@ -26,6 +26,7 @@ import ClientStep1 from "../../Registration flows/Client Registration flow/Clien
 import { Controller } from "react-hook-form";
 import RecommendationAI from "../../Registration flows/DeveloperRegistrationFlow/RecommendationAI";
 import { createOptionsForReactSelect } from "../../websiteRegisterForm/developer/developeStepConstant";
+
 const AddEducation = ({
   control,
   errors,
@@ -46,14 +47,14 @@ const AddEducation = ({
   setSelectedRecommend,
   selectedRecommend,
   skillOptions,
-  name
+  name,
+  stepTwoAutoComplete
 }) => {
 
-  console.log("step6")
-  console.log(name, "name")
-  console.log(watch("tech_stacks_used"), "tech_stacks_used")
+console.log("step6")
+  console.log(name,"name")
   const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
-  console.log(selectedRecommend, "selectedRecommend")
+  console.log(selectedRecommend,"selectedRecommend")
   useEffect(() => {
     if (skillOptions?.length) {
       const formattedSkillOptions = createOptionsForReactSelect(
@@ -64,12 +65,11 @@ const AddEducation = ({
       setFormattedSkillOptions(formattedSkillOptions);
     }
   }, [skillOptions]);
-  console.log(formattedSkillOptions, "formattedSkillOptions")
 
-  useEffect(() => {
-    setValue(name, selectedRecommend)
+  useEffect(()=>{
+    setValue(name,selectedRecommend)
 
-  }, [selectedRecommend])
+  },[selectedRecommend])
 
   const tipstext = (
     <Popover id="popover-basic">
@@ -115,38 +115,40 @@ const AddEducation = ({
           setImageFile={setImageFile}
           isProfileSectionRequired={activeStep === 1 && nestedActiveStep == 0}
           skillOptions={formattedSkillOptions}
+          stepTwoAutoComplete={stepTwoAutoComplete}
         />
       </div>
 
       <Row>
         <Col md={6} className="px-md-3 px-0">
           <div>
-            <RecommendationAI control={control} setRecommend={setSelectedRecommend} />
+          <RecommendationAI control={control} setRecommend={setSelectedRecommend}/>
           </div>
         </Col>
         <Col md={6} className="px-md-3 px-0 mt-md-0 mt-4">
           <div id="custom-ck">
-            <label className="font-14 fw-medium mb-1">Description</label>
-            <Controller
-              name={name}
-              control={control}
-              rules={{ required: "Job description is required" }}
-
-              render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  value={field.value}
-                  className={`common-field ${errors.description?.message && "invalid-field"
-                    }`}
-                  theme="snow"
-                  onChange={(content, delta, source, editor) => field.onChange(content)}
-                />
-              )}
-            />
-            {errors?.description && (
-              <p className="field-error">{errors.description?.message}</p>
+          <label className="font-14 fw-medium mb-1">Description</label>
+          <Controller
+            name={name}
+            control={control}
+            rules={{ required: "Job description is required" }}
+           
+            render={({ field }) => (
+              <ReactQuill
+                {...field}
+                value={field.value}
+                className={`common-field ${
+                  errors.description?.message && "invalid-field"
+                }`}
+                theme="snow"
+                onChange={(content, delta, source, editor) => field.onChange(content)}
+              />
             )}
-          </div>
+          />
+          {errors?.description && (
+            <p className="field-error">{errors.description?.message}</p>
+          )}
+        </div>
         </Col>
       </Row>
     </>

@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   adminApproveReject,
   allApplicationsList,
+  deleteProfleAPi,
   sendMailForCompleteProfile,
 } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
@@ -49,6 +50,7 @@ import { CiCircleCheck } from "react-icons/ci";
 import { ImUser } from "react-icons/im";
 import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { LuPencil } from "react-icons/lu";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 
 const SECRET_KEY = "abcfuipqw222";
 
@@ -107,21 +109,23 @@ const Applications = () => {
   const [showScreening, setScreeningShow] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
-    order_alphabetically: "asc",
+    // order_alphabetically: "asc",
     order_created_at: "",
-    approval_status: "",
+    // approval_status: "",
     created_at: "",
   });
+
+  const [profileDeleted,setProfileDeleted]=useState({
+    deletedId:null,
+    isDeleted:false
+  })
 
   const handleScreeningClose = () => setScreeningShow(false);
   const handleScreeningShow = () => setScreeningShow(true);
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
   const [emailNum, setEmailNum] = useState()
   const [emailIndx, setEmailIndx] = useState()
-  console.log(emailIndx, "emailIndx")
-  console.log(allApplications, "allApplications")
-  console.log(loading, "loading")
-
+ 
   const handleTimeslotChange = (e) => {
     setSelectedTimeslot(e.target.id);
   };
@@ -148,6 +152,9 @@ const Applications = () => {
   useEffect(() => {
     setApplication(allApplications[currentTab]);
   }, [allApplications]);
+
+  console.log(currentTab,"currentTab")
+
 
   const handleSelect = (key) => {
     setCurrentTab(key);
@@ -288,8 +295,9 @@ const Applications = () => {
   )
 
 
-  const handleShowScheduleScreening = (email, id) => {
-    setSelectedEmail(email);
+  const handleShowScheduleScreening = (item, id) => {
+    console.log(item, "oppp")
+    setSelectedEmail(item);
     setSelectedId(id);
     showScheduleScreening(true);
   };
@@ -324,6 +332,31 @@ const Applications = () => {
       state: { interviewId },
     });
   };
+
+  const deleteProfile=(id)=>{
+     setProfileDeleted({
+      isDeleted:!profileDeleted.isDeleted,
+      deletedId:id
+     })
+  }
+
+  const handleDeleteProlfile=()=>{
+    let data = {
+      ...filters,
+      page: page,
+      active_tab: currentTab,
+    };
+   
+
+    dispatch(deleteProfleAPi(profileDeleted?.deletedId,()=>{
+      setProfileDeleted({
+        isDeleted:false,
+        deletedId:null
+       })
+      dispatch(allApplicationsList(data));
+
+    }))
+  }
   return (
     <>
       {screenLoader ? (
@@ -384,14 +417,14 @@ const Applications = () => {
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                {/* <Nav.Item className="application-item">
-                  <Nav.Link eventKey="developers" className="application-link">
+                <Nav.Item className="application-item">
+                  <Nav.Link eventKey="unregistered" className="application-link">
                     Unregistered
                     <span className="new-app">
-                      {allApplications?.developers?.length}
+                      {allApplications?.unregistered?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item> */}
+                </Nav.Item>
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="clients" className="py-4">
@@ -567,10 +600,10 @@ const Applications = () => {
                                             </div>
                                           )}
                                           <div className="text-center py-1">
-                                            <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link>
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
                                           <div className="text-center py-1">
-                                            <Link to={'#'} className="font-14 text-danger">Delete <FaTrashCan /> </Link>
+                                          <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
@@ -918,7 +951,7 @@ const Applications = () => {
                                       </div>
                                     </td>
 
-                                    <td>
+                                    {/* <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
                                           <RexettButton
@@ -990,13 +1023,108 @@ const Applications = () => {
                                             }
                                           >
                                             <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-
                                               Complete profile
                                               <FiExternalLink />
                                             </span>
                                           </div>
                                         </div>
                                       )}
+                                    </td> */}
+                                      <td>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "vendor",
+                                                    item?.id,
+                                                    item,
+                                                    3
+
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
+                                          </div>
+                                          <div className="text-center py-1">
+                                          <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
                                     </td>
                                   </tr>
                                   {expandedRow === index && (
@@ -1377,7 +1505,7 @@ const Applications = () => {
                                           }
                                         >
                                           <RxChevronRight />
-                                        </span>{" "}
+                                        </span>
                                         RXT-1234
                                       </div>
                                     </td>
@@ -1478,7 +1606,7 @@ const Applications = () => {
                                       {item?.interviews?.length <= 0 ? (
                                         <Button
                                           variant="transparent"
-                                          onClick={() => handleShowScheduleScreening(item?.email, item?.id)}
+                                          onClick={() => handleShowScheduleScreening(item, item?.id)}
                                           className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap"
                                         >
                                           Schedule Screening
@@ -1516,19 +1644,19 @@ const Applications = () => {
                                           return (
                                             <>
                                               {/* Show Invite accepted status if the latest interview is accepted */}
-                                              {latestInterview?.status === "accepted" && latestInterview?.is_accepted && (
+                                              {latestInterview?.status === "scheduled" && (
                                                 <div>
-                                                  <span className="status-finished">Invite accepted</span>
+                                                  <span className="status-finished">Accepted</span>
                                                 </div>
                                               )}
 
                                               {/* Show Invite declined status if the latest interview is pending and not accepted */}
-                                              {latestInterview?.status === "pending" && latestInterview?.is_accepted === false && (
+                                              {latestInterview?.status === "declined" && (
                                                 <div className="d-inline-flex align-items-center gap-2">
-                                                  <span className="status-rejected">Invite declined</span>
+                                                  <span className="status-rejected">Rejected</span>
                                                   <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
                                                     <Button
-                                                      onClick={() => handleShowScheduleScreening(item?.email, item?.id)}
+                                                      onClick={() => handleShowScheduleScreening(item, item?.id)}
                                                       variant="transparent"
                                                       className="reschedule-btn"
                                                     >
@@ -1539,19 +1667,18 @@ const Applications = () => {
                                               )}
 
                                               {/* Show Invite sent status if the latest interview is pending and is_accepted is null */}
-                                              {latestInterview?.status === "pending" && latestInterview?.is_accepted === null && (
+                                              {latestInterview?.status === "pending" && (
                                                 <div>
                                                   <span className="status-upcoming">Invite sent</span>
                                                 </div>
                                               )}
 
                                               {/* Show Share Feedback button if the latest interview is completed, accepted, and no feedbacks */}
-                                              {latestInterview?.status === "completed" && latestInterview?.is_accepted && feedbacks.length <= 0 && (
+                                              {latestInterview?.status === "completed" && feedbacks.length <= 0 && (
                                                 <button
                                                   onClick={() => handleFeedbackClick(latestInterview?.id)}
                                                   className="main-btn font-14 text-decoration-none"
                                                 >
-                                                  Share Feedback
                                                 </button>
                                               )}
 
@@ -1579,7 +1706,7 @@ const Applications = () => {
                                         })()
                                       )}
                                     </td>
-                                    <td>
+                                    {/* <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
                                           <RexettButton
@@ -1658,7 +1785,106 @@ const Applications = () => {
                                           </div>
                                         </div>
                                       )}
+                                    </td> */}
+                                    <td>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "developer",
+                                                    item?.id,
+                                                    item,
+                                                    3
+
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
+                                          </div>
+                                          <div className="text-center py-1">
+                                            <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
                                     </td>
+
+
                                   </tr>
                                   {expandedRow === index && (
                                     <tr
@@ -2020,6 +2246,726 @@ const Applications = () => {
                                                 />
                                               </div>
                                             </Col>
+                                        { item?.is_profile_completed==false &&    <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Send Email
+                                                </h3>
+                                                <div className="d-inline-flex gap-1 align-items-center">
+                                                  <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                                    <span className="status-email position-relative"
+                                                      onClick={() => {
+                                                        if (!loading && item?.verification_reminder_count < 3) {
+                                                          handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                        }
+                                                      }}
+                                                    >
+                                                      <span className="email_count"> {emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                                      {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
+                                                    </span>
+                                                  </OverlayTrigger>
+                                                </div>
+                                              </div>
+                                            </Col>}
+                                          </Row>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </React.Fragment>
+                              ))
+                            ) : (
+                              <td colSpan={8}>
+                                <NoDataFound />
+                              </td>
+                            )}
+                          </>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  {allApplications?.totalDeveloperPages > 1 ? (
+                    <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+                      {currentTab == "developers" ? (
+                        <p className="showing-result">
+                          {t("showing")} {allApplications?.developers?.length}{" "}
+                          {t("results")}
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      <RexettPagination
+                        number={allApplications?.totalDeveloperPages}
+                        setPage={setPage}
+                        page={page}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </Tab.Pane>
+                <Tab.Pane eventKey="unregistered" className="py-4">
+                  <div className="table-responsive">
+                    <table className="table w-100 engagement-table table-ui-custom">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>
+                            {t("email")} {t("address")}
+                          </th>
+                          <th>{t("phoneNumber")}</th>
+                          <th>{t("typeOfCompany")}</th>
+                          {/* <th>{t("engagements")}</th>
+                      <th>
+                        {t("engagements")} {t("last")}
+                      </th>
+                      <th>{t("availability")}</th> */}
+                          <th>{t("status")}</th>
+                          <th className="text-center">Send Email</th>
+                          <th>{t("action")}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {screenLoader ? (
+                          <ScreenLoader />
+                        ) : (
+                          <>
+                            {currentTab == "unregistered" &&
+                              application?.length > 0 ? (
+                              application?.map((item, index) => (
+                                <React.Fragment key={index}>
+                                  <tr
+                                    className="application-row"
+                                    onClick={() => handleRowClick(index)}
+                                  >
+                                    <td className="white-nowrap">
+                                      <div className="d-flex align-items-center">
+                                        <span
+                                          className={
+                                            arrowactive == index &&
+                                              currentTab == "unregistered"
+                                              ? "row-arrow active"
+                                              : "row-arrow"
+                                          }
+                                        >
+                                          <RxChevronRight />
+                                        </span>
+                                        <div className="user-imgbx application-userbx">
+                                          <img
+                                            src={
+                                              item?.company_logo
+                                                ? item?.company_logo
+                                                : "/demo-user.png"
+                                            }
+                                            className="user-img"
+                                          />
+                                        </div>
+                                        {item?.name}
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <span className="application-mail">
+                                        {item?.email}
+                                      </span>
+                                    </td>
+                                    <td>{item?.phone_number}</td>
+                                    <td>{item?.company_type}</td>
+                                    {/* <td>{item?.company?.total_employees}</td>
+                                <td>{item?.company?.website}</td>
+                                <td>{item?.company?.yearly_revenue}</td> */}
+                                    <td>
+                                      <span
+                                        className={`white-nowrap ${item?.is_profile_completed
+                                          ? "status-finished"
+                                          : "status-progress"
+                                          }`}
+                                      >
+                                        {item?.is_profile_completed
+                                          ? "Completed"
+                                          : "Incomplete"}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <div className="d-flex align-items-center justify-content-center gap-3">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                            <span className="status-email position-relative"
+                                              onClick={() => {
+                                                if (!loading && item?.verification_reminder_count < 3) {
+                                                  handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                }
+                                              }}
+                                            >
+                                              <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                              {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
+                                            </span>
+                                          </OverlayTrigger>
+                                        </div>
+                                        {/* {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "vendor",
+                                                item?.id,
+                                                item?.verification_reminder_count
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              {item.id === loadingRow
+                                                ? smallLoader && (
+                                                  <RexettSpinner />
+                                                )
+                                                : "Send Email"
+                                              }
+                                              <FiExternalLink />
+                                            </span>
+
+
+                                          </div>
+                                        </div> : "Maximum Limit reached"} */}
+                                      </div>
+                                    </td>
+
+                                    {/* <td>
+                                      {item?.is_profile_completed ? (
+                                        <div className="d-flex gap-3">
+                                          <RexettButton
+                                            icon={
+                                              selectedApprovedBtn === index ? (
+                                                approvedLoader
+                                              ) : (
+                                                <IoCheckmark />
+                                              )
+                                            }
+                                            className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                              "not-allowed"
+                                              }`}
+                                            variant="transparent"
+                                            // disabled={!item?.is_profile_completed}
+                                            onClick={(e) =>
+                                              handleClick(
+                                                e,
+                                                item?.id,
+                                                "approved",
+                                                index
+                                              )
+                                            }
+                                            isLoading={
+                                              selectedApprovedBtn === index
+                                                ? approvedLoader
+                                                : false
+                                            }
+                                          />
+                                          <RexettButton
+                                            icon={
+                                              selectedRejectedBtn === index ? (
+                                                approvedLoader
+                                              ) : (
+                                                <IoCloseOutline />
+                                              )
+                                            }
+                                            // disabled={!item?.is_profile_completed}
+                                            className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                              "not-allowed"
+                                              }`}
+                                            variant={"transparent"}
+                                            onClick={(e) =>
+                                              handleClick(
+                                                e,
+                                                item?.id,
+                                                "rejected",
+                                                index
+                                              )
+                                            }
+                                            isLoading={
+                                              selectedRejectedBtn === index
+                                                ? approvedLoader
+                                                : false
+                                            }
+                                          />
+                                        </div>
+                                      ) : (
+                                        <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "vendor",
+                                                item?.id,
+                                                item,
+                                                3
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                              Complete profile
+                                              <FiExternalLink />
+                                            </span>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </td> */}
+
+<td>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "developer",
+                                                    item?.id,
+                                                    item,
+                                                    3
+
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
+                                          </div>
+                                          <div className="text-center py-1">
+                                            <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
+                                    </td>
+                                  </tr>
+                                  {expandedRow === index && (
+                                    <tr
+                                      className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                        }`}
+                                    >
+                                      <td colSpan="10">
+                                        <div>
+                                          <Row>
+                                            {item?.name && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("developerName")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.name
+                                                      ? item?.name
+                                                      : "Not Mentioned"}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.address && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Address
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.address}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.country && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("country")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.country}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.state && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("state")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.state}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.city && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("city")}
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.city}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {/* <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("status")}
+                                            </h3>
+                                            <p className="status-progress text-capitalize">
+                                              Under Review
+                                            </p>
+                                          </div>
+                                        </Col> */}
+
+                                            {item?.email && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    {t("email")}
+                                                  </h3>
+                                                  <p className="application-text">{item?.email}</p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.work_preference && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Work Preference
+                                                  </h3>
+                                                  <p className="application-text">{item?.work_preference}</p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.ready_to_relocate && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Ready to relocate
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.ready_to_relocate}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.time_zone && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Time Zone
+                                                  </h3>
+                                                  <p className="application-text">{item?.time_zone}</p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.language_preference && (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Language
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {
+                                                      item?.language_preference
+                                                    }
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.developer_detail
+                                              ?.github_url && (
+                                                <Col md={3} className="mb-3">
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Github Url
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.github_url
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+
+                                            {item?.other_skills?.length > 0 && (
+                                              <Col md={3} className="mb-3 ">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Skills
+                                                  </h3>
+                                                  <ul className="need-skill-list  mb-0">
+                                                    {item?.other_skills?.map(
+                                                      (item, index) => {
+                                                        return (
+                                                          <>
+                                                            <li key={index}>
+                                                              {item?.skill}
+                                                            </li>
+                                                          </>
+                                                        );
+                                                      }
+                                                    )}
+                                                  </ul>
+                                                </div>
+                                              </Col>
+                                            )}
+
+                                            {item?.developer_detail
+                                              ?.professional_title && (
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Designation
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.professional_title
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+
+                                            {item?.developer_detail
+                                              ?.how_did_you_hear_about_rexett && (
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      How Did you hear about
+                                                      rexett?
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.how_did_you_hear_about_rexett
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+                                            {item?.created_at && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Created At
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {moment(
+                                                      item?.created_at
+                                                    ).format("MMMM Do YYYY")}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail
+                                              ?.total_experience && (
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Experience
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.developer_detail
+                                                          ?.total_experience
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+                                            {(
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Expertise Skills
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {/* {
+                                                      item?.expertises[0]
+                                                        ?.skill
+                                                    } */}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">Screening Round</h3>
+                                                  {item.interviews && item.interviews.length > 0 ? (() => {
+                                                    // Sort interviews by created_at in descending order to get the latest interview first
+                                                    const sortedInterviews = [...item.interviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                                                    const latestInterview = sortedInterviews[0];
+
+                                                    // Calculate average rating if there is feedback
+                                                    const feedbacks = latestInterview.shareFeedbacks || [];
+                                                    const skillRatingsMap = {};
+
+                                                    // Collect ratings by skill name
+                                                    feedbacks.forEach(feedback => {
+                                                      const skillRatings = feedback.skillRatings || [];
+                                                      skillRatings.forEach(rating => {
+                                                        if (!skillRatingsMap[rating.skill_name]) {
+                                                          skillRatingsMap[rating.skill_name] = [];
+                                                        }
+                                                        skillRatingsMap[rating.skill_name].push(rating.rating);
+                                                      });
+                                                    });
+
+                                                    // Calculate average rating per skill
+                                                    const skillAverages = Object.keys(skillRatingsMap).map(skillName => {
+                                                      const ratings = skillRatingsMap[skillName];
+                                                      const avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+                                                      return avgRating;
+                                                    });
+
+                                                    // Calculate overall average rating
+                                                    const overallAverageRating = skillAverages.length > 0 ? (skillAverages.reduce((a, b) => a + b, 0) / skillAverages.length).toFixed(1) : 'N/A';
+
+                                                    return (
+                                                      <div className="d-inline-flex align-items-center gap-2">
+                                                        <span className="status-upcoming lh-1">
+                                                          <span className="d-inline-flex align-items-center gap-1">
+                                                            <FaStar />
+                                                            {overallAverageRating}
+                                                          </span>
+                                                        </span>
+                                                        {/* Show the "View Report" button only if there is feedback */}
+                                                        {feedbacks.length > 0 && (
+                                                          <button
+                                                            onClick={() => handleInterviewReport(latestInterview.id)}
+                                                            className="main-btn font-14 text-decoration-none"
+                                                          >
+                                                            View Report
+                                                          </button>
+                                                        )}
+                                                      </div>
+                                                    );
+                                                  })() : (
+                                                    <div>No Interviews Found</div>
+                                                  )}
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Certifications
+                                                  </h3>
+                                                  <Link to={'#'} className="text-green text-decoration-none">AI certificate <FaEye /> </Link>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            <Col>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Resume
+                                                </h3>
+                                                <RexettButton
+                                                  onClick={(e) =>
+                                                    handleDownload(
+                                                      e,
+                                                      item?.developer_detail?.resume
+                                                    )
+                                                  }
+                                                  disabled={
+                                                    !item?.developer_detail?.resume
+                                                  }
+                                                  icon={
+                                                    selectedRejectedBtn === index ? (
+                                                      approvedLoader
+                                                    ) : (
+                                                      <div ref={targetRef}>
+                                                        <HiDownload />
+                                                      </div>
+                                                    )
+                                                  }
+                                                  className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume &&
+                                                    "not-allowed"
+                                                    }`}
+                                                />
+                                              </div>
+                                            </Col>
                                             <Col md={3}>
                                               <div>
                                                 <h3 className="application-heading">
@@ -2058,18 +3004,21 @@ const Applications = () => {
                       </tbody>
                     </table>
                   </div>
-                  {allApplications?.totalDeveloperPages > 1 ? (
+                  {allApplications?.totalVendorPages > 1 ? (
                     <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                      {currentTab == "developers" ? (
+                      {currentTab == "clients" ? (
                         <p className="showing-result">
-                          {t("showing")} {allApplications?.developers?.length}{" "}
+                          {t("showing")} {allApplications?.clients?.length}{" "}
                           {t("results")}
                         </p>
                       ) : (
-                        ""
+                        <p className="showing-result">
+                          {t("showing")} {allApplications?.vendors?.length}{" "}
+                          {t("results")}
+                        </p>
                       )}
                       <RexettPagination
-                        number={allApplications?.totalDeveloperPages}
+                        number={allApplications?.totalVendorPages}
                         setPage={setPage}
                         page={page}
                       />
@@ -2078,6 +3027,7 @@ const Applications = () => {
                     ""
                   )}
                 </Tab.Pane>
+              
               </Tab.Content>
             </Tab.Container>
           </div>
@@ -2213,12 +3163,25 @@ const Applications = () => {
               </div>
             </Offcanvas.Body>
           </Offcanvas>
-          <ScheduleScreening
+          {/* <ScheduleScreening
             show={schedulescreeening}
             handleClose={handleCloseScheduleScreening}
             selectedEmail={selectedEmail}
             selectedId={selectedId}
+          /> */}
+
+{     profileDeleted.isDeleted
+ && (
+          <ConfirmationModal
+            show={ profileDeleted.isDeleted}
+            handleClose={deleteProfile}
+            smallLoader={smallLoader}
+            text={"Are you sure to delete this profile?"}
+            handleAction={handleDeleteProlfile}
           />
+        )}
+          <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
+
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
         </>
       )}

@@ -14,13 +14,14 @@ import RexettButton from "../../atomic/RexettButton";
 import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { MsalProvider, useMsal } from "@azure/msal-react";
-import { Client } from '@microsoft/microsoft-graph-client';
-import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
+import { Client } from "@microsoft/microsoft-graph-client";
+import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 import {
   getTimeZoneList,
   postCandidateInterview,
+  singleJobPostData,
 } from "../../../redux/slices/clientDataSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   getAllEvents,
   getDeveloperList,
@@ -39,7 +40,6 @@ const Schedulemeeting = ({
   type,
 }) => {
   console.log(selectedDeveloper, "selectedDeveloper");
-  console.log(type, "type")
   const {
     handleSubmit,
     register,
@@ -50,34 +50,35 @@ const Schedulemeeting = ({
     formState: { errors },
   } = useForm({});
   const dispatch = useDispatch();
+  const {id}= useParams();
   const location = useLocation();
   const [data, setData] = useState();
+  const [loader, setLoader] = useState(false);
   const { developerList } = useSelector((state) => state.adminData);
   const { smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [gogleEventId, setGoogleEventID] = useState(null)
+  const [googleEventId, setGoogleEventID] = useState(null);
+  const [microsoftEventId, setMicrosoftEventId] = useState(null);
   const [events, setEvents] = useState([]);
 
   const [eventDetails, setEventDetails] = useState({
-    subject: 'Koliyarl',
-    location: { displayName: 'Koliyal Truck' },
-    body: { content: 'Karosal' },
+    subject: "meeting",
+    location: { displayName: "Koliyal Truck" },
+    body: { content: "Karosal" },
     start: {
-      dateTime: '2024-09-11T14:00:00',  // Correct ISO 8601 format
-      timeZone: 'UTC'
+      dateTime: "2024-09-11T14:00:00", // Correct ISO 8601 format
+      timeZone: "UTC",
     },
     end: {
-      dateTime: '2024-09-11T15:00:00',  // Correct ISO 8601 format
-      timeZone: 'UTC'
+      dateTime: "2024-09-11T15:00:00", // Correct ISO 8601 format
+      timeZone: "UTC",
     },
     isOnlineMeeting: true,
-    onlineMeetingProvider: "teamsForBusiness"
+    onlineMeetingProvider: "teamsForBusiness",
   });
-
-
 
   const getFormattedOptions = () => {
     const newOptions = developerList?.developers?.map((item) => {
@@ -85,14 +86,16 @@ const Schedulemeeting = ({
     });
     return newOptions;
   };
-  let id = location.pathname.split("/")[3];
 
   const [firstSlot, setFirstSlot] = useState("");
-  const [meetingStatus, setMeetingStatus] = useState()
+  const [meetingPlatform, setMeetingPlatform] = useState();
+  const [meetingStatus, setMeetingStatus] = useState();
   const [secondSlot, setSecondSlot] = useState("");
   const [groupedTime, setGroupedTime] = useState([]);
   const { timeZoneList } = useSelector((state) => state.clientData);
-  const defaultInterview = localStorage.getItem("email")
+  const defaultInterview = localStorage.getItem("email");
+
+  const isAdminSingleJob = location.pathname.includes('admin-single-job');
 
   useEffect(() => {
     dispatch(getTimeZoneList());
@@ -118,34 +121,30 @@ const Schedulemeeting = ({
 
   useEffect(() => {
     if (selectedDeveloper) {
-      setValue("select_candidate", [{ label: selectedDeveloper?.email, value: selectedDeveloper?.email }])
+      setValue("select_candidate", [
+        { label: selectedDeveloper?.email, value: selectedDeveloper?.email },
+      ]);
     }
-
-
-  }, [selectedDeveloper])
+  }, [selectedDeveloper]);
 
   const createCalendarEvent = async () => {
     if (!isAuthenticated) {
-      console.log('User not authenticated');
+      console.log("User not authenticated");
       return;
     }
-
 
     const client = Client.initWithMiddleware({ authProvider });
 
     try {
-      let response = await client.api('/me/events').post(eventDetails);
+      let response = await client.api("/me/events").post(eventDetails);
       fetchCalendarEvents(); // Fetch the updated events list
       if (response.onlineMeeting) {
         console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
       }
-
     } catch (error) {
-      console.error('Error creating event:', error);
-    }
+      console.error("Error creating event:", error);
+    } 
   };
-
-
 
   useEffect(() => {
     if (timeZoneList.length > 0) {
@@ -178,9 +177,6 @@ const Schedulemeeting = ({
   const currentTime = new Date();
   const oneHourLater = new Date(currentTime.getTime() + 60 * 60 * 1000); // Adds 1 hour
 
-
-
-
   const formatTime = (date) => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -193,45 +189,35 @@ const Schedulemeeting = ({
   // const duration = moment().duration( newCurrent.diff(newTime) );
   // console.log(duration,"duration")
 
-
-
-
   const newTime = formatTime(oneHourLater);
   const newCurrent = formatTime(currentTime);
   console.log(newTime, "newTime");
   console.log(newCurrent, "newCurrent");
 
-  // const duration = moment.duration(newCurrent.diff(newTime)); 
-  // console.log(duration.asHours(), "duration in hours"); 
-  const currentMoment = moment(newCurrent, 'HH:mm'); // current time
-  const newMoment = moment(newTime, 'HH:mm'); // new time
+  // const duration = moment.duration(newCurrent.diff(newTime));
+  // console.log(duration.asHours(), "duration in hours");
+  const currentMoment = moment(newCurrent, "HH:mm"); // current time
+  const newMoment = moment(newTime, "HH:mm"); // new time
 
   // Calculate the difference in minutes
-  const duration = newMoment.diff(currentMoment, 'hours');
-  console.log(duration,"duration")
-
-
+  const duration = newMoment.diff(currentMoment, "hours");
+  console.log(duration, "duration");
 
   const fetchCalendarEvents = async () => {
     if (!isAuthenticated) {
-      console.log('User not authenticated');
+      console.log("User not authenticated");
       return;
     }
-
-
 
     const client = Client.initWithMiddleware({ authProvider });
 
     try {
-      const response = await client.api('/me/events').get();
+      const response = await client.api("/me/events").get();
       setEvents(response.value);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error("Error fetching events:", error);
     }
   };
-
-
-
 
   const handleFirstSlotChange = (event) => {
     const selectedTime = event.target.value;
@@ -290,17 +276,34 @@ const Schedulemeeting = ({
   );
 
   const meetingTypeValue = watch("meeting_type");
-  console.log(meetingTypeValue, "meetingTypeValue")
+  
 
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");
     setValue("instant_date", currentDate);
-    setValue("meeting_type", "instant")
+    setValue("meeting_type", "instant");
   }, []);
 
+  useEffect(() => {
+
+    const newTime = formatTime(oneHourLater);
+    const newCurrent = formatTime(currentTime);
+  
+    if (meetingTypeValue === "instant") {
+      setValue("meeting_start_time", newCurrent);
+      setValue("meeting_end_time", newTime);
+    } else {
+      setValue("meeting_start_time", "");
+      setValue("meeting_end_time", "");
+    }
+    setValue("time_zone", "");
+  }, [meetingTypeValue]);
+
+  console.log(meetingPlatform, "meetingPlatform");
   const onSubmit = (data) => {
     // setCreatedMeetings(data)
     console.log(data, "valuesss");
+    setMeetingPlatform(data?.meeting_platform?.value);
     if (type === "events") {
       let payload = {
         title: data?.title,
@@ -315,7 +318,7 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         type: "meeting",
-        event_link: "",
+        event_link: meetingLink,
         developer_email: data?.select_candidate?.label,
       };
       dispatch(
@@ -327,8 +330,12 @@ const Schedulemeeting = ({
     } else {
       let payload = {
         job_id: +id,
-        developer_id: selectedDeveloper?.id ? selectedDeveloper?.id : +data?.select_candidate?.value,
-        developer_email: selectedDeveloper?.email ? selectedDeveloper?.email : data?.select_candidate?.label,
+        developer_id: selectedDeveloper?.id
+          ? selectedDeveloper?.id
+          : +data?.select_candidate?.value,
+        developer_email: selectedDeveloper?.email
+          ? selectedDeveloper?.email
+          : data?.select_candidate?.label,
         meeting_type: data?.meeting_type,
         meeting_date: data?.instant_date,
         meeting_time: data?.meeting_start_time,
@@ -337,87 +344,167 @@ const Schedulemeeting = ({
         meeting_platform: data?.meeting_platform?.value,
         meeting_link: meetingLink,
         status: "pending",
-        interviewers_list: data?.interviewers_list?.map(item => item.value).join(', '),
+        interviewers_list: data?.interviewers_list
+          ?.map((item) => item.value)
+          .join(", "),
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
-        event_id: gogleEventId
+        type: isAdminSingleJob ? 'interview' : 'screening',
+        event_id: microsoftEventId,
       };
-      // dispatch(postCandidateInterview(payload));
+      dispatch(postCandidateInterview(payload,()=>{
+        dispatch(getAllEvents());
+        handleClose();
+        dispatch(singleJobPostData(id, () => {}));
+      }));
     }
-    reset()
+    setMeetingLink(null);
+    setGoogleEventID(null);
+    setMicrosoftEventId(null);
+    setValue("meeting_type", "instant");
+    reset();
   };
 
   let r = watch("meeting_platform");
-  console.log(r, "meetiingVideo")
   useEffect(() => {
-    setThirdParty(r?.value == "google_meet" || r?.value == "microsoft_team" ? true : false);
+    setThirdParty(
+      r?.value == "google_meet" || r?.value == "microsoft_team" ? true : false
+    );
   }, [r]);
 
   const handleCloseThirdPary = () => {
+    // setValue("meeting_platform","");
     setThirdParty(false);
   };
 
-  console.log(meetingStatus, "meeting status")
+  console.log(meetingStatus, "meeting status");
   const handleMeeting = (status) => {
-    console.log(status, "statusss")
-    setMeetingStatus(status)
-  }
+    console.log(status, "statusss");
+    setMeetingStatus(status);
+  };
 
   const generateRequestId = () => {
     return `request_${new Date().getTime()}_${Math.floor(
       Math.random() * 1000
     )}`;
   };
-
-  const syncCreatedMeetingsWithGoogle = (e) => {
-    let summary = watch("title");
-    e.stopPropagation();
-    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      console.log("User not authenticated");
-      return;
+  const getDateTimeString = (dateString, timeString) => {
+    if(dateString && timeString){
+      const [hours, minutes] = timeString.split(':').map(Number);
+      const paddedHours = String(hours).padStart(2, "0");
+      const paddedMinutes = String(minutes).padStart(2, "0");
+      const seconds = "00"
+    
+      const result = `${dateString}T${paddedHours}:${paddedMinutes}:${seconds}`;
+      return result;
     }
+  };
+  console.log(meetingLink,"this is meeting link");
+  
+  console.log(watch("meeting_end_time"), "meeting_start_time ");
+  const syncCreatedMeetingsWithGoogle = async(e) => {
+    setLoader(true);
+    const { title, meeting_start_time, meeting_end_time, time_zone, instant_date, meeting_platform } = watch();
+    const meetingPlatform = meeting_platform?.value
 
-    const newEvent = {
-      summary: summary || "Untitled Meeting",
-      location: "jkk",
-      description: "mmmm",
-      start: {
-        dateTime: "2024-08-26T16:50:00",
-        timeZone: "America/Los_Angeles",
-      },
-      end: {
-        dateTime: "2024-08-29T16:50:00",
-        timeZone: "America/Los_Angeles",
-      },
-      conferenceData: {
-        createRequest: {
-          requestId: generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
-          conferenceSolutionKey: {
-            type: "hangoutsMeet", // Use Google Meet
+    e.stopPropagation();
+    if(meetingPlatform === "google_meet"){
+      if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        console.log("User not authenticated");
+        return;
+      }
+  
+      const newEvent = {
+        summary: title || "Untitled Meeting",
+        location: "jkk",
+        description: "mmmm",
+        start: {
+          // dateTime: "2024-08-26T16:50:00",
+          // timeZone: "America/Los_Angeles",
+          dateTime: getDateTimeString(instant_date, meeting_start_time),
+          timeZone: time_zone?.label,
+        },
+        end: {
+          dateTime: getDateTimeString(instant_date, meeting_end_time),
+          timeZone: time_zone?.label,
+  
+          // dateTime: "2024-08-29T16:50:00",
+          // timeZone: "America/Los_Angeles",
+        },
+        conferenceData: {
+          createRequest: {
+            requestId: generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
+            conferenceSolutionKey: {
+              type: "hangoutsMeet", // Use Google Meet
+            },
           },
         },
-      },
-    };
+      };
+  
+      gapi.client.calendar.events
+        .insert({
+          calendarId: "primary",
+          resource: newEvent,
+          conferenceDataVersion: 1, // Required to create Google Meet link
+        })
+        .then((response) => {
+          console.log("Event created:", response.result);
+          if (response.result.hangoutLink) {
+            // setValue("meetingPlatform","");
+            console.log("Google Meet link:", response.result.hangoutLink);
+            setMeetingLink(response.result.hangoutLink);
+            setGoogleEventID(response?.result?.id)
+            localStorage.setItem("googleEventId",response?.result?.id)
 
-    gapi.client.calendar.events
-      .insert({
-        calendarId: "primary",
-        resource: newEvent,
-        conferenceDataVersion: 1, // Required to create Google Meet link
-      })
-      .then((response) => {
-        console.log("Event created:", response.result);
-        if (response.result.hangoutLink) {
-          console.log("Google Meet link:", response.result.hangoutLink);
-          setMeetingLink(response.result.hangoutLink);
-          setGoogleEventID(response?.result?.id)
+          }
+          setLoader(false);
+        })
+        .catch((error) => {
+          console.error("Error creating event:", error);
+          setLoader(false);
+          // setValue("meetingPlatform","");
+  
+        });
+    } else if(meetingPlatform === "microsoft_team"){
+
+      let eventDetailsPayload={
+        subject: title,
+        location: { displayName: "Sweden" },
+        body: { content: "No body associated" },
+        start: {
+          dateTime: getDateTimeString(instant_date, meeting_start_time), 
+          timeZone: "UTC",
+        },
+        end: {
+          dateTime: getDateTimeString(instant_date, meeting_end_time), // Correct ISO 8601 format
+          timeZone: "UTC",
+        },
+        isOnlineMeeting: true,
+        onlineMeetingProvider: "teamsForBusiness",
+        "onlineMeeting": {
+          "joinUrl": null
+      }
+      }
+      if (!isAuthenticated) {
+        console.log('User not authenticated');
+        return;
+      }
+      const client = Client.initWithMiddleware({ authProvider });
+      try {
+       let response= await client.api('/me/events').post(eventDetailsPayload);
+        fetchCalendarEvents(); // Fetch the updated events list
+        if (response.onlineMeeting) {
+          setMeetingLink(response?.onlineMeeting?.joinUrl);
+          setMicrosoftEventId(response?.id)
+          console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
         }
-      })
-      .catch((error) => {
-        console.error("Error creating event:", error);
-      });
+      } catch (error) {
+        console.error('Error creating event:', error);
+      }
+      setLoader(false);
+    }
     setThirdParty(false);
   };
 
@@ -434,7 +521,13 @@ const Schedulemeeting = ({
         <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
 
         <Modal.Body>
-          <h3 className="popup-heading">{type === "events" ? "Schedule Meetings" : "Schedule Interview"}</h3>
+          <h3 className="popup-heading">
+            {type === "events"
+              ? "Schedule Meetings"
+              : type == "screen"
+              ? "Schedule Screening"
+              : "Schedule Interview"}
+          </h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Row>
@@ -477,15 +570,18 @@ const Schedulemeeting = ({
                       control={control}
                       selectOptions={getFormattedOptions()}
                       rules={{ required: "This field is required" }}
-
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
                     />
-                    <p className="error-message">{errors?.select_candidate?.message}</p>
+                    <p className="error-message">
+                      {errors?.select_candidate?.message}
+                    </p>
                   </div>
                 </Col>
-                {type === "events" ? ""
-                  : <>
+                {type === "events" ? (
+                  ""
+                ) : (
+                  <>
                     <Col lg={4} className="mb-lg-3 mb-1">
                       <p className="font-14 schedule-heading">
                         <span>
@@ -503,12 +599,12 @@ const Schedulemeeting = ({
                           rules={{ required: "This field is required" }}
                           invalidFieldRequired={true}
                           placeholder="Select Interviewer"
-
                         />
                         <p>{errors?.select_candidate?.message}</p>
                       </div>
                     </Col>
-                  </>}
+                  </>
+                )}
 
                 <Col lg={4} className="mb-lg-3 mb-1">
                   <p className="font-14 schedule-heading">
@@ -520,13 +616,16 @@ const Schedulemeeting = ({
                 </Col>
                 <Col lg={8} className="mb-3">
                   <div>
-                    <div className="mb-2" onChange={(e) => handleMeeting(e.target.value)}>
+                    <div
+                      className="mb-2"
+                      onChange={(e) => handleMeeting(e.target.value)}
+                    >
                       <Form.Check
                         type="radio"
                         name="instant"
                         label="Instant Meeting"
                         id="instant_meeting"
-                        checked={meetingStatus === "instant"} // Use state to control checked
+                        checked={watch("meeting_type") === "instant"} // Use state to control checked
                         className="d-inline-block meeting-radio ps-0 me-2"
                         value="instant"
                         {...register("meeting_type")}
@@ -536,94 +635,113 @@ const Schedulemeeting = ({
                         name="scheduled"
                         label="Scheduled Date & Time"
                         id="scheduled"
-                        checked={meetingStatus === "scheduled"}
+                        checked={watch("meeting_type") === "scheduled"}
                         className="d-inline-block meeting-radio ps-0"
                         value="scheduled"
                         {...register("meeting_type")}
                       />
                     </div>
-                    {meetingTypeValue === "instant" ? (
-                      <>
-                        {/* <Form.Control type="date" className="common-field font-14"  value={"2024-01-02"} /> */}
+                    {
+                      meetingTypeValue === "instant" ? (
+                        <>
+                          {/* <Form.Control type="date" className="common-field font-14"  value={"2024-01-02"} /> */}
 
-                        <CommonInput
-                          name="instant_date"
-                          type="date"
-                          control={control}
-                          rules={{ required: "This field is required" }}
-                          invalidFieldRequired={true}
-                        />
-                        <div className="associate-text mt-2">
-                          <div className="d-flex align-items-center gap-2 associate p-3">
-                            <p className="font-14 mb-0">{formatTime(currentTime)}</p>
-                            <span className="arrow-icon">
+                          <CommonInput
+                            name="instant_date"
+                            type="date"
+                            control={control}
+                            rules={{ required: "This field is required" }}
+                            invalidFieldRequired={true}
+                          />
+                          <div className="associate-text mt-2">
+                            <div className="d-flex align-items-center gap-2 associate p-3">
+                              <p className="font-14 mb-0">
+                                {formatTime(currentTime)}
+                              </p>
+                              <span className="arrow-icon">
+                                <FaArrowRightLong />
+                              </span>
+                              <p className="font-14 mb-0">
+                                {formatTime(oneHourLater)}
+                              </p>
+                              <p className="mb-0 font-14">Duration</p>
+                              <span className="font-14">{duration} hr</span>
+                            </div>
+                          </div>
+                          <div style={{ marginTop: "20px" }}>
+                            <CommonInput
+                              name={"time_zone"}
+                              type={"select"}
+                              control={control}
+                              selectOptions={groupedTime}
+                              rules={{ required: "This field is required" }}
+                              invalidFieldRequired={true}
+                              defaultOption="Time zone"
+                              placeholder="Select Timezone"
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        // meetingTypeValue === "scheduled" && (
+                        <div className="specific-datetime">
+                          <div className="d-flex align-items-center gap-3">
+                            <CommonInput
+                              name={"meeting_start_time"}
+                              type={"normal-select"}
+                              control={control}
+                              value={firstSlot}
+                              options={timeSlots}
+                              rules={{ required: "This field is required" }}
+                              invalidFieldRequired={true}
+                              defaultOption="Select Time"
+                              className={"mb-0"}
+                              onChange={handleFirstSlotChange}
+                            />
+
+                            <span className="arrow-icon mb-3">
                               <FaArrowRightLong />
                             </span>
-                            <p className="font-14 mb-0">{formatTime(oneHourLater)}</p>
-                            <p className="mb-0 font-14">Duration</p>
-                            <span className="font-14">{duration} hr</span>
+
+                            <CommonInput
+                              name={"meeting_end_time"}
+                              type={"normal-select"}
+                              control={control}
+                              value={secondSlot}
+                              options={filteredTimeSlots}
+                              rules={{ required: "This field is required" }}
+                              invalidFieldRequired={true}
+                              defaultOption="Select Time"
+                              className={"mb-0"}
+                              onChange={handleSecondSlotChange}
+                            />
+                            <span className="font-14">
+                              {calculateDuration(firstSlot, secondSlot)}
+                            </span>
+                          </div>
+                          <div className="mb-2 datefield-wrapper">
+                            {/* <DatePicker onChange={onChange} value={value} /> */}
+                            <CommonInput
+                              name={"meeting_date"}
+                              type={"date"}
+                              control={control}
+                              rules={{ required: "This field is required" }}
+                              invalidFieldRequired={true}
+                            />
+                          </div>
+                          <div>
+                            <CommonInput
+                              name={"time_zone"}
+                              type={"select"}
+                              control={control}
+                              selectOptions={groupedTime}
+                              rules={{ required: "This field is required" }}
+                              invalidFieldRequired={true}
+                              defaultOption="Time zone"
+                              placeholder="Select Timezone"
+                            />
                           </div>
                         </div>
-                      </>
-                    ) :
-                      // meetingTypeValue === "scheduled" && (
-                      <div className="specific-datetime">
-                        <div className="d-flex align-items-center gap-3">
-                          <CommonInput
-                            name={"meeting_start_time"}
-                            type={"normal-select"}
-                            control={control}
-                            value={firstSlot}
-                            options={timeSlots}
-                            rules={{ required: "This field is required" }}
-                            invalidFieldRequired={true}
-                            defaultOption="Select Time"
-                            className={"mb-0"}
-                            onChange={handleFirstSlotChange}
-                          />
-
-                          <span className="arrow-icon mb-3">
-                            <FaArrowRightLong />
-                          </span>
-
-                          <CommonInput
-                            name={"meeting_end_time"}
-                            type={"normal-select"}
-                            control={control}
-                            value={secondSlot}
-                            options={filteredTimeSlots}
-                            rules={{ required: "This field is required" }}
-                            invalidFieldRequired={true}
-                            defaultOption="Select Time"
-                            className={"mb-0"}
-                            onChange={handleSecondSlotChange}
-                          />
-                          <span className="font-14">
-                            {calculateDuration(firstSlot, secondSlot)}
-                          </span>
-                        </div>
-                        <div className="mb-2 datefield-wrapper">
-                          {/* <DatePicker onChange={onChange} value={value} /> */}
-                          <CommonInput
-                            name={"meeting_date"}
-                            type={"date"}
-                            control={control}
-                            rules={{ required: "This field is required" }}
-                            invalidFieldRequired={true}
-                          />
-                        </div>
-                        <div>
-                          <CommonInput
-                            name={"time_zone"}
-                            type={"select"}
-                            control={control}
-                            selectOptions={groupedTime}
-                            rules={{ required: "This field is required" }}
-                            invalidFieldRequired={true}
-                            defaultOption="Time zone"
-                          />
-                        </div>
-                      </div>
+                      )
                       // )
                     }
                   </div>
@@ -644,7 +762,7 @@ const Schedulemeeting = ({
                                     </Form.Select> */}
                   <CommonInput
                     name={"meeting_platform"}
-                    type={"select"}
+                    type={"select2"}
                     control={control}
                     selectOptions={VIDEO_MEETING}
                     rules={{ required: "This field is required" }}
@@ -728,9 +846,14 @@ const Schedulemeeting = ({
       <ThirdPartyServices
         show={thirdParty}
         handleClose={handleCloseThirdPary}
-        text={"Link With Google"}
+        text={
+          r?.value == "microsoft_team"
+            ? "Link With Microsoft"
+            : "Link With Google"
+        }
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
+        loader={loader}
       />
       {/* <Button onClick={createCalendarEvent}>Hlp</Button> */}
     </>

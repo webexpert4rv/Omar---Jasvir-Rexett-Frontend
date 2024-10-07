@@ -36,7 +36,7 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import CommonReactSelect from "../../atomic/CommonReactSelect";
 import { getConfigDetails, getUploadFile, updateAdminProfile } from "../../../redux/slices/adminDataSlice";
-import { getActiveStepFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../../../pages/Registration flows/registrationConstant";
+import { getActiveStepFields, getAdminActiveFields, getClientEditFields, getDevEditFields, getVendorEditFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../../../pages/Registration flows/registrationConstant";
 import SidebarSection from "../../../pages/Registration flows/SidebarSection";
 import SetUpJobModal from "../Modals/SetUpJobModal";
 import ClientStep1 from "../../../pages/Registration flows/Client Registration flow/ClientStep1";
@@ -45,7 +45,9 @@ import RegistrationType from "../../../pages/Registration flows/Client Registrat
 const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, imageFile, setImageFile, setPreviewImage, stepData, activeStepFields }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [twoFactorStatus, setTwoFactorStatus] = useState(false);
+  const editStepFields = getClientEditFields();
   const ComponentActiveStepFields = getActiveStepFields(activeStep, name);
+
   const {
     register,
     setValue,
@@ -57,23 +59,22 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
   const { smallLoader, userProfileDetails, screenLoader } = useSelector(
-    (state) => state.developerData
+    (state) => state.clientData
   );
   useEffect(() => {
     if (stepData) {
       let name = stepData?.name ? stepData?.name?.split(' ') : '';
       let [firstName, ...rest] = name;
       let lastName = rest.join(' ');
-
       setValue('first_name', firstName);
       setValue('last_name', lastName);
       Object.entries(stepData).forEach(([key, value]) => {
-        if (key === "country_code") {
+        if (key == "country_iso_code") {
           const newValue = {
             label: stepData["country"],
             value: stepData[key],
           };
-          setValue(key, newValue);
+          setValue("country_code", newValue);
         }
         else if (key === "state_iso_code") {
           const newValue = {
@@ -87,7 +88,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         } else if (key === "professional_title") {
           const newValue = stepData[key]
           setValue("profession", newValue)
-        }else {
+        } else {
           setValue(key, (value === null || value === undefined ? '' : value));
         }
       });
@@ -109,6 +110,25 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
     closeConfirmationModal();
   };
 
+  const getFields = () => {
+    switch (role) {
+      case "client":
+        return getClientEditFields();
+        break;
+      case "developer":
+        return getDevEditFields();
+        break;
+      case "vendor":
+        return getVendorEditFields();
+        break;
+      case "admin":
+        return getAdminActiveFields();
+        break;
+    }
+  }
+
+  console.log(role,"role")
+
   const renderActiveStep = () => {
     return (
       <ClientStep1
@@ -117,7 +137,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         activeStep={activeStep}
         type={role}
         register={register}
-        stepFields={activeStepFields ? activeStepFields : ComponentActiveStepFields}
+        stepFields={getFields()}
         setError={setError}
         clearErrors={clearErrors}
         watch={watch}
@@ -128,6 +148,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         setImageFile={setImageFile}
         isProfileSectionRequired={activeStep === 1}
         isEditMode={true}
+        flowName={"edit_profile"}
       />)
   }
   return (
@@ -162,6 +183,8 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
                             class="form-check-input toggle-switch-custom"
                             type="checkbox"
                             role="switch"
+                            isDisabled={true}
+
                           />
                         )}
                       />

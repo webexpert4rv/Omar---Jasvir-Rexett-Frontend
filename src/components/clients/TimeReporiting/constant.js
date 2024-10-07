@@ -170,31 +170,51 @@ export const planLeaveTabs = [
 ]
 export const generateLeave = (item) => {
   switch (item) {
-    case "full-day":
+    case "full_day":
       return "Full Day"
-    case "half-day":
-      return "Half Day"
-    case "short-leave":
-      return " Short Leave"
+    case "sick_leave":
+      return "Sick Leave"
+    case "maternity_leave":
+      return "Maternity Leave"
+    case "paternity_leave":
+      return "Paternity Leave"
+    case "paid_time_off":
+      return "Paid Time Off"
+    case "care_leave":
+      return "Care leave"
+    case "annual_vacation_leave":
+      return "Annual Vacation Leave"
   }
 };
 export const LEAVE_TYPE = [
   {
     key: "Full Day",
-    value: "full-day",
+    value: "full_day",
   },
   {
-    key: "Half-Day ",
-    value: "half-day",
+    key: "Sick Leave",
+    value: "sick_leave",
   },
   {
-    key: "Short Leave",
-    value: "short-leave",
+    key: "Maternity Leave",
+    value: "maternity_leave",
   },
-  // {
-  //   key: "Casual Leave",
-  //   value: "casual-leave",
-  // },
+  {
+    key: "Paternity Leave",
+    value: "paternity_leave",
+  },
+  {
+    key: "Paid Time Off",
+    value: "paid_time_off",
+  },
+  {
+    key: "Care leave",
+    value: "care_leave",
+  },
+  {
+    key: "Annual Vacation Leave",
+    value: "annual_vacation_leave",
+  },
 ];
 export const MONTH_NAME = [
   'All', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -270,8 +290,8 @@ export const configurationTabText = [
     value: "Message Template"
   },
   {
-    key:"five",
-    value:"Integrations"
+    key: "five",
+    value: "Integrations"
   },
   {
     key: "six",
@@ -330,4 +350,4 @@ export const permissionTabText = [
   },
 
 ]
-export const GOOGLE_AUTOCOMPLETE_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+export const GOOGLE_AUTOCOMPLETE_API_KEY = "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU"

@@ -5,7 +5,11 @@ import { Dropdown } from "react-bootstrap";
 import { NOTIFICATIONBASEURL, getToken } from "../../helper/utlis";
 import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
+import {
+  getNotification,
+  markAsRead,
+  setIsChatOpen,
+} from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Timer from "./Timer";
@@ -16,7 +20,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
   const [nottificationData, setNotificationData] = useState([]);
-  const { notificationList, screenLoader } = useSelector(
+  const { notificationList, screenLoader, isChatOpen } = useSelector(
     (state) => state.adminData
   );
   const [newJobPost, setNewJobPost] = useState(null);
@@ -24,6 +28,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
   const [notifId, setNotifId] = useState();
   const { t } = useTranslation();
   const userId = localStorage.getItem("userId");
+  console.log(isChatOpen,"isChat open inside notification");
 
   useEffect(() => {
     dispatch(getNotification());
@@ -42,7 +47,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
         console.log("audio play failed");
       });
     } else if (nottificationData?.length > 0) {
-    
       setNotificationData(nottificationData);
     } else {
       setNotificationData(
@@ -62,10 +66,10 @@ const Notification = ({ route, job, doc, timeReport }) => {
       setNewJobPost(jobPost);
     });
 
-    socket.on(`message_created_${userId}`, (message) => {
-      console.log(message,"message")
-      // setNewJobPost(message);
-    });
+    // socket.on(`message_created_${userId}`, (message) => {
+    //   console.log(message,"message")
+    //   // setNewJobPost(message);
+    // });
 
     socket.on("new_job_application_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
@@ -92,6 +96,14 @@ const Notification = ({ route, job, doc, timeReport }) => {
     });
     socket.on("addedRemark_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
+    });
+    // for message notifications
+    socket.on(`new_message_${userId}`, (message) => {
+      const chatOpen = localStorage.getItem("isChatOpen");
+      if (chatOpen === "false") {
+        setNewJobPost(message);
+        console.log(message, "inside new message");
+      }
     });
     socket.on("disconnect", () => {
       console.log("Disconnected from Socket.IO server");

@@ -23,12 +23,14 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal.jsx";
 import {
+  addDegree,
   addDeveloperProject,
   addDeveloperRegisProject,
   developerRegistration,
   developerRegistrationBio,
   editDeveloperExperience,
   fileUploadForWeb,
+  getDegreeList,
   getDeveloperProfileDetails,
   getSkillOptions,
   registerDeveloperEducation,
@@ -64,10 +66,12 @@ import bgVideo from '../../../assets/img/bg-video.mp4';
 
 const DeveloperRegistrationStepper = () => {
   const dispatch = useDispatch();
-  const [freeArray, setFreeArray] = useState([])
-  const [newArr, setNewArr] = useState()
-  const [edit, setEdit] = useState(false)
-  const { approveLoader, smallLoader, developerRegistrationData } = useSelector(
+  const [freeArray , setFreeArray] = useState([])
+  let token = localStorage.getItem('token')
+  const devId = localStorage.getItem("developerId")
+  const [newArr , setNewArr] = useState()
+  const[edit, setEdit]= useState(false)
+  const { approveLoader, smallLoader, developerRegistrationData, degreeData} = useSelector(
     (state) => state?.developerData
   );
   const [countryCode, setCountryCode] = useState()
@@ -82,6 +86,7 @@ const DeveloperRegistrationStepper = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [isAnotherData, setIsAnotherData] = useState(true);
   const [nestedActiveStep, setNestedActiveStep] = useState(0);
+  const [stepTwoAutoComplete, setStepTwoAutoComplete] = useState(false);
   const [previewImage, setPreviewImage] = useState({
     profile_picture: "",
     resume: "",
@@ -101,6 +106,7 @@ const DeveloperRegistrationStepper = () => {
   const [isRegistrationStepModal, setIsRegistrationStepModal] = useState(false);
   const [filteredStepData, setFilteredStepData] = useState([]);
   const [isAdd, setIsAdd] = useState(false)
+  const [editedId, setEditedId] = useState(null)
 
   const location = useLocation();
 
@@ -114,8 +120,6 @@ const DeveloperRegistrationStepper = () => {
       localStorage.setItem('developerId', user_id);
     }
   }, [location.search]);
-
-
 
 
   let developer_id = localStorage.getItem("developerId");
@@ -141,15 +145,22 @@ const DeveloperRegistrationStepper = () => {
     },
   });
   const { skillOptions } = useSelector((state) => state.developerData);
-  console.log(skillOptions, "skillOptions")
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
   const storedStep = localStorage.getItem("clientActiveStep");
   const stripHtmlTags = (str) => {
     return str?.replace(/<\/?[^>]+(>|$)/g, "");
   };
   useEffect(() => {
+    const storedNestedStep = localStorage.getItem("nestedActiveStep");
+    const params = new URLSearchParams(location.search);
+    const steps = params.get('steps');
+    if (storedStep || steps) {
+      setActiveStep(Number(storedStep !== null ? storedStep : activeStep || steps));
+      setNestedActiveStep(Number(storedNestedStep || 0));
+    }
     setFilteredStepData(stepData);
-  }, [stepData])
+  }, [stepData,developerRegistrationData])
+
 
   // useEffect(() => {
   //   if(Object.keys(errors).length > 0){
@@ -167,7 +178,7 @@ const DeveloperRegistrationStepper = () => {
   //   }
   // }
   // }, [errors])
-
+  
   useEffect(() => {
     if (activeStep === 1) {
       dispatch(getCoutriesList());
@@ -179,23 +190,13 @@ const DeveloperRegistrationStepper = () => {
   }, [activeStep]);
 
   useEffect(() => {
-    const storedNestedStep = localStorage.getItem("nestedActiveStep");
-
     const params = new URLSearchParams(location.search);
     const user_id = params.get('user_id');
-    const steps = params.get('steps');
-    if (storedStep || steps) {
-      setActiveStep(Number(storedStep !== null ? storedStep : activeStep || steps));
-      setNestedActiveStep(Number(storedNestedStep || 0));
-    }
-
     // if(steps){
     //   setActiveStep(Number(steps));
     //   setNestedActiveStep(Number(0));
     // }
-
-
-    if (developer_id || user_id) {
+    if (developer_id!==null || user_id!==null) {
       dispatch(getDeveloperProfileDetails(developer_id || user_id));
     }
   }, []);
@@ -205,12 +206,11 @@ const DeveloperRegistrationStepper = () => {
   let name = stepData?.name ? stepData?.name?.split(' ') : '';
   let [firstName, ...rest] = name;
   let lastName = rest.join(' ');
-  const devId = localStorage.getItem("developerId")
-
-
-  console.log(filteredStepData, "filteredStepData")
 
   useEffect(() => {
+    
+    const params = new URLSearchParams(location.search);
+    const user_id = params.get('user_id');
     const activeStepKeys = {
       1: "step1",
       2: "step2",
@@ -221,11 +221,15 @@ const DeveloperRegistrationStepper = () => {
     };
 
     // if (devId && isEditMode?.isEdit) {
-    dispatch(getDeveloperProfileDetails(devId, (response) => {
+    if(devId){
+    dispatch(getDeveloperProfileDetails(developer_id || user_id, (response) => {
       const currentStep = activeStepKeys[storedStep];
-      console.log(currentStep, "currentStep")
       const data = response[activeStepKeys[storedStep]];
-      console.log(data, "dataaaa")
+      const keyMapping = {
+        intro_video_url: 'introVideo',
+        resume: 'resume',
+      };
+      
       for (let key in data) {
         if (key === "name") {
           const [firstName, surName] = data[key]?.split(" ");
@@ -246,17 +250,17 @@ const DeveloperRegistrationStepper = () => {
           setValue(key, newValue);
         } else if (key === "profile_picture") {
           setPreviewImage({ profile_picture: data?.profile_picture });
+          setValue("profile_picture",data?.profile_picture);
         } else if (key === "professional_title") {
           setValue("profession", data[key]);
-        } else {
+        } else if(key=="resume" || key=="intro_video_url" ) {
+            setImageFile({resume:data?.resume,introVideo:data?.intro_video_url});
+        }else{
           setValue(key, data[key]);
         }
       }
-      if ((currentStep === "step2") || currentStep === "step3") {
+      if (((currentStep === "step2") || currentStep === "step3") && (!edit && !isEditMode.isEdit)) {
         const details = data?.find((item, idx) => idx === data.length - 1)
-        console.log(details?.id, "detailsss")
-        // setNewId(details?.id)
-        console.log(isAdd, "isAdd")
         if (isAdd) {
           for (let key in details) {
             setValue(key, "")
@@ -285,34 +289,31 @@ const DeveloperRegistrationStepper = () => {
         }
       }
       if (currentStep === "step4") {
-        if (nestedActiveStep == 1) {
-          const formattedSkills = data?.expertises?.map(({ experience, skill_weight, skill }) => {
-            const getSkill = skillOptions?.find((option) => option.title === skill)
-            return { title: { label: getSkill?.title, value: getSkill?.id }, level: { label: skill_weight?.slice(0, 1).toUpperCase() + skill_weight?.slice(1, skill_weight?.length), value: skill_weight }, experience: { label: experience, value: +(experience?.split(' ')[0]) } }
-          })
-          console.log(formattedSkills, "formattedSkills")
-          setValue("skills", formattedSkills);
-        } else {
-          const good_to_have_skills = data?.other_skills?.map(({ skill_weight, skill }) => {
-            const good_skills = skillOptions?.find((option) => option.title === skill)
-            return { title: { label: good_skills?.title, value: good_skills?.id }, level: { label: skill_weight?.slice(0, 1).toUpperCase() + skill_weight?.slice(1, skill_weight?.length), value: skill_weight } }
-          })
-          setValue("good_skills", good_to_have_skills);
-        }
+          if (nestedActiveStep == 1) {
+            const formattedSkills = data?.expertises?.map(({ experience, skill_weight, skill }) => {
+              const getSkill = skillOptions?.find((option) => option.title === skill)
+              return { title: { label: getSkill?.title, value: getSkill?.id }, level: { label: skill_weight?.slice(0, 1).toUpperCase() + skill_weight?.slice(1, skill_weight?.length), value: skill_weight }, experience: { label: experience, value: +(experience?.split(' ')[0]) } }
+            })
+            setValue("skills", formattedSkills);
+          } else {
+            const good_to_have_skills = data?.other_skills?.map(({ skill_weight, skill }) => {
+              const good_skills = skillOptions?.find((option) => option.title === skill)
+              return { title: { label: good_skills?.title, value: good_skills?.id }, level: { label: skill_weight?.slice(0, 1).toUpperCase() + skill_weight?.slice(1, skill_weight?.length), value: skill_weight } }
+            })
+            setValue("good_skills", good_to_have_skills);
+          }
       }
       if (currentStep === "step5") {
         if (data) {
           for (let key in data) {
             if (key === "bio") {
               const newBio = stripHtmlTags(data[key]);
-              console.log(newBio, "newBio");
               setValue("description", newBio);
             }
           }
         }
       }
-      if (currentStep === "step6") {
-     
+      if (currentStep === "step6" && !isAdd && (!edit && !isEditMode.isEdit)) {
         const details = data?.find((item, idx) => idx === data.length - 1)
         if (details) {
           for (let key in details) {
@@ -322,15 +323,15 @@ const DeveloperRegistrationStepper = () => {
             } else if (key === "project_end_date") {
               const endDate = details[key].slice(0, 10);
               setValue("project_end_date", endDate);
-            }
-            else {
+            } else {
               setValue(key, details[key]);
             }
           }
         }
       }
     }));
-  }, [devId, storedStep, nestedActiveStep, skillOptions, isAdd]);
+    }
+  }, [ storedStep, nestedActiveStep, skillOptions, isAdd]);
 
 
   useEffect(() => {
@@ -340,6 +341,12 @@ const DeveloperRegistrationStepper = () => {
       title: selectedRecommend ? selectedRecommend : stepData ? stepData[0]?.description : null
     })));
   }, [selectedRecommend])
+
+  const showAutoComplete = () => {
+    setStepTwoAutoComplete(true);
+  }
+
+
 
   const increaseStepCount = (isNested) => {
 
@@ -355,89 +362,6 @@ const DeveloperRegistrationStepper = () => {
   const handleSetSelectedRecommended = (itemToSet) => {
     setSelectedRecommend(itemToSet);
   }
-
-  // const decreaseStepCount = () => {
-
-  //   switch(activeStep){
-  //     case 2:
-  //       switch(nestedActiveStep){
-  //         case 0:
-  //           setActiveStep((prev) => prev - 1);
-  //           localStorage.setItem("clientActiveStep", activeStep - 1);
-  //          break;
-  //          case 1:
-  //           case 2:
-  //           setNestedActiveStep((prev)=>prev-1);
-  //           localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
-  //           break;
-  //       }
-  //      case 3:
-  //       switch(nestedActiveStep){
-  //         case 0:
-  //           setActiveStep((prev) => prev - 1);
-  //           localStorage.setItem("clientActiveStep", activeStep - 1);
-  //           setNestedActiveStep(2);
-  //           localStorage.setItem("nestedActiveStep", 2);
-  //          break;
-  //          case 1:
-  //           case 2:
-  //           case 3:
-  //             setNestedActiveStep((prev)=>prev-1);
-  //             localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
-  //           break;
-  //       }
-  //       case 4:
-  //         switch(nestedActiveStep){
-  //           case 0:
-  //             setActiveStep((prev) => prev - 1);
-  //             localStorage.setItem("clientActiveStep", activeStep - 1);
-  //             setNestedActiveStep(3);
-  //             localStorage.setItem("nestedActiveStep", 3);
-  //            break;
-  //            case 1:
-  //             case 2:
-  //               setNestedActiveStep((prev)=>prev-1);
-  //               localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
-  //             break;
-  //         }
-  //         case 5:
-  //           switch(nestedActiveStep){
-  //             case 0:
-  //               setActiveStep((prev) => prev - 1);
-  //               localStorage.setItem("clientActiveStep", activeStep - 1);
-  //               setNestedActiveStep(2);
-  //               localStorage.setItem("nestedActiveStep", 2);
-  //              break;
-  //              case 1:
-  //                 setNestedActiveStep((prev)=>prev-1);
-  //                 localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
-  //               break;
-  //           }
-
-  //           case 6:
-  //           switch(nestedActiveStep){
-  //             case 0:
-  //               setActiveStep((prev) => prev - 1);
-  //               localStorage.setItem("clientActiveStep", activeStep - 1);
-  //               setNestedActiveStep(1);
-  //               localStorage.setItem("nestedActiveStep", 1);
-  //              break;
-  //              case 1:
-  //               case 2:
-  //                 setNestedActiveStep((prev)=>prev-1);
-  //                 localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
-  //               break;
-  //           }
-  //           case 7: 
-  //           setActiveStep((prev) => prev - 1);
-  //           localStorage.setItem("clientActiveStep", activeStep - 1);
-  //           setNestedActiveStep(2);
-  //           localStorage.setItem("nestedActiveStep", 2);
-
-
-  //   }
-
-  // };
 
   const resetAllFields = () => {
     // Define blank values for all fields here
@@ -567,16 +491,16 @@ const DeveloperRegistrationStepper = () => {
     }
 
     else if (activeStep == 3) {
-      console.log(watch(), 'watch stepthree')
       setValue("university_name", '');
       setValue("location", '');
-      setValue("degree_id", 0);
+      setValue("address",'');
+      setValue("degree_id", '');
       setValue("field_of_study", '');
-      setValue("start_year", 0);
+      setValue("start_year", '');
       setValue("end_month", '');
-      setValue("end_year", 0);
+      setValue("end_year", '');
       setValue("currently_attending", true);
-      setValue("project_description", '');
+      setValue("education_description", '');
       setValue('graduate_date', '')
       setValue('name', '');
       setValue('study', '')
@@ -590,7 +514,7 @@ const DeveloperRegistrationStepper = () => {
   const editSummary = (id) => {
 
     let selectedEditData = stepData?.find(it => it.id == id)
-    console.log(selectedEditData, "selectedEditData")
+    setEditedId(id);
     if (activeStep == 6 && selectedEditData) {
 
       setValue("project_title", selectedEditData?.project_title);
@@ -604,11 +528,8 @@ const DeveloperRegistrationStepper = () => {
       setValue("project_type", selectedEditData?.project_type);
       localStorage.setItem("nestedActiveStep", 1);
       setNestedActiveStep(1);
-
-
+      
     } else if (activeStep == 2 && selectedEditData) {
-      console.log(watch(), 'watch steptwo');
-
       setValue("job_title", selectedEditData?.job_title);
       setValue("company_name", selectedEditData?.company_name);
       setValue("project_description", selectedEditData?.description);
@@ -622,14 +543,14 @@ const DeveloperRegistrationStepper = () => {
     }
     else if (activeStep == 3 && selectedEditData) {
       setValue("university_name", selectedEditData?.university_name);
-      setValue("location", selectedEditData?.address);
-      setValue("degree_id", 0);
+      setValue("address", selectedEditData?.address);
+      setValue("degree_id",selectedEditData?.degree_id);
       setValue("field_of_study", selectedEditData?.field_of_study);
-      setValue("start_year", 0);
+      setValue("start_year", new Date(selectedEditData?.start_year, 0, 1));
       setValue("end_month", "string");
-      setValue("end_year", 0);
+      setValue("end_year", new Date(selectedEditData?.end_year, 0, 1));
       setValue("currently_attending", true);
-      setValue("description", selectedEditData?.description)
+      setValue("education_description", selectedEditData?.description)
       localStorage.setItem("nestedActiveStep", 2);
       setNestedActiveStep(2);
     }
@@ -737,6 +658,8 @@ const DeveloperRegistrationStepper = () => {
             return (
               <EducationLevelSelect
                 handleEducationLevel={handleEducationLevel}
+                increaseStepCount={increaseStepCount}
+                showAutoComplete={showAutoComplete}
               />
             );
           case 2:
@@ -760,6 +683,7 @@ const DeveloperRegistrationStepper = () => {
                 isProfileSectionRequired={
                   activeStep === 1 && nestedActiveStep == 0
                 }
+                stepTwoAutoComplete={stepTwoAutoComplete}
                 name="education_description"
                 selectedRecommend={selectedRecommend}
                 setSelectedRecommend={handleSetSelectedRecommended}
@@ -861,6 +785,8 @@ const DeveloperRegistrationStepper = () => {
                 imageFile={imageFile}
                 setPreviewImage={setPreviewImage}
                 setImageFile={setImageFile}
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={handleSetSelectedRecommended}
                 isProfileSectionRequired={
                   activeStep === 1 && nestedActiveStep == 0
                 }
@@ -927,40 +853,40 @@ const DeveloperRegistrationStepper = () => {
                 setEdit={setEdit}
                 setFreeArray={setFreeArray}
                 freeArray={freeArray}
-                
               />
             )
         }
       case 7:
         return (
-          <FinalizeResume skillOptions={skillOptions} watch={watch} />
+          <FinalizeResume />
         )
 
     }
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = async(values) => {
     setIsAdd(false)
-    let hasErrors = false;
-    if (!imageFile?.resume) {
-      setError('resume', {
-        type: 'manual',
-        message: 'Resume is required.',
-      });
-      hasErrors = true;
-    }
+    // let hasErrors = false;
 
-    if (!previewImage?.profile_picture) {
-      setError('profile_picture', {
-        type: 'manual',
-        message: 'Profile Picture is required.',
-      });
-      hasErrors = true;
-    }
+    // if (!imageFile?.resume && activeStep === 1) {
+    //   setError('resume', {
+    //     type: 'manual',
+    //     message: 'Resume is required.',
+    //   });
+    //   hasErrors = true;
+    // }
 
-    if (hasErrors && activeStep === 1) {
-      return;
-    }
+    // if (!previewImage?.profile_picture && activeStep === 1) {
+    //   setError('profile_picture', {
+    //     type: 'manual',
+    //     message: 'Profile Picture is required.',
+    //   });
+    //   hasErrors = true;
+    // }
+
+    // if (hasErrors && activeStep === 1) {
+    //   return;
+    // }
 
     const uploadFiles = (files) => {
       let uploadedUrls = {};
@@ -971,7 +897,6 @@ const DeveloperRegistrationStepper = () => {
           return new Promise((resolve) => {
             dispatch(
               fileUploadForWeb(fileData, (url) => {
-                console.log(url, `${key} url`);
                 uploadedUrls[key] = url;
                 resolve();
               })
@@ -985,11 +910,12 @@ const DeveloperRegistrationStepper = () => {
         let payload = {
           first_name: values?.first_name,
           last_name: values?.last_name,
-          profile_picture: uploadedUrls?.profile_picture,
+          profile_picture: uploadedUrls?.profile_picture ||previewImage?.profile_picture ,
           profession: values?.profession,
+          work_preference: values?.work_preference,
           email: values?.email,
           country: values?.country_code?.label,
-          address: values?.address,
+          // address: values?.address,
           password: values?.password,
           // city: values?.city?.value,
           // state: values?.state_iso_code?.label,
@@ -1007,7 +933,6 @@ const DeveloperRegistrationStepper = () => {
           intro_video_url: uploadedUrls?.introVideo,
           user_id: developer_id ? developer_id : null
         };
-
         dispatch(developerRegistration(payload, () => {
           if (!ifDone) {
             setIsRegistrationStepModal(true);
@@ -1022,24 +947,24 @@ const DeveloperRegistrationStepper = () => {
 
     if (activeStep == 2) {
       let developer_experience = [];
-      if (edit) {
-        if (freeArray) {
-          const payloads = freeArray?.map((itm) => ({
-            job_title: itm?.job_title,
-            company_name: itm?.company_name,
-            start_date: itm?.start_date,
-            end_date: itm?.is_still_working ? null : values?.end_date || null,
-            work_type: itm?.work_type,
-            is_still_working: itm?.is_still_working,
-            description: stripHtmlTags(itm?.project_description),
-            job_location: itm?.job_location
-          }));
-          dispatch(registerDeveloperExperience(payloads, developer_id, () => {
-            increaseStepCount(true);
-          }));
-        }
+      if(edit){
+      if (freeArray) {
+        const payloads = freeArray?.map((itm) => ({
+          job_title: itm?.job_title,
+          company_name: itm?.company_name,
+          start_date: itm?.start_date,
+          end_date: itm?.is_still_working ? null : values?.end_date || null,
+          work_type: itm?.work_type,
+          is_still_working: itm?.is_still_working,
+          description: stripHtmlTags(itm?.project_description),
+          job_location: itm?.job_location
+        }));
+        dispatch(registerDeveloperExperience(payloads, developer_id));
+          increaseStepCount(true);
       }
-
+      setEdit(false)
+    }
+    
       if (nestedActiveStep == 1) {
         if (isEditMode?.isEdit) {
           let index = stepData.findIndex((it) => it.id === isEditMode.id);
@@ -1058,6 +983,10 @@ const DeveloperRegistrationStepper = () => {
           }
           dispatch(registerDeveloperExperience(copyObj, developer_id, () => {
             increaseStepCount(true);
+          }));
+          setEditMode((prev) => ({
+            ...prev,
+            isEdit: false
           }));
         } else {
           if (stepData) {
@@ -1103,20 +1032,23 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       }
     } else if (activeStep === 3) {
-      if (edit) {
-        if (freeArray) {
-          const payloads = freeArray?.map((itm) => ({
-            university_name: itm?.university_name,
-            address: itm?.address,
-            degree_id: 0,
-            field_of_study: itm?.field_of_study,
-            start_year: 0,
-            end_month: itm?.end_month,
-            end_year: 0,
-            currently_attending: true,
-            description: (stripHtmlTags(itm?.education_description)),
-          }))
-          console.log(payloads, "payloads")
+      if(edit){
+        if(freeArray){
+          const payloads = freeArray?.map((itm) => {
+            const startYear = itm?.start_year ? new Date(itm.start_year).getFullYear() : null;
+            const endYear = itm?.start_year ? new Date(itm.end_year).getFullYear() : null;
+            return{
+              university_name: itm?.university_name,
+              address: itm?.address,
+              degree_id: itm?.degree_id,
+              field_of_study: itm?.field_of_study,
+              start_year: startYear,
+              end_month: itm?.end_month,
+              end_year: endYear,
+              currently_attending: true,
+              description: (stripHtmlTags(itm?.education_description)),
+            }
+          })
           dispatch(
             registerDeveloperEducation(payloads, developer_id, () => {
               increaseStepCount(true);
@@ -1130,7 +1062,7 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       } else {
         if (nestedActiveStep == 2) {
-
+        
           let newData = stepData?.map((val) => {
             let updatedVal = { ...val };
 
@@ -1143,25 +1075,73 @@ const DeveloperRegistrationStepper = () => {
 
             return updatedVal;
           });
-          let developer_education = [
-            ...newData,
-            {
+          let DEGREE_ID = "";
+
+          if (stepTwoAutoComplete) {
+            const degreePayload = {
+                title: values.degree
+            };
+            await dispatch(addDegree(degreePayload, (degreeId) => {
+              DEGREE_ID= degreeId
+              getDegreeList();
+            }));
+
+                
+          const startYear = values?.start_year ? new Date(values.start_year).getFullYear() : null;
+            const endYear = values?.end_year ? new Date(values.end_year).getFullYear() : null;
+
+            const newEntry = {
               university_name: values?.university_name,
               address: values?.address,
-              degree_id: 0,
+              degree_id: DEGREE_ID,
               field_of_study: values?.field_of_study,
-              start_year: 0,
+              start_year: startYear,
               end_month: values?.end_month,
-              end_year: 0,
-              currently_attending: true,
-              description: (stripHtmlTags(values?.education_description)),
-            },
-          ];
+              end_year: endYear,
+              currently_attending: false,
+              description: stripHtmlTags(values?.education_description),
+          };
+         
+          const filteredData = newData.filter(
+            (item) => item.degree_id !== newEntry.degree_id
+          );
+
+          let developer_education = [...filteredData, newEntry];
+
           dispatch(
             registerDeveloperEducation(developer_education, developer_id, () => {
               increaseStepCount(true);
             })
           );
+          }
+          else{
+          const startYear = values?.start_year ? new Date(values.start_year).getFullYear() : null;
+            const endYear = values?.end_year ? new Date(values.end_year).getFullYear() : null;
+
+            const newEntry = {
+              university_name: values?.university_name,
+              address: values?.address,
+              degree_id: values?.degree_id,
+              field_of_study: values?.field_of_study,
+              start_year: startYear,
+              end_month: values?.end_month,
+              end_year: endYear,
+              currently_attending: false,
+              description: stripHtmlTags(values?.education_description),
+          };
+         
+          const filteredData = newData.filter(
+            (item) => item.degree_id !== newEntry.degree_id
+          );
+
+          let developer_education = [...filteredData, newEntry];
+
+          dispatch(
+            registerDeveloperEducation(developer_education, developer_id, () => {
+              increaseStepCount(true);
+            })
+          );
+        }
         } else {
           increaseStepCount(true);
         }
@@ -1171,13 +1151,16 @@ const DeveloperRegistrationStepper = () => {
         const transformData = (data) => {
           return data?.map(item => ({
             skill: item?.title?.label,
+            experience: item?.experience ? `${item?.experience?.value} years` : null,
             skill_weight: item?.level?.value
           }));
         };
         const output = transformData(values?.good_skills);
+        const secondOutput = transformData(values?.skills);
+        const dataToSend = secondOutput ? [...output,...secondOutput] : output;
         let payload = {
           developer_id: localStorage.getItem("developerId"),
-          skills: output
+          skills: dataToSend
         }
 
         dispatch(registerDeveloperSkills(payload))
@@ -1185,21 +1168,22 @@ const DeveloperRegistrationStepper = () => {
         localStorage.setItem("nestedActiveStep", 0);
         increaseStepCount(false)
 
-      } else if (nestedActiveStep == 1) {
-        console.log(values?.skills, "step1")
+      } else if (nestedActiveStep == 1 || nestedActiveStep == 2) {
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
         const transformData = (data) => {
           return data?.map(item => ({
             skill: item?.title?.label,
-            experience: `${item?.experience?.value} years`,
+            experience: item?.experience ? `${item?.experience?.value} years` : null,
             skill_weight: item?.level?.value
           }));
         };
         const output = transformData(values?.skills);
+        const secondOutput = transformData(values?.good_skills);
+        const dataToSend = secondOutput ? [...output,...secondOutput] : output;
         let payload = {
           developer_id: localStorage.getItem("developerId"),
-          skills: output
+          skills: dataToSend
         }
 
         dispatch(registerDeveloperSkills(payload))
@@ -1229,49 +1213,33 @@ const DeveloperRegistrationStepper = () => {
     }
 
     else if (activeStep == 6) {
-      if(nestedActiveStep == 2){
-      if (edit) {
-        if (freeArray) {
-          const payloads = freeArray?.map((itm) => ({
-            "project_title": itm?.project_title,
-            "project_description": itm?.project_description,
-            "tech_stacks_used": itm?.tech_stacks_used,
-            "role_in_project": itm?.role_in_project,
-            // "project_team_size": projectTeamSize,
-            "project_link": itm?.project_link,
-            "project_start_date": itm?.project_start_date,
-            "project_end_date": itm?.project_end_date,
-            "project_type": itm?.project_type
-          
-          }));
-          dispatch(addDeveloperRegisProject(payloads, developer_id, () => {
-            increaseStepCount(true);
-          }));
-        }
-      }
-    }
-
       if (nestedActiveStep == 1) {
         let projectTeamSize = values?.project_team_size.includes('+') ? values?.project_team_size.split('+')[0].trim() : values?.project_team_size;
-       
-       
-        let developer_project = [
-          ...stepData,
-          {
-            "project_title": values?.project_title,
-            "project_description": values?.project_description,
-            "tech_stacks_used": values?.tech_stacks_used,
-            "role_in_project": values?.role_in_project,
-            "project_team_size": projectTeamSize,
-            "project_link": values?.project_link,
-            "project_start_date": values?.project_start_date,
-            "project_end_date": values?.project_end_date,
-            "project_type": values?.project_type
-          }
-        ]
+        const newEntry =  {
+          "project_title": values?.project_title,
+          "project_description": values?.project_description,
+          "tech_stacks_used": values?.tech_stacks_used,
+          "role_in_project": values?.role_in_project,
+          "project_team_size": projectTeamSize,
+          "project_link": values?.project_link,
+          "project_start_date": values?.project_start_date,
+          "project_end_date": values?.project_end_date,
+          "project_type": values?.project_type
+        }
+     
+      const filteredData = stepData.filter(
+        (item) => item.id !== editedId
+      );
+
+      if(editedId){
+        newEntry.id = editedId;
+      }
+
+      let developer_project_edit = [...filteredData, newEntry];
+
         let payalod = {
           user_id: localStorage.getItem("developerId"),
-          projects: developer_project
+          projects: developer_project_edit
         }
         dispatch(addDeveloperRegisProject(payalod, () => {
           increaseStepCount(true)
@@ -1291,14 +1259,59 @@ const DeveloperRegistrationStepper = () => {
       setIsRegistrationStepModal(true);
     }
     else {
-      uploadFiles({
-        resume: imageFile.resume,
-        introVideo: imageFile.introVideo,
-        profile_picture: imageFile.profile_picture,
-      });
+      if(developer_id==null){
+        uploadFiles({
+          resume: imageFile.resume,
+          introVideo: imageFile.introVideo,
+          profile_picture: imageFile.profile_picture,
+        });
+      }else{
+        updateFirstStepData(values)
+      }
+   
     }
     setSelectedRecommend(null);
+    setEditedId(null);
+    setStepTwoAutoComplete(null);
   };
+
+  const updateFirstStepData=(values)=>{
+    let payload = {
+      first_name: values?.first_name,
+      last_name: values?.last_name,
+      profile_picture: previewImage?.profile_picture,
+      profession: values?.profession,
+      work_preference: values?.work_preference,
+      email: values?.email,
+      country: values?.country_code?.label,
+      address: values?.address,
+      password: values?.password,
+      // city: values?.city?.value,
+      // state: values?.state_iso_code?.label,
+      country_iso_code: values?.country_iso_code?.value,
+      state_iso_code: values?.state_iso_code?.value,
+      passcode: values?.passcode,
+      country_code: values?.country_code.value,
+      phone_number: values?.phone_number,
+      language_preference: values?.language_preference,
+      total_experience: values?.total_experience,
+      time_zone: values?.time_zone?.label,
+      resume: imageFile?.resume,
+      linkedin_url: values?.linkedin_url,
+      github_url: values?.github_url,
+      intro_video_url: imageFile?.introVideo,
+      user_id: developer_id ? developer_id : null
+    };
+    dispatch(developerRegistration(payload, () => {
+      if (!ifDone) {
+        setIsRegistrationStepModal(true);
+      } else {
+        increaseStepCount(false)
+      }
+      setDone(true)
+    }));
+
+  }
   const handleSetActiveStep = (step) => {
 
     if (activeStep > step) {
@@ -1397,7 +1410,8 @@ const DeveloperRegistrationStepper = () => {
   const handleRegistrationModal = () => {
     setIsRegistrationStepModal(false);
   }
-  let token = localStorage.getItem('token')
+
+
 
   return (
     <section className={`${token ? "edit-developer-wrapper resume-section-wrapper" : "resume-section-wrapper"}`}>
@@ -1409,9 +1423,9 @@ const DeveloperRegistrationStepper = () => {
       />
 
       <div className="resume-main-wrapper">
-        <video className="bg-fixed" autoPlay="true" muted="true" loop="true">
-          {/* <source src={bgVideo} type="video/mp4" /> */}
-        </video>
+        {/* <video className="bg-fixed" autoPlay="true" muted="true" loop="true">
+          <source src={bgVideo} type="video/mp4" />
+        </video> */}
         <form className="position-relative z-3" onSubmit={handleSubmit(onSubmit)}>
           <Container>
             {activeStep !== 1 && <div>
@@ -1419,8 +1433,9 @@ const DeveloperRegistrationStepper = () => {
                 onClick={() => {
                   decreaseStepCount();
                   resetAllFields();
+                  setStepTwoAutoComplete(false);
                 }}
-                className="go-back-link text-decoration-none text-Black d-inline-block mb-3 fw-medium cursor-pointer"
+                className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
               >
                 <FaArrowLeft /> Go Back
               </span>
@@ -1439,12 +1454,12 @@ const DeveloperRegistrationStepper = () => {
             {true ? <div className="d-flex justify-content-end align-items-center mt-md-0 mt-4">
               <div className="me-3">
                 <RexettButton
-                  type="button"
+                  type="submit"
                   text={getActiveDecreaseStepText()}
                   className="outline-main-btn px-4 font-14 mr-2"
                   onClick={profileSubmitIfDone}
-                  disabled={!ifDone && smallLoader}
-                  isLoading={!ifDone && smallLoader}
+                  // disabled={smallLoader}
+                  // isLoading={smallLoader}
                 />
               </div>
               <div>

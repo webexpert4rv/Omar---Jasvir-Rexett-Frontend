@@ -15,7 +15,7 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
     const [primaryColor, setPrimaryColor] = useState('')
     const [headingColor, setHeadingColor] = useState('')
     const [bodyTextColor, setBodyTextColor] = useState('')
-    const [sideBarLinkBgColor , setSideBarLinkBgColor] = useState("")
+    const [sideBarLinkBgColor, setSideBarLinkBgColor] = useState("")
     const dispatch = useDispatch()
     const { configDetails } = useSelector(state => state.adminData)
 
@@ -53,7 +53,7 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
         setBodyTextColor(e.target.value)
 
     }
-    const handleSideBarLinkChange = (e)=>{
+    const handleSideBarLinkChange = (e) => {
         setSideBarLinkBgColor(e.target.value)
     }
 
@@ -65,8 +65,9 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
             crm_sidebar_bg_gradient_color_1: colorValue,
             crm_sidebar_bg_solid_color: "",
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
 
     const handleSecondColorBlur = async (e) => {
@@ -76,8 +77,9 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
             crm_sidebar_bg_gradient_color_2: newColorValue,
             crm_sidebar_bg_solid_color: "",
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
     const handleSolidColorBlur = async (e) => {
         setSolidColor(e.target.value)
@@ -86,48 +88,53 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
             crm_sidebar_bg_gradient_color_1: "",
             crm_sidebar_bg_gradient_color_2: ""
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
     const handleSideBarBlur = async (e) => {
         let data = {
             crm_sidebar_link_color: sideBarColor
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
     const handlePrimaryColorBlur = async (e) => {
         let data = {
             crm_primary_color: primaryColor
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
     const handleHeadingColorBlur = async (e) => {
         let data = {
             crm_heading_color: headingColor
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
     const handleBodyTextColorBlur = async (e) => {
         let data = {
             crm_body_text_color: bodyTextColor
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
-
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
     }
-    const handleSideBarLinkBlur = async (e) =>{
+    const handleSideBarLinkBlur = async (e) => {
         let data = {
             crm_sidebar_bg_link_color: sideBarLinkBgColor
         }
-        await dispatch(getUploadFile(data))
-        dispatch(getConfigDetails())
+        await dispatch(getUploadFile(data,() => {
+            dispatch(getConfigDetails())
+        }))
 
     }
 
-    
+
 
 
 
@@ -222,10 +229,7 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
                                         placeholder="#000000"
                                         className="colortext-field"
                                         value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : newColorValue}
-
-
                                     />
-
                                 </div>
                             </div>
                         </div>
@@ -354,7 +358,7 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
             </Col>
             <Col md={6} className="mb-4">
                 <div className="preview-company-wrapper">
-                    <div className="position-relative"> 
+                    <div className="position-relative">
                         <div className="preview-sidebar">
                             <div>
                                 {sideBarLinkBgColor ? (
@@ -365,7 +369,7 @@ function ColorScheme({ previewUrl, setPreviewUrl }) {
                             </div>
                             <div className="skeleton-container mt-4">
                                 {[...Array(4)]?.map((_, index) => (
-                                    <div key={index} className="mb-3 d-flex align-items-center gap-3"  
+                                    <div key={index} className="mb-3 d-flex align-items-center gap-3"
                                     >
                                         <div className="skeleton-circle" style={{ backgroundColor: configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor }}></div>
                                         <p className="preview-sidelink mb-0"   >Link {index + 1}</p>
