@@ -36,7 +36,7 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import CommonReactSelect from "../../atomic/CommonReactSelect";
 import { getConfigDetails, getUploadFile, updateAdminProfile } from "../../../redux/slices/adminDataSlice";
-import { getActiveStepFields, getClientEditFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../../../pages/Registration flows/registrationConstant";
+import { getActiveStepFields, getAdminActiveFields, getClientEditFields, getDevEditFields, getVendorEditFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../../../pages/Registration flows/registrationConstant";
 import SidebarSection from "../../../pages/Registration flows/SidebarSection";
 import SetUpJobModal from "../Modals/SetUpJobModal";
 import ClientStep1 from "../../../pages/Registration flows/Client Registration flow/ClientStep1";
@@ -47,6 +47,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
   const [twoFactorStatus, setTwoFactorStatus] = useState(false);
   const editStepFields = getClientEditFields();
   const ComponentActiveStepFields = getActiveStepFields(activeStep, name);
+
   const {
     register,
     setValue,
@@ -87,7 +88,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         } else if (key === "professional_title") {
           const newValue = stepData[key]
           setValue("profession", newValue)
-        }else {
+        } else {
           setValue(key, (value === null || value === undefined ? '' : value));
         }
       });
@@ -108,7 +109,26 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
     setValue("is_2FA_enabled", twoFactorStatus);
     closeConfirmationModal();
   };
- 
+
+  const getFields = () => {
+    switch (role) {
+      case "client":
+        return getClientEditFields();
+        break;
+      case "developer":
+        return getDevEditFields();
+        break;
+      case "vendor":
+        return getVendorEditFields();
+        break;
+      case "admin":
+        return getAdminActiveFields();
+        break;
+    }
+  }
+
+  console.log(role,"role")
+
   const renderActiveStep = () => {
     return (
       <ClientStep1
@@ -117,7 +137,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         activeStep={activeStep}
         type={role}
         register={register}
-        stepFields={role == "client" ? editStepFields : activeStepFields  ?  activeStepFields : ComponentActiveStepFields}
+        stepFields={getFields()}
         setError={setError}
         clearErrors={clearErrors}
         watch={watch}
@@ -164,7 +184,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
                             type="checkbox"
                             role="switch"
                             isDisabled={true}
-                            
+
                           />
                         )}
                       />
