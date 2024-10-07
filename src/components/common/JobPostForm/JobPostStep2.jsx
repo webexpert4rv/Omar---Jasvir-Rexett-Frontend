@@ -6,13 +6,14 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getSkillList } from "../../../redux/slices/clientDataSlice";
+import { addCustomSkills, getSkillList } from "../../../redux/slices/clientDataSlice";
 import Select from "react-select";
 import { BsCloudLightning } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import SkillAndWeightSection from "./SkillAndWeightSection";
 import { removeDuplicateBasedOnLabels } from "../../utils";
+import CreatableSelect from "react-select/creatable";
 
 const MAX_CHARACTER_LIMIT = 10000;
 
@@ -33,10 +34,12 @@ const JobPostStep2 = ({
   const [selectedSkill, setSelectedSkill] = useState();
   const [skills, setSkills] = useState([]);
   const [goodToSkills, setGoodToSkills] = useState([]);
-  const { smallLoader, skillList } = useSelector((state) => state.clientData);
+  const { smallLoader, skillList, customSkills } = useSelector((state) => state.clientData);
   const MAX_LENGTH = 10000;
   const [count, setCount] = useState(0);
-  
+  console.log(customSkills, "customSkills")
+
+
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
@@ -53,7 +56,7 @@ const JobPostStep2 = ({
   }, [skillList]);
 
 
-  
+
   const getPlainText = (string) => {
     if (string) {
       const plainText = string.replace(/(<([^>]+)>)/gi, "");
@@ -97,20 +100,50 @@ const JobPostStep2 = ({
       }
     }
   };
-  console.log(watch("skills"), "log skills");
-  console.log(watch("optional_skills"), "log optional_skills");
+
+
+
+
+
   const handleAppend = (fieldValue) => {
-    if (traitSkill?.length) {
+    const newSkills = fieldValue.filter(curElem =>
+      !skillListMapped?.some(itm => itm.label === curElem.label)
+    );
+    const checkSkill = fieldValue[fieldValue.length - 1]
+    console.log(checkSkill, "checkSkill")
+    console.log(traitSkill, "traitSkill")
+    // if (traitSkill?.length) {
+    if (!checkSkill?.__isNew__) {
       const traitSkillsLabels = traitSkill.map(({ label }) => label);
       let elementToAppend = fieldValue.find(
         (curElem) => !traitSkillsLabels.includes(curElem.label)
       );
       delete elementToAppend?.weight;
+      console.log(elementToAppend, "elementToAppend")
       if (elementToAppend) {
         setTraitSkill((prev) => [...prev, elementToAppend]);
       }
     } else {
-      setTraitSkill(fieldValue);
+      console.log("inside newSkills")
+      const lastNewSkill = newSkills[newSkills.length - 1]?.label;
+      console.log(lastNewSkill, "lastNewSkill")
+      let payload = {
+        title: lastNewSkill,
+        description: "skills",
+        icon_url: "https://rexett-dev.s3.amazonaws.com/images/custom_skill_icon.svg"
+      };
+      dispatch(addCustomSkills(payload, () => {
+        console.log("Custom skill added, fetching skill list...");
+        dispatch(getSkillList());
+      }))
+      if (customSkills) {
+        const newSkillAdded = {
+          value: customSkills?.id,
+          label: customSkills?.title,
+        }
+        console.log(newSkillAdded, "newSkillAdded")
+        setTraitSkill((prev) => [...prev, newSkillAdded]);
+      }
     }
   };
 
@@ -172,11 +205,10 @@ const JobPostStep2 = ({
                   )}
                 />
 
-                <p className="text-end text-muted font-14 mt-1">{`${
-                  getPlainText(watch("description"))?.length
-                    ? getPlainText(watch("description")).length
-                    : 0
-                }/10,000`}</p>
+                <p className="text-end text-muted font-14 mt-1">{`${getPlainText(watch("description"))?.length
+                  ? getPlainText(watch("description")).length
+                  : 0
+                  }/10,000`}</p>
               </div>
               {errors?.description && (
                 <p className="error-message ">{errors.description?.message}</p>
@@ -191,7 +223,7 @@ const JobPostStep2 = ({
                 control={control}
                 rules={{ required: "Skills are required" }}
                 render={({ field }) => (
-                  <Select
+                  <CreatableSelect
                     {...field}
                     isClearable
                     isMulti
@@ -248,7 +280,7 @@ const JobPostStep2 = ({
                 control={control}
                 rules={{ required: "Good to have skills are required" }}
                 render={({ field }) => (
-                  <Select
+                  <CreatableSelect
                     {...field}
                     isClearable
                     isMulti
