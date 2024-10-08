@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Dropdown, Form, Row } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa6";
 import { IoCameraOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -11,6 +11,10 @@ import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import LocationSection from "../../websiteRegisterForm/developer/LocationSection";
 import CommonProfilePictureSection from "../../../components/common/CommonProfilePictureSection";
 import UploadFile from "../DeveloperRegistrationFlow/UploadFile";
+import avatarA from "../../../assets/img/favicon.png"
+import avatarB from "../../../assets/img/avatar2.png"
+import avatarC from "../../../assets/img/avatar3.png"
+
 // const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
 // const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
@@ -39,12 +43,13 @@ const ClientStep1 = ({
   skillOptions,
   stepData,
   stepTwoAutoComplete,
-  flowName
+  flowName,
+  setAvatar,
+  avatar
+
 }) => {
   const { t } = useTranslation();
-
   let isStillWorking = watch("is_still_working")
-
   const filteredStepFields = stepFields.filter(field => {
     if (stepTwoAutoComplete && activeStep === 3 && nestedActiveStep === 2) {
       return field.fieldName !== "degree_id"; // Remove degree_id field
@@ -52,7 +57,22 @@ const ClientStep1 = ({
     return field.fieldName !== "degree"; // Remove degree field otherwise
   });
 
-  console.log(flowName, "flowName")
+  const handleImageA = (item) => {
+    setAvatar(item)
+    setImageFile({...imageFile,profile_picture: item})
+    setPreviewImage({ ...previewImage, profile_picture: item });
+  }
+  const handleImageB = (item) => {
+    setAvatar(item)
+    setImageFile({...imageFile,profile_picture: item})
+    setPreviewImage({ ...previewImage, profile_picture: item });
+  }
+
+  const handleImageC = (item) => {
+    setAvatar(item)
+    setImageFile({...imageFile,profile_picture: item})
+    setPreviewImage({ ...previewImage, profile_picture: item });
+  }
   // const { degreeList} = useSelector(
   //   (state) => state?.developerData
   // );
@@ -80,6 +100,20 @@ const ClientStep1 = ({
                 errors={errors}
               />
             )}
+            {flowName === "edit_profile" ?
+              <div className="">
+                <div className="profile-view" onClick={() => handleImageA(avatarA)}>
+                  <img src={avatarA ? avatarA : "/demo-user.png"} />
+                </div>
+                <div className="profile-view" onClick={() => handleImageB(avatarB)}>
+                  <img src={avatarB ? avatarB : "/demo-user.png"} />
+                </div>
+                <div className="profile-view" onClick={() => handleImageC(avatarC)}>
+                  <img src={avatarC ? avatarC : "/demo-user.png"} />
+                </div>
+              </div>
+              : ""
+            }
             <Row className="w-100 mt-md-0 mt-4">
               {filteredStepFields?.map(({ label,
                 fieldName,

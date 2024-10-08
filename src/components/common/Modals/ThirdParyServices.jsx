@@ -114,7 +114,7 @@ const ThirdPartyServices = ({ show, handleClose, onClick, loader, text, syncCrea
           : <p>Meeting Link :{meetingLink}</p>
         }
         <div className="text-center">
-          <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink == null ? loader ? <RexettSpinner /> : "Get Link" : "Submit"}  </Button>
+          <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink == null ? "" ? <RexettSpinner /> : "Get Link" : "Submit"}  </Button>
         </div>
       </Modal.Body>
     </Modal>

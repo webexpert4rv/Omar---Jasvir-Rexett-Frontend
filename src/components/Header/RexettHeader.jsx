@@ -104,8 +104,8 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const bodyTextColor = configDetails?.crm_body_text_color
   const linkBgColor = configDetails?.crm_sidebar_bg_link_color
   const sideBarIconColor = configDetails?.side_bar_icon_color
-  const sideBarIconSize = configDetails?.side_bar_icon_size
-
+  const sideBarIconWidth = configDetails?.side_bar_icon_width
+  const sideBarIconHeight = configDetails?.side_bar_icon_height
 
 
 
@@ -124,17 +124,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     document.documentElement.style.setProperty('--body_text_color', bodyTextColor)
     document.documentElement.style.setProperty('--sidebar-link-bg-color', linkBgColor)
     document.documentElement.style.setProperty('--sidebar_icon_font_color', sideBarIconColor)
-    document.documentElement.style.setProperty('--sidebar_icon_font_color', sideBarIconSize)
+    document.documentElement.style.setProperty('--sidebar_icon_font_width', sideBarIconWidth)
+    document.documentElement.style.setProperty('--sidebar_icon_font_height', sideBarIconHeight)
     document.getElementById('favicon').href = filename;
-
   }, [configDetails])
 
   useEffect(() => {
     dispatch(getConfigDetails())
     dispatch(getAllEvents())
   }, [dispatch])
-
-
 
   const backBtn = () => {
     navigate(-1)

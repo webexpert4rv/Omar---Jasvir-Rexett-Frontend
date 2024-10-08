@@ -37,6 +37,7 @@ const ClientAddOtherSkill = ({ show, handleClose, onAddSkills }) => {
         });
         setSelectedOption(prevSelected => [...prevSelected, newSkillOption]);
     };
+    
 
     const handleAddSkills = () => {
         if (onAddSkills) {

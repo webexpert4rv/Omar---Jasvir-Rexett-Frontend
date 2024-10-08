@@ -9,6 +9,7 @@ function Typography({ previewUrl }) {
     const [fontSize, setFontSize] = useState(16)
     const [headingFontSize, setHeadingFontSize] = useState(16)
     const [bodyFontSize, setBodyFontSize] = useState(16)
+    const [iconFontWidth, setIconFontWidth] = useState()
 
     const {configDetails} = useSelector(state => state.adminData)
     const dispatch = useDispatch()
@@ -21,6 +22,9 @@ function Typography({ previewUrl }) {
     }
     const handleBodyRangeChange = (e) => {
         setBodyFontSize(parseInt(e.target.value))
+    }
+    const handleWidthRangeChange=(e)=>{
+        setIconFontWidth(e.target.value)
     }
 
     const handleRangeMouseUp = async(e) => {
@@ -48,9 +52,15 @@ function Typography({ previewUrl }) {
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
     }
-
-    
-
+    const handleWidthRangeMouseUp= async(e)=>{
+        setIconFontWidth(e.target.value)
+        let data = {
+            height: iconFontWidth,
+            width: iconFontWidth
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+    }
     return (
 
         <div>
@@ -163,6 +173,34 @@ function Typography({ previewUrl }) {
                 </Col>
                 <Col md={6} className="mb-4">
                     <p className="preview-text-size" style={{fontSize :  configDetails?.crm_body_font_size ? `${configDetails.crm_body_font_size}px` : bodyFontSize }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </Col>
+                <Col md={6} className="mb-4">
+                    <div>
+                        <h3 className="customization-heading">Sidebar Icon Font Size</h3>
+                        <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
+                        <div className="solid-color-wrapper">
+                            <div className="color-field-wrapper">
+                            <Form.Range
+                                    className="w-100"
+                                    min="16"
+                                    max="100"
+                                    value={configDetails?.side_bar_icon_width ? configDetails?.side_bar_icon_width : iconFontWidth }
+                                    onChange={handleWidthRangeChange}
+                                    onMouseUp={handleWidthRangeMouseUp}
+
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="16px"
+                                    value={configDetails?.side_bar_icon_width ? configDetails?.side_bar_icon_width : iconFontWidth}
+                                    className="common-field shadow-none"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </Col>
+                <Col md={6} className="mb-4">
+                    <p className="preview-text-size" style={{fontSize :  configDetails?.side_bar_icon_size ? `${configDetails.side_bar_icon_size}px` : iconFontWidth }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                 </Col>
             </Row>
         </div>

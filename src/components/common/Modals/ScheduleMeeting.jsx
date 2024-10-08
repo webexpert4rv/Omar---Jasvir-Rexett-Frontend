@@ -408,14 +408,13 @@ const Schedulemeeting = ({
     setLoader(true);
     const { title, meeting_start_time, meeting_end_time, time_zone, instant_date, meeting_platform } = watch();
     const meetingPlatform = meeting_platform?.value
-
+    console.log(meetingPlatform,"meetingPlatform")
     e.stopPropagation();
     if(meetingPlatform === "google_meet"){
       if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
         console.log("User not authenticated");
         return;
       }
-  
       const newEvent = {
         summary: title || "Untitled Meeting",
         location: "jkk",
@@ -470,7 +469,7 @@ const Schedulemeeting = ({
   
         });
     } else if(meetingPlatform === "microsoft_team"){
-
+      console.log(meetingPlatform,"innside")
       let eventDetailsPayload={
         subject: title,
         location: { displayName: "Sweden" },
@@ -483,11 +482,12 @@ const Schedulemeeting = ({
           dateTime: getDateTimeString(instant_date, meeting_end_time), // Correct ISO 8601 format
           timeZone: "UTC",
         },
-        isOnlineMeeting: true,
-        onlineMeetingProvider: "teamsForBusiness",
-        "onlineMeeting": {
-          "joinUrl": null
-      }
+        "allowNewTimeProposals": true,
+        "isOnlineMeeting": true,
+        "onlineMeetingProvider": "skypeForBusiness",
+      //   "onlineMeeting": {
+      //     "joinUrl": null
+      // }
       }
       if (!isAuthenticated) {
         console.log('User not authenticated');

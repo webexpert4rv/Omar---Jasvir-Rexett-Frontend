@@ -7,7 +7,7 @@ import { getConfigDetails, getUploadFile } from '../../../../redux/slices/adminD
 import { useDispatch, useSelector } from 'react-redux';
 import { filePreassignedUrlGenerate } from '../../../../redux/slices/clientDataSlice';
 
-function UploadFiles({ previewUrl, setPreviewUrl }) {
+function UploadFiles({ previewUrl, setPreviewUrl,setFileName,setFiles}) {
     const [favIconPreviewUrl, setFavIconPreviewUrl] = useState('')
     const [companyLogo, setCompanyLogo] = useState(null);
     const [selectedImage, setSelectedImage] = useState("")
@@ -17,48 +17,49 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
     const dispatch = useDispatch()
 
 
-    const handleImageUpload = async (event, filename) => {
-        console.log(filename, "filename");
-        const file = event.target.files[0];
+    // const handleImageUpload = async (event, filename) => {
+    //     console.log(filename, "filename");
+    //     setFileName(filename)
+    //     const file = event.target.files[0];
+    //     setFiles(file)
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setSelectedImage(reader.result);
+    //             if (filename === "companyLogo") {
+    //                 setPreviewUrl(reader.result);
+    //             } else {
+    //                 setFavIconPreviewUrl(reader.result);
+    //             }
+    //         };
+    //         reader.readAsDataURL(file);
     
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-                if (filename === "companyLogo") {
-                    setPreviewUrl(reader.result);
-                } else {
-                    setFavIconPreviewUrl(reader.result);
-                }
-            };
-            reader.readAsDataURL(file);
+    //         let fileData = new FormData();
+    //         fileData.append("file", file);
     
-            let fileData = new FormData();
-            fileData.append("file", file);
+    //         try {
+    //             const url = await new Promise((resolve, reject) => {
+    //                 dispatch(filePreassignedUrlGenerate(fileData, resolve, reject));
+    //             });
     
-            try {
-                const url = await new Promise((resolve, reject) => {
-                    dispatch(filePreassignedUrlGenerate(fileData, resolve, reject));
-                });
-    
-                if (filename === "companyLogo") {
-                    let payload = {
-                        company_logo: url,
-                    };
-                    await dispatch(getUploadFile(payload));
-                     dispatch(getConfigDetails());
-                } else {
-                    let payload = {
-                        favicon: url,
-                    };
-                    await dispatch(getUploadFile(payload));
-                     dispatch(getConfigDetails());
-                }
-            } catch (error) {
-                console.error("Error handling image upload:", error);
-            }
-        }
-    };
+    //             if (filename === "companyLogo") {
+    //                 let payload = {
+    //                     company_logo: url,
+    //                 };
+    //                 await dispatch(getUploadFile(payload));
+    //                  dispatch(getConfigDetails());
+    //             } else {
+    //                 let payload = {
+    //                     favicon: url,
+    //                 };
+    //                 await dispatch(getUploadFile(payload));
+    //                  dispatch(getConfigDetails());
+    //             }
+    //         } catch (error) {
+    //             console.error("Error handling image upload:", error);
+    //         }
+    //     }
+    // };
     
 
     const handleRemoveImage = () => {
@@ -84,10 +85,11 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <Form.Control
                             type="file"
                             className="upload-custom-field"
-                            name="company-logo"
                             id="company-logo"
                             accept="image/jpeg, image/png, image/svg+xml"
-                            onChange={(e) => handleImageUpload(e, "companyLogo")}
+                            {...register("company-logo", {
+                                onChange: (e) => handleImageUpload(e, "companyLogo"),
+                             })}
                         />
                         <Form.Label htmlFor="company-logo" className="upload-field-label">
                             Upload File
@@ -132,10 +134,12 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <Form.Control
                             type="file"
                             className="upload-custom-field"
-                            name="company-logo_1"
-                            id="company-logo_1"
+                            name="company_logo_1"
+                            id="company_logo_1"
                             accept="image/jpeg, image/png, image/svg+xml"
-                            onChange={(e) => handleImageUpload(e, "favicon")}
+                            {...register("company_logo_1", {
+                                onChange: (e) => handleImageUpload(e, "favicon"),
+                             })}
                         />
                         <Form.Label htmlFor="company-logo_1" className="upload-field-label">
                             Upload File
