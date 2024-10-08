@@ -266,7 +266,6 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     }
     setLoader(true);
     const client = Client.initWithMiddleware({ authProvider });
-
     try {
       // Fetch the online meeting details using the meeting ID
       const id = joinUrl;

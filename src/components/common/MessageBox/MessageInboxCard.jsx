@@ -43,7 +43,7 @@ const MessageInboxCard = ({
       }
     }
   };
-
+console.log(chatRoomMessageList?.chatRooms,"chatrooms")
   return (
     <>
       <div
@@ -53,7 +53,7 @@ const MessageInboxCard = ({
       >
         {chatRoomMessageList?.chatRooms?.length > 0 ? (
           (filteredName ? filteredName : chatRoomMessageList?.chatRooms)?.map(
-            (it) => {
+            (it,idx) => {
               return (
                 <>
                   <div className="chat-wrapper">
