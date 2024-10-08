@@ -424,11 +424,13 @@ const Schedulemeeting = ({
           // dateTime: "2024-08-26T16:50:00",
           // timeZone: "America/Los_Angeles",
           dateTime: getDateTimeString(instant_date, meeting_start_time),
-          timeZone: time_zone?.label,
+          // timeZone: time_zone?.label,
+              timeZone: "America/Los_Angeles",
         },
         end: {
           dateTime: getDateTimeString(instant_date, meeting_end_time),
-          timeZone: time_zone?.label,
+          // timeZone: time_zone?.label,
+            timeZone: "America/Los_Angeles",
   
           // dateTime: "2024-08-29T16:50:00",
           // timeZone: "America/Los_Angeles",

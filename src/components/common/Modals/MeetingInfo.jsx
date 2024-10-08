@@ -155,12 +155,16 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   }, []);
 
   const fetchMeetingDetails = async (meetingCode) => {
+    const startTime = new Date("2024-10-08T05:43:00+05:30").toISOString(); // Adjust start date
+    const endTime = new Date( "2024-10-08T06:43:00+05:30").toISOString();
     // alert(meetingCode);
     const response = await gapi.client.reports.activities.list({
       userKey: "all",
       applicationName: "meet",
       eventName: "call_ended",
       filters: `meeting_code==${meetingCode}`,
+      startTime: startTime,
+    endTime: endTime,
     });
     const activities = response.result.items || [];
     const participants = activities.flatMap((activity) =>
@@ -244,8 +248,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       } else {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
-        if (meetingStart < now) {
-          fetchMeetingDetails(id);
+        if (!meetingStart < now) {
+          fetchMeetingDetails(googleEventId);
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");
