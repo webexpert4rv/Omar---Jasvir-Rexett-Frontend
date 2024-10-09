@@ -6,9 +6,9 @@ import clientInstance from '../../services/client.instance';
 const initialAuthData = {
     screenLoader: false,
     smallLoader: false,
-    otpLoader:false,
-    countries:[]
-   
+    otpLoader: false,
+    countries: []
+
 }
 
 export const authenticationDataSlice = createSlice({
@@ -37,11 +37,11 @@ export const authenticationDataSlice = createSlice({
             state.smallLoader = false;
             state.otpLoader = false;
         },
-      
+
     }
 })
 
-export const { setScreenLoader,setLoginUserName , setAllCountries, setOtpLoader, setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
+export const { setScreenLoader, setLoginUserName, setAllCountries, setOtpLoader, setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
 
 export default authenticationDataSlice.reducer
 
@@ -66,6 +66,7 @@ const storeUserData = (data) => {
     localStorage.setItem('role', data.data.role);
     localStorage.setItem('userId', data.data.id);
     localStorage.setItem('userName', data.data.name);
+    localStorage.setItem('profile_picture', data.data.profile_picture);
 };
 
 const redirectToDashboard = (role) => {
@@ -80,7 +81,7 @@ export function loginUser(payload, callback) {
         dispatch(setScreenLoader());
         try {
             const result = await authInstance.post('auth/login/', { ...payload });
-
+            console.log(result.data, "loginResponse")
             if (result?.status === 200) {
                 dispatch(setSuccessAuthData());
                 toast.success(result.data.message, { position: 'top-center' });
@@ -120,7 +121,8 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role", "client")
                     localStorage.setItem("userId", result.data.data.id)
-                    localStorage.setItem("userName",result?.data?.data?.name)
+                    localStorage.setItem("userName", result?.data?.data?.name)
+                    localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
                     window.location.href = '/client/dashboard'
                 }
 
@@ -129,16 +131,18 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role", "developer")
                     localStorage.setItem("userId", result.data.data.id)
-                    localStorage.setItem("userName",result?.data?.data?.name)
+                    localStorage.setItem("userName", result?.data?.data?.name)
+                    localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
                     window.location.href = '/developer/dashboard'
                 }
 
                 if (result.data.data.role === "admin" || result.data.data.role === "employee") {
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
-                    localStorage.setItem("role", result.data.data.role=="admin"?"admin":"employee")
+                    localStorage.setItem("role", result.data.data.role == "admin" ? "admin" : "employee")
                     localStorage.setItem("userId", result.data.data.id)
-                    localStorage.setItem("userName",result?.data?.data?.name)
+                    localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
+                    localStorage.setItem("userName", result?.data?.data?.name)
                     window.location.href = "/admin/admin-dashboard"
                 }
                 if (result.data.data.role === "vendor") {
@@ -146,16 +150,17 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role", "vendor")
                     localStorage.setItem("userId", result.data.data.id)
-                    localStorage.setItem("userName",result?.data?.data?.name)
+                    localStorage.setItem("userName", result?.data?.data?.name)
+                    localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
                     window.location.href = "/vendor-dashboard"
                 }
-        
+
             }
 
         } catch (error) {
             console.log(error, "error")
-                toast.error(error?.response?.data?.message, { position: "top-center" })
-                dispatch(setFailAuthData())
+            toast.error(error?.response?.data?.message, { position: "top-center" })
+            dispatch(setFailAuthData())
         }
     }
 }
@@ -221,7 +226,7 @@ export function resendOtpDispatch(payload, callback) {
 
         dispatch(setOtpLoader())
         try {
-            let result = await authInstance.post(`auth/resend-otp`,payload )
+            let result = await authInstance.post(`auth/resend-otp`, payload)
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
                 dispatch(setSuccessAuthData())

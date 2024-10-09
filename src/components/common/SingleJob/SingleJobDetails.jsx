@@ -47,7 +47,7 @@ import companyImg from '../../../assets/img/aviox-logo.png';
 import { FaLink } from "react-icons/fa6";
 import ReactQuill from "react-quill";
 import { FaClipboardUser } from "react-icons/fa6";
-import { FaListUl, FaTimes, FaUsers } from "react-icons/fa";
+import { FaListUl, FaShareAlt, FaTimes, FaUsers } from "react-icons/fa";
 import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
@@ -77,6 +77,7 @@ import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 import useEndAndDelete from "../../../hooks/useEndAndDelete";
 import NoDataFound from "../../atomic/NoDataFound"
+import ShareModal from "../Modals/ShareModal";
 
 
 
@@ -121,6 +122,7 @@ const SingleJobDetails = () => {
     const [appliedTabData, setAppliedTabData] = useState()
     const [manualSuggestion, showManualSuggestion] = useState(false)
     const { t } = useTranslation();
+    const [showShareModal,setShowShareModal] = useState(false)
 
 
     const {
@@ -392,7 +394,12 @@ const SingleJobDetails = () => {
             });
         }
     };
+
+    const toggleShareModal=()=>{
+        setShowShareModal(!showShareModal)
+    }
     const endjob = <Tooltip id="tooltip">{t("endJob")}</Tooltip>;
+    const shareJob = <Tooltip id="tooltip">{"Share Job"}</Tooltip>;
     const deletejob = (
         <Tooltip id="tooltip">
             {singleJobDescription?.status == "Unpublished"
@@ -618,6 +625,12 @@ const SingleJobDetails = () => {
     }
 
 
+    const handleShare=()=>{
+        setShowShareModal(true)
+
+    }
+
+
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -646,6 +659,17 @@ const SingleJobDetails = () => {
                             </div>
                         </div>
                         <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
+                        <OverlayTrigger placement="top" overlay={shareJob}>
+                                    <Button
+                                        className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                                        variant="transparent"
+                                        onClick={() =>
+                                            handleShare("application", singleJobDescription?.id)
+                                        }
+                                    >
+                                       <FaShareAlt />
+                                    </Button>
+                                </OverlayTrigger>
                             {singleJobDescription?.status !== "ended" ? (
                                 <>
                                     <OverlayTrigger placement="top" overlay={endjob}>
@@ -764,7 +788,7 @@ const SingleJobDetails = () => {
                                     </ul>
                                 ) : (
                                     "Not Mentioned"
-                                )}{" "}
+                                )}
                             </Col>
                             <Col md="4">
                                 <h3 className="req-heading">{t("optionalSkills")}</h3>
@@ -1941,6 +1965,7 @@ const SingleJobDetails = () => {
             )}
             <AgreementDetails show={showagreement} handleClose={handleCloseAgreement} />
             <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers} jobId={id} />
+            <ShareModal showShareModal={showShareModal} toggleShareModal={toggleShareModal}   text={"Share Job "}  jobID={id}/>
         </>
     );
 };

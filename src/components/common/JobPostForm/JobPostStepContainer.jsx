@@ -73,7 +73,7 @@ const DEFAULT_SCREENING_DATA = [
 ];
 
 const JobPostStepContainer = ({ role }) => {
-const{smallLoader}= useSelector(state=>state.clientData)
+  const { smallLoader } = useSelector(state => state.clientData)
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -191,7 +191,7 @@ const{smallLoader}= useSelector(state=>state.clientData)
                   const newValue = { value: data[key], label: data[key] };
                   setValue(key, newValue);
                 } else if (key === "response_date") {
-                  let newDate = data[key].slice(0,10)
+                  let newDate = data[key].slice(0, 10)
                   setValue(key, newDate);
                 } else {
                   setValue(key, data[key]);
@@ -206,10 +206,10 @@ const{smallLoader}= useSelector(state=>state.clientData)
                     setValue(key, arrayForSelect);
                   }
 
-                } else if (key === "job_skills"){
-                  if (data[key]){
+                } else if (key === "job_skills") {
+                  if (data[key]) {
                     const temp = convertjobSkillsFromApiResponse(data[key]);
-                    console.log(temp,"this is temp")
+                    console.log(temp, "this is temp")
                     setTraitSkill(temp);
                   }
                 }
@@ -236,8 +236,8 @@ const{smallLoader}= useSelector(state=>state.clientData)
         })
       );
     }
-  }, [activeStep, dispatch, skillCate, id]); 
-  
+  }, [activeStep, dispatch, skillCate, id]);
+
   const getActiveStepComponent = () => {
     switch (activeStep) {
       case 1:
@@ -262,6 +262,8 @@ const{smallLoader}= useSelector(state=>state.clientData)
             control={control}
             setTraitSkill={setTraitSkill}
             traitSkill={traitSkill}
+            setError={setError}
+            clearErrors={clearErrors}
           />
         );
       case 3:
@@ -279,7 +281,7 @@ const{smallLoader}= useSelector(state=>state.clientData)
   };
   const increaseStep = () => {
     if (activeStep < 3) {
-      console.log(activeStep,"activeStep")
+      console.log(activeStep, "activeStep")
       setActiveStep((prev) => prev + 1);
       localStorage.setItem(getActiveStepLocalStorageKey(), activeStep + 1);
     } else {
@@ -297,7 +299,7 @@ const{smallLoader}= useSelector(state=>state.clientData)
   };
   let finalValue = traitSkill?.map((item) => {
     return {
-      "skill_id": item?.value,
+      "skill_id": item?.value ? item?.value : undefined ,
       "skill_name": item?.label,
       "weight": item?.level?.find((itm, idx) => (itm?.isTrue == true))?.name
     }
@@ -356,7 +358,7 @@ const{smallLoader}= useSelector(state=>state.clientData)
         clientUpdatePost(payload, isEdit, activeStep, jobID, userId, increaseStep)
       )
     } else {
-      dispatch(clientJobPost(payload, activeStep,userId, increaseStep));
+      dispatch(clientJobPost(payload, activeStep, userId, increaseStep));
     }
   };
 
@@ -379,8 +381,8 @@ const{smallLoader}= useSelector(state=>state.clientData)
                     text="Back"
                     onClick={decreaseStep}
                     className="main-btn outline-main-btn px-5"
-                    disabled={smallLoader}
-                    isLoading={smallLoader}
+                    // disabled={smallLoader}
+                    // isLoading={smallLoader}
                   />
                 )}
                 <RexettButton

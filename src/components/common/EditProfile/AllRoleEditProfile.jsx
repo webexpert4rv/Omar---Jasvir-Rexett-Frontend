@@ -45,6 +45,7 @@ import RegistrationType from "../../../pages/Registration flows/Client Registrat
 const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, imageFile, setImageFile, setPreviewImage, stepData, activeStepFields }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [twoFactorStatus, setTwoFactorStatus] = useState(false);
+  const [avatar , setAvatar]= useState()
   const editStepFields = getClientEditFields();
   const ComponentActiveStepFields = getActiveStepFields(activeStep, name);
 
@@ -98,6 +99,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
       });
     }
   }, [stepData])
+  console.log(imageFile,"imageFile")
 
   const toggleConfirmationModal = (e) => {
     const { checked } = e?.target;
@@ -149,6 +151,8 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         isProfileSectionRequired={activeStep === 1}
         isEditMode={true}
         flowName={"edit_profile"}
+        setAvatar={setAvatar}
+        avatar={avatar}
       />)
   }
   return (
@@ -195,6 +199,7 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
             </Col>
           </Row>
         </div>
+        
         <div className="resume-main-wrapper">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Container>

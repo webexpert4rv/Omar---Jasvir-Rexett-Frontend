@@ -122,7 +122,7 @@ const DeveloperRegistrationStepper = () => {
   }, [location.search]);
 
 
-  let developer_id = localStorage.getItem("developerId");
+  let developerId = localStorage.getItem("developerId");
   const activeStepFields = getDeveloperActiveStepFields(
     activeStep,
     nestedActiveStep
@@ -196,8 +196,8 @@ const DeveloperRegistrationStepper = () => {
     //   setActiveStep(Number(steps));
     //   setNestedActiveStep(Number(0));
     // }
-    if (developer_id!==null || user_id!==null) {
-      dispatch(getDeveloperProfileDetails(developer_id || user_id));
+    if (developerId!==null || user_id!==null) {
+      dispatch(getDeveloperProfileDetails(developerId || user_id));
     }
   }, []);
 
@@ -222,7 +222,7 @@ const DeveloperRegistrationStepper = () => {
 
     // if (devId && isEditMode?.isEdit) {
     if(devId){
-    dispatch(getDeveloperProfileDetails(developer_id || user_id, (response) => {
+    dispatch(getDeveloperProfileDetails(developerId || user_id, (response) => {
       const currentStep = activeStepKeys[storedStep];
       const data = response[activeStepKeys[storedStep]];
       const keyMapping = {
@@ -931,7 +931,7 @@ const DeveloperRegistrationStepper = () => {
           linkedin_url: values?.linkedin_url,
           github_url: values?.github_url,
           intro_video_url: uploadedUrls?.introVideo,
-          user_id: developer_id ? developer_id : null
+          user_id: developerId ? developerId : null
         };
         dispatch(developerRegistration(payload, () => {
           if (!ifDone) {
@@ -959,7 +959,7 @@ const DeveloperRegistrationStepper = () => {
           description: stripHtmlTags(itm?.project_description),
           job_location: itm?.job_location
         }));
-        dispatch(registerDeveloperExperience(payloads, developer_id));
+        dispatch(registerDeveloperExperience(payloads, developerId));
           increaseStepCount(true);
       }
       setEdit(false)
@@ -981,7 +981,7 @@ const DeveloperRegistrationStepper = () => {
               job_location: values?.job_location
             };
           }
-          dispatch(registerDeveloperExperience(copyObj, developer_id, () => {
+          dispatch(registerDeveloperExperience(copyObj, developerId, () => {
             increaseStepCount(true);
           }));
           setEditMode((prev) => ({
@@ -1003,7 +1003,7 @@ const DeveloperRegistrationStepper = () => {
                 job_location: values?.job_location
               },
             ];
-            dispatch(registerDeveloperExperience(developer_experience, developer_id, () => {
+            dispatch(registerDeveloperExperience(developer_experience, developerId, () => {
               increaseStepCount(true);
             }));
           } else {
@@ -1019,7 +1019,7 @@ const DeveloperRegistrationStepper = () => {
                 job_location: values?.job_location
               },
             ];
-            dispatch(registerDeveloperExperience(developer_experience, developer_id, () => {
+            dispatch(registerDeveloperExperience(developer_experience, developerId, () => {
               increaseStepCount(true);
             }));
           }
@@ -1050,7 +1050,7 @@ const DeveloperRegistrationStepper = () => {
             }
           })
           dispatch(
-            registerDeveloperEducation(payloads, developer_id, () => {
+            registerDeveloperEducation(payloads, developerId, () => {
               increaseStepCount(true);
             })
           );
@@ -1109,7 +1109,7 @@ const DeveloperRegistrationStepper = () => {
           let developer_education = [...filteredData, newEntry];
 
           dispatch(
-            registerDeveloperEducation(developer_education, developer_id, () => {
+            registerDeveloperEducation(developer_education, developerId, () => {
               increaseStepCount(true);
             })
           );
@@ -1137,7 +1137,7 @@ const DeveloperRegistrationStepper = () => {
           let developer_education = [...filteredData, newEntry];
 
           dispatch(
-            registerDeveloperEducation(developer_education, developer_id, () => {
+            registerDeveloperEducation(developer_education, developerId, () => {
               increaseStepCount(true);
             })
           );
@@ -1156,14 +1156,17 @@ const DeveloperRegistrationStepper = () => {
           }));
         };
         const output = transformData(values?.good_skills);
+        console.log(output,"output")
         const secondOutput = transformData(values?.skills);
         const dataToSend = secondOutput ? [...output,...secondOutput] : output;
         let payload = {
-          developer_id: localStorage.getItem("developerId"),
+          developer_id: developerId,
           skills: dataToSend
         }
 
-        dispatch(registerDeveloperSkills(payload))
+        dispatch(registerDeveloperSkills(payload,()=>{
+          dispatch(getDeveloperProfileDetails(developerId))
+        }));
         setNestedActiveStep(0);
         localStorage.setItem("nestedActiveStep", 0);
         increaseStepCount(false)
@@ -1182,11 +1185,13 @@ const DeveloperRegistrationStepper = () => {
         const secondOutput = transformData(values?.good_skills);
         const dataToSend = secondOutput ? [...output,...secondOutput] : output;
         let payload = {
-          developer_id: localStorage.getItem("developerId"),
+          developer_id: developerId,
           skills: dataToSend
         }
 
-        dispatch(registerDeveloperSkills(payload))
+        dispatch(registerDeveloperSkills(payload,()=>{
+          dispatch(getDeveloperProfileDetails(developerId))
+        }));
       } else {
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
@@ -1196,7 +1201,7 @@ const DeveloperRegistrationStepper = () => {
     } else if (activeStep == 5) {
       if (nestedActiveStep == 1) {
         let payload = {
-          developer_id: localStorage.getItem("developerId"),
+          developer_id: developerId,
           bio: values?.description
         }
         dispatch(developerRegistrationBio(payload))
@@ -1259,7 +1264,7 @@ const DeveloperRegistrationStepper = () => {
       setIsRegistrationStepModal(true);
     }
     else {
-      if(developer_id==null){
+      if(developerId==null){
         uploadFiles({
           resume: imageFile.resume,
           introVideo: imageFile.introVideo,
@@ -1300,7 +1305,7 @@ const DeveloperRegistrationStepper = () => {
       linkedin_url: values?.linkedin_url,
       github_url: values?.github_url,
       intro_video_url: imageFile?.introVideo,
-      user_id: developer_id ? developer_id : null
+      user_id: developerId ? developerId : null
     };
     dispatch(developerRegistration(payload, () => {
       if (!ifDone) {

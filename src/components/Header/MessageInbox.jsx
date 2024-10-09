@@ -35,6 +35,7 @@ import {
   getAllMessages,
   getChatRoomData,
   getChatRoomMembers,
+  setChatData,
 } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
 import { NOTIFICATIONBASEURL } from "../../helper/utlis";
@@ -47,7 +48,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { reverseArray, shouldShowTime } from "../utils";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
-
   let userId = localStorage.getItem("userId");
   const scrollRef = useRef(null);
   const quillRef = useRef(null);
@@ -93,51 +93,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     formState: { errors },
   } = useForm();
 
-  // logic to close emoji picker on clicking outside
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutsideEdit);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutsideEdit);
-  //   };
-  // }, []);
-
-  // const handleClickOutsideEdit = (event) => {
-  //   if (
-  //     emojiPickerRefEdit.current &&
-  //     !emojiPickerRefEdit.current.contains(event.target)
-  //   ) {
-  //     setShowEmojiPicker(false);
-  //   }
-  // };
-  // logic to close emoji picker on clicking outside
-  {
-    /* commented for future use */
-  }
-
-  // const handleEmojiCick = (emojiObject, _event) => {
-  //   const messageFormValue = watch("message");
-  //   // Replace all consecutive spaces with non-breaking spaces (&nbsp;) to preserve them
-  //   const messageWithNbsp = messageFormValue?.replace(/ /g, "&nbsp;");
-
-  //   // Check if the message is empty or just a placeholder like <p><br></p>
-  //   if (messageWithNbsp === "<p><br></p>" || !messageWithNbsp) {
-  //     // If empty, just insert the emoji in a new <p> tag
-  //     const resultHtml = `<p>${emojiObject.emoji}</p>`;
-  //     setValue("message", resultHtml);
-  //   } else {
-  //     // Insert the emoji into the existing message without removing the structure
-  //     const textWithEmoji = messageWithNbsp.replace(
-  //       /<\/p>$/,
-  //       emojiObject.emoji + "</p>"
-  //     );
-  //     console.log(textWithEmoji, "textWithEmoji");
-
-  //     // Instead of stripping <p> tags, just update the message HTML with the emoji
-  //     setValue("message", textWithEmoji);
-  //   }
-  // };
-
   useEffect(() => {
     setChatMessages(chatData);
     setValuemessga("");
@@ -178,7 +133,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const handleShowUserConversation = () => {
     showAddUserConversation(!adduserconversation);
   };
-  console.log(valuemessga, "valuemessga");
+  console.log(chatmessages, "valuemessga");
 
   const handleSelect = (tab) => {
     let tempSelectedTab;
@@ -207,6 +162,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   };
 
   const handleChatProfileClick = async (roomId) => {
+    dispatch(setChatData([]));
     const selectedChat = chatRoomMessageList?.chatRooms?.find(
       (itm) => itm.id == roomId
     );
@@ -513,10 +469,14 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                           let file = item?.message_attachment_url;
                           let file_type = item?.file_type;
                           // if index == 0 (means last message then show time and when the time difference between two messages is greater than 2 minutes )
-                          const showTime = shouldShowTime(index,item?.created_at,reverseArray(chatmessages)?.[index - 1]?.created_at);
-                            // index === 0 ||
-                            // reverseArray(chatmessages)?.[index - 1]
-                            //   ?.sender_id !== item.sender_id;
+                          const showTime = shouldShowTime(
+                            index,
+                            item?.created_at,
+                            reverseArray(chatmessages)?.[index - 1]?.created_at
+                          );
+                          // index === 0 ||
+                          // reverseArray(chatmessages)?.[index - 1]
+                          //   ?.sender_id !== item.sender_id;
                           return (
                             <>
                               <div
@@ -597,27 +557,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
               </div>
             </div>
             <div className="write-message-area">
-              {/* <div className="d-flex justify-content-between align-items-center mb-3">
-                <p className="mb-0">
-                  <span className="fw-medium">
-                    Subject:{" "}
-                    <span className="ongoing-subject">Re: Invited</span>
-                  </span>
-                  <span className="new-subject">+ New Subject</span>
-                </p>
-                <div className="sender-profile">
-                  <img src={selectedChat?.members[0]?.user?.profile_picture} />
-                </div>
-              </div> */}
-              {/* <div>
-                <Form.Control
-                  type="text"
-                  value={messageTitle}
-                  className="common-field font-14 mb-2"
-                  placeholder=""
-                  onChange={(e) => handleMessageChange(e, "title")}
-                />
-              </div> */}
               {selectedImg ? (
                 <div className="py-1 px-2 mb-1 attachment-msg rounded-2 d-flex justify-content-between align-items-center">
                   {/* <p className="mb-0 font-14">  */}

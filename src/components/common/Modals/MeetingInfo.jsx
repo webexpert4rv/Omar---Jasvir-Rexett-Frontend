@@ -34,18 +34,18 @@ const MARK_AS_OPTIONS = [
     label: "Completed",
     value: "completed",
   },
-//   {
-//     label: "Incomplete",
-//     value: "incomplete",
-//   },
-//   {
-//     label: "Canceled",
-//     value: "canceled",
-//   },
-//   {
-//     label: "Pending",
-//     value: "pending",
-//   },
+  //   {
+  //     label: "Incomplete",
+  //     value: "incomplete",
+  //   },
+  //   {
+  //     label: "Canceled",
+  //     value: "canceled",
+  //   },
+  //   {
+  //     label: "Pending",
+  //     value: "pending",
+  //   },
 ];
 
 const DISCOVERY_DOCS = [
@@ -74,7 +74,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedDeveloper, setSelectedDeveloper] = useState({});
-    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
+  const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
   const {
     interview: {
       id, // application id
@@ -155,31 +155,54 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   }, []);
 
   const fetchMeetingDetails = async (meetingCode) => {
+    const startTime = new Date("2024-10-08T05:43:00+05:30").toISOString(); // Adjust start date
+    const endTime = new Date( "2024-10-08T06:43:00+05:30").toISOString();
     // alert(meetingCode);
     const response = await gapi.client.reports.activities.list({
       userKey: "all",
       applicationName: "meet",
       eventName: "call_ended",
-      filters: `meeting_code==${meetingCode}`,
+      maxResults: 10,
+      filters: `meeting_code==${googleEventId}`,
     });
-    const activities = response.result.items || [];
-    const participants = activities.flatMap((activity) =>
-      activity.events.flatMap((event) =>
-        event.parameters
-          .filter((param) => param.name === "user_email")
-          .map((param) => param.value)
-      )
-    );
+    // const activities = response.result.items || [];
+    // const participants = activities.flatMap((activity) =>
+    //   activity.events.flatMap((event) =>
+    //     event.parameters
+    //       .filter((param) => param.name === "user_email")
+    //       .map((param) => param.value)
+    //   )
+    // );
+    
 
-    const duration = activities
-      .flatMap((activity) =>
-        activity.events.flatMap((event) =>
-          event.parameters
-            .filter((param) => param.name === "duration_seconds")
-            .map((param) => parseInt(param.value, 10))
-        )
-      )
-      .reduce((acc, val) => acc + val, 0);
+    // const duration = activities
+    //   .flatMap((activity) =>
+    //     activity.events.flatMap((event) =>
+    //       event.parameters
+    //         .filter((param) => param.name === "duration_seconds")
+    //         .map((param) => parseInt(param.value, 10))
+    //     )
+    //   )
+    //   .reduce((acc, val) => acc + val, 0);
+    const events = response.result.items; // assuming 'items' contains the events
+    if (events && events.length > 0) {
+      // Process each event
+      events.forEach(event => {
+        const eventData = event.events[0]; // Assuming each item has at least one event
+        const parameters = eventData.parameters;
+
+        // Extract specific fields you want
+        const callEndedData = {
+          identifier: parameters.find(p => p.name === "identifier")?.value,
+          duration: parameters.find(p => p.name === "duration_seconds")?.intValue,
+          organizerEmail: parameters.find(p => p.name === "organizer_email")?.value,
+          displayName: parameters.find(p => p.name === "display_name")?.value,
+          callEndedTime: event.id.time,
+        };
+
+        console.log(callEndedData,"CALLEND"); // Log or further process the extracted data
+      });
+    }
   };
 
   const googleEventId = localStorage.getItem("googleEventId")
@@ -199,7 +222,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         // Fetch the online meeting details using the meeting ID
         const joinUrl = details?.interview?.meeting_link;
         const id = joinUrl;
-        
+
         // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
         const meetingResponse = await client
           .api("/me/onlineMeetings")
@@ -234,6 +257,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         console.error("Error fetching meeting details:", error);
       }
     } else if (meeting_platform === "google_meet") {
+      console.log("inside google meet")
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
         eventId: googleEventId,
@@ -244,8 +268,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       } else {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
-        if (meetingStart < now) {
-          fetchMeetingDetails(id);
+        if (!meetingStart < now) {
+          fetchMeetingDetails(googleEventId);
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");
@@ -262,14 +286,13 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     }
     setLoader(true);
     const client = Client.initWithMiddleware({ authProvider });
-
     try {
       // Fetch the online meeting details using the meeting ID
       const id = joinUrl;
       // "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
       const meetingResponse = await client
         .api("/me/onlineMeetings")
-        .filter(`JoinWebUrl eq '${id}'`)
+        .filter(`JoinWebUrl eq '${googleEventId}'`)
         .get();
 
       if (meetingResponse) {
@@ -316,7 +339,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     // dispatch(changeJobStatus(payload));
     dispatch(updateStatus(payload, details?.interview?.id, handleClose)); //interview id
     setValue("mark_as", newStatus);
-    dispatch(singleJobPostData(jobId, () => {}));   
+    dispatch(singleJobPostData(jobId, () => { }));
   };
 
   // Call the function with a specific meeting ID
@@ -325,11 +348,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const handleShowScheduleMeeting = (name, id, email) => {
     setSelectedDeveloper({ name, id, email })
     setShowScheduleMeet(!showScheduleMeeting);
-}
+  }
 
-const handleCloseScheduleMeeting = () => {
-  setShowScheduleMeet(false);
-}
+  const handleCloseScheduleMeeting = () => {
+    setShowScheduleMeet(false);
+  }
 
   return (
     <>
@@ -544,7 +567,7 @@ const handleCloseScheduleMeeting = () => {
               </Button> */}
             </div>
           </div>
-          {showDetailsSection && (
+          {true && (
             <div className="detailedSection" style={{ marginTop: "10px" }}>
               <Row>
                 <Col lg={8}>

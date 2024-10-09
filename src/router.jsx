@@ -175,11 +175,12 @@ export const route = [
   //   element: <ClientStep1 />,
   //   public: true,
   // },
-  {
-    path: "/talent-registration",
-    element: <DeveloperRegistrationStepper />,
-    public: true,
-  },
+  // {
+  //   path: "/talent-registration",
+  //   element: <DeveloperRegistrationStepper />,
+  //   private: true,
+  //   isClient: true,
+  // },
 
   {
     path: "/partner-registration",

@@ -32,7 +32,6 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const dispatch = useDispatch()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const currentTime = moment();
-  console.log(currentTime,"currentTime")
 
   useEffect(()=>{
     if(allEvents?.events?.length>0){
