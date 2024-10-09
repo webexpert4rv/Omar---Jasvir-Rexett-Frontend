@@ -34,18 +34,18 @@ const MARK_AS_OPTIONS = [
     label: "Completed",
     value: "completed",
   },
-//   {
-//     label: "Incomplete",
-//     value: "incomplete",
-//   },
-//   {
-//     label: "Canceled",
-//     value: "canceled",
-//   },
-//   {
-//     label: "Pending",
-//     value: "pending",
-//   },
+  //   {
+  //     label: "Incomplete",
+  //     value: "incomplete",
+  //   },
+  //   {
+  //     label: "Canceled",
+  //     value: "canceled",
+  //   },
+  //   {
+  //     label: "Pending",
+  //     value: "pending",
+  //   },
 ];
 
 const DISCOVERY_DOCS = [
@@ -74,7 +74,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedDeveloper, setSelectedDeveloper] = useState({});
-    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
+  const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
   const {
     interview: {
       id, // application id
@@ -162,8 +162,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       userKey: "all",
       applicationName: "meet",
       eventName: "call_ended",
-      maxResults: 10
-  
+      maxResults: 10,
+      filters: `meeting_code==${googleEventId}`,
     });
     // const activities = response.result.items || [];
     // const participants = activities.flatMap((activity) =>
@@ -222,7 +222,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         // Fetch the online meeting details using the meeting ID
         const joinUrl = details?.interview?.meeting_link;
         const id = joinUrl;
-        
+
         // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
         const meetingResponse = await client
           .api("/me/onlineMeetings")
@@ -257,6 +257,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         console.error("Error fetching meeting details:", error);
       }
     } else if (meeting_platform === "google_meet") {
+      console.log("inside google meet")
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
         eventId: googleEventId,
@@ -291,7 +292,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       // "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
       const meetingResponse = await client
         .api("/me/onlineMeetings")
-        .filter(`JoinWebUrl eq '${id}'`)
+        .filter(`JoinWebUrl eq '${googleEventId}'`)
         .get();
 
       if (meetingResponse) {
@@ -338,7 +339,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     // dispatch(changeJobStatus(payload));
     dispatch(updateStatus(payload, details?.interview?.id, handleClose)); //interview id
     setValue("mark_as", newStatus);
-    dispatch(singleJobPostData(jobId, () => {}));   
+    dispatch(singleJobPostData(jobId, () => { }));
   };
 
   // Call the function with a specific meeting ID
@@ -347,11 +348,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const handleShowScheduleMeeting = (name, id, email) => {
     setSelectedDeveloper({ name, id, email })
     setShowScheduleMeet(!showScheduleMeeting);
-}
+  }
 
-const handleCloseScheduleMeeting = () => {
-  setShowScheduleMeet(false);
-}
+  const handleCloseScheduleMeeting = () => {
+    setShowScheduleMeet(false);
+  }
 
   return (
     <>

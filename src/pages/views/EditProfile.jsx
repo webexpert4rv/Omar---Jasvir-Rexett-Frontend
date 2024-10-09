@@ -44,6 +44,7 @@ const EditProfile = () => {
   const onSubmit = (values) => {
     console.log(values, "vaues");
     const uploadFiles = (files) => {
+      console.log(files,"files")
       let uploadedUrls = {};
       const uploadPromises = Object.keys(files).map((key) => {
         if (files[key]) {
