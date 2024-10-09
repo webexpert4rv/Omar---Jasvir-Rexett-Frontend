@@ -172,7 +172,7 @@ function Typography({ previewUrl, register, setTypoChange,typoChange }) {
                                     className="w-100"
                                     min="16"
                                     max="100"
-                                    value={ typoChange?.side_bar_icon_width ||configDetails?.side_bar_icon_width  }
+                                    value={ typoChange?.side_bar_icon_width ||configDetails?.side_bar_icon_size?.width  }
                                     {...register("side_bar_icon_width", {
                                         onChange: (e) => handleTypoChange(e, "side_bar_icon_width"),
                                     })}
@@ -181,7 +181,7 @@ function Typography({ previewUrl, register, setTypoChange,typoChange }) {
                                 <Form.Control
                                     type="text"
                                     placeholder="16px"
-                                    value={`${typoChange?.side_bar_icon_width}px` || `${configDetails?.side_bar_icon_width}px`}
+                                    value={`${typoChange?.side_bar_icon_width}px` || `${configDetails?.side_bar_icon_size?.width }px`}
                                     className="common-field shadow-none"
                                 />
                             </div>
@@ -192,7 +192,7 @@ function Typography({ previewUrl, register, setTypoChange,typoChange }) {
                                     className="w-100"
                                     min="16"
                                     max="100"
-                                    value={ typoChange?.side_bar_icon_height ||configDetails?.side_bar_icon_height  }
+                                    value={ typoChange?.side_bar_icon_height ||configDetails?.side_bar_icon_size?.height  }
                                     {...register("side_bar_icon_height", {
                                         onChange: (e) => handleTypoChange(e, "side_bar_icon_height"),
                                     })}
@@ -201,7 +201,7 @@ function Typography({ previewUrl, register, setTypoChange,typoChange }) {
                                 <Form.Control
                                     type="text"
                                     placeholder="16px"
-                                    value={`${typoChange?.side_bar_icon_height}px` || `${configDetails?.side_bar_icon_height}px`}
+                                    value={`${typoChange?.side_bar_icon_height}px` || `${configDetails?.side_bar_icon_size?.height}px`}
                                     className="common-field shadow-none"
                                 />
                             </div>
@@ -209,7 +209,7 @@ function Typography({ previewUrl, register, setTypoChange,typoChange }) {
                     </div>
                 </Col>
                 <Col md={6} className="mb-4">
-                    <p className="preview-text-size" style={{ fontSize: `${typoChange?.side_bar_icon_height}px` || `${configDetails.side_bar_icon_size}px`}}> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <p className="preview-text-size" style={{ fontSize: `${typoChange?.side_bar_icon_height}px` || `${configDetails?.side_bar_icon_size?.height}px`}}> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                 </Col>
             </Row>
         </div>

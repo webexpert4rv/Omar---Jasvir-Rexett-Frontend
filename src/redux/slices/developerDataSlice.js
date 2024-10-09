@@ -1315,9 +1315,6 @@ export function getProjectDetail(filters, id, callback) {
     }
   };
 }
-
-//all registration
-
 export function developerRegistration(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());

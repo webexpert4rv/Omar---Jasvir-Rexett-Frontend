@@ -23,6 +23,8 @@ const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
     const [currentTab, setCurrentTab] = useState("first")
     const dispatch = useDispatch()
+    const [featureName, setFeatureName] = useState()
+    const { register, reset, handleSubmit } = useForm({})
     const [files, setFiles] = useState({
         company_logo: "",
         favicon: ""
@@ -47,8 +49,7 @@ const Customization = () => {
         side_bar_icon_width: "",
         side_bar_icon_height: "",
     })
-    const [featureName, setFeatureName] = useState()
-    const { register, reset, handleSubmit } = useForm({})
+   
 
     useEffect(() => {
         dispatch(getConfigDetails())
@@ -58,9 +59,6 @@ const Customization = () => {
     const handleSelect = (selectedTab) => {
         setCurrentTab(selectedTab);
     }
-    console.log(files, "files")
-
-
     const onSubmit = async (values) => {
         console.log(values, "values")
         let fileData = new FormData();
