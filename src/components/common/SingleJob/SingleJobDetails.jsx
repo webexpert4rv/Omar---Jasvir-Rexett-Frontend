@@ -788,7 +788,7 @@ const SingleJobDetails = () => {
                                     </ul>
                                 ) : (
                                     "Not Mentioned"
-                                )}{" "}
+                                )}
                             </Col>
                             <Col md="4">
                                 <h3 className="req-heading">{t("optionalSkills")}</h3>

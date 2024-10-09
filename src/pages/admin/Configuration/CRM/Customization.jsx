@@ -23,12 +23,32 @@ const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
     const [currentTab, setCurrentTab] = useState("first")
     const dispatch = useDispatch()
-    const [files,setFiles] = useState()
-    const [fileName , setFileName] = useState()
+    const [files, setFiles] = useState({
+        company_logo: "",
+        favicon: ""
+    })
+    const [fileName, setFileName] = useState()
     const { screenLoader } = useSelector(state => state.adminData)
-    const [colorSchema, setColorSchema] = useState()
-    const [featureName ,setFeatureName] = useState()
-    const {register , reset ,handleSubmit} = useForm({})
+    const [colorSchema, setColorSchema] = useState({
+        crm_sidebar_bg_gradient_color_1: "",
+        crm_sidebar_bg_gradient_color_2: "",
+        crm_sidebar_bg_solid_color: "",
+        crm_sidebar_link_color: "",
+        crm_sidebar_bg_link_color: "",
+        side_bar_icon_color: "",
+        crm_primary_color: "",
+        crm_heading_color: "",
+        crm_body_text_color: "",
+    })
+    const [typoChange, setTypoChange] = useState({
+        crm_sidebar_font_size: "",
+        crm_heading_font_size: "",
+        crm_body_font_size: "",
+        side_bar_icon_width: "",
+        side_bar_icon_height: "",
+    })
+    const [featureName, setFeatureName] = useState()
+    const { register, reset, handleSubmit } = useForm({})
 
     useEffect(() => {
         dispatch(getConfigDetails())
@@ -38,52 +58,100 @@ const Customization = () => {
     const handleSelect = (selectedTab) => {
         setCurrentTab(selectedTab);
     }
-    console.log(colorSchema,"colorSchema")
-    console.log(featureName,"featureName")
+    console.log(files, "files")
 
 
-     // const handleColorBlur = async (e) => {
-    //     e.preventDefault()
-    //     setColorValue(e.target.value)
-    //     let data = {
-    //         crm_sidebar_bg_gradient_color_1: colorValue,
-    //         crm_sidebar_bg_solid_color: "",
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-
-    console.log(files,"files")
-    const onSubmit = async(values)=>{
-        console.log(values,"values")
+    const onSubmit = async (values) => {
+        console.log(values, "values")
         let fileData = new FormData();
-        fileData.append("file", files);
-
-            const url = await new Promise((resolve, reject) => {
-                dispatch(filePreassignedUrlGenerate(fileData, resolve, reject));
-            });
-            let payload;
-            if (fileName === "companyLogo") {
-                 payload = {
-                    company_logo: url,
-                };
-            } else {
-                 payload = {
-                    favicon: url,
-                };
-                await dispatch(getUploadFile(payload));
-                 dispatch(getConfigDetails());
+        let newFileData = new FormData();
+        let payload;
+        if (files?.company_logo !== '' && files?.favicon !== '') {
+            if (files?.company_logo) {
+                fileData.append("file", files?.company_logo);
+            }
+            if (files?.favicon) {
+                newFileData.append("file", files?.favicon);
             }
 
-            if(featureName==""){
-                
+            const fileDatas = [fileData, newFileData];
+            const urls = await Promise.all(
+                fileDatas.map(data =>
+                    new Promise((resolve, reject) => {
+                        dispatch(filePreassignedUrlGenerate(data, resolve, reject));
+                    })
+                )
+            );
+            const [cmpny_url, favicon_url] = urls;
+            payload = {
+                company_logo: cmpny_url,
+                favicon: favicon_url,
+                crm_sidebar_bg_gradient_color_1: values?.crm_sidebar_bg_gradient_color_1,
+                crm_sidebar_bg_gradient_color_2: values?.crm_sidebar_bg_gradient_color_2,
+                crm_sidebar_bg_solid_color: values?.crm_sidebar_bg_solid_color,
+                crm_sidebar_link_color: values?.crm_sidebar_link_color,
+                crm_sidebar_bg_link_color: values?.crm_sidebar_bg_link_color,
+                side_bar_icon_color: values?.side_bar_icon_color,
+                crm_primary_color: values?.crm_primary_color,
+                crm_heading_color: values?.crm_heading_color,
+                crm_body_text_color: values?.crm_body_text_color,
+                crm_sidebar_font_size: values?.crm_sidebar_font_size,
+                crm_heading_font_size: values?.crm_heading_font_size,
+                crm_body_font_size: values?.crm_body_font_size,
+                side_bar_icon_size: {
+                    height: values?.side_bar_icon_height,
+                    width: values?.side_bar_icon_width,
+                }
+            }
+        } else {
+            payload = {
+                crm_sidebar_bg_gradient_color_1: values?.crm_sidebar_bg_gradient_color_1,
+                crm_sidebar_bg_gradient_color_2: values?.crm_sidebar_bg_gradient_color_2,
+                crm_sidebar_bg_solid_color: values?.crm_sidebar_bg_solid_color,
+                crm_sidebar_link_color: values?.crm_sidebar_link_color,
+                crm_sidebar_bg_link_color: values?.crm_sidebar_bg_link_color,
+                side_bar_icon_color: values?.side_bar_icon_color,
+                crm_primary_color: values?.crm_primary_color,
+                crm_heading_color: values?.crm_heading_color,
+                crm_body_text_color: values?.crm_body_text_color,
+                crm_sidebar_font_size: values?.crm_sidebar_font_size,
+                crm_heading_font_size: values?.crm_heading_font_size,
+                crm_body_font_size: values?.crm_body_font_size,
+                side_bar_icon_size: {
+                    height: values?.side_bar_icon_height,
+                    width: values?.side_bar_icon_width,
+                }
             }
         }
-    const handleCancel=()=>{
+        await dispatch(getUploadFile(payload, () => {
+            dispatch(getConfigDetails())
+        }))
+
+
+    }
+    const handleCancel = () => {
         reset()
-        setColorSchema("")
-    } 
+        setColorSchema({
+            crm_sidebar_bg_gradient_color_1: "",
+            crm_sidebar_bg_gradient_color_2: "",
+            crm_sidebar_bg_solid_color: "",
+            crm_sidebar_link_color: "",
+            crm_sidebar_bg_link_color: "",
+            side_bar_icon_color: "",
+            crm_primary_color: "",
+            crm_heading_color: "",
+            crm_body_text_color: "",
+        });
+
+        setTypoChange({
+            crm_sidebar_font_size: "",
+            crm_heading_font_size: "",
+            crm_body_font_size: "",
+            side_bar_icon_width: "",
+            side_bar_icon_height: "",
+        });
+    };
+
 
     return (
         <>
@@ -105,35 +173,36 @@ const Customization = () => {
                         <Tab.Content>
                             {currentTab === "first" &&
                                 <>
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div>
-                                        <Row>
-                                            <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} setFiles={setFiles} setFileName={setFileName} register={register}/>
-                                            <ColorScheme 
-                                            previewUrl={previewUrl} 
-                                            setPreviewUrl={setPreviewUrl}
-                                            setColorSchema={setColorSchema}
-                                            colorSchema={colorSchema}
-                                            setFeatureName={setFeatureName}
-                                            register={register}
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <div>
+                                            <Row>
+                                                <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} files={files} setFiles={setFiles} setFileName={setFileName} register={register} />
+                                                <ColorScheme
+                                                    previewUrl={previewUrl}
+                                                    setPreviewUrl={setPreviewUrl}
+                                                    setColorSchema={setColorSchema}
+                                                    colorSchema={colorSchema}
+                                                    setFeatureName={setFeatureName}
+                                                    register={register}
+                                                />
+                                                <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} register={register} setTypoChange={setTypoChange} typoChange={typoChange} />
+                                            </Row>
+                                        </div>
+                                        <div>
+                                            <RexettButton
+                                                type="button"
+                                                text="Cancel"
+                                                className="main-btn outline-main-btn px-5"
+                                                onClick={handleCancel}
                                             />
-                                            <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
-                                        </Row>
-                                    </div>
-                                    <div>
-                                        <RexettButton
-                                            type="button"
-                                            text="Cancel"
-                                            className="main-btn outline-main-btn px-5"
-                                        />
-                                        <RexettButton
-                                            type={"submit"}
-                                            text={"Save"}
-                                            className="main-btn px-5"
-                                        // isLoading={setSmallLoader}
-                                        // disabled={setSmallLoader}
-                                        />
-                                    </div>
+                                            <RexettButton
+                                                type={"submit"}
+                                                text={"Save"}
+                                                className="main-btn px-5"
+                                            // isLoading={setSmallLoader}
+                                            // disabled={setSmallLoader}
+                                            />
+                                        </div>
                                     </form>
                                 </>
                             }

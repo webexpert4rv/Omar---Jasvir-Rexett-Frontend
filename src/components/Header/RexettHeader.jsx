@@ -37,6 +37,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const [fridayMarquee, setFridayMarquee] = useState(false);
   const { pathname } = useLocation();
   const isSingleJob = pathname.split("/")[2];
+  const [createdMeetings, setCreatedMeetings] = useState()
   const { configDetails } = useSelector(state => state.adminData)
   const dispatch = useDispatch()
   const routePath = (isSingleJob) => {
@@ -157,7 +158,6 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     ShowScheduleMeeting(false);
   }
 
-  const [createdMeetings, setCreatedMeetings] = useState()
   console.log(createdMeetings, "createdMeetings")
 
 

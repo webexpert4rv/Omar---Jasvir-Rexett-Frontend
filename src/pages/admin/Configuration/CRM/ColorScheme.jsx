@@ -7,13 +7,13 @@ import { getConfig } from '@testing-library/react';
 
 
 function ColorScheme({
-    previewUrl, 
+    previewUrl,
     setPreviewUrl,
     setColorSchema,
     setFeatureName,
     colorSchema,
     register
- }) {
+}) {
     const [selectedColorType, setSelectedColorType] = useState("gradient-sidecolor");
     // const [colorValue, setColorValue] = useState('');
     // const [newColorValue, setNewColorValue] = useState('')
@@ -26,138 +26,27 @@ function ColorScheme({
     // const [sideBarIconColor, setSidebarIconColor] = useState()
     const dispatch = useDispatch()
     const { configDetails } = useSelector(state => state.adminData)
-    console.log(colorSchema,"colorSchema")
+    console.log(colorSchema, "colorSchema")
 
-    
+
 
     useEffect(() => {
         // setColorValue('')
         // setNewColorValue('')
         // setSolidColor('')
         setSelectedColorType("gradient-sidecolor")
-    }, [ ])
+    }, [])
 
 
-    // const handleColorChange = (e) => {
-    //     setColorValue(e.target.value)
-    // }
-    // const handleNewColorChange = (e) => {
-    //     setNewColorValue(e.target.value)
-    // }
-    // const handleSolidColorChange = (e) => {
-    //     setSolidColor(e.target.value)
-    // }
-    // const handleSideBarChange = (e) => {
-    //     setSideBarColor(e.target.value)
-    // }
-    // const handlePrimaryColorChange = (e) => {
-    //     setPrimaryColor(e.target.value)
-    // }
-    // const handleHeadingColorChange = (e) => {
-    //     setHeadingColor(e.target.value)
-    // }
-    // const handleBodyTextColorChange = (e) => {
-    //     setBodyTextColor(e.target.value)
 
-    // }
-    // const handleSideBarLinkChange = (e) => {
-    //     setSideBarLinkBgColor(e.target.value)
-    // }
-    // const handleSideBarIconBlur = (e) =>{
-    //     setSidebarIconColor(e.target.value)
-    // }
 
-    const handleColorSchema = (e,feature) =>{
-        console.log(feature,"feature")
+    const handleColorSchema = (e, feature) => {
         setFeatureName(feature)
-        setColorSchema(e.target.value)
+        setColorSchema({...colorSchema,[feature]:e.target.value })
     }
 
 
-    // const handleColorBlur = async (e) => {
-    //     e.preventDefault()
-    //     setColorValue(e.target.value)
-    //     let data = {
-    //         crm_sidebar_bg_gradient_color_1: colorValue,
-    //         crm_sidebar_bg_solid_color: "",
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
 
-    // const handleSecondColorBlur = async (e) => {
-    //     setNewColorValue(e.target.value)
-    //     setPreviewUrl(e.target.value)
-    //     let data = {
-    //         crm_sidebar_bg_gradient_color_2: newColorValue,
-    //         crm_sidebar_bg_solid_color: "",
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-    // const handleSolidColorBlur = async (e) => {
-    //     setSolidColor(e.target.value)
-    //     let data = {
-    //         crm_sidebar_bg_solid_color: solidColor,
-    //         crm_sidebar_bg_gradient_color_1: "",
-    //         crm_sidebar_bg_gradient_color_2: ""
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-    // const handleSideBarBlur = async (e) => {
-    //     let data = {
-    //         crm_sidebar_link_color: sideBarColor
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-    // const handlePrimaryColorBlur = async (e) => {
-    //     let data = {
-    //         crm_primary_color: primaryColor
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-    // const handleHeadingColorBlur = async (e) => {
-    //     let data = {
-    //         crm_heading_color: headingColor
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-    // const handleBodyTextColorBlur = async (e) => {
-    //     let data = {
-    //         crm_body_text_color: bodyTextColor
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
-    // const handleSideBarLinkBlur = async (e) => {
-    //     let data = {
-    //         crm_sidebar_bg_link_color: sideBarLinkBgColor
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-
-    // }
-
-    // const handleSideBarIconChange = async(e)=> {
-    //     let data = {
-    //         side_bar_icon_color: sideBarIconColor
-    //     }
-    //     await dispatch(getUploadFile(data,() => {
-    //         dispatch(getConfigDetails())
-    //     }))
-    // }
 
     const handleColorTypeChange = (event) => {
         setSelectedColorType(event.target.id);
@@ -183,8 +72,8 @@ function ColorScheme({
                                 // name="sidebar-bgcolor"
                                 id="gradient-sidecolor"
                                 {...register("gradient-sidecolor", {
-                                     onChange: (e)=>handleColorTypeChange(e),
-                                  })}
+                                    onChange: (e) => handleColorTypeChange(e),
+                                })}
                                 checked={selectedColorType === 'gradient-sidecolor'}
                             />
                             <Form.Label htmlFor="gradient-sidecolor" className="gradient-color-label">
@@ -199,8 +88,8 @@ function ColorScheme({
                                 // name="sidebar-bgcolor"
                                 id="solid-sidecolor"
                                 {...register("solid-sidecolor", {
-                                    onChange: (e)=>handleColorTypeChange(e),
-                                 })}
+                                    onChange: (e) => handleColorTypeChange(e),
+                                })}
                                 checked={selectedColorType === 'solid-sidecolor'}
                             />
                             <Form.Label htmlFor="solid-sidecolor" className="solid-color-label">
@@ -219,18 +108,18 @@ function ColorScheme({
                                     <Form.Control
                                         type="color"
                                         className="color-field"
-                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_1 : colorSchema}
+                                        value={colorSchema?.crm_sidebar_bg_gradient_color_1 || configDetails?.crm_sidebar_bg_gradient_color_1}
                                         // onBlur={handleColorBlur}
                                         {...register("crm_sidebar_bg_gradient_color_1", {
-                                            onChange: (e)=>handleColorSchema(e,"gradient_color_1"),
-                                         })}
+                                            onChange: (e) => handleColorSchema(e, "crm_sidebar_bg_gradient_color_1"),
+                                        })}
 
                                     />
                                     <Form.Control
                                         type="text"
                                         placeholder="#000000"
                                         className="colortext-field"
-                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_1 : colorSchema}
+                                        value={colorSchema?.crm_sidebar_bg_gradient_color_1 || configDetails?.crm_sidebar_bg_gradient_color_1}
 
 
                                     />
@@ -242,17 +131,17 @@ function ColorScheme({
                                     <Form.Control
                                         type="color"
                                         className="color-field"
-                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : colorSchema}
+                                        value={colorSchema?.crm_sidebar_bg_gradient_color_2 || configDetails?.crm_sidebar_bg_gradient_color_2}
                                         // onBlur={handleSecondColorBlur}
-                                        {...register("crm_sidebar_bg_gradient_color_1", {
-                                            onChange:(e)=>handleColorSchema(e,"gradient_color_2"),
-                                         })}
+                                        {...register("crm_sidebar_bg_gradient_color_2", {
+                                            onChange: (e) => handleColorSchema(e, "crm_sidebar_bg_gradient_color_2"),
+                                        })}
                                     />
                                     <Form.Control
                                         type="text"
                                         placeholder="#000000"
                                         className="colortext-field"
-                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : colorSchema}
+                                        value={colorSchema?.crm_sidebar_bg_gradient_color_2 || configDetails?.crm_sidebar_bg_gradient_color_2}
                                     />
                                 </div>
                             </div>
@@ -265,17 +154,17 @@ function ColorScheme({
                                 <Form.Control
                                     type="color"
                                     className="color-field"
-                                    value={configDetails?.crm_sidebar_bg_solid_color ? configDetails?.crm_sidebar_bg_solid_color : colorSchema}
+                                    value={colorSchema?.crm_sidebar_bg_solid_color || configDetails?.crm_sidebar_bg_solid_color}
                                     // onBlur={handleSolidColorBlur}
-                                    {...register("crm_sidebar_bg_gradient_color_1", {
-                                        onChange:(e)=>handleColorSchema(e,"solid_sidebar_color"),
-                                     })}
+                                    {...register("crm_sidebar_bg_solid_color", {
+                                        onChange: (e) => handleColorSchema(e, "crm_sidebar_bg_solid_color"),
+                                    })}
                                 />
                                 <Form.Control
                                     type="text"
                                     placeholder="#000000"
                                     className="colortext-field"
-                                    value={configDetails?.crm_sidebar_bg_solid_color ? configDetails?.crm_sidebar_bg_solid_color : colorSchema}
+                                // value={ colorSchema?.crm_sidebar_bg_solid_color || configDetails?.crm_sidebar_bg_solid_color  }
 
                                 />
 
@@ -316,18 +205,18 @@ function ColorScheme({
                             <Form.Control
                                 type="color"
                                 className="color-field"
-                                value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : colorSchema}
+                                value={colorSchema?.crm_sidebar_link_color || configDetails?.crm_sidebar_link_color}
                                 // onBlur={handleSideBarBlur}
                                 {...register("crm_sidebar_link_color", {
-                                    onChange: (e)=>handleColorSchema(e,"sidebar_link_color"),
-                                 })}
+                                    onChange: (e) => handleColorSchema(e, "crm_sidebar_link_color"),
+                                })}
 
                             />
                             <Form.Control
                                 type="text"
                                 placeholder="#000000"
                                 className="colortext-field"
-                                value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : colorSchema}
+                                value={colorSchema?.crm_sidebar_link_color || configDetails?.crm_sidebar_link_color}
 
                             />
                         </div>
@@ -339,7 +228,7 @@ function ColorScheme({
                     <div className="position-relative">
                         <div className="preview-sidebar">
                             <div>
-                                {colorSchema ? (
+                                {colorSchema?.crm_sidebar_link_color ? (
                                     <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                 ) : (
                                     <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
@@ -348,7 +237,7 @@ function ColorScheme({
                             <div className="skeleton-container mt-4">
                                 {[...Array(4)].map((_, index) => (
                                     <div key={index} className="mb-3 d-flex align-items-center gap-3">
-                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : colorSchema }}></div>
+                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : colorSchema?.crm_sidebar_link_color }}></div>
                                         <p className="preview-sidelink mb-0">Link {index + 1}</p>
                                     </div>
                                 ))}
@@ -357,7 +246,7 @@ function ColorScheme({
                     </div>
                 </div>
             </Col>
-            
+
             <Col md={6} className="mb-4">
                 <div>
                     <h3 className="customization-heading">Sidebar Link Background Color</h3>
@@ -367,17 +256,17 @@ function ColorScheme({
                             <Form.Control
                                 type="color"
                                 className="color-field"
-                                value={configDetails?.crm_sidebar_bg_link_color ? configDetails?.crm_sidebar_bg_link_color : colorSchema}
+                                value={colorSchema?.crm_sidebar_bg_link_color || configDetails?.crm_sidebar_bg_link_color}
                                 // onBlur={handleSideBarLinkBlur}
                                 {...register("crm_sidebar_bg_link_color", {
-                                    onChange: (e)=>handleColorSchema(e,"sidebar_link_bg_color"),
-                                 })}
+                                    onChange: (e) => handleColorSchema(e, "crm_sidebar_bg_link_color"),
+                                })}
                             />
                             <Form.Control
                                 type="text"
                                 placeholder="#000000"
                                 className="colortext-field"
-                                value={configDetails?.crm_sidebar_bg_link_color ? configDetails?.crm_sidebar_bg_link_color : colorSchema}
+                                value={colorSchema?.crm_sidebar_bg_link_color || configDetails?.crm_sidebar_bg_link_color}
 
                             />
                         </div>
@@ -389,7 +278,7 @@ function ColorScheme({
                     <div className="position-relative">
                         <div className="preview-sidebar">
                             <div>
-                                {colorSchema ? (
+                                {colorSchema?.crm_sidebar_bg_link_color ? (
                                     <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                 ) : (
                                     <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
@@ -398,7 +287,7 @@ function ColorScheme({
                             <div className="skeleton-container mt-4">
                                 {[...Array(4)]?.map((_, index) => (
                                     <div key={index} className="mb-3 d-flex align-items-center gap-3">
-                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : colorSchema }}></div>
+                                        <div className="skeleton-circle" style={{ backgroundColor: colorSchema?.crm_sidebar_link_color || configDetails?.crm_sidebar_link_color }}></div>
                                         <p className="preview-sidelink mb-0">Link {index + 1}</p>
                                     </div>
                                 ))}
@@ -416,17 +305,17 @@ function ColorScheme({
                             <Form.Control
                                 type="color"
                                 className="color-field"
-                                value={configDetails?.side_bar_icon_size ? configDetails?.side_bar_icon_size : colorSchema}
+                                value={colorSchema?.side_bar_icon_color || configDetails?.side_bar_icon_color}
                                 // onBlur={handleColorSchema}
-                                {...register("side_bar_icon_size", {
-                                    onChange: (e)=>handleColorSchema(e,"sidebar_icon_color"),
-                                 })}
+                                {...register("side_bar_icon_color", {
+                                    onChange: (e) => handleColorSchema(e, "side_bar_icon_color"),
+                                })}
                             />
                             <Form.Control
                                 type="text"
                                 placeholder="#000000"
                                 className="colortext-field"
-                                value={configDetails?.side_bar_icon_size ? configDetails?.side_bar_icon_size : colorSchema}
+                                value={colorSchema?.side_bar_icon_color || configDetails?.side_bar_icon_color}
 
                             />
                         </div>
@@ -448,7 +337,7 @@ function ColorScheme({
                                 {[...Array(4)]?.map((_, index) => (
                                     <div key={index} className="mb-3 d-flex align-items-center gap-3"
                                     >
-                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.side_bar_icon_size ? configDetails?.side_bar_icon_size : colorSchema }}></div>
+                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.side_bar_icon_color ? configDetails?.side_bar_icon_color : colorSchema?.side_bar_icon_color }}></div>
                                         <p className="preview-sidelink mb-0"   >Link {index + 1}</p>
                                     </div>
                                 ))}
@@ -466,18 +355,18 @@ function ColorScheme({
                             <Form.Control
                                 type="color"
                                 className="color-field"
-                                value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : colorSchema}
+                                value={colorSchema?.crm_primary_color || configDetails?.crm_primary_color}
                                 // onBlur={handlePrimaryColorBlur}
-                                {...register("side_bar_icon_size", {
-                                    onChange: (e)=>handleColorSchema(e,"primary_color"),
-                                 })}
+                                {...register("crm_primary_color", {
+                                    onChange: (e) => handleColorSchema(e, "crm_primary_color"),
+                                })}
 
                             />
                             <Form.Control
                                 type="text"
                                 placeholder="#000000"
                                 className="colortext-field"
-                                value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : colorSchema}
+                                value={colorSchema?.crm_primary_color || configDetails?.crm_primary_color}
 
                             />
                         </div>
@@ -487,10 +376,10 @@ function ColorScheme({
             <Col md={6} className="mb-4">
                 <div className="preview-primary-color">
                     <div className="mb-3">
-                        <Button variant="transparent" className="preview-color-btn" style={{ backgroundColor: configDetails?.crm_primary_color }}>Button</Button>
+                        <Button variant="transparent" className="preview-color-btn" style={{ backgroundColor: colorSchema?.crm_primary_color || configDetails?.crm_primary_color }}>Button</Button>
                     </div>
                     <div className="tabs-preview-color">
-                        <Button variant="transparent" className="preview-tab active" style={{ backgroundColor: configDetails?.crm_primary_color }}>Tab 1</Button>
+                        <Button variant="transparent" className="preview-tab active" style={{ backgroundColor: colorSchema?.crm_primary_color || configDetails?.crm_primary_color }}>Tab 1</Button>
                         <Button variant="transparent" className="preview-tab" >Tab 2</Button>
                         <Button variant="transparent" className="preview-tab">Tab 3</Button>
                     </div>
@@ -506,17 +395,17 @@ function ColorScheme({
                             <Form.Control
                                 type="color"
                                 className="color-field"
-                                value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : colorSchema}
+                                value={colorSchema?.crm_heading_color || configDetails?.crm_heading_color}
                                 // onBlur={handleHeadingColorBlur}
-                                {...register("side_bar_icon_size", {
-                                    onChange: (e)=>handleColorSchema(e,"heading_color"),
-                                 })}
+                                {...register("crm_heading_color", {
+                                    onChange: (e) => handleColorSchema(e, "crm_heading_color"),
+                                })}
                             />
                             <Form.Control
                                 type="text"
                                 placeholder="#000000"
                                 className="colortext-field"
-                                value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : colorSchema}
+                                value={colorSchema?.crm_heading_color || configDetails?.crm_heading_color}
 
                             />
                         </div>
@@ -524,7 +413,7 @@ function ColorScheme({
                 </div>
             </Col>
             <Col md={6} className="mb-4">
-                <h2 className="preview-heading-color" style={{ color: configDetails?.crm_heading_color ? configDetails?.crm_heading_color : colorSchema }}>Heading</h2>
+                <h2 className="preview-heading-color" style={{ color: colorSchema?.crm_heading_color || configDetails?.crm_heading_color }}>Heading</h2>
             </Col>
             <Col md={6} className="mb-4">
                 <div>
@@ -535,17 +424,17 @@ function ColorScheme({
                             <Form.Control
                                 type="color"
                                 className="color-field"
-                                value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : colorSchema}
+                                value={colorSchema?.crm_body_text_color || configDetails?.crm_body_text_color}
                                 // onBlur={handleBodyTextColorBlur}
-                                {...register("side_bar_icon_size", {
-                                    onChange: (e)=>handleColorSchema(e,"body_text_color"),
-                                 })}
+                                {...register("crm_body_text_color", {
+                                    onChange: (e) => handleColorSchema(e, "crm_body_text_color"),
+                                })}
                             />
                             <Form.Control
                                 type="text"
                                 placeholder="#000000"
                                 className="colortext-field"
-                                value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : colorSchema}
+                                value={colorSchema?.crm_body_text_color || configDetails?.crm_body_text_color}
 
                             />
                         </div>
@@ -553,7 +442,7 @@ function ColorScheme({
                 </div>
             </Col>
             <Col md={6} className="mb-4">
-                <p className="preview-text-color" style={{ color: configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : colorSchema }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p className="preview-text-color" style={{ color: colorSchema?.crm_body_text_color || configDetails?.crm_body_text_color }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
             </Col>
 
 
