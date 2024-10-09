@@ -1,0 +1,514 @@
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import DocumentFieldModal from "../Modals/DocumentFieldModal";
+import { Document, Page, pdfjs } from "react-pdf";
+import { PDFDocument } from "pdf-lib";
+import {
+  ADOBE_BASE_URL,
+  DRAGGABLE_TAG,
+  PDF_SIGNER_ROLE,
+} from "../JobOfferedTab/constant/constant";
+import "./style.css";
+import RexettButton from "../../atomic/RexettButton";
+import { Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+import {
+  adobeFormInstance,
+  adobeInstance,
+} from "../../../services/adobe.instance";
+import ScreenLoader from "../../atomic/ScreenLoader";
+import { CANDIDATE, CLIENT } from "../../../constent/constent";
+import { useSelector } from "react-redux";
+import { getDataFromLocalStorage } from "../../../helper/utlis";
+
+// Set the workerSrc for pdf.js
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+const DraggableItem = ({ item, index, handleDelete, ref }) => {
+  console.log(item, "itemitem");
+  const [, drag] = useDrag(() => ({
+    type: "ITEM",
+    item: { index },
+  }));
+
+  return (
+    <div
+      ref={drag}
+      style={{
+        position: "absolute",
+        top: item.y,
+        left: item.x,
+
+        backgroundColor: "lightgray",
+        borderRadius: "3px",
+        cursor: "move",
+      }}
+    >
+      {item.tag}
+      <button onClick={() => handleDelete(index)}>delete</button>
+    </div>
+  );
+};
+
+const DocumentViewer = ({
+  handleBack,
+  documentOwner,
+  selectedTemplate,
+  selectedCandidate,
+  selectedDocument
+}) => {
+  const [showDocumentFieldDrop, setSowDocumentFieldDrop] = useState({
+    show: false,
+    tagDetails: {},
+  });
+  const [numPages, setNumPages] = useState(null);
+  const [items, setItems] = useState([]);
+  const [tagsByPage, setTagsByPage] = useState([]);
+  const [fieldsDetails, setFieldsDetails] = useState({});
+  const [pageNumber, setPageNumber] = useState(1);
+  const [editorContent, setEditorContent] = useState(null);
+  const [pdfBytes, setPdfBytes] = useState(null);
+  const [screenLoader, setScreenLoader] = useState(true);
+  const [pdfContainerSize, setPdfContainerSize] = useState({
+    height: 0,
+    width: 0,
+  });
+  const dropRef = useRef(null);
+  const dragRef = useRef(null);
+
+  const { jobPostedData } = useSelector((state) => state.clientData);
+  const userId = getDataFromLocalStorage("userId");
+
+  useEffect(() => {
+    if (!editorContent) {
+      // const url = "/sow-template/sowTest.pdf";
+      const url = ADOBE_BASE_URL + selectedTemplate.template_file;
+      // const url = 'https://rexett-e-sign.rvtechnologies.info/media/agreement/receiptTemplate_83X8T4d.pdf'
+
+      const fetchPdf = async () => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        console.log(blob, ",123123123");
+        const arrayBuffer = await blob.arrayBuffer();
+        console.log(arrayBuffer, "arrayBuffer123");
+        const pdfDoc = await PDFDocument.load(arrayBuffer);
+        const pdfBytesModified = await pdfDoc.save();
+        const urlURL = URL.createObjectURL(
+          new Blob([pdfBytesModified], { type: "application/pdf" })
+        );
+        const pages = pdfDoc.getPages();
+        const editedPage = pages[0];
+        const { width, height } = editedPage.getSize();
+        setPdfContainerSize({
+          height,
+          width,
+        });
+
+        console.log(pdfDoc, "pdfDoc123");
+        setEditorContent(arrayBuffer);
+        setPdfBytes(url);
+        setScreenLoader(false);
+      };
+      fetchPdf();
+    }
+  }, []);
+
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: ["TAG", "ITEM"],
+    drop: async (item, monitor) => {
+      const dropRect = dropRef.current.getBoundingClientRect();
+      // const currentRect = dragRef.current.getBoundingClientRect();
+
+      const clientOffset = monitor.getClientOffset();
+
+      const x = clientOffset.x - dropRect.left;
+      const y = clientOffset.y - dropRect.top;
+
+      // const newX = clientOffset.x - dropRect.left - currentRect.width / 2;
+      // const newY = clientOffset.y - dropRect.top - currentRect.height / 2;
+
+      if (item.tag) {
+        setItems((prevItems) => [...prevItems, { x: x, y: y, ...item }]);
+        // const tempItem = { x, y, ...item }
+        if (item.tag !== "Name" && item.tag !== "Email") {
+          setSowDocumentFieldDrop((prev) => ({
+            show: true,
+            tagDetails: { ...item, x: x, y: y },
+          }));
+        } else {
+          // tempItem['value'] =
+        }
+      } else if (item.index !== undefined) {
+        setItems((prevItems) => {
+          const updatedItems = prevItems.map((prevItem, idx) =>
+            idx === item.index ? { ...prevItem, x, y } : prevItem
+          );
+          return updatedItems;
+        });
+      }
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  }));
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
+  const handleDelete = (index) => {
+    const tempItems = [...items];
+    tempItems.splice(index, 1);
+    setItems(tempItems);
+  };
+
+  const handleSubmitSubTag = (tagData) => {
+    console.log(tagData, "tag name123", items);
+    const index = items.findIndex(
+      (itm) => itm.x === tagData.tagDetails.x && itm.y === tagData.tagDetails.y
+    );
+    const tempItem = [...items];
+    if (tagData.Price) {
+      tempItem[index].value = `${tagData.Price}$ ${tagData.Price}`;
+    } else if (tagData.Address) {
+      tempItem[index].value = tagData.Address;
+    } else {
+      tempItem[
+        index
+      ].value = `${tagData["Working Duration"]}$ ${tagData["Working Type"]}`;
+    }
+    setFieldsDetails((prev) => {
+      return { ...prev, ...tagData };
+    });
+    setSowDocumentFieldDrop({ show: false, tagDetails: {} });
+  };
+
+  const handleSend = async () => {
+    setScreenLoader(true);
+    let payload = {};
+    if (documentOwner === CLIENT) {
+      const recipientsDetails = {
+        name: jobPostedData?.job?.client?.name || null,
+        email: jobPostedData?.job?.client?.email || null,
+        role: PDF_SIGNER_ROLE.signer
+      };
+
+      payload = {
+        ownership: CLIENT,
+        recipients: [{...recipientsDetails}],
+      };
+    } else {
+      payload = {
+        ownership: CANDIDATE,
+        recipients: selectedCandidate,
+      };
+    }
+
+    adobeInstance
+      .post(
+        `api/templates/templates/${selectedTemplate.id}/recipients/`,
+        payload
+      )
+      .then(async (res) => {
+          setScreenLoader(false);
+        // needs to remove from here
+        // try {
+        //   await adobeInstance.get(
+        //     `api/templates/${selectedTemplate.id}/send-for-e-sign`
+        //   );
+        // } catch (error) {
+        //   setScreenLoader(false);
+        //   const message = error.message || "Something went wrong";
+        //   toast.error(message, { position: "top-center" });
+        //   console.log(error, "errror!!!!");
+        // }
+      })
+      .catch((err) => {
+        const message = err.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
+        setScreenLoader(false);
+      });
+
+    const blob = new Blob([editorContent], { type: "application/pdf" });
+
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "modified.pdf"; // Specify the file name
+
+    // Append the link to the body
+    document.body.appendChild(link);
+
+    // Programmatically click the link to trigger the download
+    link.click();
+
+    // Clean up and remove the link element
+    document.body.removeChild(link);
+  };
+
+  // const modifyPdf = async () => {
+  //   if (!pdfData) return;
+
+  //   // Load the PDF using pdf-lib
+  //   const pdfDoc = await PDFDocument.load(pdfData);
+  //   const pages = pdfDoc.getPages();
+
+  //   if (currentPage - 1 < pages.length) {
+  //     const page = pages[currentPage - 1]; // Get the current page
+
+  //     // Embed font and add text
+  //     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  //     page.drawText(`Text added on page ${currentPage}`, {
+  //       x: 50,
+  //       y: 700,
+  //       size: 20,
+  //       font,
+  //       color: rgb(0, 0.53, 0.71), // Blue text color
+  //     });
+
+  //     // Save the modified PDF
+  //     const modifiedPdfBytes = await pdfDoc.save();
+  //     setModifiedPdfData(modifiedPdfBytes); // Store modified PDF bytes
+  //   }
+  // };
+  const handleNext = async () => {
+    handleTagsOnPageChange(pageNumber + 1);
+    setPageNumber(pageNumber + 1);
+  };
+
+  const handlePrevious = () => {
+    handleTagsOnPageChange(pageNumber - 1);
+    setPageNumber(pageNumber - 1);
+  };
+  const handleTagsOnPageChange = (page) => {
+    if (items.length > 0) {
+      let tempTags = [...tagsByPage];
+      const index = tempTags.findIndex((itm) => itm.page === pageNumber);
+      if (index === -1) {
+        tempTags = [
+          ...tempTags,
+          {
+            page: pageNumber,
+            tags: [...items],
+          },
+        ];
+      } else {
+        tempTags[index] = {
+          ...tempTags[index],
+          tags: [...items],
+        };
+      }
+      setTagsByPage(tempTags);
+    }
+    if (tagsByPage.length > 0) {
+      const index = tagsByPage.findIndex((itm) => itm.page === page);
+      if (index != -1) setItems(() => tagsByPage[index].tags);
+      else setItems([]);
+    } else setItems([]);
+  };
+
+  const handleSaveEditedFile = async () => {
+    setScreenLoader(true);
+    if (items.length > 0) {
+      try {
+        const pdfDoc = await PDFDocument.load(editorContent);
+        const pages = pdfDoc.getPages();
+        const editedPage = pages[pageNumber - 1];
+        const { width, height } = editedPage.getSize();
+        for (const item of items) {
+          editedPage.drawText(`{{${item.tag}}}`, {
+            x: item.x - 10,
+            y: height - item.y - item.fontSize - 56,
+            size: item.fontSize - 0.3,
+          });
+        }
+
+        const contentBytes = await pdfDoc.save();
+        setEditorContent(contentBytes);
+        const blob = new Blob([contentBytes], { type: "application/pdf" });
+        const formData = new FormData();
+        console.log(fieldsDetails, "fieldDetails, 123q23", items);
+        const tempTags = items.reduce((acc, item) => {
+          acc[item.tag.toLowerCase()] = item.value;
+          return acc;
+        }, {});
+        formData.append("template_title", selectedTemplate.template_title);
+        formData.append("meta_data", JSON.stringify(tempTags));
+        formData.append("template_file", blob, selectedTemplate.template_file);
+        let createUpdateFile = null
+        if (selectedTemplate.external_user_id) {
+          // Send the updated PDF to the API
+          createUpdateFile = adobeFormInstance.put(
+            `/api/templates/template-documents/${selectedTemplate.id}/`,
+            formData
+          )
+        } else {
+          // If the template is default create the updated PDF
+          formData.append("ownership", documentOwner);
+          formData.append("external_user_id", userId);
+          formData.append("status", "draft");
+          formData.append("editable", true);
+          createUpdateFile = adobeFormInstance.post(
+            `/api/templates/${selectedDocument.id}/template-documents/`,
+            formData
+          );
+        }
+        
+        createUpdateFile
+          .then((res) => {
+            setScreenLoader(false);
+            handleSend()
+            console.log(res, "//////");
+          })
+          .catch((err) => {
+            setScreenLoader(false);
+            const message = err.message || "Something went wrong";
+            toast.error(message, { position: "top-center" });
+          });
+      } catch (error) {
+        setScreenLoader(false);
+        const message = error.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
+      }
+    }
+  };
+
+
+  const PageWrapper = forwardRef((props, ref) => (
+    <Page {...props} inputRef={ref} />
+  ));
+
+  const renderCustomElements = useMemo(() => {
+    return items?.map((ele, idx) => {
+      return (
+        <DraggableItem
+          key={idx}
+          item={ele}
+          index={idx}
+          handleDelete={handleDelete}
+          ref={dragRef}
+        />
+      );
+    });
+    //   return (
+    //     <DraggableItem
+    //       key={ele.title + idx}
+    //       ref={containerRef}
+    //       index={idx}
+    //       page={pageNumber - 1}
+    //       onChange={setData}
+    //       {...ele}
+    //     />
+    //   );
+    // });
+  }, [items, pageNumber]);
+
+  return (
+    <>
+      <div className="preview-document">
+        <div
+          className="docs-container"
+          ref={(node) => {
+            drop(node);
+            dropRef.current = node;
+          }}
+          style={{
+            border: "2px solid red",
+            minHeight: "700px",
+            height: "100%",
+            position: "relative",
+          }}
+          >
+          {screenLoader ? (
+            <ScreenLoader />
+          ) : (
+            <div style={{ border: "2px solid yellow" }}>
+              <Document
+                file={pdfBytes}
+                // file={URL.createObjectURL(new Blob([pdfBytes]))}
+                onLoadSuccess={onDocumentLoadSuccess}
+              >
+                <PageWrapper
+                  pageNumber={pageNumber}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  customTextRenderer={false}
+                  style={{ border: "2px solid blue" }}
+                  className="border border-danger border-3 custom-pdf"
+                  ref={(node) => {
+                    drop(node);
+                    dropRef.current = node;
+                  }}
+                />
+              </Document>
+              <p>
+                Page {pageNumber} of {numPages}
+              </p>
+
+              {/* Navigation Controls */}
+              <button
+                disabled={pageNumber <= 1}
+                onClick={() => handlePrevious()}
+              >
+                Previous Page
+              </button>
+              <button
+                disabled={pageNumber >= numPages}
+                onClick={() => handleNext()}
+              >
+                Next Page
+              </button>
+            </div>
+          )}
+          {renderCustomElements}
+          {/* {items.map((item, index) => (
+            <DraggableItem
+              key={index}
+              item={item}
+              index={index}
+              handleDelete={handleDelete}
+            />
+          ))} */}
+        </div>
+      </div>
+      <div className="text-center">
+        <Button
+          variant="transparent"
+          className="font-14 outline-main-btn main-btn px-5 me-2"
+          onClick={handleBack}
+        >
+          Back
+        </Button>
+        <RexettButton
+          variant="transparent"
+          text="Save"
+          type="button"
+          disabled={items.length === 0}
+          onClick={handleSaveEditedFile}
+          className="font-14 main-btn px-5"
+        />
+        <RexettButton
+          variant="transparent"
+          text="Send"
+          type="button"
+          disabled={items.length === 0}
+          onClick={handleSend}
+          className="font-14 main-btn px-5"
+        />
+      </div>
+      {showDocumentFieldDrop.show && (
+        <DocumentFieldModal
+          show={showDocumentFieldDrop.show}
+          handleClose={() =>
+            setSowDocumentFieldDrop({ show: false, tagDetails: {} })
+          }
+          tagDetails={showDocumentFieldDrop.tagDetails}
+          onSubmit={handleSubmitSubTag}
+        />
+      )}
+    </>
+  );
+};
+
+export default DocumentViewer;

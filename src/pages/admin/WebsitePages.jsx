@@ -23,6 +23,10 @@ const WebsitePages = () => {
   });
 
   useEffect(() => {
+    getPageDetails();
+  }, []);
+
+  const getPageDetails = () => {
     webSiteBuilderInstance
       .get("/api/pages")
       .then((res) => {
@@ -35,21 +39,22 @@ const WebsitePages = () => {
         toast.error(message, { position: "top-center" });
         setScreenLoader(false);
       });
-  }, []);
+  };
 
   const updatePageList = (data, created) => {
     if (created === "created") {
       setPageList([...pageList, data]);
     } else if (created === "updated") {
-      const tempPageList = [...pageList];
-      const index = tempPageList.findIndex((pg) => pg._id === data._id);
-      tempPageList[index] = data;
-      if (data.isHomePage) {
-        tempPageList.forEach((page) => {
-          page.isHomePage = page._id === data._id;
-        });
-      }
-      setPageList(tempPageList);
+      getPageDetails();
+      // const tempPageList = [...pageList];
+      // const index = tempPageList.findIndex((pg) => pg._id === data._id);
+      // tempPageList[index] = data;
+      // if (data.isHomePage) {
+      //   tempPageList.forEach((page) => {
+      //     page.isHomePage = page._id === data._id;
+      //   });
+      // }
+      // setPageList(tempPageList);
     } else {
       setPageList((prev) => prev.filter((pg) => pg.name !== data));
     }

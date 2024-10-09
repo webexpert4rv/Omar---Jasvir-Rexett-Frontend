@@ -7,9 +7,7 @@ import {
     Tabs,
     Tooltip,
     OverlayTrigger,
-    Form,
     Nav,
-    ProgressBar,
     Modal,
 } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
@@ -37,22 +35,16 @@ import { BsFillSendFill } from "react-icons/bs";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
-import sidebarLogo from "../../../assets/img/rexett-logo.png";
-import { FaArrowRight, FaBriefcase, FaCheck, FaEye, FaFileSignature, FaGithub, FaLinkedin, FaPencil, FaStar, FaThumbsUp, FaTrash, FaTrashCan, FaUsersLine, FaUsersViewfinder } from "react-icons/fa6";
+import { FaBriefcase,FaStar, FaThumbsUp, FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 import { FaRegHandshake } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
-import devImg from '../../../assets/img/demo-img.jpg';
-import companyImg from '../../../assets/img/aviox-logo.png';
-import { FaLink } from "react-icons/fa6";
-import ReactQuill from "react-quill";
 import { FaClipboardUser } from "react-icons/fa6";
 import { FaListUl, FaTimes, FaUsers } from "react-icons/fa";
 import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
-import { LuDownload, LuMessagesSquare } from "react-icons/lu";
-import { IoCheckmarkCircle, IoCheckmarkOutline, IoCloseOutline, IoGrid } from "react-icons/io5";
+import { IoGrid } from "react-icons/io5";
 import TableView from "../../atomic/TableView";
 import InterviewCard from "../../atomic/InterviewCard";
 import ScreenLoader from "../../atomic/ScreenLoader";
@@ -61,28 +53,23 @@ import MeetingInfo from "../Modals/MeetingInfo";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 import JobCard from "./JobCard";
 import RexettSpinner from "../../atomic/RexettSpinner";
-import RexettButton from "../../atomic/RexettButton";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
-import sowIcon from '../../../assets/img/sow-icon.png';
-import ndaIcon from '../../../assets/img/nda-icon.png';
-import SingleDetailForm from "./SingleDetailForm";
 import FeedbackPopup from './FeedbackPopup';
-import sowImage from '../../../assets/img/sow-img.png';
-import { RiFileCloseLine } from "react-icons/ri";
 import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { gapi } from 'gapi-script';
 import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
-import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
+// import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
+import JobOffered from "../JobOfferedTab/JobOffered";
+import JobOfferedTab from "../JobOfferedTab/JobOfferedTab";
 
 const DISCOVERY_DOCS = [
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
     "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
   ];
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
-
-const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
+const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
+const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -105,11 +92,6 @@ const SingleJobDetails = () => {
     const location = useLocation();
     let id = location.pathname.split("/")[3];
     const clientId = localStorage.getItem("userId")
-    const [selectedDocument, setSelectedDocument] = useState('');
-    const [documentOwner, setDocumentOwner] = useState('');
-    const [isNewStepCompleted, setIsNewStepCompleted] = useState(false);
-    const [detailsFilled, setDetailsFilled] = useState(false);
-    const [documentSaved, setDocumentSaved] = useState(false);
     const { configDetails,developerList } = useSelector(state => state.adminData)
     const [manualSuggestion,showManualSuggestion]=useState(false)
 
@@ -152,7 +134,7 @@ const SingleJobDetails = () => {
 
     useEffect(()=>{
       dispatch(getDeveloperList())
-      dispatch(getAdobeTemplate())
+    //   dispatch(getAdobeTemplate())
 
     },[])
 
@@ -184,14 +166,16 @@ const SingleJobDetails = () => {
         if (key == "suggested") {
             setCurrnetTabsStatus("shortlisted");
         }
-        if (key == "shortlisted") {
+        else if (key == "shortlisted") {
             setCurrnetTabsStatus("interviewing");
         }
-        if (key == "interviewing") {
+        else if (key == "interviewing") {
             setCurrnetTabsStatus("hired");
         }
-        if (key == "application") {
+        else if (key == "application") {
             setCurrnetTabsStatus("application");
+        } else {
+            setCurrnetTabsStatus(key)
         }
     };
     // const handleJobStatusAction = (e, data) => {
@@ -279,7 +263,7 @@ const SingleJobDetails = () => {
           const meetingStart = new Date(response.result.start.dateTime);
           if (meetingStart < now) {
             fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
-            // alert('The meeting should have started or is over.');
+            alert('The meeting should have started or is over.');
           } else {
             alert('The meeting is still scheduled.');
           }
@@ -328,50 +312,6 @@ const SingleJobDetails = () => {
         }
     };
 
-    const handleDocumentSelect = (e) => {
-        setSelectedDocument(e.target.value);
-        setDocumentOwner('');
-        setDetailsFilled(false);
-        setDocumentSaved(false);
-    };
-
-    const handleOwnerSelect = (e) => {
-        setDocumentOwner(e.target.value);
-        setDetailsFilled(false);
-        setDocumentSaved(false);
-    };
-
-    const handleSave = () => {
-        setDetailsFilled(true);
-        setDocumentSaved(true);
-    };
-
-    const handleSubmit = () => {
-        setSelectedDocument('');
-        setDocumentOwner('');
-        setDetailsFilled(false);
-        setDocumentSaved(false);
-    };
-
-    const handleNext = () => {
-        setIsNewStepCompleted(true);
-    };
-
-    const handleBack = () => {
-        if (documentSaved) {
-            setDetailsFilled(false);
-            setDocumentSaved(false);
-        } else if (detailsFilled) {
-            setDocumentOwner('');
-            setDetailsFilled(false);
-        } else if (documentOwner) {
-            setSelectedDocument('');
-            setDocumentOwner('');
-        } else {
-            setSelectedDocument('');
-        }
-    };
-
 
     const handleEdit = () => {
         if (singleJobDescription?.status == "Unpublished") {
@@ -398,7 +338,6 @@ const SingleJobDetails = () => {
             });
         }
     };
-    console.log(statusModal, "statusModal")
     const endjob = <Tooltip id="tooltip">{t("endJob")}</Tooltip>;
     const deletejob = (
         <Tooltip id="tooltip">
@@ -1365,488 +1304,9 @@ const SingleJobDetails = () => {
                     </Tab>
                     <Tab eventKey="documentation" title={offered}>
                         {/* <Button onClick={handleDownloadPdf}>DownLoad pdf</Button> */}
-                        <div>
-                            <div className="text-end mb-4">
-                                <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
-                            </div>
-                            <div className="card-box mb-4">
-                                {!selectedDocument && (
-                                    <div>
-                                        <h4 className="text-center">Select Document</h4>
-                                        <p className="text-center mb-4">Select document you want to create</p>
-                                        <div className="selection-cards">
-                                            <Row className="justify-content-center">
-                                                <Col md={4}>
-                                                    <div className="document-card">
-                                                        <input
-                                                            type="radio"
-                                                            className="document_select d-none"
-                                                            id="sow-document"
-                                                            name="document_select"
-                                                            value="SOW"
-                                                            onChange={handleDocumentSelect}
-                                                        />
-                                                        <Form.Label htmlFor="sow-document" className="document_label">
-                                                            <span className="doccheck-icon">
-                                                                <IoCheckmarkCircle />
-                                                            </span>
-                                                            <img src={sowIcon} alt="SOW Icon" />
-                                                            <span>Statement of work</span>
-                                                        </Form.Label>
-                                                    </div>
-                                                </Col>
-                                                <Col md={4}>
-                                                    <div className="document-card">
-                                                        <input
-                                                            type="radio"
-                                                            className="document_select d-none"
-                                                            id="nda-document"
-                                                            name="document_select"
-                                                            value="NDA"
-                                                            onChange={handleDocumentSelect}
-                                                        />
-                                                        <Form.Label htmlFor="nda-document" className="document_label">
-                                                            <span className="doccheck-icon">
-                                                                <IoCheckmarkCircle />
-                                                            </span>
-                                                            <img src={ndaIcon} alt="NDA Icon" />
-                                                            <span>Non Disclosure Agreement</span>
-                                                        </Form.Label>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </div>
-                                )}
+                      {/* {currentTabsStatus === "documentation" && <JobOffered />} */}
+                      {currentTabsStatus === "documentation" && <JobOfferedTab />}
 
-                                {selectedDocument && !documentOwner && (
-                                    <div id="document-ownership">
-                                        <h4 className="text-center">Document Ownership: Client or Candidate?</h4>
-                                        <p className="text-center mb-4">Is this document intended for the Client or the Candidate?</p>
-                                        <div className="selection-cards">
-                                            <Row className="justify-content-center">
-                                                <Col md={4}>
-                                                    <div className="document-card">
-                                                        <input
-                                                            type="radio"
-                                                            className="document_select d-none"
-                                                            id="client-document"
-                                                            name="document_owner"
-                                                            value="Client"
-                                                            onChange={handleOwnerSelect}
-                                                        />
-                                                        <Form.Label htmlFor="client-document" className="document_label">
-                                                            <span className="doccheck-icon">
-                                                                <IoCheckmarkCircle />
-                                                            </span>
-                                                            <FaUsersLine />
-                                                            <span>Client</span>
-                                                        </Form.Label>
-                                                    </div>
-                                                </Col>
-                                                <Col md={4}>
-                                                    <div className="document-card">
-                                                        <input
-                                                            type="radio"
-                                                            className="document_select d-none"
-                                                            id="candidate-document"
-                                                            name="document_owner"
-                                                            value="Candidate"
-                                                            onChange={handleOwnerSelect}
-                                                        />
-                                                        <Form.Label htmlFor="candidate-document" className="document_label">
-                                                            <span className="doccheck-icon">
-                                                                <IoCheckmarkCircle />
-                                                            </span>
-                                                            <FaUsersViewfinder />
-                                                            <span>Candidate</span>
-                                                        </Form.Label>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <div className="text-center">
-                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>
-                                                Back
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {documentOwner && !isNewStepCompleted && (
-                                    <div id="new-step">
-                                        <h4 className="text-center mb-4">Select Template</h4>
-                                        <Row>
-                                            <Col md={3} className="">
-                                                <div className="website-card">
-                                                    <img src={sowImage} />
-                                                    <p>Template 1</p>
-                                                    <div className="action-website">
-                                                        <OverlayTrigger placement="bottom" overlay={viewPage}>
-                                                            <Link
-                                                                to={'#'}
-                                                                className="text-decoration-none website-action"
-                                                            >
-                                                                <FaEye />
-                                                            </Link>
-                                                        </OverlayTrigger>
-                                                        <OverlayTrigger placement="bottom" overlay={editPage}>
-                                                            <Button
-                                                                variant="transparent"
-                                                                className="website-action"
-                                                                onClick={handleNext}
-                                                            >
-                                                                <FaArrowRight />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                            <Col md={3} className="">
-                                                <div className="website-card">
-                                                    <img src={sowImage} />
-                                                    <p>Template 2</p>
-                                                    <div className="action-website">
-                                                        <OverlayTrigger placement="bottom" overlay={viewPage}>
-                                                            <Link
-                                                                to={'#'}
-                                                                className="text-decoration-none website-action"
-                                                            >
-                                                                <FaEye />
-                                                            </Link>
-                                                        </OverlayTrigger>
-                                                        <OverlayTrigger placement="bottom" overlay={editPage}>
-                                                            <Button
-                                                                variant="transparent"
-                                                                className="website-action"
-                                                                onClick={handleNext}
-                                                            >
-                                                                <FaArrowRight />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                            <Col md={3} className="">
-                                                <div className="website-card">
-                                                    <img src={sowImage} />
-                                                    <p>Template 3</p>
-                                                    <div className="action-website">
-                                                        <OverlayTrigger placement="bottom" overlay={viewPage}>
-                                                            <Link
-                                                                to={'#'}
-                                                                className="text-decoration-none website-action"
-                                                            >
-                                                                <FaEye />
-                                                            </Link>
-                                                        </OverlayTrigger>
-                                                        <OverlayTrigger placement="bottom" overlay={editPage}>
-                                                            <Button
-                                                                variant="transparent"
-                                                                className="website-action"
-                                                                onClick={handleNext}
-                                                            >
-                                                                <FaArrowRight />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                            <Col md={3} className="">
-                                                <div className="website-card">
-                                                    <img src={sowImage} />
-                                                    <p>Template 4</p>
-                                                    <div className="action-website">
-                                                        <OverlayTrigger placement="bottom" overlay={viewPage}>
-                                                            <Link
-                                                                to={'#'}
-                                                                className="text-decoration-none website-action"
-                                                            >
-                                                                <FaEye />
-                                                            </Link>
-                                                        </OverlayTrigger>
-                                                        <OverlayTrigger placement="bottom" overlay={editPage}>
-                                                            <Button
-                                                                variant="transparent"
-                                                                className="website-action"
-                                                                onClick={handleNext}
-                                                            >
-                                                                <FaArrowRight />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <div className="text-center mt-4">
-                                            <Button variant="transparent" className="font-14 outline-main-btn main-btn px-5 me-2" onClick={handleBack}>
-                                                Back
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {isNewStepCompleted && selectedDocument === 'NDA' && documentOwner === 'Client' && documentSaved && (
-                                    <div id="preview-document">
-                                        <h4 className="text-center mb-4">Preview Document</h4>
-                                        <div className="text-center">
-                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>
-                                                Submit
-                                            </Button>
-                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>
-                                                Back
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {isNewStepCompleted && selectedDocument === 'NDA' && documentOwner === 'Candidate' && !documentSaved && (
-                                    <div id="select-candidates">
-                                        <h4 className="text-center">Select Candidates</h4>
-                                        <p className="text-center mb-4">
-                                            Please select candidate for non disclosure agreement. You can select multiple candidates
-                                        </p>
-                                        <div>
-                                            <Row className="justify-content-center">
-                                                <Col md={12}>
-                                                    <div>
-                                                        {[...Array(6)].map((_, i) => (
-                                                            <div className="d-inline-block me-3" key={i}>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name="candidate_check"
-                                                                    className="candidate_checkbox"
-                                                                    id={`candidate_short${i + 1}`}
-                                                                />
-                                                                <Form.Label
-                                                                    htmlFor={`candidate_short${i + 1}`}
-                                                                    className="select_candidate_label"
-                                                                >
-                                                                    <div className="position-relative">
-                                                                        <img src={devImg} alt="Candidate" />
-                                                                        <span className="checkmark-icon">
-                                                                            <IoCheckmarkOutline />
-                                                                        </span>
-                                                                    </div>
-                                                                    johndoe@gmail.com
-                                                                </Form.Label>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                            <div className="text-center">
-                                                <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>
-                                                    Save
-                                                </Button>
-                                                <Button variant="transparent" className="font-14 outline-main-btn px-5" onClick={handleBack}>
-                                                    Back
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {isNewStepCompleted && documentOwner && selectedDocument !== 'NDA' && !documentSaved && (
-                                    <SingleDetailForm handleBack={handleBack} handleSave={handleSave} />
-                                )}
-
-                                {isNewStepCompleted && documentSaved && (
-                                    <div id="preview-document">
-                                        <h4 className="text-center mb-4">Preview Document</h4>
-                                        <div className="text-center">
-                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>
-                                                Submit
-                                            </Button>
-                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>
-                                                Back
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                            {/* <h5 className="font-22 mb-4 fw-bold">Created Documents for Client</h5>
-                            <Tab.Container
-                                id="left-tabs-example"
-                                defaultActiveKey="client-sow"
-                            >
-                                <Nav variant="pills" className="application-pills">
-                                    <Nav.Item className="application-item">
-                                        <Nav.Link eventKey="client-sow" className="application-link">
-                                            SOW
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item className="application-item">
-                                        <Nav.Link eventKey="client-nda" className="application-link">
-                                            NDA
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="client-sow" className="pt-2 pb-4">
-                                        <div className="d-flex justify-content-between align-items-center activity-doc-wrapper cursor-pointer" onClick={handleAgreement}>
-                                            <div>
-                                                <p className="name-text">Aviox Technologies</p>
-                                                <div className="sender-text">
-                                                    <p>To : loremipsum@gmail.com, rohit124@gmail.com</p>
-                                                    <span className="more-sender">+3</span>
-                                                </div>
-                                                <OverlayTrigger placement="bottom" overlay={dateCreated}>
-                                                    <p className="created-date">
-                                                        09-08-2024
-                                                    </p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div className="waiting-wrapper">
-                                                <ProgressBar now={50} />
-                                                <OverlayTrigger placement="bottom" overlay={waitingText}>
-                                                    <p className="waiting-text">Waiting for Sahil</p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <Button variant="transparent" className="arrow-btn danger-arrow">
-                                                        <RiFileCloseLine />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn info-arrow">
-                                                        <LuDownload />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn primary-arrow">
-                                                        <FaFileSignature />
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="client-nda" className="pt-2 pb-4">
-                                        <div className="d-flex justify-content-between align-items-center activity-doc-wrapper cursor-pointer" onClick={handleAgreement}>
-                                            <div>
-                                                <p className="name-text">Aviox Technologies</p>
-                                                <div className="sender-text">
-                                                    <p>To : loremipsum@gmail.com, rohit124@gmail.com</p>
-                                                    <span className="more-sender">+3</span>
-                                                </div>
-                                                <OverlayTrigger placement="bottom" overlay={dateCreated}>
-                                                    <p className="created-date">
-                                                        09-08-2024
-                                                    </p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div className="waiting-wrapper">
-                                                <ProgressBar now={50} />
-                                                <OverlayTrigger placement="bottom" overlay={waitingText}>
-                                                    <p className="waiting-text">Waiting for Sahil</p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <Button variant="transparent" className="arrow-btn danger-arrow">
-                                                        <RiFileCloseLine />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn info-arrow">
-                                                        <LuDownload />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn primary-arrow">
-                                                        <FaFileSignature />
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Tab.Pane>
-                                </Tab.Content>
-                            </Tab.Container>
-                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Candidate</h5>
-
-                            <Tab.Container
-                                id="left-tabs-example"
-                                defaultActiveKey="candidate-sow"
-                                onSelect={handleSelect}
-                            >
-                                <Nav variant="pills" className="application-pills">
-                                    <Nav.Item className="application-item">
-                                        <Nav.Link eventKey="candidate-sow" className="application-link">
-                                            SOW
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item className="application-item">
-                                        <Nav.Link eventKey="candidate-nda" className="application-link">
-                                            NDA
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="candidate-sow" className="pt-2 pb-4">
-                                        <div className="d-flex justify-content-between align-items-center activity-doc-wrapper cursor-pointer" onClick={handleAgreement}>
-                                            <div>
-                                                <p className="name-text">Robin Gautam</p>
-                                                <div className="sender-text">
-                                                    <p>loremipsum@gmail.com</p>
-                                                </div>
-                                                <OverlayTrigger placement="bottom" overlay={dateCreated}>
-                                                    <p className="created-date">
-                                                        09-08-2024
-                                                    </p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div className="waiting-wrapper">
-                                                <ProgressBar now={50} />
-                                                <OverlayTrigger placement="bottom" overlay={waitingText}>
-                                                    <p className="waiting-text">Waiting for Rexett</p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <Button variant="transparent" className="arrow-btn danger-arrow">
-                                                        <RiFileCloseLine />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn info-arrow">
-                                                        <LuDownload />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn primary-arrow">
-                                                        <FaFileSignature />
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="candidate-nda" className="pt-2 pb-4">
-                                        <div className="d-flex justify-content-between align-items-center activity-doc-wrapper cursor-pointer" onClick={handleAgreement}>
-                                            <div>
-                                                <p className="name-text">Robin Gautam</p>
-                                                <div className="sender-text">
-                                                    <p>loremipsum@gmail.com</p>
-                                                </div>
-                                                <OverlayTrigger placement="bottom" overlay={dateCreated}>
-                                                    <p className="created-date">
-                                                        09-08-2024
-                                                    </p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div className="waiting-wrapper">
-                                                <ProgressBar now={50} />
-                                                <OverlayTrigger placement="bottom" overlay={waitingText}>
-                                                    <p className="waiting-text">Waiting for Rexett</p>
-                                                </OverlayTrigger>
-                                            </div>
-                                            <div>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <Button variant="transparent" className="arrow-btn danger-arrow">
-                                                        <RiFileCloseLine />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn info-arrow">
-                                                        <LuDownload />
-                                                    </Button>
-                                                    <Button variant="transparent" className="arrow-btn primary-arrow">
-                                                        <FaFileSignature />
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Tab.Pane>
-                                </Tab.Content>
-                            </Tab.Container> */}
-                        </div>
                     </Tab>
                     <Tab eventKey="hired" title={hired}>
                         <JobCard
