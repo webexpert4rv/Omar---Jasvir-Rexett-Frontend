@@ -55,10 +55,6 @@ const EditVendorProfile = () => {
   })
   const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
-  console.log(vendorProfile, "vendorProfile")
-  console.log(countriesList, "countriesList")
-
-
   useEffect(() => {
     // setValue("name", vendorProfile?.name);
     setValue("email", vendorProfile?.email);
@@ -128,10 +124,6 @@ const EditVendorProfile = () => {
   const handleSelect = (event) => {
     setSelectedType(event.target.value)
   }
-
-
-
-
   const handleJobStatusModal = (id) => {
     setShowModal(!showModal)
   }
@@ -162,10 +154,7 @@ const EditVendorProfile = () => {
     }
 
     fileData.append("file", file);
-
-
     dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-
       let payload = {
         email: values.email,
         previous_password: values.previous_password,
@@ -493,28 +482,7 @@ const EditVendorProfile = () => {
                       setError={setError}
                       clearErrors={clearErrors}
                     />
-                    {/* <CommonReactSelect
-                        name="country"
-                        errors={errors}
-                        watch={watch}
-                        // defaultValue={vendorProfile?.country}
-                        control={control}
-                        required="Country is required"
-                        label="Country"
-                        type="country"
-                        options={countriesList}
-                      /> */}
-
-                    {/* <CommonReactSelect
-                        name="state"
-                        errors={errors}
-                        control={control}
-                        required="State is required"
-                        label="State"
-                        type="state"
-                        options={statesList}
-                      />
-                      <CommonReactSelect
+                     <CommonReactSelect
                         name="city"
                         errors={errors}
                         control={control}
@@ -531,7 +499,7 @@ const EditVendorProfile = () => {
                         options={timeZones}
                         required="Time zone is required"
                         label="Time Zone"
-                      /> */}
+                      /> 
                     <CommonInput
                       label={t("postCode") + "*"}
                       className="common-field font-14 fw-medium"
@@ -857,7 +825,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* <Form.Group className="mb-3">
+                  <Form.Group className="mb-3">
                   <Form.Control
                       type="text"
                       className="cv-field"
@@ -872,7 +840,7 @@ const EditVendorProfile = () => {
                         {errors.cin.message}
                       </p>
                     )}
-                  </Form.Group> */}
+                  </Form.Group>
                 </div>
                 <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
                   <h2 className="section-head-sub mb-0 border-0">Expertise Details</h2>

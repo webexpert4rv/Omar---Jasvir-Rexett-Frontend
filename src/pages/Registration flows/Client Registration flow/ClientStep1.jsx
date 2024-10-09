@@ -44,8 +44,8 @@ const ClientStep1 = ({
   stepData,
   stepTwoAutoComplete,
   flowName,
-  setAvatar,
-  avatar
+  // setAvatar,
+  // avatar
 
 }) => {
   const { t } = useTranslation();
@@ -57,22 +57,22 @@ const ClientStep1 = ({
     return field.fieldName !== "degree"; // Remove degree field otherwise
   });
 
-  const handleImageA = (item) => {
-    setAvatar(item)
-    setImageFile({...imageFile,profile_picture: item})
-    setPreviewImage({ ...previewImage, profile_picture: item });
-  }
-  const handleImageB = (item) => {
-    setAvatar(item)
-    setImageFile({...imageFile,profile_picture: item})
-    setPreviewImage({ ...previewImage, profile_picture: item });
-  }
+  // const handleImageA = (item) => {
+  //   setAvatar(item)
+  //   setImageFile({...imageFile,profile_picture: item})
+  //   setPreviewImage({ ...previewImage, profile_picture: item });
+  // }
+  // const handleImageB = (item) => {
+  //   setAvatar(item)
+  //   setImageFile({...imageFile,profile_picture: item})
+  //   setPreviewImage({ ...previewImage, profile_picture: item });
+  // }
 
-  const handleImageC = (item) => {
-    setAvatar(item)
-    setImageFile({...imageFile,profile_picture: item})
-    setPreviewImage({ ...previewImage, profile_picture: item });
-  }
+  // const handleImageC = (item) => {
+  //   setAvatar(item)
+  //   setImageFile({...imageFile,profile_picture: item})
+  //   setPreviewImage({ ...previewImage, profile_picture: item });
+  // }
   // const { degreeList} = useSelector(
   //   (state) => state?.developerData
   // );
@@ -100,7 +100,7 @@ const ClientStep1 = ({
                 errors={errors}
               />
             )}
-            {flowName === "edit_profile" ?
+            {/* {flowName === "edit_profile" ?
               <div className="">
                 <div className="profile-view" onClick={() => handleImageA(avatarA)}>
                   <img src={avatarA ? avatarA : "/demo-user.png"} />
@@ -113,7 +113,7 @@ const ClientStep1 = ({
                 </div>
               </div>
               : ""
-            }
+            } */}
             <Row className="w-100 mt-md-0 mt-4">
               {filteredStepFields?.map(({ label,
                 fieldName,

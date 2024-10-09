@@ -99,7 +99,6 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
       });
     }
   }, [stepData])
-  console.log(imageFile,"imageFile")
 
   const toggleConfirmationModal = (e) => {
     const { checked } = e?.target;
@@ -129,7 +128,6 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
     }
   }
 
-  console.log(role,"role")
 
   const renderActiveStep = () => {
     return (
@@ -151,8 +149,8 @@ const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, im
         isProfileSectionRequired={activeStep === 1}
         isEditMode={true}
         flowName={"edit_profile"}
-        setAvatar={setAvatar}
-        avatar={avatar}
+        // setAvatar={setAvatar}
+        // avatar={avatar}
       />)
   }
   return (

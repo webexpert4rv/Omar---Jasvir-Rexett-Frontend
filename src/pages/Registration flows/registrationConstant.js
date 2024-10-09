@@ -1135,6 +1135,24 @@ const adminStepData = [
     readOnly: true
   },
   {
+    label: "taxId",
+    fieldName: "tax_id",
+    type: "text",
+    placeholder: "Enter Tax ID",
+    rules: { required: "Tax ID is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "cinNumber",
+    fieldName: "cin",
+    type: "text",
+    placeholder: "Enter CIN Number",
+    rules: { required: "CIN number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
     isPasswordSection: true,
   },
   {
@@ -1398,6 +1416,26 @@ const devStepData=[
     isRequired: true,
     options:EXPERIENCE_YEAR,
     defaultOption: "Select",
+  },
+  {
+    label: "taxId",
+    fieldName: "tax_id",
+    type: "text",
+    placeholder: "Enter Tax ID",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+    readOnly: false
+  },
+  {
+    label: "Cin",
+    fieldName: "cin",
+    type: "text",
+    placeholder: "CIN",
+    rules: { required: "CIN is required" },
+    columnWidth: 6,
+    isRequired: true,
+    readOnly: false
   },
   {
     label: "phoneNumber",

@@ -866,27 +866,7 @@ const DeveloperRegistrationStepper = () => {
 
   const onSubmit = async(values) => {
     setIsAdd(false)
-    // let hasErrors = false;
 
-    // if (!imageFile?.resume && activeStep === 1) {
-    //   setError('resume', {
-    //     type: 'manual',
-    //     message: 'Resume is required.',
-    //   });
-    //   hasErrors = true;
-    // }
-
-    // if (!previewImage?.profile_picture && activeStep === 1) {
-    //   setError('profile_picture', {
-    //     type: 'manual',
-    //     message: 'Profile Picture is required.',
-    //   });
-    //   hasErrors = true;
-    // }
-
-    // if (hasErrors && activeStep === 1) {
-    //   return;
-    // }
 
     const uploadFiles = (files) => {
       let uploadedUrls = {};
@@ -1171,7 +1151,7 @@ const DeveloperRegistrationStepper = () => {
         localStorage.setItem("nestedActiveStep", 0);
         increaseStepCount(false)
 
-      } else if (nestedActiveStep == 1 || nestedActiveStep == 2) {
+      } else if (nestedActiveStep == 1 ) {
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
         const transformData = (data) => {
@@ -1195,9 +1175,7 @@ const DeveloperRegistrationStepper = () => {
       } else {
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
-
       }
-
     } else if (activeStep == 5) {
       if (nestedActiveStep == 1) {
         let payload = {
