@@ -162,28 +162,47 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       userKey: "all",
       applicationName: "meet",
       eventName: "call_ended",
-      filters: `meeting_code==${meetingCode}`,
-      startTime: startTime,
-    endTime: endTime,
+      maxResults: 10
+  
     });
-    const activities = response.result.items || [];
-    const participants = activities.flatMap((activity) =>
-      activity.events.flatMap((event) =>
-        event.parameters
-          .filter((param) => param.name === "user_email")
-          .map((param) => param.value)
-      )
-    );
+    // const activities = response.result.items || [];
+    // const participants = activities.flatMap((activity) =>
+    //   activity.events.flatMap((event) =>
+    //     event.parameters
+    //       .filter((param) => param.name === "user_email")
+    //       .map((param) => param.value)
+    //   )
+    // );
+    
 
-    const duration = activities
-      .flatMap((activity) =>
-        activity.events.flatMap((event) =>
-          event.parameters
-            .filter((param) => param.name === "duration_seconds")
-            .map((param) => parseInt(param.value, 10))
-        )
-      )
-      .reduce((acc, val) => acc + val, 0);
+    // const duration = activities
+    //   .flatMap((activity) =>
+    //     activity.events.flatMap((event) =>
+    //       event.parameters
+    //         .filter((param) => param.name === "duration_seconds")
+    //         .map((param) => parseInt(param.value, 10))
+    //     )
+    //   )
+    //   .reduce((acc, val) => acc + val, 0);
+    const events = response.result.items; // assuming 'items' contains the events
+    if (events && events.length > 0) {
+      // Process each event
+      events.forEach(event => {
+        const eventData = event.events[0]; // Assuming each item has at least one event
+        const parameters = eventData.parameters;
+
+        // Extract specific fields you want
+        const callEndedData = {
+          identifier: parameters.find(p => p.name === "identifier")?.value,
+          duration: parameters.find(p => p.name === "duration_seconds")?.intValue,
+          organizerEmail: parameters.find(p => p.name === "organizer_email")?.value,
+          displayName: parameters.find(p => p.name === "display_name")?.value,
+          callEndedTime: event.id.time,
+        };
+
+        console.log(callEndedData,"CALLEND"); // Log or further process the extracted data
+      });
+    }
   };
 
   const googleEventId = localStorage.getItem("googleEventId")
@@ -547,7 +566,7 @@ const handleCloseScheduleMeeting = () => {
               </Button> */}
             </div>
           </div>
-          {showDetailsSection && (
+          {true && (
             <div className="detailedSection" style={{ marginTop: "10px" }}>
               <Row>
                 <Col lg={8}>
