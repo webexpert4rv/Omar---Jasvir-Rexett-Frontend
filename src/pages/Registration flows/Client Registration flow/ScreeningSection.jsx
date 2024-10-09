@@ -14,6 +14,7 @@ const ScreeningSection = ({
   errors,
   setValue,
   watch,
+  clearErrors
 }) => {
 
   const dispatch = useDispatch()
@@ -49,7 +50,6 @@ const ScreeningSection = ({
       question: "What is your level of proficiency in [Language]?",
       uniqueId: "3",
     },
-
     {
       optionId: 4,
       label: "Location",
@@ -119,6 +119,7 @@ const ScreeningSection = ({
               isRegistrationStep={true}
               setValue={setValue}
               invalidFieldRequired={true}
+              clearErrors={clearErrors}
             />
           </Col>
         </Row>

@@ -417,6 +417,7 @@ const ClientRegistrationStepper = () => {
             watch={watch}
             setValue={setValue}
             type={"client"}
+            clearErrors={clearErrors}
           />
         );
     }
