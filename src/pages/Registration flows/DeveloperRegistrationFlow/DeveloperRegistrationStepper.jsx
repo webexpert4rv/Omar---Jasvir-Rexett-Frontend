@@ -62,16 +62,18 @@ import SummaryPreview from "../../admin/ResumeSteps/SummaryPreview.jsx";
 import FinalizeResume from "../../admin/ResumeSteps/FinalizeResume.jsx";
 import RegistrationStepModal from "../../views/Modals/RegistrationStepModal.jsx";
 import bgVideo from '../../../assets/img/bg-video.mp4';
+import ExpertiseSection from "../../../components/common/ExpertiseSection/ExpertiseSection.jsx";
+import { DEAFULT_EXPERTISE } from "../../../components/common/JobPostForm/constant.js";
 
 
 const DeveloperRegistrationStepper = () => {
   const dispatch = useDispatch();
-  const [freeArray , setFreeArray] = useState([])
+  const [freeArray, setFreeArray] = useState([])
   let token = localStorage.getItem('token')
   const devId = localStorage.getItem("developerId")
-  const [newArr , setNewArr] = useState()
-  const[edit, setEdit]= useState(false)
-  const { approveLoader, smallLoader, developerRegistrationData, degreeData} = useSelector(
+  const [newArr, setNewArr] = useState()
+  const [edit, setEdit] = useState(false)
+  const { approveLoader, smallLoader, developerRegistrationData, degreeData } = useSelector(
     (state) => state?.developerData
   );
   const [countryCode, setCountryCode] = useState()
@@ -140,8 +142,9 @@ const DeveloperRegistrationStepper = () => {
     clearErrors,
   } = useForm({
     defaultValues: {
-      skills: [{ title: "", level: "" }],
+      skills: [{ skill: "", skill_weight: "" }],
       screening_questions: DEFAULT_SCREENING_DATA,
+      expertise_skills: [{ skill: "", skill_weight: "", experience: "" }],
     },
   });
   const { skillOptions } = useSelector((state) => state.developerData);
@@ -159,7 +162,7 @@ const DeveloperRegistrationStepper = () => {
       setNestedActiveStep(Number(storedNestedStep || 0));
     }
     setFilteredStepData(stepData);
-  }, [stepData,developerRegistrationData])
+  }, [stepData, developerRegistrationData])
 
 
   // useEffect(() => {
@@ -178,7 +181,7 @@ const DeveloperRegistrationStepper = () => {
   //   }
   // }
   // }, [errors])
-  
+
   useEffect(() => {
     if (activeStep === 1) {
       dispatch(getCoutriesList());
@@ -196,7 +199,7 @@ const DeveloperRegistrationStepper = () => {
     //   setActiveStep(Number(steps));
     //   setNestedActiveStep(Number(0));
     // }
-    if (developerId!==null || user_id!==null) {
+    if (developerId !== null || user_id !== null) {
       dispatch(getDeveloperProfileDetails(developerId || user_id));
     }
   }, []);
@@ -208,7 +211,7 @@ const DeveloperRegistrationStepper = () => {
   let lastName = rest.join(' ');
 
   useEffect(() => {
-    
+
     const params = new URLSearchParams(location.search);
     const user_id = params.get('user_id');
     const activeStepKeys = {
@@ -221,117 +224,153 @@ const DeveloperRegistrationStepper = () => {
     };
 
     // if (devId && isEditMode?.isEdit) {
-    if(devId){
-    dispatch(getDeveloperProfileDetails(developerId || user_id, (response) => {
-      const currentStep = activeStepKeys[storedStep];
-      const data = response[activeStepKeys[storedStep]];
-      const keyMapping = {
-        intro_video_url: 'introVideo',
-        resume: 'resume',
-      };
-      
-      for (let key in data) {
-        if (key === "name") {
-          const [firstName, surName] = data[key]?.split(" ");
-          setValue("first_name", firstName);
-          setValue("last_name", surName);
-        } else if (key === "country_code") {
-          const newValue = {
-            label: data["country"],
-            value: data[key],
-          };
-          setCountryCode(newValue?.value);
-          setValue(key, newValue);
-        } else if (key === "state_iso_code") {
-          const newValue = { label: data["state"], value: data[key] };
-          setValue(key, newValue);
-        } else if (key === "time_zone") {
-          const newValue = { label: data[key], value: data[key] };
-          setValue(key, newValue);
-        } else if (key === "profile_picture") {
-          setPreviewImage({ profile_picture: data?.profile_picture });
-          setValue("profile_picture",data?.profile_picture);
-        } else if (key === "professional_title") {
-          setValue("profession", data[key]);
-        } else if(key=="resume" || key=="intro_video_url" ) {
-            setImageFile({resume:data?.resume,introVideo:data?.intro_video_url});
-        }else{
-          setValue(key, data[key]);
-        }
-      }
-      if (((currentStep === "step2") || currentStep === "step3") && (!edit && !isEditMode.isEdit)) {
-        const details = data?.find((item, idx) => idx === data.length - 1)
-        if (isAdd) {
-          for (let key in details) {
-            setValue(key, "")
+    if (devId) {
+      dispatch(getDeveloperProfileDetails(developerId || user_id, (response) => {
+        const currentStep = activeStepKeys[storedStep];
+        const data = response[activeStepKeys[storedStep]];
+        const keyMapping = {
+          intro_video_url: 'introVideo',
+          resume: 'resume',
+        };
+
+        for (let key in data) {
+          if (key === "name") {
+            const [firstName, surName] = data[key]?.split(" ");
+            setValue("first_name", firstName);
+            setValue("last_name", surName);
+          } else if (key === "country_code") {
+            const newValue = {
+              label: data["country"],
+              value: data[key],
+            };
+            setCountryCode(newValue?.value);
+            setValue(key, newValue);
+          } else if (key === "state_iso_code") {
+            const newValue = { label: data["state"], value: data[key] };
+            setValue(key, newValue);
+          } else if (key === "time_zone") {
+            const newValue = { label: data[key], value: data[key] };
+            setValue(key, newValue);
+          } else if (key === "profile_picture") {
+            setPreviewImage({ profile_picture: data?.profile_picture });
+            setValue("profile_picture", data?.profile_picture);
+          } else if (key === "professional_title") {
+            setValue("profession", data[key]);
+          } else if (key == "resume" || key == "intro_video_url") {
+            setImageFile({ resume: data?.resume, introVideo: data?.intro_video_url });
+          } else {
+            setValue(key, data[key]);
           }
-        } else {
+        }
+        if (((currentStep === "step2") || currentStep === "step3") && (!edit && !isEditMode.isEdit)) {
+          const details = data?.find((item, idx) => idx === data.length - 1)
+          if (isAdd) {
+            for (let key in details) {
+              setValue(key, "")
+            }
+          } else {
+            if (details) {
+              for (let key in details) {
+                if (key === "start_date") {
+                  const startDate = details[key]?.slice(0, 10);
+                  setValue("start_date", startDate);
+                } else if (key === "end_date") {
+                  const endDate = details["end_date"]?.slice(0, 10);
+                  setValue("end_date", endDate);
+                } else if (key === "description") {
+                  const desc = stripHtmlTags(details[key]);
+                  if (currentStep === "step2") {
+                    setValue("project_description", desc);
+                  } else {
+                    setValue("education_description", desc);
+                  }
+                } else {
+                  setValue(key, details[key]);
+                }
+              }
+            }
+          }
+        }
+        if (currentStep === "step4") {
+          if (nestedActiveStep == 1) {
+            if (data?.expertises?.length) {
+              const formattedSkills = data?.expertises?.map(
+                ({ experience, skill_weight, skill }) => {
+                  const getSkill = skillOptions?.find(
+                    (option) => option.title === skill
+                  );
+                  return {
+                    skill: { label: getSkill?.title, value: getSkill?.id },
+                    skill_weight: {
+                      label:
+                        skill_weight?.slice(0, 1).toUpperCase() +
+                        skill_weight?.slice(1, skill_weight?.length),
+                      value: skill_weight,
+                    },
+                    experience: {
+                      label: experience,
+                      value: +experience?.split(" ")[0],
+                    },
+                  };
+                }
+              );
+              setValue("expertise_skills", formattedSkills);
+              console.log(formattedSkills, "formattedSkills");
+            } else {
+              setValue("expertise_skills", DEAFULT_EXPERTISE);
+            }
+          } else {
+            const good_to_have_skills = data?.other_skills?.map(
+              ({ skill_weight, skill }) => {
+                const good_skills = skillOptions?.find(
+                  (option) => option.title === skill
+                );
+                return {
+                  skill: {
+                    label: good_skills?.title,
+                    value: good_skills?.id,
+                  },
+                  skill_weight: {
+                    label:
+                      skill_weight?.slice(0, 1).toUpperCase() +
+                      skill_weight?.slice(1, skill_weight?.length),
+                    value: skill_weight,
+                  },
+                };
+              }
+            );
+            setValue("good_skills", good_to_have_skills);
+          }
+        }
+        if (currentStep === "step5") {
+          if (data) {
+            for (let key in data) {
+              if (key === "bio") {
+                const newBio = stripHtmlTags(data[key]);
+                setValue("description", newBio);
+              }
+            }
+          }
+        }
+        if (currentStep === "step6" && !isAdd && (!edit && !isEditMode.isEdit)) {
+          const details = data?.find((item, idx) => idx === data.length - 1)
           if (details) {
             for (let key in details) {
-              if (key === "start_date") {
-                const startDate = details[key]?.slice(0, 10);
-                setValue("start_date", startDate);
-              } else if (key === "end_date") {
-                const endDate = details["end_date"]?.slice(0, 10);
-                setValue("end_date", endDate);
-              } else if (key === "description") {
-                const desc = stripHtmlTags(details[key]);
-                if (currentStep === "step2") {
-                  setValue("project_description", desc);
-                } else {
-                  setValue("education_description", desc);
-                }
+              if (key == "project_start_date") {
+                const startDate = details[key].slice(0, 10);
+                setValue("project_start_date", startDate);
+              } else if (key === "project_end_date") {
+                const endDate = details[key].slice(0, 10);
+                setValue("project_end_date", endDate);
               } else {
                 setValue(key, details[key]);
               }
             }
           }
         }
-      }
-      if (currentStep === "step4") {
-          if (nestedActiveStep == 1) {
-            const formattedSkills = data?.expertises?.map(({ experience, skill_weight, skill }) => {
-              const getSkill = skillOptions?.find((option) => option.title === skill)
-              return { title: { label: getSkill?.title, value: getSkill?.id }, level: { label: skill_weight?.slice(0, 1).toUpperCase() + skill_weight?.slice(1, skill_weight?.length), value: skill_weight }, experience: { label: experience, value: +(experience?.split(' ')[0]) } }
-            })
-            setValue("skills", formattedSkills);
-          } else {
-            const good_to_have_skills = data?.other_skills?.map(({ skill_weight, skill }) => {
-              const good_skills = skillOptions?.find((option) => option.title === skill)
-              return { title: { label: good_skills?.title, value: good_skills?.id }, level: { label: skill_weight?.slice(0, 1).toUpperCase() + skill_weight?.slice(1, skill_weight?.length), value: skill_weight } }
-            })
-            setValue("good_skills", good_to_have_skills);
-          }
-      }
-      if (currentStep === "step5") {
-        if (data) {
-          for (let key in data) {
-            if (key === "bio") {
-              const newBio = stripHtmlTags(data[key]);
-              setValue("description", newBio);
-            }
-          }
-        }
-      }
-      if (currentStep === "step6" && !isAdd && (!edit && !isEditMode.isEdit)) {
-        const details = data?.find((item, idx) => idx === data.length - 1)
-        if (details) {
-          for (let key in details) {
-            if (key == "project_start_date") {
-              const startDate = details[key].slice(0, 10);
-              setValue("project_start_date", startDate);
-            } else if (key === "project_end_date") {
-              const endDate = details[key].slice(0, 10);
-              setValue("project_end_date", endDate);
-            } else {
-              setValue(key, details[key]);
-            }
-          }
-        }
-      }
-    }));
+      }));
     }
-  }, [ storedStep, nestedActiveStep, skillOptions, isAdd]);
+  }, [storedStep, nestedActiveStep, skillOptions, isAdd]);
 
 
   useEffect(() => {
@@ -493,7 +532,7 @@ const DeveloperRegistrationStepper = () => {
     else if (activeStep == 3) {
       setValue("university_name", '');
       setValue("location", '');
-      setValue("address",'');
+      setValue("address", '');
       setValue("degree_id", '');
       setValue("field_of_study", '');
       setValue("start_year", '');
@@ -528,7 +567,7 @@ const DeveloperRegistrationStepper = () => {
       setValue("project_type", selectedEditData?.project_type);
       localStorage.setItem("nestedActiveStep", 1);
       setNestedActiveStep(1);
-      
+
     } else if (activeStep == 2 && selectedEditData) {
       setValue("job_title", selectedEditData?.job_title);
       setValue("company_name", selectedEditData?.company_name);
@@ -544,7 +583,7 @@ const DeveloperRegistrationStepper = () => {
     else if (activeStep == 3 && selectedEditData) {
       setValue("university_name", selectedEditData?.university_name);
       setValue("address", selectedEditData?.address);
-      setValue("degree_id",selectedEditData?.degree_id);
+      setValue("degree_id", selectedEditData?.degree_id);
       setValue("field_of_study", selectedEditData?.field_of_study);
       setValue("start_year", new Date(selectedEditData?.start_year, 0, 1));
       setValue("end_month", "string");
@@ -722,6 +761,23 @@ const DeveloperRegistrationStepper = () => {
               />
             );
           case 1:
+            return (
+              <ExpertiseSection
+                register={register}
+                stepFields={activeStepFields}
+                errors={errors}
+                skillOptions={skillOptions}
+                activeStep={activeStep}
+                watch={watch}
+                setValue={setValue}
+                control={control}
+                nestedActiveStep={nestedActiveStep}
+                type="developer"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
+                appendedSkills={appendedSkills}
+              />
+            );
           case 2:
             return (
               <SkillAdd
@@ -795,7 +851,6 @@ const DeveloperRegistrationStepper = () => {
               />
             )
         }
-
       case 6:
         switch (nestedActiveStep) {
           case 0:
@@ -864,29 +919,9 @@ const DeveloperRegistrationStepper = () => {
     }
   };
 
-  const onSubmit = async(values) => {
+  const onSubmit = async (values) => {
     setIsAdd(false)
-    // let hasErrors = false;
 
-    // if (!imageFile?.resume && activeStep === 1) {
-    //   setError('resume', {
-    //     type: 'manual',
-    //     message: 'Resume is required.',
-    //   });
-    //   hasErrors = true;
-    // }
-
-    // if (!previewImage?.profile_picture && activeStep === 1) {
-    //   setError('profile_picture', {
-    //     type: 'manual',
-    //     message: 'Profile Picture is required.',
-    //   });
-    //   hasErrors = true;
-    // }
-
-    // if (hasErrors && activeStep === 1) {
-    //   return;
-    // }
 
     const uploadFiles = (files) => {
       let uploadedUrls = {};
@@ -910,7 +945,7 @@ const DeveloperRegistrationStepper = () => {
         let payload = {
           first_name: values?.first_name,
           last_name: values?.last_name,
-          profile_picture: uploadedUrls?.profile_picture ||previewImage?.profile_picture ,
+          profile_picture: uploadedUrls?.profile_picture || previewImage?.profile_picture,
           profession: values?.profession,
           work_preference: values?.work_preference,
           email: values?.email,
@@ -947,24 +982,24 @@ const DeveloperRegistrationStepper = () => {
 
     if (activeStep == 2) {
       let developer_experience = [];
-      if(edit){
-      if (freeArray) {
-        const payloads = freeArray?.map((itm) => ({
-          job_title: itm?.job_title,
-          company_name: itm?.company_name,
-          start_date: itm?.start_date,
-          end_date: itm?.is_still_working ? null : values?.end_date || null,
-          work_type: itm?.work_type,
-          is_still_working: itm?.is_still_working,
-          description: stripHtmlTags(itm?.project_description),
-          job_location: itm?.job_location
-        }));
-        dispatch(registerDeveloperExperience(payloads, developerId));
+      if (edit) {
+        if (freeArray) {
+          const payloads = freeArray?.map((itm) => ({
+            job_title: itm?.job_title,
+            company_name: itm?.company_name,
+            start_date: itm?.start_date,
+            end_date: itm?.is_still_working ? null : values?.end_date || null,
+            work_type: itm?.work_type,
+            is_still_working: itm?.is_still_working,
+            description: stripHtmlTags(itm?.project_description),
+            job_location: itm?.job_location
+          }));
+          dispatch(registerDeveloperExperience(payloads, developerId));
           increaseStepCount(true);
+        }
+        setEdit(false)
       }
-      setEdit(false)
-    }
-    
+
       if (nestedActiveStep == 1) {
         if (isEditMode?.isEdit) {
           let index = stepData.findIndex((it) => it.id === isEditMode.id);
@@ -1032,12 +1067,12 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       }
     } else if (activeStep === 3) {
-      if(edit){
-        if(freeArray){
+      if (edit) {
+        if (freeArray) {
           const payloads = freeArray?.map((itm) => {
             const startYear = itm?.start_year ? new Date(itm.start_year).getFullYear() : null;
             const endYear = itm?.start_year ? new Date(itm.end_year).getFullYear() : null;
-            return{
+            return {
               university_name: itm?.university_name,
               address: itm?.address,
               degree_id: itm?.degree_id,
@@ -1062,7 +1097,7 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       } else {
         if (nestedActiveStep == 2) {
-        
+
           let newData = stepData?.map((val) => {
             let updatedVal = { ...val };
 
@@ -1079,15 +1114,15 @@ const DeveloperRegistrationStepper = () => {
 
           if (stepTwoAutoComplete) {
             const degreePayload = {
-                title: values.degree
+              title: values.degree
             };
             await dispatch(addDegree(degreePayload, (degreeId) => {
-              DEGREE_ID= degreeId
+              DEGREE_ID = degreeId
               getDegreeList();
             }));
 
-                
-          const startYear = values?.start_year ? new Date(values.start_year).getFullYear() : null;
+
+            const startYear = values?.start_year ? new Date(values.start_year).getFullYear() : null;
             const endYear = values?.end_year ? new Date(values.end_year).getFullYear() : null;
 
             const newEntry = {
@@ -1100,22 +1135,22 @@ const DeveloperRegistrationStepper = () => {
               end_year: endYear,
               currently_attending: false,
               description: stripHtmlTags(values?.education_description),
-          };
-         
-          const filteredData = newData.filter(
-            (item) => item.degree_id !== newEntry.degree_id
-          );
+            };
 
-          let developer_education = [...filteredData, newEntry];
+            const filteredData = newData.filter(
+              (item) => item.degree_id !== newEntry.degree_id
+            );
 
-          dispatch(
-            registerDeveloperEducation(developer_education, developerId, () => {
-              increaseStepCount(true);
-            })
-          );
+            let developer_education = [...filteredData, newEntry];
+
+            dispatch(
+              registerDeveloperEducation(developer_education, developerId, () => {
+                increaseStepCount(true);
+              })
+            );
           }
-          else{
-          const startYear = values?.start_year ? new Date(values.start_year).getFullYear() : null;
+          else {
+            const startYear = values?.start_year ? new Date(values.start_year).getFullYear() : null;
             const endYear = values?.end_year ? new Date(values.end_year).getFullYear() : null;
 
             const newEntry = {
@@ -1128,20 +1163,20 @@ const DeveloperRegistrationStepper = () => {
               end_year: endYear,
               currently_attending: false,
               description: stripHtmlTags(values?.education_description),
-          };
-         
-          const filteredData = newData.filter(
-            (item) => item.degree_id !== newEntry.degree_id
-          );
+            };
 
-          let developer_education = [...filteredData, newEntry];
+            const filteredData = newData.filter(
+              (item) => item.degree_id !== newEntry.degree_id
+            );
 
-          dispatch(
-            registerDeveloperEducation(developer_education, developerId, () => {
-              increaseStepCount(true);
-            })
-          );
-        }
+            let developer_education = [...filteredData, newEntry];
+
+            dispatch(
+              registerDeveloperEducation(developer_education, developerId, () => {
+                increaseStepCount(true);
+              })
+            );
+          }
         } else {
           increaseStepCount(true);
         }
@@ -1150,54 +1185,56 @@ const DeveloperRegistrationStepper = () => {
       if (nestedActiveStep == 2) {
         const transformData = (data) => {
           return data?.map(item => ({
-            skill: item?.title?.label,
-            experience: item?.experience ? `${item?.experience?.value} years` : null,
-            skill_weight: item?.level?.value
+            skill: item?.skill?.label,
+            experience: item?.experience
+              ? `${item?.experience?.value} years`
+              : null,
+            skill_weight: item?.skill_weight?.value,
           }));
         };
         const output = transformData(values?.good_skills);
-        console.log(output,"output")
-        const secondOutput = transformData(values?.skills);
-        const dataToSend = secondOutput ? [...output,...secondOutput] : output;
+        console.log(output, "output")
+        const secondOutput = transformData(values?.expertise_skills);
+        const dataToSend = secondOutput ? [...output, ...secondOutput] : output;
         let payload = {
           developer_id: developerId,
           skills: dataToSend
         }
 
-        dispatch(registerDeveloperSkills(payload,()=>{
+        dispatch(registerDeveloperSkills(payload, () => {
           dispatch(getDeveloperProfileDetails(developerId))
         }));
         setNestedActiveStep(0);
         localStorage.setItem("nestedActiveStep", 0);
         increaseStepCount(false)
 
-      } else if (nestedActiveStep == 1 || nestedActiveStep == 2) {
+      } else if (nestedActiveStep == 1) {
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
         const transformData = (data) => {
           return data?.map(item => ({
-            skill: item?.title?.label,
-            experience: item?.experience ? `${item?.experience?.value} years` : null,
-            skill_weight: item?.level?.value
+            skill: item?.skill?.label,
+            experience: item?.experience
+              ? `${item?.experience?.value} years`
+              : null,
+            skill_weight: item?.skill_weight?.value,
           }));
         };
-        const output = transformData(values?.skills);
+        const output = transformData(values?.expertise_skills);
         const secondOutput = transformData(values?.good_skills);
-        const dataToSend = secondOutput ? [...output,...secondOutput] : output;
+        const dataToSend = secondOutput ? [...output, ...secondOutput] : output;
         let payload = {
           developer_id: developerId,
           skills: dataToSend
         }
 
-        dispatch(registerDeveloperSkills(payload,()=>{
+        dispatch(registerDeveloperSkills(payload, () => {
           dispatch(getDeveloperProfileDetails(developerId))
         }));
       } else {
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
-
       }
-
     } else if (activeStep == 5) {
       if (nestedActiveStep == 1) {
         let payload = {
@@ -1220,7 +1257,7 @@ const DeveloperRegistrationStepper = () => {
     else if (activeStep == 6) {
       if (nestedActiveStep == 1) {
         let projectTeamSize = values?.project_team_size.includes('+') ? values?.project_team_size.split('+')[0].trim() : values?.project_team_size;
-        const newEntry =  {
+        const newEntry = {
           "project_title": values?.project_title,
           "project_description": values?.project_description,
           "tech_stacks_used": values?.tech_stacks_used,
@@ -1231,16 +1268,16 @@ const DeveloperRegistrationStepper = () => {
           "project_end_date": values?.project_end_date,
           "project_type": values?.project_type
         }
-     
-      const filteredData = stepData.filter(
-        (item) => item.id !== editedId
-      );
 
-      if(editedId){
-        newEntry.id = editedId;
-      }
+        const filteredData = stepData.filter(
+          (item) => item.id !== editedId
+        );
 
-      let developer_project_edit = [...filteredData, newEntry];
+        if (editedId) {
+          newEntry.id = editedId;
+        }
+
+        let developer_project_edit = [...filteredData, newEntry];
 
         let payalod = {
           user_id: localStorage.getItem("developerId"),
@@ -1264,23 +1301,23 @@ const DeveloperRegistrationStepper = () => {
       setIsRegistrationStepModal(true);
     }
     else {
-      if(developerId==null){
+      if (developerId == null) {
         uploadFiles({
           resume: imageFile.resume,
           introVideo: imageFile.introVideo,
           profile_picture: imageFile.profile_picture,
         });
-      }else{
+      } else {
         updateFirstStepData(values)
       }
-   
+
     }
     setSelectedRecommend(null);
     setEditedId(null);
     setStepTwoAutoComplete(null);
   };
 
-  const updateFirstStepData=(values)=>{
+  const updateFirstStepData = (values) => {
     let payload = {
       first_name: values?.first_name,
       last_name: values?.last_name,
@@ -1463,8 +1500,8 @@ const DeveloperRegistrationStepper = () => {
                   text={getActiveDecreaseStepText()}
                   className="outline-main-btn px-4 font-14 mr-2"
                   onClick={profileSubmitIfDone}
-                  // disabled={smallLoader}
-                  // isLoading={smallLoader}
+                // disabled={smallLoader}
+                // isLoading={smallLoader}
                 />
               </div>
               <div>

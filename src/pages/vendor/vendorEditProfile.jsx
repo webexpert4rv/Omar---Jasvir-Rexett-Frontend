@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCoutriesList, getWebClientLookUp } from "../../redux/slices/clientDataSlice";
 import { applyAsVendor, getAreaExpertise, getEditDecision, getVendorUpdatedDetails, uploadFileToS3Bucket } from "../../redux/slices/vendorDataSlice";
 import { getVendorActiveStepFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../Registration flows/registrationConstant";
-// import ClientStep1 from "../admin/ClientRegister/ClientStep1";
 import { createOptionsForReactSelect } from "../websiteRegisterForm/developer/developeStepConstant";
 import SetUpJobModal from "../../components/common/Modals/SetUpJobModal";
 import RexettButton from "../../components/atomic/RexettButton";
