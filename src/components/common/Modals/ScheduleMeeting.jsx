@@ -60,7 +60,7 @@ const Schedulemeeting = ({
   const [meetingLink, setMeetingLink] = useState(null);
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [googleEventId, setGoogleEventID] = useState(null);
+  const [serviceEventId, setServiceEventID] = useState(null);
   const [microsoftEventId, setMicrosoftEventId] = useState(null);
   const [events, setEvents] = useState([]);
 
@@ -352,7 +352,7 @@ const Schedulemeeting = ({
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
         type: isAdminSingleJob ? 'interview' : 'screening',
-        event_id: microsoftEventId,
+        event_id: serviceEventId,
       };
       dispatch(postCandidateInterview(payload,()=>{
         dispatch(getAllEvents());
@@ -361,7 +361,7 @@ const Schedulemeeting = ({
       }));
     }
     setMeetingLink(null);
-    setGoogleEventID(null);
+    setServiceEventID(null);
     setMicrosoftEventId(null);
     setValue("meeting_type", "instant");
     reset();
@@ -456,7 +456,7 @@ const Schedulemeeting = ({
             // setValue("meetingPlatform","");
             console.log("Google Meet link:", response.result.hangoutLink);
             setMeetingLink(response.result.hangoutLink);
-            setGoogleEventID(response?.result?.id)
+            setServiceEventID(response?.result?.id)
             localStorage.setItem("googleEventId",response?.result?.id)
 
           }
