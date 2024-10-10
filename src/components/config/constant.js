@@ -1,5 +1,5 @@
 
-import { MdDesignServices, MdSpaceDashboard } from "react-icons/md";
+import { MdDesignServices, MdQueryStats, MdSpaceDashboard } from "react-icons/md";
 import { FaGear, FaListUl, FaUserClock, FaUserLarge, FaUsers } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
@@ -70,6 +70,7 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting",slug:"admin-time-reporting" },
     // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
     { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice",slug:"invoice" },
+    { to: "/admin/statistics", icon: <MdQueryStats />, text: "Statistics",slug:"statistics" },
     { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"" },
     { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration",slug:"configuration" },
     // { to: "/admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
