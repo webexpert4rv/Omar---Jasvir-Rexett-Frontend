@@ -275,6 +275,7 @@ const JobPostStepContainer = ({ role }) => {
             errors={errors}
             watch={watch}
             setValue={setValue}
+            clearErrors={clearErrors}
           />
         );
     }
