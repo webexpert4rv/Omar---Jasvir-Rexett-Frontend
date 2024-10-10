@@ -226,7 +226,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
    
     let payload=  {
         "meeting_external_id": job_external_id,
-        "status": "string",
+        "status": "completed",
         "duration": duration,
         "attendees": joinedMeet
       }
