@@ -29,6 +29,7 @@ import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
 import { meetingWebhookApi, updateStatus } from "../../../redux/slices/adminDataSlice";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
+import { convertSeconds } from "../../../helper/utlis";
 const MARK_AS_OPTIONS = [
   {
     label: "Completed",
@@ -187,6 +188,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     //   )activity
     //   .reduce((acc, val) => acc + val, 0);
     const events = response.result.items; // assuming 'items' contains the events
+    let joinedMeet=[]
+    let duration;
     if (events && events.length > 0) {
       // Process each event
       events.forEach(event => {
@@ -201,10 +204,39 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           displayName: parameters.find(p => p.name === "display_name")?.value,
           callEndedTime: event.id.time,
         };
+         
 
-        console.log(callEndedData,"CALLEND"); // Log or further process the extracted data
+       let duration_seconds= parameters.find(p => p.name === "duration_seconds")?.intValue
+
+      let value= convertSeconds(duration_seconds)
+      duration=value
+    
+        joinedMeet.push({
+          attendee_external_id:null,
+          name:parameters.find(p => p.name === "identifier")?.value,
+          "is_joined": true
+        })        
       });
+
+            
+      let joinedAttende=[]
+        
+
+
+   
+    let payload=  {
+        "meeting_external_id": job_external_id,
+        "status": "string",
+        "duration": duration,
+        "attendees": joinedMeet
+      }
+
+      console.log(payload,"payload")
+         
+      dispatch(meetingWebhookApi(payload,"ZbKD2/st1jLezibHDL6GXcYiwHIVvQcyU/9M55ty",()=>{}))
     }
+
+
   };
 
   const googleEventId = localStorage.getItem("googleEventId")
@@ -256,24 +288,6 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         console.log(`End Time: ${endTime}`);
         console.log(`Duration: ${duration / 60000} minutes`); // Duration in minute
 
-        let joinedAttende=[]
-        
-
-
-      
-        // dispatch(meetingWebhookApi())
-      let payload=  {
-          "meeting_external_id": job_external_id,
-          "status": "string",
-          "duration": "string",
-          "attendees": [
-            {
-              "attendee_external_id": "string",
-              "name": "string",
-              "is_joined": true
-            }
-          ]
-        }
 
       } catch (error) {
         console.error("Error fetching meeting details:", error);

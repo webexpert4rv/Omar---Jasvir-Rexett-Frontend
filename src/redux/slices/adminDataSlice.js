@@ -1259,11 +1259,11 @@ export function getSelectedEvent(id, callback) {
     }
 }
 
-export function meetingWebhookApi(token, callback) {
+export function meetingWebhookApi(payload,token, callback) {
     return async (dispatch) => {
         // dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.get(`common/meeting-details?token=${token}`)
+            let result = await clientInstance.post(`common/meeting-details?token=${token}`,{...payload})
 
             return callback(result.data);
         } catch (error) {
