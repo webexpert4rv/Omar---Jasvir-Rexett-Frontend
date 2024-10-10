@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import CommonInput from "../../atomic/CommonInput";
 import CreatableSelect from "react-select/creatable";
 
-
 const SCREENING_OPTIONS = [
   {
     optionId: 1,
@@ -96,6 +95,7 @@ const JobPostStep3 = ({
   control,
   watch,
   setValue,
+  clearErrors,
   isRegistrationStep = false,
   invalidFieldRequired = false,
 }) => {
@@ -105,15 +105,12 @@ const JobPostStep3 = ({
     name: "screening_questions",
   });
 
-  console.log(degreeList, "degreeList")
 
   // const handleOnChange = (item) => {
   //   console.log(item, "event")
   //   setDegree(item)
-
   // }
   const handleAddField = (opt) => {
-    // remember to remove label while posting data
     append({
       question_type: opt.question_type,
       question: opt.question,
@@ -160,10 +157,11 @@ const JobPostStep3 = ({
                     })}
                     type="text"
                     // value={watch(`screening_questions.${idx}.question`)}
-                    className={`common-field font-14 bg-white ${invalidFieldRequired &&
+                    className={`common-field font-14 bg-white ${
+                      invalidFieldRequired &&
                       errors?.screening_questions?.[idx].question?.message &&
                       "invalid-field"
-                      }`}
+                    }`}
                     placeholder="Try asking a question"
                   />
                   <Button
@@ -176,8 +174,9 @@ const JobPostStep3 = ({
                 </div>
                 {errors?.screening_questions?.[idx]?.question && (
                   <p
-                    className={`${invalidFieldRequired ? "field-error" : "error-message"
-                      }`}
+                    className={`${
+                      invalidFieldRequired ? "field-error" : "error-message"
+                    }`}
                   >
                     {errors?.screening_questions?.[idx].question?.message}
                   </p>
@@ -190,12 +189,12 @@ const JobPostStep3 = ({
                     <Form.Select
                       className={`common-field font-14`}
                       {...register(`screening_questions.${idx}.responseType`)}
-                    // onChange={(e) =>
-                    //   setValue(
-                    //     `screening_questions.${idx}.responseType`,
-                    //     e.target.value
-                    //   )
-                    // }
+                      // onChange={(e) =>
+                      //   setValue(
+                      //     `screening_questions.${idx}.responseType`,
+                      //     e.target.value
+                      //   )
+                      // }
                     >
                       <option value="yes/no" selected>
                         Yes/No
@@ -209,7 +208,7 @@ const JobPostStep3 = ({
                     <Form.Label className="font-14">Ideal answer</Form.Label>
                     <div className="d-flex align-items-center gap-3">
                       {watch(`screening_questions.${idx}.responseType`) ===
-                        "yes/no" ? (
+                      "yes/no" ? (
                         <>
                           <Controller
                             name={`screening_questions.${idx}.ideal_answer`}
@@ -246,8 +245,9 @@ const JobPostStep3 = ({
                     </div>
                     {errors?.screening_questions?.[idx]?.ideal_answer && (
                       <p
-                        className={`${invalidFieldRequired ? "field-error" : "error-message"
-                          }`}
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
                       >
                         {
                           errors?.screening_questions?.[idx].ideal_answer
@@ -287,42 +287,55 @@ const JobPostStep3 = ({
                 <Row className="align-items-end screening-grid">
                   <Col md="4" className="mb-md-0 mb-4">
                     <Form.Group>
-                      {field?.question_type && field?.question_type === "Degree" && (
-                        <>
-                          <Form.Label className="font-14">{"Degree"}</Form.Label>
-                          <CreatableSelect
-                            {...register(`screening_questions.${idx}.title`,
-                              { required: t("required_message") }
-                            )}
-                            isClearable
-                            onChange={(val) =>
-                              setValue(
-                                `screening_questions.${idx}.title`,
-                                val ? val.label : ""
-                              )
-                            }
-                            options={degreeList}
-                          />
-                          {/* {errors?.screening_questions[idx].Degree && (
+                      {field?.question_type &&
+                        field?.question_type === "Degree" && (
+                          <>
+                            <Form.Label className="font-14">
+                              {"Degree"}
+                            </Form.Label>
+                            <Controller
+                              name={`screening_questions.${idx}.title`}
+                              control={control}
+                              rules={{ required: "This field is required" }} // Custom error message
+                              render={({
+                                field: { onChange, onBlur, value, ref },
+                              }) => (
+                                <CreatableSelect
+                                  isClearable
+                                  onChange={(val) =>
+                                    setValue(
+                                      `screening_questions.${idx}.title`,
+                                      val ? val.label : ""
+                                    )
+                                  }
+                                  options={degreeList}
+                                  value={value}
+                                />
+                              )}
+                            />
+                            {/* {errors?.screening_questions[idx].Degree && (
                               <p className="error-message">
                                 {errors.screening_questions[idx].Degree.message}
                               </p>
                             )} */}
-                        </>
-                      )}
-                      {field?.question_type && field?.question_type === "language" && (
-                        <>
-                          <Form.Label className="font-14">{field?.question_type}</Form.Label>
-                          <Form.Control
-                            type="text"
-                            {...register(`screening_questions.${idx}.title`, {
-                              required: t("required_message"),
-                            })}
-                            className="common-field font-14"
-                            placeholder={`Enter ${field?.question_type} name`}
-                          />
-                        </>
-                      )}
+                          </>
+                        )}
+                      {field?.question_type &&
+                        field?.question_type === "language" && (
+                          <>
+                            <Form.Label className="font-14">
+                              {field?.question_type}
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              {...register(`screening_questions.${idx}.title`, {
+                                required: t("required_message"),
+                              })}
+                              className="common-field font-14"
+                              placeholder={`Enter ${field?.question_type} name`}
+                            />
+                          </>
+                        )}
 
                       {/* Uncommented block for non-custom types */}
                       {/* <Form.Label className="font-14">{field?.question_type}</Form.Label>
@@ -338,8 +351,9 @@ const JobPostStep3 = ({
 
                     {errors?.screening_questions?.[idx]?.title && (
                       <p
-                        className={`${invalidFieldRequired ? "field-error" : "error-message"
-                          }`}
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
                       >
                         {errors?.screening_questions?.[idx].title?.message}
                       </p>
@@ -350,18 +364,18 @@ const JobPostStep3 = ({
                       <Form.Label className="font-14">Ideal answer</Form.Label>
                       {field?.ideal_answer === "Yes" ? (
                         <Form.Select
-                        {...register(
-                          `screening_questions.${idx}.ideal_answer`,
-                          {
-                            required: t("required_message"),
-                          }
-                        )}
-                      >
-                        <option selected value="yes">
-                          Yes
-                        </option>
-                        <option value="no">No</option>
-                      </Form.Select>
+                          {...register(
+                            `screening_questions.${idx}.ideal_answer`,
+                            {
+                              required: t("required_message"),
+                            }
+                          )}
+                        >
+                          <option selected value="yes">
+                            Yes
+                          </option>
+                          <option value="no">No</option>
+                        </Form.Select>
                       ) : field?.question_type === "language" ? (
                         <>
                           <Form.Select
@@ -385,12 +399,16 @@ const JobPostStep3 = ({
                       ) : (
                         <Form.Control
                           type={
-                            field?.question_type === "Years" ||
-                              "Skill"
+                            field?.question_type === "Years" || "Skill"
                               ? "number"
                               : "text"
                           }
-                          min={field?.question_type === "Years" ||  "Expertise with Skill"?  0 : null}
+                          min={
+                            field?.question_type === "Years" ||
+                            "Expertise with Skill"
+                              ? 0
+                              : null
+                          }
                           {...register(
                             `screening_questions.${idx}.ideal_answer`,
                             {
@@ -412,8 +430,9 @@ const JobPostStep3 = ({
                     </Form.Group>
                     {errors?.screening_questions?.[idx]?.ideal_answer && (
                       <p
-                        className={`${invalidFieldRequired ? "field-error" : "error-message"
-                          }`}
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
                       >
                         {
                           errors?.screening_questions?.[idx].ideal_answer
@@ -430,14 +449,15 @@ const JobPostStep3 = ({
                           // required: t("required_message"),
                         })}
                         className="font-14 job-post-checkbox"
-                        id="must2"
+                        id={`screening_questions.${idx}.must_have`}
                         label="Must have qualification"
                       />
                     </Form.Group>
                     {errors?.screening_questions?.[idx]?.must_have && (
                       <p
-                        className={`${invalidFieldRequired ? "field-error" : "error-message"
-                          }`}
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
                       >
                         {errors?.screening_questions?.[idx]?.must_have?.message}
                       </p>
@@ -512,7 +532,7 @@ const JobPostStep3 = ({
               onClick={() => {
                 handleAddField(curElem);
               }}
-              // disabled={isFieldAlreadyAdded(curElem?.optionId)}
+              disabled={isFieldAlreadyAdded(curElem?.optionId)}
               // disabled={() => {
               //   isFieldAlreadyAdded(curElem?.title);
               // }}
@@ -542,8 +562,9 @@ const JobPostStep3 = ({
           />
           {errors?.qualification_filter_out && (
             <p
-              className={`${invalidFieldRequired ? "field-error" : "error-message"
-                }`}
+              className={`${
+                invalidFieldRequired ? "field-error" : "error-message"
+              }`}
             >
               {errors.qualification_filter_out?.message}
             </p>
