@@ -46,6 +46,9 @@ import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 import VendorEditProfile from "./pages/vendor/vendorEditProfile.jsx";
+import Statistics from "./pages/admin/Statistics.jsx";
+
+
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -775,6 +778,12 @@ export const route = [
   {
     path: "admin/register-developer",
     element: <DeveloperRegistrationStepper />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "admin/statistics",
+    element: <Statistics />,
     isAdmin: true,
     private: true,
   },
