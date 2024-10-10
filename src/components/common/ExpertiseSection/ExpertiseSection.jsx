@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
-import StepperHeadingSection from "../RegistrationFlows/StepperHeadingSection";
-import RecommendationAI from "../RegistrationFlows/DeveloperRegistrationFlow/RecommendationAI";
+import { useEffect, useState } from "react";
+import { createOptionsForReactSelect, experienceLevels, LEVEL_OPTIONS } from "../../../pages/websiteRegisterForm/developer/developeStepConstant";
+import StepperHeadingSection from "../../../pages/Registration flows/StepperHeadingSection";
+import RecommendationAI from "../../../pages/Registration flows/DeveloperRegistrationFlow/RecommendationAI";
+import CommonInput from "../../atomic/CommonInput";
 import { Button, Col, Row } from "react-bootstrap";
-import CustomSkill from "../RegistrationFlows/DeveloperRegistrationFlow/CustomSkill";
-import { Controller, useFieldArray } from "react-hook-form";
-import ReactQuill from "react-quill";
-import CommonInput from "./CommonInput";
-import {
-  createOptionsForReactSelect,
-  experienceLevels,
-  LEVEL_OPTIONS,
-} from "../constant/developerStepConstant";
 import { IoAddCircle, IoTrash } from "react-icons/io5";
+import { useFieldArray } from "react-hook-form";
 
 const ExpertiseSection = ({
   control,
@@ -28,7 +22,6 @@ const ExpertiseSection = ({
   selectedRecommend,
 }) => {
   const [formattedSkilloptions, setFormattedSkillOptions] = useState([]);
-
   useEffect(() => {
     if (skillOptions?.length) {
       const formattedSkillOptions = createOptionsForReactSelect(
@@ -78,7 +71,6 @@ const ExpertiseSection = ({
     },
   ];
 
-  console.log(watch("expertise_skills"), "These are expertise skills");
   const areAllPreviousFieldsFilled = (array) => {
     return array.every(
       (item) =>
@@ -93,7 +85,6 @@ const ExpertiseSection = ({
       append(itemToAppend);
     }
   };
-console.log(watch("                                                                                                                                                      "),"expertise_skills inside component")
   return (
     <>
       <div>

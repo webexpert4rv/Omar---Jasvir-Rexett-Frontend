@@ -42,17 +42,17 @@ const CustomSkill = ({
   const handleAppend = () => {
     if(nestedActiveStep===1){
       const index = watch(`${fieldName}`)?.findIndex(
-        (curElem) => curElem.title === "" || curElem.level === "" 
+        (curElem) => curElem.skill === "" || curElem.skill_weight === "" 
       )
       if (index < 0) {
-        append({ title: "", level: "", experience: "" });
+        append({ skill: "", skill_weight: "" });
       }
     }else{
       const idx = watch(`${fieldName}`)?.findIndex(
-        (curElem) => curElem.title === "" || curElem.level === "" 
+        (curElem) => curElem.skill === "" || curElem.skill_weight === "" 
       );
       if (idx < 0) {
-        append({ title: "", level: "" });
+        append({ skill: "", skill_weight: "" });
       }
     }
   }
@@ -75,11 +75,11 @@ const CustomSkill = ({
             <div className="w-100">
               <CommonInput
                 label={"Enter Skill"}
-                name={ `${fieldName}.${idx}.title`}
+                name={ `${fieldName}.${idx}.skill`}
                 type={"select2"}
                 control={control}
                 rules={{ required: "This field is required" }}
-                error={nestedActiveStep == 1 ? errors?.skills?.[idx]?.title :  errors?.good_skills?.[idx]?.title}
+                error={nestedActiveStep == 1 ? errors?.skills?.[idx]?.skill :  errors?.good_skills?.[idx]?.skill}
                 selectOptions={formattedSkillOptions}
                 invalidFieldRequired={true}
                 placeholder="Select Skill"
@@ -101,11 +101,11 @@ const CustomSkill = ({
             <div className="w-100">
               <CommonInput
                 label={"Enter Level"}
-                name={`${fieldName}.${idx}.level` }
+                name={`${fieldName}.${idx}.skill_weight` }
                 type={"select2"}
                 control={control}
                 rules={{ required: "This field is required" }}
-                error={nestedActiveStep == 1 ? errors?.skills?.[idx]?.level :  errors?.good_skills?.[idx]?.level}
+                error={nestedActiveStep == 1 ? errors?.skills?.[idx]?.skill_weight :  errors?.good_skills?.[idx]?.skill_weight}
                 selectOptions={LEVEL_OPTIONS}
                 invalidFieldRequired={true}
                 placeholder="Select Level"

@@ -165,10 +165,62 @@ const ClientStep1 = ({
                         invalidFieldRequired={true}
                         error={errors?.[fieldName]}
                         apiKey={GOOGLE_MAP_API_KEY}
-                        onPlaceSelected={(place) => {
+                        onPlaceSelected={async (place) => {
                           setValue(fieldName, place?.formatted_address);
+                          // Extract ZIP code from address components
+
+                          const addressComponents = place?.address_components;
+                          const zipCodeObj = addressComponents?.find(component =>
+                            component.types.includes("postal_code")
+                          )
+
+                          const countryObj = addressComponents?.find(component =>
+                            component.types.includes("country")
+                          );
+                          const country = countryObj ? countryObj.long_name : null;
+                          setValue(`country_code`, country);
+                          const zipCode = zipCodeObj ? zipCodeObj.long_name : null;
+                          setValue('passcode', zipCode);
+                          console.log(zipCodeObj, "zipCodeObj")
+                          console.log(place, "place")
+
+                          const { lat, lng } = place.geometry.location;
+
+                          // Call Google Timezone API to get the timezone
+                          try {
+                            const response = await fetch(
+                              `https://maps.googleapis.com/maps/api/timezone/json?location=${lat()},${lng()}&timestamp=${Math.floor(Date.now() / 1000)}&key=${GOOGLE_MAP_API_KEY}`
+                            );
+                            const data = await response.json();
+                            if (data.status === "OK") {
+
+                              const rawOffset = data.rawOffset;  // Raw offset from the response (in seconds)
+                              const dstOffset = data.dstOffset;   // DST offset (in seconds)
+                              const totalOffset = rawOffset + dstOffset;  // Total offset (considering DST)
+
+                              // Convert total offset from seconds to hours and minutes
+                              const hours = Math.floor(totalOffset / 3600);
+                              const minutes = Math.abs((totalOffset % 3600) / 60);
+
+                              // Determine the UTC offset sign
+                              const sign = hours >= 0 ? "+" : "-";
+
+                              // Construct the formatted string
+                              const utcOffsetString = `UTC ${sign}${Math.abs(hours)}:${minutes === 0 ? '00' : minutes}`;
+
+                              // Use the timeZoneId from the response (Asia/Calcutta) and combine it with the UTC offse
+                              const timezone = data.timeZoneId;
+                              const formattedResponse = `${timezone} ${utcOffsetString}`;
+                              setValue('time_zone', formattedResponse);
+                            } else {
+                              console.error("Error fetching timezone data: ", data.status);
+                            }
+                          } catch (error) {
+                            console.error("Error calling Google Timezone API: ", error);
+                          }
                         }}
                         onChange={(e) => {
+                          console.log(e.target.value, "vall")
                           setValue(fieldName, e.target.value);
                         }}
                         options={{
@@ -208,21 +260,22 @@ const ClientStep1 = ({
                             watch={watch}
                             flowName={flowName}
                           />
-                        ) : <UploadFile
-                          label={label}
-                          placeholder={placeholder}
-                          register={register}
-                          setValue={setValue}
-                          clearErrors={clearErrors}
-                          setImageFile={setImageFile}
-                          setPreviewImage={setPreviewImage}
-                          previewImage={previewImage}
-                          setError={setError}
-                          imageFile={imageFile}
-                          fieldName={fieldName}
-                          errors={errors}
-                          stepData={stepData}
-                        />}
+                        )
+                          : <UploadFile
+                            label={label}
+                            placeholder={placeholder}
+                            register={register}
+                            setValue={setValue}
+                            clearErrors={clearErrors}
+                            setImageFile={setImageFile}
+                            setPreviewImage={setPreviewImage}
+                            previewImage={previewImage}
+                            setError={setError}
+                            imageFile={imageFile}
+                            fieldName={fieldName}
+                            errors={errors}
+                            stepData={stepData}
+                          />}
                       </div>
                     )}
 
