@@ -484,7 +484,7 @@ const Schedulemeeting = ({
         },
         "allowNewTimeProposals": true,
         "isOnlineMeeting": true,
-        "onlineMeetingProvider": "skypeForBusiness",
+        "onlineMeetingProvider": "teamsForBusiness",
       //   "onlineMeeting": {
       //     "joinUrl": null
       // }

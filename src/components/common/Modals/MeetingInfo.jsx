@@ -253,7 +253,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
       try {
         // Fetch the online meeting details using the meeting ID
-        const joinUrl = details?.interview?.meeting_link;
+        // const joinUrl = details?.interview?.meeting_link;
+        const joinUrl="https://teams.microsoft.com/l/meetup-join/19%3ameeting_Zjg4MjgyMDUtNzA1Ny00M2E3LWE1N2MtNWEyNjZlZmMzYjRl%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d"
         const id = joinUrl;
 
         // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
