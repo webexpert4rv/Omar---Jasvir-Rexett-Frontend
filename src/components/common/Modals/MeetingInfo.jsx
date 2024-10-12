@@ -76,8 +76,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedDeveloper, setSelectedDeveloper] = useState({});
   const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
-  const {
-    interview: {
+  const {interview: {  
       id, // application id
       title,
       developer_name,
@@ -444,6 +443,19 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                   <p className="font-14 mb-0">{details?.developer?.name}</p>
                 </div>
               </Col>
+              <Col lg={4} className="mb-lg-3 mb-1">
+                <p className="font-14 schedule-heading">
+                  <span>
+                    <RiUser3Fill />
+                  </span>
+                  Developer Email
+                </p>
+              </Col>
+              <Col lg={8} className="mb-3">
+                <div className="d-flex align-items-center gap-3 client-imgbx">
+                  <p className="font-14 mb-0">{details?.developer?.email}</p>
+                </div>
+              </Col>
               {/* <Col lg={4} className="mb-lg-3 mb-1">
                                 <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Company Name</p>
                             </Col>
@@ -615,7 +627,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               </Button> */}
             </div>
           </div>
-          {true && (
+          {showDetailsSection && (
             <div className="detailedSection" style={{ marginTop: "10px" }}>
               <Row>
                 <Col lg={8}>

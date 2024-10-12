@@ -12,14 +12,28 @@ import { useTranslation } from "react-i18next";
 import { FaEyeSlash } from "react-icons/fa6";
 
 
-const RexetLogin = ({userType}) => {
-    const dispatch =useDispatch();
-    const navigate=useNavigate()
-    const {smallLoader }=useSelector(state=>state.authData);
-    const [isRemember,setRemember]=useState(false)
-    const [email,setEmail]=useState("")
-    const [isPassword,setPassword]=useState(false)
+const RexetLogin = ({ userType }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const { smallLoader } = useSelector(state => state.authData);
+    const [isRemember, setRemember] = useState(false)
+    const [email, setEmail] = useState("")
+    const [isPassword, setPassword] = useState(false)
     const { t } = useTranslation()
+    const {
+        register,
+        setValue,
+        handleSubmit,
+        formState: { errors, isDirty, isValid, isSubmitting },
+    } = useForm({});
+
+    useEffect(() => {
+        let email = localStorage.getItem("email")
+        if (email) {
+            setValue("email", email)
+            setRemember(true)
+        }
+    }, [])
     function generateBrowserId() {
         const userAgent = navigator.userAgent;
         const screenWidth = window.screen.width;
@@ -27,75 +41,49 @@ const RexetLogin = ({userType}) => {
         const pixelRatio = window.devicePixelRatio;
         const browserId = `${userAgent}-${screenWidth}-${screenHeight}-${pixelRatio}`;
         return browserId;
-      }
-      
-      const browserId = generateBrowserId();
+    }
+    const browserId = generateBrowserId();
 
-    const {
-        register,
-        setValue,
-        handleSubmit,
-
-        formState: { errors, isDirty, isValid, isSubmitting },
-      } = useForm({});
-
-      useEffect(()=>{
-        let email=localStorage.getItem("email")
-        if(email){
-            setValue("email",email)
-            setRemember(true)
+    const onSubmit = (values) => {
+        localStorage.setItem("email", values.email)
+        let allRoles = {
+            client: "client",
+            developer: "developer",
+            admin: "admin",
+            vendor: "vendor",
+            subAdmin: "employee"
         }
-
-      },[])
-     
-      const onSubmit=(values)=>{
-        localStorage.setItem("email",values.email)
-        let allRoles={
-            client:"client",
-            developer:"developer",
-            admin:"admin",
-            vendor:"vendor",
-            subAdmin:"employee"
-        }
-        let data={
-            email:values.email,
-            password:values.password,
-            role:allRoles[`${userType}`],
+        let data = {
+            email: values.email,
+            password: values.password,
+            role: allRoles[`${userType}`],
             mac_address: browserId
-        }   
-        
-        dispatch(loginUser(data,()=>{
+        }
+        dispatch(loginUser(data, () => {
             navigate(`/otp`)
         }))
-      }
-    
-
-      const handleRoles=(e)=>{
-     navigate(`/${e.target.value}`)
-      }
-
-     const handleRemember=(e)=>{
-        if(e.target.checked){
-            localStorage.setItem("email",email)
+    }
+    const handleRoles = (e) => {
+        navigate(`/${e.target.value}`)
+    }
+    const handleRemember = (e) => {
+        if (e.target.checked) {
+            localStorage.setItem("email", email)
             setRemember(true)
-        }else{
+        } else {
             localStorage.removeItem("email")
             setRemember(false)
         }
-     } 
-
-     const currentRoles=(userType)=>{
-        let allRoles={
-            client:t("clientLogin"),
-            developer:t("developerLogin"),
-            admin:t("adminLogin"),
-            vendor:t("vendorLogin")
+    }
+    const currentRoles = (userType) => {
+        let allRoles = {
+            client: t("clientLogin"),
+            developer: t("developerLogin"),
+            admin: t("adminLogin"),
+            vendor: t("vendorLogin")
         }
-
         return allRoles[userType]
-     }
-     
-
+    }
     return (
         <>
             <section className="auth-wrapper">
@@ -105,12 +93,10 @@ const RexetLogin = ({userType}) => {
                             <div className="inner-auth-wrapper h-100 d-flex justify-content-center flex-column position-relative">
                                 <div>
                                     <div className="text-center mb-5 logo-auth-wrapper">
-                                    <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
+                                        <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo" /></a>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
-                                      
                                         <Link to={"#"} className="link-text text-decoration-none">{currentRoles(userType)}</Link>
-                                        
                                         {/* <Link to={"#"} className="link-text text-decoration-none">Client Login</Link> */}
                                         {/* <Link to={"#"} className="link-text">Register</Link> */}
                                     </div>
@@ -118,45 +104,44 @@ const RexetLogin = ({userType}) => {
                                         <Form.Group className="mb-3">
                                             <Form.Label className="label-form">{t("email")}</Form.Label>
                                             <Form.Control type="email" className="auth-field"
-                                            name="email"
-                                            {...register("email", {
-                                                onChange:(e)=>setEmail(e.target.value),
-                                                required: {
-                                                  value: true,
-                                                  message: "Email is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                    message: 'Invalid email format',
-                                                  },
-                                              })}
+                                                name="email"
+                                                {...register("email", {
+                                                    onChange: (e) => setEmail(e.target.value),
+                                                    required: {
+                                                        value: true,
+                                                        message: "Email is required",
+                                                    },
+                                                    pattern: {
+                                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                        message: 'Invalid email format',
+                                                    },
+                                                })}
                                             />
-                                             <p className="error-message">
+                                            <p className="error-message">
                                                 {errors.email?.message}
-                                                </p>
+                                            </p>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="label-form">{t("password")}</Form.Label>
                                             <div className="position-relative">
-                                                <Form.Control type={isPassword?"text":"password"} className="auth-field pe-5" 
-                                                name="password"
-                                                {...register("password", {
-                                                    required: {
-                                                      value: true,
-                                                      message: "Password is required",
-                                                    },
-                                                  
-                                                  })}
+                                                <Form.Control type={isPassword ? "text" : "password"} className="auth-field pe-5"
+                                                    name="password"
+                                                    {...register("password", {
+                                                        required: {
+                                                            value: true,
+                                                            message: "Password is required",
+                                                        },
+                                                    })}
                                                 />
-                                                <span className="eye-btn" onClick={()=>setPassword(!isPassword)}>
+                                                <span className="eye-btn" onClick={() => setPassword(!isPassword)}>
                                                     {
-                                                      isPassword ? <FaEyeSlash/> : <FaEye/>
+                                                        isPassword ? <FaEyeSlash /> : <FaEye />
                                                     }
                                                 </span>
                                             </div>
                                             <p className="error-message">
                                                 {errors.password?.message}
-                                                </p>
+                                            </p>
                                         </Form.Group>
                                         <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                                             <Form.Check
@@ -169,14 +154,14 @@ const RexetLogin = ({userType}) => {
                                             />
                                             <Link to={"/forgot-password"} className="link-text" >{t("forgotPassword")}</Link>
                                         </div>
-                                        <RexettButton 
-                                        type="submit" 
-                                        text={t("login")}
-                                        className="auth-btn d-block text-decoration-none"
-                                        onClick={handleSubmit}
-                                        variant="transparent"
-                                        disabled={smallLoader}
-                                        isLoading={smallLoader}
+                                        <RexettButton
+                                            type="submit"
+                                            text={t("login")}
+                                            className="auth-btn d-block text-decoration-none"
+                                            onClick={handleSubmit}
+                                            variant="transparent"
+                                            disabled={smallLoader}
+                                            isLoading={smallLoader}
                                         />
                                     </form>
                                 </div>
