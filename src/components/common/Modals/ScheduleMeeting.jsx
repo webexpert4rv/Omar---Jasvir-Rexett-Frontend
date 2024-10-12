@@ -27,7 +27,6 @@ import {
   getDeveloperList,
   postScheduleMeeting,
 } from "../../../redux/slices/adminDataSlice";
-import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
 import ThirdPartyServices from "./ThirdParyServices";
 import moment from "moment";

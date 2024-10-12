@@ -264,6 +264,17 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           .filter(`JoinWebUrl eq '${id}'`)
           .get();
 
+       // Call the Graph API for fetching attendance records
+       const meetingId = `MSpiN2RjMzNlMC1mMGI5LTQyY2MtYWUzMi05NmI3Y2JjYzZjNTMqMCoqMTk6bWVldGluZ19aamc0TWpneU1EVXROekExTnkwME0yRTNMV0UxTjJNdE5XRXlOalpsWm1NellqUmxAdGhyZWFkLnYy`;
+       const reportId = '26c91dd3-ce94-4c1a-bcd4-2d885df82169';
+       const endpoint = `https://graph.microsoft.com/v1.0/me/onlineMeetings/MSpiN2RjMzNlMC1mMGI5LTQyY2MtYWUzMi05NmI3Y2JjYzZjNTMqMCoqMTk6bWVldGluZ19aamc0TWpneU1EVXROekExTnkwME0yRTNMV0UxTjJNdE5XRXlOalpsWm1NellqUmxAdGhyZWFkLnYy/attendanceReports`;
+
+       const response = await client
+       .api(endpoint)
+       .get();
+
+       console.log(response,"response")
+
         if (meetingResponse) {
           const res = meetingResponse.value[0];
           setShowDetailsSection(true);
