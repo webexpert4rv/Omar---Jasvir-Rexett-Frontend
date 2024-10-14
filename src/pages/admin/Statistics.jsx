@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Nav, Row, Tab } from "react-bootstrap";
 import { Line, Doughnut } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import { IoTrendingUpSharp } from "react-icons/io5";
@@ -348,7 +348,7 @@ const Statistics = () => {
                                 </Col>
                             </Row>
                         </div>
-                        
+
                     </Col>
                     <Col xxl={8} lg={12} className="mb-4">
                         <Row>
@@ -445,30 +445,141 @@ const Statistics = () => {
                         </Row>
                     </Col>
                 </Row>
-                <Row>
-                    <Col xxl={6} lg={12} className="mb-4">
-                        <div className="card-box h-100">
-                            <h3 className="section-head pb-0 border-0 mb-4">Total Revenue</h3>
-                            <div className="revenue-graph">
-                                <Line data={lineData} options={lineOptions} />
-                            </div>
+                <Tab.Container id="left-tabs-example" defaultActiveKey="revenue-stat">
+                    <div className="card-box mb-4 p-3">
+                        <div className="d-flex justify-content-center mb-4">
+                            <Nav variant="pills" className="weekly-tabs mb-0">
+                                <Nav.Item className='weekly-tab-item'>
+                                    <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="revenue-stat">Revenue</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item className='weekly-tab-item'>
+                                    <Nav.Link className='weekly-tab-link' eventKey="client-stats">Clients</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item className='weekly-tab-item'>
+                                    <Nav.Link className='weekly-tab-link' eventKey="dev-stats">Developers</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item className='weekly-tab-item'>
+                                    <Nav.Link className='weekly-tab-link' eventKey="invoice-stats">Invoices</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item className='weekly-tab-item'>
+                                    <Nav.Link className='weekly-tab-link' eventKey="project-stats">Projects</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
                         </div>
-                    </Col>
-                    <Col xxl={6} lg={12} className="mb-4">
-                        <div className="card-box h-100">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h3 className="section-head pb-0 border-0 mb-0">Projects</h3>
-                                <Form.Select className="common-field w-auto font-14">
-                                    <option>Monthly</option>
-                                    <option>Yearly</option>
-                                </Form.Select>
-                            </div>
-                            <div className="hired-dev-graph">
-                                <Line data={lineHiredData} options={lineHiredOptions} />
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
+                        <Tab.Content>
+                            <Tab.Pane eventKey="revenue-stat">
+                                <Row>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <h3 className="section-head pb-0 border-0 mb-4">Total Revenue (Monthly)</h3>
+                                            <div className="revenue-graph">
+                                                <Line data={lineData} options={lineOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Total Revenue (Yearly)</h3>
+                                            </div>
+                                            <div className="hired-dev-graph">
+                                                <Line data={lineHiredData} options={lineHiredOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="client-stats">
+                                <Row>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <h3 className="section-head pb-0 border-0 mb-4">Total Clients(Monthly)</h3>
+                                            <div className="revenue-graph">
+                                                <Line data={lineData} options={lineOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Total Clients(Yearly)</h3>
+                                            </div>
+                                            <div className="hired-dev-graph">
+                                                <Line data={lineHiredData} options={lineHiredOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="dev-stats">
+                                <Row>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <h3 className="section-head pb-0 border-0 mb-4">Total Developers(Monthly)</h3>
+                                            <div className="revenue-graph">
+                                                <Line data={lineData} options={lineOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Total Developers(Yearly)</h3>
+                                            </div>
+                                            <div className="hired-dev-graph">
+                                                <Line data={lineHiredData} options={lineHiredOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="invoice-stats">
+                                <Row>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <h3 className="section-head pb-0 border-0 mb-4">Total Invoices(Monthly)</h3>
+                                            <div className="revenue-graph">
+                                                <Line data={lineData} options={lineOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Total Invoices(Yearly)</h3>
+                                            </div>
+                                            <div className="hired-dev-graph">
+                                                <Line data={lineHiredData} options={lineHiredOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="invoice-stats">
+                                <Row>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <h3 className="section-head pb-0 border-0 mb-4">Total Projects(Monthly)</h3>
+                                            <div className="revenue-graph">
+                                                <Line data={lineData} options={lineOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col xxl={6} lg={12} className="mb-4">
+                                        <div className="card-box h-100">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Total Projects(Yearly)</h3>
+                                            </div>
+                                            <div className="hired-dev-graph">
+                                                <Line data={lineHiredData} options={lineHiredOptions} />
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Tab.Pane>
+                        </Tab.Content>
+                    </div>
+                </Tab.Container>
             </div>
         </>
     )

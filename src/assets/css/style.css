@@ -10449,6 +10449,21 @@ select.apply-field
     font-size: 23px;
     font-weight: 600;
 }
+.secondary_nav .main-btn
+{
+    max-width: none;
+    max-height: none;
+}
+.welcome-heading
+{
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.welcome-heading span
+{
+    color: #037563;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;

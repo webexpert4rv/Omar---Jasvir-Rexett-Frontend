@@ -397,6 +397,7 @@ const AdminDashboard = () => {
 
     return (
         <>
+        <h1 className="welcome-heading">Welcome, <span>Admin Doe</span></h1>
             {screenLoader ? <ScreenLoader /> : <div>
                 <h2 className="section-head mb-4">{t("overview")}</h2>
                 <div className="overview-card-wrapper mb-5">
@@ -451,7 +452,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                <div>
+                {/* <div>
                     <Row>
                         <Col xxl={6} lg={12} className="mb-4">
                             <div className="card-box h-100">
@@ -461,72 +462,6 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </Col>
-                        {/* <Col xxl={6} lg={12} className="mb-4">
-                            <div className="card-box">
-                                <div className="d-flex align-items-center justify-content-between mb-3">
-                                    <h3 className="heading-section mb-0">Customer Satisfaction</h3>
-                                    <Link to={'/customer-feedback'} className="main-btn font-14">View Feedbacks</Link>
-                                </div>
-                                <div>
-                                    <Row>
-                                        <Col md={6}>
-                                            <div>
-                                                <h4 className="subheading-card">Total Received</h4>
-                                                <h3 className="mainheading-card total-text">753</h3>
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className="feedback-wrapper positive-wrapper">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="feedback-icon">
-                                                        <BsFillHandThumbsUpFill />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="subheading-card">Great</h4>
-                                                        <h3 className="mainheading-card">89%</h3>
-                                                    </div>
-                                                </div>
-                                                <div className="feedback-progressbar positive">
-                                                    <div className="feedback-progress"></div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className="feedback-wrapper neutral-wrapper">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="feedback-icon">
-                                                        <GiHandOk />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="subheading-card">Neutral</h4>
-                                                        <h3 className="mainheading-card">18%</h3>
-                                                    </div>
-                                                </div>
-                                                <div className="feedback-progressbar neutral">
-                                                    <div className="feedback-progress"></div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className="feedback-wrapper negative-wrapper">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="feedback-icon">
-                                                        <BsFillHandThumbsDownFill />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="subheading-card">Poor</h4>
-                                                        <h3 className="mainheading-card">5%</h3>
-                                                    </div>
-                                                </div>
-                                                <div className="feedback-progressbar negative">
-                                                    <div className="feedback-progress"></div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </div>
-                        </Col> */}
                         <Col xxl={6} lg={12} className="mb-4">
                             <div className="card-box">
                                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -585,7 +520,31 @@ const AdminDashboard = () => {
                             </div>
                         </Col>
                     </Row>
-                </div>
+                </div> */}
+                <Row className="mb-5">
+                    <Col md={12}>
+                        <div className="d-flex justify-content-between mb-4 ">
+                            <h2 className="section-head-sub">{t("listOfClients")}</h2>
+                        </div>
+                        <div className="developers-list">
+                            {adminDashboard?.data?.clients.length > 0 ? adminDashboard?.data?.clients.map((item, index) => {
+                                return (
+                                    <>
+                                        <div className="developer-card client-card" onClick={() => handleClientCardClick(item?.id)} >
+                                            <div className="user-imgbx ">
+                                                <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" alt="developer" />
+                                            </div>
+                                            <div className="text-center">
+                                                <h3 className="user-name ">{item?.name}</h3>
+                                                <p className="email-user">{item?.email}</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            }) : <NoDataFound />}
+                        </div>
+                    </Col>
+                </Row>
                 <div>
                     <Row>
                         <Col lg={6} className="mb-4">
@@ -748,40 +707,13 @@ const AdminDashboard = () => {
                         </Col>
                     </Row>
                 </div>
-                <Row className="mb-5">
-                    <Col md={12}>
-                        <div className="d-flex justify-content-between mb-4 ">
-                            <h2 className="section-head-sub">{t("listOfClients")}</h2>
-                        </div>
-                        <div className="developers-list">
-                            {adminDashboard?.data?.clients.length > 0 ? adminDashboard?.data?.clients.map((item, index) => {
-                                return (
-                                    <>
-                                        <div className="developer-card client-card" onClick={() => handleClientCardClick(item?.id)} >
-                                            <div className="user-imgbx ">
-                                                <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" alt="developer" />
-                                            </div>
-                                            <div className="text-center">
-                                                <h3 className="user-name ">{item?.name}</h3>
-                                                <p className="email-user">{item?.email}</p>
-                                            </div>
-                                        </div>
-                                    </>
-                                )
-                            }) : <NoDataFound />}
-                        </div>
-                    </Col>
-                </Row>
-                <div>
+                {/* <div>
                     <Row>
                         <Col md={6} className="mb-4">
                             <div className="mb-3">
                                 <Row>
                                     <Col md={6}>
                                         <div className="status-card d-flex justify-content-between align-items-center">
-                                            {/* <div className="icon-status-card">
-                                                <GoProjectRoadmap />
-                                            </div> */}
                                             <div>
                                                 <h3>Total Projects</h3>
                                                 <div>
@@ -797,9 +729,6 @@ const AdminDashboard = () => {
                                     </Col>
                                     <Col md={6}>
                                         <div className="status-card d-flex justify-content-between align-items-center">
-                                            {/* <div className="icon-status-card">
-                                                <FaCircleCheck />
-                                            </div> */}
                                             <div>
                                                 <h3>Completed Projects</h3>
                                                 <div>
@@ -981,7 +910,7 @@ const AdminDashboard = () => {
                             </div>
                         </Col>
                     </Row>
-                </div>
+                </div> */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h2>
                     {adminDashboard?.data?.assignedDevelopers.length > 0 ? <div className="text-center mt-3">
