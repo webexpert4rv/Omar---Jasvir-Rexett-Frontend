@@ -186,7 +186,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
           </div>
           <div className="d-flex align-items-center gap-3 secondary_nav">
             {role == "admin" ? (
-              <Button className="main-btn font-14">View Clients</Button>
+              <Button className="main-btn font-14" onClick={()=>{
+                navigate("/admin/members")
+              }}>View Clients</Button>
               ) : ("")}
             {role == "admin" ? (
               <ToolTip text={"To Do List"} >

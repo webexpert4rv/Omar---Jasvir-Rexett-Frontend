@@ -194,25 +194,25 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
                       <div className="stage-wrapper">
                         <OverlayTrigger placement="bottom" overlay={suggestText}>
                           <div className="stage-indicator stage-suggest gap-1">
-                            <span className="stage-icon"><FaUsers /></span>{item?.stages?.suggested}</div>
+                            <span className="stage-icon"><FaUsers /></span>{item?.stage_counts?.suggested>0? item?.stage_counts?.suggested:""}</div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={shortlistText}>
                           <div className="stage-indicator stage-shortlist gap-1">
-                            <span className="stage-icon"><FaClipboardUser /></span> {item?.stages?.shortlisted}
+                            <span className="stage-icon"><FaClipboardUser /></span> {item?.stage_counts?.shortlisted>0?item?.stage_counts?.shortlisted:""}
                           </div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={interviewText}>
                           <div className="stage-indicator stage-interview gap-1">
-                            <span className="stage-icon"> <PiChatsFill /> </span> {item?.stages?.interviewing}</div>
+                            <span className="stage-icon"> <PiChatsFill /> </span> {item?.stage_counts?.interviewing>0?item?.stage_counts?.interviewing:""}</div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={offerText}>
                           <div className="stage-indicator stage-offer gap-1">
-                            <span className="stage-icon"> <FaHandshake /> </span> {item?.stages?.offered}
+                            <span className="stage-icon"> <FaHandshake /> </span> {item?.stage_counts?.offered>0?item?.stage_counts?.offered:""}
                           </div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={hiredText}>
                           <div className="stage-indicator stage-hired gap-1">
-                            <span className="stage-icon"> <MdWorkHistory /> </span> {item?.stages?.hired}
+                            <span className="stage-icon"> <MdWorkHistory /> </span> {item?.stage_counts?.hired>0?item?.stage_counts?.hired:""}
                           </div>
                         </OverlayTrigger>
                       </div>
