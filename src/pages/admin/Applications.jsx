@@ -1538,7 +1538,7 @@ const Applications = () => {
                                       </span>
                                     </td>
                                     <td>{item?.phone_number}</td>
-                                    <td>Career page</td>
+                                    <td>Registration</td>
                                     {/* <td>
                                       <Button
                                         variant="transparent"

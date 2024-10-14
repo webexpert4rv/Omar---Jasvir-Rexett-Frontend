@@ -101,6 +101,7 @@ const CommonStep1 = ({
                             setError={setError}
                             watch={watch}
                             clearErrors={clearErrors}
+                            setValue={setValue}
                           />
                         )}
                         {isLocation && (

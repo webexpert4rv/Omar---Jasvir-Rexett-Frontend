@@ -86,5 +86,17 @@ export const SCOPES = [
 ];
 
 
+export function convertSeconds(seconds) {
+  if (seconds < 3600) {  // If less than 3600 seconds (1 hour)
+      let minutes = Math.floor(seconds / 60);
+      let remainingSeconds = seconds % 60;
+      return `${minutes} minute(s) and ${remainingSeconds} second(s)`;
+  } else {  // If 3600 seconds or more
+      let hours = Math.floor(seconds / 3600);
+      let remainingMinutes = Math.floor((seconds % 3600) / 60);
+      return `${hours} hour(s) and ${remainingMinutes} minute(s)`;
+  }
+}
+
 
 

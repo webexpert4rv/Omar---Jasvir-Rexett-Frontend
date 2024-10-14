@@ -22,6 +22,7 @@ const CommonProfilePictureSection = ({
     if (file) {
       if (IMAGE_ALLOWED_EXTENSIONS.includes(file.type)) {
         const url = URL.createObjectURL(file);
+        console.log(url,"url")
         setPreviewImage({...previewImage,profile_picture:url});
         setImageFile({...imageFile,profile_picture:file});
         clearErrors(fieldName);

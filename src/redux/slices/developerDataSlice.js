@@ -1315,9 +1315,6 @@ export function getProjectDetail(filters, id, callback) {
     }
   };
 }
-
-//all registration
-
 export function developerRegistration(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
@@ -1395,8 +1392,7 @@ export function registerDeveloperEducation(payload, id, callback) {
     }
   };
 }
-export function registerDeveloperSkills(payload, id) {
-  console.log(payload, "payload");
+export function registerDeveloperSkills(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -1406,6 +1402,7 @@ export function registerDeveloperSkills(payload, id) {
       );
       toast.success("skills is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -1467,23 +1464,6 @@ export function getDeveloperProfileDetails(id, callback) {
     }
   };
 }
-
-// export function messageChatRoomList(id) {
-//   console.log(id,"developerId")
-//   return async (dispatch) => {
-//     dispatch(setSmallLoader());
-//     try {
-//       let result = await clientInstance.get(`messages/chatroom_list/${id}`);
-//       dispatch(setMessageRoomList(result?.data?.data))
-//       // dispatch(setSuccessActionData());
-//     } catch (error) {
-//       const message = error.message || "Something went wrong";
-//       toast.error(message, { position: "top-center" });
-//       dispatch(setFailDeveloperData());
-//     }
-//   };
-// }
-
 export function getAllMessages(id, payload) {
   return async (dispatch) => {
     // dispatch(setSmallLoader());

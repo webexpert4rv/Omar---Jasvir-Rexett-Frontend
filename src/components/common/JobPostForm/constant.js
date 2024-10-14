@@ -34,7 +34,7 @@ export const WORKPLACE_TYPES_OPTIONS = [
     label: "Remote",
   },
   {
-    value: "on-site",
+    value: "onsite",
     label: "On Site",
   },
 ];
@@ -205,3 +205,6 @@ export const DEGREE= [
     
   }
 ]
+export const DEAFULT_EXPERTISE = [
+  { skill: "", skill_weight: "", experience: "" },
+];
