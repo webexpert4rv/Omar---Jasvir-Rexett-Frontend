@@ -1259,6 +1259,21 @@ export function getSelectedEvent(id, callback) {
     }
 }
 
+export function meetingWebhookApi(payload,token, callback) {
+    return async (dispatch) => {
+        // dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`common/meeting-details?token=${token}`,{...payload})
+
+            return callback(result.data);
+        } catch (error) {
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+
 export function getMessageTemplate(payload) {
     console.log(payload, "payload")
     return async (dispatch) => {

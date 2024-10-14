@@ -672,11 +672,18 @@ export const getVendorActiveStepFields = (activeStep) => {
 
 const DEVELOPER_STEP_1_FIELDS = [
   {
-    label: "firstName",
+    label: "First Name",
     fieldName: "first_name",
     type: "text",
     placeholder: "e.g. John",
-    rules: { required: "First name is required" },
+    rules: { 
+      required: "First name is required" ,
+      pattern: {
+        value: /^[A-Za-z\s]+$/,
+        message: "First Name must contain only letters and spaces"
+      }
+    },
+
     columnWidth: 6,
     isRequired: true,
   },
@@ -685,19 +692,40 @@ const DEVELOPER_STEP_1_FIELDS = [
     fieldName: "last_name",
     type: "text",
     placeholder: "e.g. Doe",
-    rules: { required: "Last name is required" },
+    rules: { 
+      required: "Last name is required" ,
+      pattern: {
+        value: /^[A-Za-z\s]+$/,
+        message: "Last Name must contain only letters and spaces"
+      }
+    },
     columnWidth: 6,
     isRequired: true,
-    
   },
   {
     label: "Profession",
     fieldName: "profession",
     type: "text",
     placeholder: "e.g. Software Engineer",
-    rules: { required: "Profession is required" },
-    columnWidth: 12,
+    rules: { 
+      required: "Profession name is required" ,
+      pattern: {
+        value: /^[A-Za-z\s]+$/,
+        message: "Profession Name must contain only letters and spaces"
+      }
+    },
+    columnWidth: 6,
     isRequired: true,
+  },
+  {
+    label: "Work Type",
+    fieldName: "work_preference",
+    type: "normal-select",
+    options: WORKPLACE_TYPES_OPTIONS,
+    rules: { required: "Work type is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "Select Type",
   },
   {
     label: "Language Preferences",
@@ -706,7 +734,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     rules: { required: "Preferences is required" },
     columnWidth: 6,
     isRequired: true,
-    options:LANGUAGE_PREFERENCES_OPTIONS,
+    options: LANGUAGE_PREFERENCES_OPTIONS,
     defaultOption: "Select",
   },
   {
@@ -716,7 +744,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     rules: { required: "Experience is required" },
     columnWidth: 6,
     isRequired: true,
-    options:EXPERIENCE_YEAR,
+    options: EXPERIENCE_YEAR,
     defaultOption: "Select",
   },
   {
@@ -742,15 +770,11 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     columnWidth: 6,
     isRequired: true,
-    readOnly:false
+    readOnly: false,
   },
   {
     isPasswordSection: true,
   },
-  {
-    isLocation: true,
-  },
-  
   {
     label: "address",
     fieldName: "address",
@@ -763,42 +787,55 @@ const DEVELOPER_STEP_1_FIELDS = [
     defaultOption: "Select",
   },
   {
+    isLocation: true,
+  },
+  {
     label: "Resume",
     fieldName: "resume",
     type: "upload",
     placeholder: "Upload Resume",
-    rules: { required: "Resume Required" },
     columnWidth: 12,
-    isRequired: true,
   },
   {
     label: "Intro Video",
     fieldName: "intro_video_url",
     type: "upload",
     placeholder: "Upload Intro Video",
-    rules: { required: "Intro Video is required" },
     columnWidth: 12,
-    isRequired: true,
   },
   {
     label: "LinkedIn",
     fieldName: "linkedin_url",
     type: "text",
     placeholder: "e.g. www.linkedin.com/profile/12345",
-    // rules: { required: "Linked in is required" },
+    rules: {
+      // required: "Linked in is required",
+      pattern: {
+        value:
+          /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+)\.([a-zA-Z]{2,})(\/[^\s]*)?$/,
+        message: "Please enter a valid URL",
+      },
+    },
     columnWidth: 6,
     isRequired: false,
   },
   {
     label: "Github",
-    fieldName: "github_url", 
+    fieldName: "github_url",
     type: "text",
     placeholder: "e.g. www.github.com/profile/12345",
-    // rules: { required: "GitHub in is required" },
+    rules: {
+      // required: "GitHub link is required",
+      pattern: {
+        value:
+          /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+)\.([a-zA-Z]{2,})(\/[^\s]*)?$/,
+        message: "Please enter a valid URL",
+      },
+    },
     columnWidth: 6,
     isRequired: false,
   },
-]
+];
 const NESTED_DEVELOPER_STEP_1_FIELDS = [
   {
     label: "Job Title",
@@ -1135,6 +1172,24 @@ const adminStepData = [
     readOnly: true
   },
   {
+    label: "taxId",
+    fieldName: "tax_id",
+    type: "text",
+    placeholder: "Enter Tax ID",
+    rules: { required: "Tax ID is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "cinNumber",
+    fieldName: "cin",
+    type: "text",
+    placeholder: "Enter CIN Number",
+    rules: { required: "CIN number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
     isPasswordSection: true,
   },
   {
@@ -1400,6 +1455,26 @@ const devStepData=[
     defaultOption: "Select",
   },
   {
+    label: "taxId",
+    fieldName: "tax_id",
+    type: "text",
+    placeholder: "Enter Tax ID",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+    readOnly: false
+  },
+  {
+    label: "Cin",
+    fieldName: "cin",
+    type: "text",
+    placeholder: "CIN",
+    rules: { required: "CIN is required" },
+    columnWidth: 6,
+    isRequired: true,
+    readOnly: false
+  },
+  {
     label: "phoneNumber",
     fieldName: "phone_number",
     type: "phone",
@@ -1545,8 +1620,10 @@ const KEYS={
 
 export const stepperFormKeys=(activeStep)=>{
  return KEYS[activeStep]
-
 }
+
+
+
 
 
 

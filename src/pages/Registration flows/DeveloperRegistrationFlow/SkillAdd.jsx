@@ -60,6 +60,9 @@ const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedA
      isExpertRecommended: false,
    },
  ];
+
+
+ console.log(skillOptions,"skillOptions")
  
  
  

@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
 import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../redux/slices/adminDataSlice";
-import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
 import { toast } from 'react-toastify';
 import ThirdPartyServices from "./ThirdParyServices";

@@ -29,7 +29,7 @@ const InterviewCard = ({ handleShowMeetingInfo, item }) => {
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       setRemainingTime(`Upcoming in ${hours}hr ${minutes}min`);
     } else {
-      setRemainingTime('Reschedule');
+      setRemainingTime('Scheduled');
     }
   };
 

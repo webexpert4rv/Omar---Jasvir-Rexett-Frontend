@@ -51,7 +51,7 @@ import { ImUser } from "react-icons/im";
 import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { LuPencil } from "react-icons/lu";
 import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
-
+import ScreeningQuestion from "./Modals/ScreeningQuestion";
 const SECRET_KEY = "abcfuipqw222";
 
 export const encrypt = (text) => {
@@ -107,6 +107,7 @@ const Applications = () => {
   const [loading, setLoading] = useState(false)
   const { t } = useTranslation();
   const [showScreening, setScreeningShow] = useState(false);
+  const [showQuestions, setQuestionsShow ] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
     // order_alphabetically: "asc",
@@ -115,9 +116,9 @@ const Applications = () => {
     created_at: "",
   });
 
-  const [profileDeleted,setProfileDeleted]=useState({
-    deletedId:null,
-    isDeleted:false
+  const [profileDeleted, setProfileDeleted] = useState({
+    deletedId: null,
+    isDeleted: false
   })
 
   const handleScreeningClose = () => setScreeningShow(false);
@@ -125,7 +126,7 @@ const Applications = () => {
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
   const [emailNum, setEmailNum] = useState()
   const [emailIndx, setEmailIndx] = useState()
- 
+
   const handleTimeslotChange = (e) => {
     setSelectedTimeslot(e.target.id);
   };
@@ -153,7 +154,7 @@ const Applications = () => {
     setApplication(allApplications[currentTab]);
   }, [allApplications]);
 
-  console.log(currentTab,"currentTab")
+  console.log(currentTab, "currentTab")
 
 
   const handleSelect = (key) => {
@@ -333,30 +334,37 @@ const Applications = () => {
     });
   };
 
-  const deleteProfile=(id)=>{
-     setProfileDeleted({
-      isDeleted:!profileDeleted.isDeleted,
-      deletedId:id
-     })
+  const deleteProfile = (id) => {
+    setProfileDeleted({
+      isDeleted: !profileDeleted.isDeleted,
+      deletedId: id
+    })
   }
 
-  const handleDeleteProlfile=()=>{
+  const handleDeleteProlfile = () => {
     let data = {
       ...filters,
       page: page,
       active_tab: currentTab,
     };
-   
 
-    dispatch(deleteProfleAPi(profileDeleted?.deletedId,()=>{
+
+    dispatch(deleteProfleAPi(profileDeleted?.deletedId, () => {
       setProfileDeleted({
-        isDeleted:false,
-        deletedId:null
-       })
+        isDeleted: false,
+        deletedId: null
+      })
       dispatch(allApplicationsList(data));
 
     }))
   }
+  const handleShowQuestion = () => {
+    setQuestionsShow(!showQuestions);
+  }
+  const handleCloseQuestion = () => {
+    setQuestionsShow(false);
+  }
+
   return (
     <>
       {screenLoader ? (
@@ -603,7 +611,7 @@ const Applications = () => {
                                             {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
                                           <div className="text-center py-1">
-                                          <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                            <div className="font-14 text-danger" onClick={() => deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
@@ -1030,8 +1038,8 @@ const Applications = () => {
                                         </div>
                                       )}
                                     </td> */}
-                                      <td>
-                                    <Dropdown>
+                                    <td>
+                                      <Dropdown>
                                         <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
                                           <BsThreeDotsVertical />
                                         </Dropdown.Toggle>
@@ -1121,7 +1129,7 @@ const Applications = () => {
                                             {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
                                           <div className="text-center py-1">
-                                          <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                            <div className="font-14 text-danger" onClick={() => deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
@@ -1530,7 +1538,7 @@ const Applications = () => {
                                       </span>
                                     </td>
                                     <td>{item?.phone_number}</td>
-                                    <td>Career page</td>
+                                    <td>Registration</td>
                                     {/* <td>
                                       <Button
                                         variant="transparent"
@@ -1787,7 +1795,7 @@ const Applications = () => {
                                       )}
                                     </td> */}
                                     <td>
-                                    <Dropdown>
+                                      <Dropdown>
                                         <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
                                           <BsThreeDotsVertical />
                                         </Dropdown.Toggle>
@@ -1877,8 +1885,8 @@ const Applications = () => {
                                             {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
                                           <div className="text-center py-1">
-                                            <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
-                                
+                                            <div className="font-14 text-danger" onClick={() => deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
@@ -2246,7 +2254,7 @@ const Applications = () => {
                                                 />
                                               </div>
                                             </Col>
-                                        { item?.is_profile_completed==false &&    <Col md={3}>
+                                            {item?.is_profile_completed == false && <Col md={3}>
                                               <div>
                                                 <h3 className="application-heading">
                                                   Send Email
@@ -2509,8 +2517,8 @@ const Applications = () => {
                                       )}
                                     </td> */}
 
-<td>
-                                    <Dropdown>
+                                    <td>
+                                      <Dropdown>
                                         <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
                                           <BsThreeDotsVertical />
                                         </Dropdown.Toggle>
@@ -2600,7 +2608,7 @@ const Applications = () => {
                                             {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
                                           <div className="text-center py-1">
-                                            <div className="font-14 text-danger" onClick={()=>deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
+                                            <div className="font-14 text-danger" onClick={() => deleteProfile(item?.id)}>Delete <FaTrashCan /> </div>
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
@@ -2936,7 +2944,7 @@ const Applications = () => {
                                                 </div>
                                               </Col>
                                             )}
-                                            <Col>
+                                            <Col md={3}>
                                               <div>
                                                 <h3 className="application-heading">
                                                   Resume
@@ -2964,6 +2972,16 @@ const Applications = () => {
                                                     "not-allowed"
                                                     }`}
                                                 />
+                                              </div>
+                                            </Col>
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Screening Questions
+                                                </h3>
+                                                <div>
+                                                  <Button onClick={handleShowQuestion} className="main-btn font-12 py-2">View Details</Button>
+                                                </div>
                                               </div>
                                             </Col>
                                             <Col md={3}>
@@ -3027,7 +3045,7 @@ const Applications = () => {
                     ""
                   )}
                 </Tab.Pane>
-              
+
               </Tab.Content>
             </Tab.Container>
           </div>
@@ -3170,19 +3188,20 @@ const Applications = () => {
             selectedId={selectedId}
           /> */}
 
-{     profileDeleted.isDeleted
- && (
-          <ConfirmationModal
-            show={ profileDeleted.isDeleted}
-            handleClose={deleteProfile}
-            smallLoader={smallLoader}
-            text={"Are you sure to delete this profile?"}
-            handleAction={handleDeleteProlfile}
-          />
-        )}
+          {profileDeleted.isDeleted
+            && (
+              <ConfirmationModal
+                show={profileDeleted.isDeleted}
+                handleClose={deleteProfile}
+                smallLoader={smallLoader}
+                text={"Are you sure to delete this profile?"}
+                handleAction={handleDeleteProlfile}
+              />
+            )}
           <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
 
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
+          <ScreeningQuestion show={showQuestions} handleClose={handleCloseQuestion}  />
         </>
       )}
     </>

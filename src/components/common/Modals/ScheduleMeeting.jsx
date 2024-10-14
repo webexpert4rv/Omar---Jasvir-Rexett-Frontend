@@ -27,7 +27,6 @@ import {
   getDeveloperList,
   postScheduleMeeting,
 } from "../../../redux/slices/adminDataSlice";
-import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
 import ThirdPartyServices from "./ThirdParyServices";
 import moment from "moment";
@@ -60,7 +59,7 @@ const Schedulemeeting = ({
   const [meetingLink, setMeetingLink] = useState(null);
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [googleEventId, setGoogleEventID] = useState(null);
+  const [serviceEventId, setServiceEventID] = useState(null);
   const [microsoftEventId, setMicrosoftEventId] = useState(null);
   const [events, setEvents] = useState([]);
 
@@ -352,7 +351,7 @@ const Schedulemeeting = ({
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
         type: isAdminSingleJob ? 'interview' : 'screening',
-        event_id: microsoftEventId,
+        event_id: serviceEventId,
       };
       dispatch(postCandidateInterview(payload,()=>{
         dispatch(getAllEvents());
@@ -361,7 +360,7 @@ const Schedulemeeting = ({
       }));
     }
     setMeetingLink(null);
-    setGoogleEventID(null);
+    setServiceEventID(null);
     setMicrosoftEventId(null);
     setValue("meeting_type", "instant");
     reset();
@@ -408,14 +407,13 @@ const Schedulemeeting = ({
     setLoader(true);
     const { title, meeting_start_time, meeting_end_time, time_zone, instant_date, meeting_platform } = watch();
     const meetingPlatform = meeting_platform?.value
-
+    console.log(meetingPlatform,"meetingPlatform")
     e.stopPropagation();
     if(meetingPlatform === "google_meet"){
       if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
         console.log("User not authenticated");
         return;
       }
-  
       const newEvent = {
         summary: title || "Untitled Meeting",
         location: "jkk",
@@ -424,11 +422,13 @@ const Schedulemeeting = ({
           // dateTime: "2024-08-26T16:50:00",
           // timeZone: "America/Los_Angeles",
           dateTime: getDateTimeString(instant_date, meeting_start_time),
-          timeZone: time_zone?.label,
+          // timeZone: time_zone?.label,
+              timeZone: "America/Los_Angeles",
         },
         end: {
           dateTime: getDateTimeString(instant_date, meeting_end_time),
-          timeZone: time_zone?.label,
+          // timeZone: time_zone?.label,
+            timeZone: "America/Los_Angeles",
   
           // dateTime: "2024-08-29T16:50:00",
           // timeZone: "America/Los_Angeles",
@@ -455,7 +455,7 @@ const Schedulemeeting = ({
             // setValue("meetingPlatform","");
             console.log("Google Meet link:", response.result.hangoutLink);
             setMeetingLink(response.result.hangoutLink);
-            setGoogleEventID(response?.result?.id)
+            setServiceEventID(response?.result?.id)
             localStorage.setItem("googleEventId",response?.result?.id)
 
           }
@@ -468,7 +468,7 @@ const Schedulemeeting = ({
   
         });
     } else if(meetingPlatform === "microsoft_team"){
-
+      console.log(meetingPlatform,"innside")
       let eventDetailsPayload={
         subject: title,
         location: { displayName: "Sweden" },
@@ -481,11 +481,12 @@ const Schedulemeeting = ({
           dateTime: getDateTimeString(instant_date, meeting_end_time), // Correct ISO 8601 format
           timeZone: "UTC",
         },
-        isOnlineMeeting: true,
-        onlineMeetingProvider: "teamsForBusiness",
-        "onlineMeeting": {
-          "joinUrl": null
-      }
+        "allowNewTimeProposals": true,
+        "isOnlineMeeting": true,
+        "onlineMeetingProvider": "teamsForBusiness",
+      //   "onlineMeeting": {
+      //     "joinUrl": null
+      // }
       }
       if (!isAuthenticated) {
         console.log('User not authenticated');
