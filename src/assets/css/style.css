@@ -10440,6 +10440,7 @@ select.apply-field
     border-radius: 12px;
     border: none;
     background-color: rgba(255, 255, 255, 0.2);
+    min-width: 1px;
 }
 .total-revenue-card .overview-card-heading
 {
