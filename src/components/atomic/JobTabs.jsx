@@ -57,6 +57,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
       case "published":
         return "status-finished";
       case "unpublished":
+        case "Unpublished":
         return "status-unpublished";
       default:
         return;
@@ -149,7 +150,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
                           ) && " years"}
                         </p>
                         <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
-                        <p className="grid-text">{item?.job_type}</p>
+                        <p className="grid-text">{item?.job_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       </div>
                       <p className="job-description"
                         dangerouslySetInnerHTML={{
