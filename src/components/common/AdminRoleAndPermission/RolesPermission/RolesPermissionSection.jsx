@@ -222,8 +222,8 @@ const RolesPermissionSection = () => {
                                                                     <Form.Check
                                                                         type="checkbox"
                                                                         className="permission-checkbox"
-                                                                        onChange={(e) => handleCheckStatus(e.target.value,item?.id, role?.id)}
-                                                                        // checked={role?.checked}
+                                                                        onChange={(e) => handleCheckStatus(e.target,item?.id, role?.id)}
+                                                                        checked={role?.checked}
                                                                     />
                                                                 </td>
                                                           

@@ -33,6 +33,7 @@ const ConnectCalendar = ({ currentTab }) => {
       "OnlineMeetingRecording.Read.All",
       "Calendars.ReadWrite",
       "Calendars.Read",
+      "OnlineMeetingArtifact.Read.All"
     ],
 
   };
