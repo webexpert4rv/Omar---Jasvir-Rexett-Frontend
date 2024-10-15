@@ -16,32 +16,37 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
     const { configDetails,allPermissionDetails } = useSelector(state => state.adminData)
     const [sidebarDataWithPermi,setSideBarDataWithPermi]=useState([])
     let currentRoute = role == "client" ? "/" : `/${role}-login`
-    let {rolesWithPermissions}=allPermissionDetails
+    let {permissionCategories}=allPermissionDetails
     console.log(configDetails,"configDetails")
 
     const logout = () => {
         localStorage.clear();
         window.location.href = currentRoute;
     };
- console.log(rolesWithPermissions,"allPermissionDetails")
+
    
     const [floatingShow, setFloatingShow] = useState(false);
     const handleFloating = () => {
         setFloatingShow(!floatingShow);
     }
 
-    // useEffect(()=>{
-    //     if(rolesWithPermissions && rolesWithPermissions?.length>0){
+    useEffect(()=>{
+        if(role=="employee"){
+        if(permissionCategories && permissionCategories?.length>0){
 
-    //     const updatedSecondArray = sidebarItems.map(item => {
-    //         const isActive = rolesWithPermissions[0]?.permissions?.some(firstItem => firstItem.slug === item.slug);
-    //         return { ...item, active: isActive };
-    //       });
-    //       setSideBarDataWithPermi(updatedSecondArray)
-    //     }
-        
+        const updatedSecondArray = sidebarItems.map(item => {
+            const isActive = permissionCategories?.some(firstItem =>firstItem.active );
+            return { ...item,active:isActive};
+          });
+          setSideBarDataWithPermi(updatedSecondArray)
+        }
+    }else{
+        setSideBarDataWithPermi(sidebarItems)
+    }
 
-    // },[allPermissionDetails])
+    },[allPermissionDetails])
+
+    console.log(sidebarDataWithPermi,"sidebarDataWithPermi")
 
     return (
         <>
@@ -57,9 +62,9 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                                 }
                             </a>
                         </div>
-                        {sidebarItems?.map((item, index) => (
+                        {sidebarDataWithPermi?.map((item, index) => (
                             <>
-                                 {collapseActive ?
+                                {item.active? collapseActive ?
                                     <NavLink
                                         key={index}
                                         to={item.to}
@@ -89,8 +94,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                                             </span>
                                         </NavLink>
                                     </OverlayTrigger>
-}
-                             
+                             :""   }
                             </>
                         ))}
                     </div>

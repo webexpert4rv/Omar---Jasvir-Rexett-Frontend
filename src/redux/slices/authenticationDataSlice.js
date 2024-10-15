@@ -56,7 +56,7 @@ const ROLES = {
 const DASHBOARD_URLS = {
     [ROLES.CLIENT]: '/client/dashboard',
     [ROLES.DEVELOPER]: '/developer/dashboard',
-    [ROLES.ADMIN]: '/admin/admin-dashboard',
+    [ROLES.ADMIN]: '/admin/dashboard',
     [ROLES.VENDOR]: '/vendor-dashboard'
 };
 
@@ -143,7 +143,7 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
                     localStorage.setItem("userName", result?.data?.data?.name)
-                    window.location.href = "/admin/admin-dashboard"
+                    window.location.href = "/admin/dashboard"
                 }
                 if (result.data.data.role === "vendor") {
                     localStorage.setItem("token", result.data.access_token);

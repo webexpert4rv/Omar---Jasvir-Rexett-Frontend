@@ -61,18 +61,18 @@ export const CLIENT_SIDE_BAR_ITEMS = [
 ];
 
 export const ADMIN_SIDE_BAR_ITEMS= [
-    { to: "/admin/admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard",slug:"dashboard-menu"},
-    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications",slug:"new-applicants-menu"},
-    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members",slug:"members-menu" },
-    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing",slug:"job-listing-menu" },
+    { to: "/admin/dashboard", icon: <MdSpaceDashboard />, text: "dashboard",slug:"dashboard",active:true},
+    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications",slug:"new-applicants",active:true},
+    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members",slug:"members",active:true },
+    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing",slug:"job-listing",active:true },
     // { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
-    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images", slug:"documents" },
-    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting",slug:"admin-time-reporting" },
+    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images", slug:"documents",active:true },
+    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting",slug:"time-reporting",active:true },
     // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
-    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice",slug:"invoice" },
-    { to: "/admin/statistics", icon: <MdQueryStats />, text: "Statistics",slug:"statistics" },
-    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"" },
-    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration",slug:"configuration" },
+    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice",slug:"invoice",active:true },
+    { to: "/admin/statistics", icon: <MdQueryStats />, text: "Statistics",slug:"statistics",active:true },
+    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"roles-permissions",active:true },
+    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration",slug:"configuration",active:true },
     // { to: "/admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
     // { to: "/admin/client-listing", icon: <FaUsers />, text: "Clients" },
   ]
