@@ -441,6 +441,7 @@ const SingleJobDetails = () => {
             case "published":
                 return "status-finished";
             case "unpublished":
+                case "Unpublished":
                 return "status-rejected";
             default:
                 return;
