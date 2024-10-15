@@ -7,6 +7,7 @@ import { Controller, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import CommonInput from "../../atomic/CommonInput";
 import CreatableSelect from "react-select/creatable";
+import { LANGUAGE_PREFERENCES_OPTIONS } from "./constant";
 
 const SCREENING_OPTIONS = [
   {
@@ -98,6 +99,7 @@ const JobPostStep3 = ({
   clearErrors,
   isRegistrationStep = false,
   invalidFieldRequired = false,
+  handleCreateOption
 }) => {
   const { t } = useTranslation();
   const { fields, append, remove } = useFieldArray({
@@ -301,18 +303,20 @@ const JobPostStep3 = ({
                                 field: { onChange, onBlur, value, ref },
                               }) => (
                                 <CreatableSelect
-                                  isClearable
-                                  onChange={(val) =>
-                                    setValue(
-                                      `screening_questions.${idx}.title`,
-                                      val ? val.label : ""
-                                    )
-                                  }
+                                  {...field}
                                   options={degreeList}
-                                  value={value}
+                                  onChange={(selectedOption) => {
+                                    console.log(
+                                      "Selected Option:",
+                                      selectedOption
+                                    );
+                                    onChange(selectedOption.value);
+                                  }}
+                                  onCreateOption={handleCreateOption}
                                 />
                               )}
                             />
+
                             {/* {errors?.screening_questions[idx].Degree && (
                               <p className="error-message">
                                 {errors.screening_questions[idx].Degree.message}
@@ -326,14 +330,19 @@ const JobPostStep3 = ({
                             <Form.Label className="font-14">
                               {field?.question_type}
                             </Form.Label>
-                            <Form.Control
-                              type="text"
+                            <Form.Select
+                              // type="text"
+                              className={`common-field font-14`}
                               {...register(`screening_questions.${idx}.title`, {
                                 required: t("required_message"),
                               })}
-                              className="common-field font-14"
+                              // options={LANGUAGE_PREFERENCES_OPTIONS}
+                              // className="common-field font-14"
                               placeholder={`Enter ${field?.question_type} name`}
-                            />
+                            >{LANGUAGE_PREFERENCES_OPTIONS?.map((option)=>(
+                               <option value={option.value}>{option.label}</option>
+                              ))}
+                              </Form.Select>
                           </>
                         )}
 
