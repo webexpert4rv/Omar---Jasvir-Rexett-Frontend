@@ -29,6 +29,7 @@ import { BsFillHandThumbsDownFill, BsFillHandThumbsUpFill } from "react-icons/bs
 import { GiHandOk } from "react-icons/gi";
 import { accessModalAccordingToRoles } from "../../components/common/EditProfile/helper";
 
+const  userName = localStorage.getItem("userName")
 
 
 const AdminDashboard = () => {
@@ -385,7 +386,7 @@ console.log(allPermissionDetails,"allPermissionDetails")
 
     return (
         <>
-        <h1 className="welcome-heading">Welcome, <span>Admin Doe</span></h1>
+        <h1 className="welcome-heading">Welcome, <span>{userName}</span></h1>
             {screenLoader ? <ScreenLoader /> : <div>
                 <h2 className="section-head mb-4">{t("overview")}</h2>
                 <div className="overview-card-wrapper mb-5">

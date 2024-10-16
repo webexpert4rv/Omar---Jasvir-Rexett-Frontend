@@ -14,6 +14,7 @@ import { IoIosLaptop } from "react-icons/io";
 import { TbReportMoney } from "react-icons/tb";
 import { FaList } from "react-icons/fa6";
 
+const permission_role_name=localStorage.getItem("permission_role_name") || "admin"
 
 export const DEVELOPER_SIDE_BAR_ITEMS = [
     { to: "/developer/dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
@@ -61,18 +62,18 @@ export const CLIENT_SIDE_BAR_ITEMS = [
 ];
 
 export const ADMIN_SIDE_BAR_ITEMS= [
-    { to: "/admin/dashboard", icon: <MdSpaceDashboard />, text: "dashboard",slug:"dashboard",active:true},
-    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications",slug:"new-applicants",active:true},
-    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members",slug:"members",active:true },
-    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing",slug:"job-listing",active:true },
+    { to: `/${permission_role_name}/dashboard`, icon: <MdSpaceDashboard />, text: "dashboard",slug:"dashboard",active:true},
+    { to: `/${permission_role_name}/applications`, icon: <RiFileCopy2Fill />, text: "applications",slug:"new-applicants",active:true},
+    { to: `/${permission_role_name}/members`, icon: <PiUsersFourFill />, text: "members",slug:"members",active:true },
+    { to: `/${permission_role_name}/admin-job-listing`, icon: <FaListUl />, text: "jobListing",slug:"job-listing",active:true },
     // { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
-    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images", slug:"documents",active:true },
-    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting",slug:"time-reporting",active:true },
+    { to: `/${permission_role_name}/admin-documents`, icon: <IoDocuments />, text: "Documents/images", slug:"documents",active:true },
+    { to: `/${permission_role_name}/admin-time-reporting`, icon: <BsClockFill />, text:"timeReporting",slug:"time-reporting",active:true },
     // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
-    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice",slug:"invoice",active:true },
-    { to: "/admin/statistics", icon: <MdQueryStats />, text: "Statistics",slug:"statistics",active:true },
-    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"roles-permissions",active:true },
-    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration",slug:"configuration",active:true },
+    { to: `/${permission_role_name}/admin-invoice`, icon: <PiCoinsFill />, text: "Invoice",slug:"invoice",active:true },
+    { to: `/${permission_role_name}/statistics`, icon: <MdQueryStats />, text: "Statistics",slug:"statistics",active:true },
+    { to: `/${permission_role_name}/roles-permissions`, icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"roles-permissions",active:true },
+    { to: `/${permission_role_name}/customization`, icon: <MdDesignServices />, text: "Configuration",slug:"configuration",active:true },
     // { to: "/admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
     // { to: "/admin/client-listing", icon: <FaUsers />, text: "Clients" },
   ]

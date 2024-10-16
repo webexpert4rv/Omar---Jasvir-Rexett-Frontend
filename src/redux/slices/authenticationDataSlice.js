@@ -65,6 +65,8 @@ const storeUserData = (data) => {
     localStorage.setItem('refreshToken', data.refresh_token);
     localStorage.setItem('role', data.data.role);
     localStorage.setItem('userId', data.data.id);
+    localStorage.setItem('roleId', data.roleId);
+    localStorage.setItem('permission_role_name', data.permission_role_name);
     localStorage.setItem('userName', data.data.name);
     localStorage.setItem('profile_picture', data.data.profile_picture);
 };
@@ -122,6 +124,8 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("role", "client")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem("userName", result?.data?.data?.name)
+                    localStorage.setItem('roleId', result?.data.roleId);
+                    localStorage.setItem('role_name', result?.data.role_name);
                     localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
                     window.location.href = '/client/dashboard'
                 }
@@ -137,13 +141,16 @@ export function getVerifyOtp(payload) {
                 }
 
                 if (result.data.data.role === "admin" || result.data.data.role === "employee") {
+                    console.log(result,"reso")
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role", result.data.data.role == "admin" ? "admin" : "employee")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem('profile_picture',result?.data?.data?.profile_picture);
                     localStorage.setItem("userName", result?.data?.data?.name)
-                    window.location.href = "/admin/dashboard"
+                    localStorage.setItem('roleId', result?.data.roleId);
+                    localStorage.setItem('permission_role_name', result?.data.permission_role_name);
+                    window.location.href = `/${ result?.data.permission_role_name}/dashboard`
                 }
                 if (result.data.data.role === "vendor") {
                     localStorage.setItem("token", result.data.access_token);
