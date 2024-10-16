@@ -397,7 +397,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="developers" className="application-link">
-                Candidates{" "}
+                Candidates
                 <span className="new-app">
                   {allApplications?.developers?.length}
                 </span>
@@ -1304,7 +1304,7 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex gap-2 align-items-center">
-                                      <span className="associate white-nowrap">johndoe123gmail.com</span>
+                                      {/* <span className="associate white-nowrap">{item?.developers?.assigned_team_members}</span>     // open it assign Devlopers */}
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
                                           <FaRotateRight />
@@ -1625,7 +1625,7 @@ const Members = () => {
           />
         )}
       </div>
-      {assignemployee.show && <AssignEmployee show={assignemployee.show} handleClose={handleCloseAssignEmployee} id={assignemployee.id} />}
+      {assignemployee.show && <AssignEmployee show={assignemployee.show} handleClose={handleCloseAssignEmployee} currentTab={currentTab} page={page} />}
     </>
   );
 };

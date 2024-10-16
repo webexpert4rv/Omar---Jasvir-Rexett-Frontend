@@ -1518,7 +1518,7 @@ const Applications = () => {
                                     onClick={() => handleRowClick(index)}
                                   >
                                     <td>
-                                      <div className="d-flex align-items-center">
+                                      {/* <div className="d-flex align-items-center">
                                         <span
                                           className={
                                             arrowactive == index &&
@@ -1530,7 +1530,7 @@ const Applications = () => {
                                           <RxChevronRight />
                                         </span>
                                         RXT-1234
-                                      </div>
+                                      </div> */}
                                     </td>
                                     <td className="white-nowrap">
                                       <div className="d-flex align-items-center">
@@ -2337,14 +2337,14 @@ const Applications = () => {
                             {t("email")} {t("address")}
                           </th>
                           <th>{t("phoneNumber")}</th>
-                          <th>{t("typeOfCompany")}</th>
+                          <th>Coming From</th>
                           {/* <th>{t("engagements")}</th>
                       <th>
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("availability")}</th> */}
-                          <th>{t("status")}</th>
-                          <th className="text-center">Send Email</th>
+                          {/* <th>{t("status")}</th> */}
+                          {/* <th className="text-center">Send Email</th> */}
                           <th>{t("action")}</th>
                         </tr>
                       </thead>
@@ -2392,11 +2392,12 @@ const Applications = () => {
                                       </span>
                                     </td>
                                     <td>{item?.phone_number}</td>
-                                    <td>{item?.company_type}</td>
+                                    {/* <td>{item?.company_type}</td> */}
+                                    <td>Website</td>
                                     {/* <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
                                 <td>{item?.company?.yearly_revenue}</td> */}
-                                    <td>
+                                    {/* <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
                                           ? "status-finished"
@@ -2407,8 +2408,8 @@ const Applications = () => {
                                           ? "Completed"
                                           : "Incomplete"}
                                       </span>
-                                    </td>
-                                    <td>
+                                    </td> */}
+                                    {/* <td>
                                       <div className="d-flex align-items-center justify-content-center gap-3">
                                         <div className="d-inline-flex gap-1 align-items-center">
                                           <OverlayTrigger placement="bottom" overlay={sendEmail}>
@@ -2448,8 +2449,8 @@ const Applications = () => {
 
                                           </div>
                                         </div> : "Maximum Limit reached"} */}
-                                      </div>
-                                    </td>
+                                      {/* </div>
+                                    </td>  */}
 
                                     {/* <td>
                                       {item?.is_profile_completed ? (
@@ -2540,7 +2541,7 @@ const Applications = () => {
 
                                         <Dropdown.Menu className="action-dropdown-menu">
 
-                                          {item?.is_profile_completed ? (
+                                          {/* {item?.is_profile_completed ? (
                                             <div className="d-flex gap-3">
                                               <RexettButton
                                                 icon={
@@ -2618,7 +2619,7 @@ const Applications = () => {
                                                 </span>
                                               </div>
                                             </div>
-                                          )}
+                                          )} */}
                                           <div className="text-center py-1">
                                             {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
@@ -3000,7 +3001,7 @@ const Applications = () => {
                                               </div>
                                             </Col>
                                             <Col md={3}>
-                                              <div>
+                                              {/* <div>
                                                 <h3 className="application-heading">
                                                   Send Email
                                                 </h3>
@@ -3018,7 +3019,7 @@ const Applications = () => {
                                                     </span>
                                                   </OverlayTrigger>
                                                 </div>
-                                              </div>
+                                              </div> */}
                                             </Col>
                                           </Row>
                                         </div>
