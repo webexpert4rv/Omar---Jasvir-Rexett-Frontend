@@ -86,6 +86,7 @@ const COLUMNS = {
     { label: "", key: "" },
   ],
 };
+let role=localStorage.getItem("role")
 const Applications = () => {
   const targetRef = useRef();
   const [screeninginfo, showScreeningInfo] = useState(false);
@@ -151,11 +152,15 @@ const Applications = () => {
 
 
    const subModulesAccess=(slug)=>{
-    console.log(slug,"need")
+     if(role=="employee"){
     if(accessPermissions?.length>0){
    let slugWithPermission= accessPermissions?.find((item)=>item.slug==slug)
    return slugWithPermission?.status=="active" ?true:false
     }
+  }else{
+    return true
+  }
+
    }
 
 
