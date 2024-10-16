@@ -116,6 +116,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       "OnlineMeetingRecording.Read.All",
       "Calendars.ReadWrite",
       "Calendars.Read",
+      "OnlineMeetingArtifact.Read.All"
     ],
     prompt: "consent",
   });
@@ -258,35 +259,50 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         const id = joinUrl;
 
         // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
-        const meetingResponse = await client
-          .api("/me/onlineMeetings")
-          .filter(`JoinWebUrl eq '${id}'`)
-          .get();
+        // const meetingResponse = await client
+        //   .api("/me/onlineMeetings")
+        //   .filter(`JoinWebUrl eq '${id}'`)
+        //   .get();
 
-        if (meetingResponse) {
-          const res = meetingResponse.value[0];
-          setShowDetailsSection(true);
-          const info = {
-            callDuration: `${getDifferenceFromTwoDates(
-              res?.startDateTime,
-              res?.endDateTime
-            )} hours`,
-            attendees: res?.participants?.attendees,
-          };
-          setInfo(info);
-          console.log(meetingResponse, "meetingResponse");
-          console.log(info, "info");
-        }
+       // Call the Graph API for fetching attendance records
+       const meetingId = `MSpiN2RjMzNlMC1mMGI5LTQyY2MtYWUzMi05NmI3Y2JjYzZjNTMqMCoqMTk6bWVldGluZ19aamc0TWpneU1EVXROekExTnkwME0yRTNMV0UxTjJNdE5XRXlOalpsWm1NellqUmxAdGhyZWFkLnYy`;
+       const reportId = 'f5474701-57c8-4156-9494-6be764df764a';
+       const endpoint = `https://graph.microsoft.com/v1.0/me/onlineMeetings/MSpiN2RjMzNlMC1mMGI5LTQyY2MtYWUzMi05NmI3Y2JjYzZjNTMqMCoqMTk6bWVldGluZ19aamc0TWpneU1EVXROekExTnkwME0yRTNMV0UxTjJNdE5XRXlOalpsWm1NellqUmxAdGhyZWFkLnYy/attendanceReports`;
+
+       const response = await client
+       .api(endpoint)
+       .get();
+  
+       const endpointRecord =`https://graph.microsoft.com/v1.0/me/onlineMeetings/${meetingId}/attendanceReports/${reportId}/attendanceRecords`
+       const resRecord = await client
+       .api(endpointRecord)
+       .get();
+       console.log(resRecord,"response")
+
+        // if (meetingResponse) {
+        //   const res = meetingResponse.value[0];
+        //   setShowDetailsSection(true);
+        //   const info = {
+        //     callDuration: `${getDifferenceFromTwoDates(
+        //       res?.startDateTime,
+        //       res?.endDateTime
+        //     )} hours`,
+        //     attendees: res?.participants?.attendees,
+        //   };
+        //   setInfo(info);
+        //   console.log(meetingResponse, "meetingResponse");
+        //   console.log(info, "info");
+        // }
         // Extract meeting details
-        const subject = meetingResponse.subject;
-        const startTime = meetingResponse.startDateTime;
-        const endTime = meetingResponse.endDateTime;
-        const duration = endTime ? new Date(endTime) - new Date(startTime) : 0; // Duration in milliseconds 
+        // const subject = meetingResponse.subject;
+        // const startTime = meetingResponse.startDateTime;
+        // const endTime = meetingResponse.endDateTime;
+        // const duration = endTime ? new Date(endTime) - new Date(startTime) : 0;  
 
-        console.log(`Meeting: ${subject}`);
-        console.log(`Start Time: ${startTime}`);
-        console.log(`End Time: ${endTime}`);
-        console.log(`Duration: ${duration / 60000} minutes`); // Duration in minute
+        // console.log(`Meeting: ${subject}`);
+        // console.log(`Start Time: ${startTime}`);
+        // console.log(`End Time: ${endTime}`);
+        // console.log(`Duration: ${duration / 60000} minutes`);
 
 
       } catch (error) {

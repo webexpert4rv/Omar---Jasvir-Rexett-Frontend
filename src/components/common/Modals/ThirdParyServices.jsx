@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import RexettSpinner from "../../atomic/RexettSpinner";
-import GoogleLogin from "react-google-login";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { gapi } from 'gapi-script';
 import { msalInstance } from "../../../services/msalConfig";
 import { DISCOVERY_DOCS, SCOPES } from "../../../helper/utlis";
@@ -104,13 +104,19 @@ const ThirdPartyServices = ({ show, handleClose, onClick, loader, text, syncCrea
               Login with Microsoft
             </Button>
             :
+            // <GoogleLogin
+            //   clientId={CLIENT_ID}
+            //   buttonText={"Login with Google"}
+            //   onSuccess={handleLoginSuccess}
+            //   onFailure={handleLoginFailure}
+            //   cookiePolicy={'single_host_origin'}
+            // />
+            <GoogleOAuthProvider clientId={CLIENT_ID}>
             <GoogleLogin
-              clientId={CLIENT_ID}
-              buttonText={"Login with Google"}
               onSuccess={handleLoginSuccess}
-              onFailure={handleLoginFailure}
-              cookiePolicy={'single_host_origin'}
+              onError={handleLoginFailure}
             />
+          </GoogleOAuthProvider>
           : <p>Meeting Link :{meetingLink}</p>
         }
         <div className="text-center">

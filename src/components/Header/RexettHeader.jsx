@@ -30,7 +30,7 @@ import Meetings from "../common/meetings/Meetings";
 const  clientName = localStorage.getItem("userName")
 const profileImg =  localStorage.getItem("profile_picture")
 
-const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
+const RexettHeader = ({handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
   const [details, setDetails] = useState()
   const { t } = useTranslation();
@@ -40,6 +40,8 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const [createdMeetings, setCreatedMeetings] = useState()
   const { configDetails } = useSelector(state => state.adminData)
   const dispatch = useDispatch()
+  let role=localStorage.getItem("role");
+  let roleId=localStorage.getItem("roleId")
   const routePath = (isSingleJob) => {
     const data = {
       "single-job": "/client/job-posted",
@@ -72,8 +74,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   }
 
   useEffect(()=>{
-    if(role==="admin"){
-     dispatch(getAllPermissionDetails(role))
+    console.log("000000000000000000")
+    if(role=="employee"){
+     dispatch(getAllPermissionDetails(roleId))
     }
   },[role])
 
@@ -171,7 +174,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       <header className="mb-4 zIndex3 dash_header">
           
         <div className="d-flex align-items-center justify-content-between gap-3">
-          <span className="d-flex justify-content-start align-items-center fw-500 welcome_Text" >Welcome {clientName}</span>
+          {/* <span className="d-flex justify-content-start align-items-center fw-500 welcome_Text" >Welcome {clientName}</span> */}
           <div>
             {/* <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2" : "shadow-none p-0 collapsable_btn me-2 active-collapse"}><TbArrowBarToLeft /></Button> */}
             {routePath(isSingleJob) && (
@@ -185,6 +188,11 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
             )}
           </div>
           <div className="d-flex align-items-center gap-3 secondary_nav">
+            {role == "admin" ? (
+              <Button className="main-btn font-14" onClick={()=>{
+                navigate("/admin/members")
+              }}>View Clients</Button>
+              ) : ("")}
             {role == "admin" ? (
               <ToolTip text={"To Do List"} >
                 <span onClick={handleShowToDo} className="cursor-pointer to-do-icon">
@@ -248,8 +256,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="sort-dropdown">
+                  <Dropdown.Item href="/admin/customization">Configuration</Dropdown.Item>
                   <Dropdown.Item href="/admin/website-pages">Pages</Dropdown.Item>
                   <Dropdown.Item href="#">Website</Dropdown.Item>
+                  <Dropdown.Item href="#" className="text-danger">Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </ToolTip>

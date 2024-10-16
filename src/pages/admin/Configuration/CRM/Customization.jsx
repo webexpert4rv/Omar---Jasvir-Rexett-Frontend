@@ -14,7 +14,6 @@ import MessageTemplate from "../MessageTemplate/MessageTemplate";
 import NotificationSetting from "../NotificationSettings/NotificationSetting";
 import ConnectCalendar from "../ConnectCalendar/ConnectCalendar";
 import PaymentSetup from "../PaymentSetup/PaymentSetup";
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import RexettButton from "../../../../components/atomic/RexettButton";
 import { setSmallLoader } from "../../../../redux/slices/developerDataSlice";
 import { useForm } from "react-hook-form";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { Link } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import { msalInstance } from "../../../../services/msalConfig";
@@ -33,6 +33,7 @@ const ConnectCalendar = ({ currentTab }) => {
       "OnlineMeetingRecording.Read.All",
       "Calendars.ReadWrite",
       "Calendars.Read",
+      "OnlineMeetingArtifact.Read.All"
     ],
 
   };
@@ -80,18 +81,12 @@ const ConnectCalendar = ({ currentTab }) => {
               </h2>
             </div>
             <p className="font-14">Stay up to date with events and appointments by connecting your calendar with services like Microsoft Outlook and Google Calendar. These platforms offer seamless integration, ensuring you never miss a scheduled activity.</p>
+            <GoogleOAuthProvider clientId={CLIENT_ID}>
             <GoogleLogin
-              clientId={CLIENT_ID}
-              buttonText="Login with Google"
               onSuccess={handleLoginSuccess}
-              onFailure={handleLoginFailure}
-              cookiePolicy={'single_host_origin'}
+              onError={handleLoginFailure}
             />
-            <GoogleLogout
-              clientId={CLIENT_ID}
-              buttonText="Logout"
-              onLogoutSuccess={handleLogout}
-            />
+          </GoogleOAuthProvider>
             <Button
               variant="outline-primary"
               className="mt-2"

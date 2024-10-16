@@ -52,6 +52,7 @@ import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { LuPencil } from "react-icons/lu";
 import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 import ScreeningQuestion from "./Modals/ScreeningQuestion";
+import { accessModalAccordingToRoles } from "../../components/common/EditProfile/helper";
 const SECRET_KEY = "abcfuipqw222";
 
 export const encrypt = (text) => {
@@ -85,18 +86,19 @@ const COLUMNS = {
     { label: "", key: "" },
   ],
 };
+let role=localStorage.getItem("role")
 const Applications = () => {
   const targetRef = useRef();
   const [screeninginfo, showScreeningInfo] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allApplications, approvedLoader, screenLoader, smallLoader } = useSelector((state) => state.adminData);
+  const { allApplications, approvedLoader, screenLoader, smallLoader,allPermissionDetails } = useSelector((state) => state.adminData);
   const [search, setSearch] = useState("");
   const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
   const [schedulescreeening, showScheduleScreening] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
+  const [accessPermissions, setAccessPermissions] = useState([]);
   const [arrowactive, setArrowActive] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
@@ -140,6 +142,27 @@ const Applications = () => {
     e.stopPropagation();
     window.open(resume, "_blank");
   };
+
+  useEffect(()=>{
+    if(allPermissionDetails?.permissionCategories?.length>0){
+      let permission=accessModalAccordingToRoles(allPermissionDetails?.permissionCategories,"new-applicants")
+      setAccessPermissions(permission?.permissions)
+    }
+},[allPermissionDetails?.permissionCategories])
+
+
+   const subModulesAccess=(slug)=>{
+     if(role=="employee"){
+    if(accessPermissions?.length>0){
+   let slugWithPermission= accessPermissions?.find((item)=>item.slug==slug)
+   return slugWithPermission?.status=="active" ?true:false
+    }
+  }else{
+    return true
+  }
+
+   }
+
 
   useEffect(() => {
     let data = {
@@ -299,14 +322,12 @@ const Applications = () => {
   const handleShowScheduleScreening = (item, id) => {
     console.log(item, "oppp")
     setSelectedEmail(item);
-    setSelectedId(id);
     showScheduleScreening(true);
   };
 
   const handleCloseScheduleScreening = () => {
     showScheduleScreening(false);
     setSelectedEmail(null);
-    setSelectedId(null);
   };
 
   const handleShowScreeningInfo = () => {
@@ -401,38 +422,38 @@ const Applications = () => {
               onSelect={handleSelect}
             >
               <Nav variant="pills" className="application-pills">
-                <Nav.Item className="application-item">
+              {subModulesAccess("clients") && <Nav.Item className="application-item">
                   <Nav.Link eventKey="clients" className="application-link">
                     {t("clients")}
                     <span className="new-app">
                       {allApplications?.clients?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item>
-                <Nav.Item className="application-item">
+                </Nav.Item>}
+              {subModulesAccess("vendors") &&  <Nav.Item className="application-item">
                   <Nav.Link eventKey="vendors" className="application-link">
                     Partners
                     <span className="new-app">
                       {allApplications?.vendors?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item>
-                <Nav.Item className="application-item">
+                </Nav.Item>}
+                {subModulesAccess("developers") && <Nav.Item className="application-item">
                   <Nav.Link eventKey="developers" className="application-link">
                     Candidates
                     <span className="new-app">
                       {allApplications?.developers?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item>
-                <Nav.Item className="application-item">
+                </Nav.Item>}
+               {subModulesAccess("unregister") && <Nav.Item className="application-item">
                   <Nav.Link eventKey="unregistered" className="application-link">
                     Unregistered
                     <span className="new-app">
                       {allApplications?.unregistered?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item>
+                </Nav.Item>}
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="clients" className="py-4">
@@ -448,7 +469,7 @@ const Applications = () => {
                           <th>Type</th>
                           {/* <th className="text-center">Send Email</th> */}
                           <th>{t("status")}</th>
-                          <th>{t("action")}</th>
+                         {subModulesAccess("clients-complete-profile-action") && <th>{t("action")}</th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -710,7 +731,7 @@ const Applications = () => {
                                                 </p>
                                               </div>
                                             </Col>
-                                            <Col md={3} className="mb-3">
+                                        { subModulesAccess("clients-send-email") && <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
                                                   Send Email
@@ -729,15 +750,9 @@ const Applications = () => {
                                                       {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                                     </span>
                                                   </OverlayTrigger>
-                                                  {/* <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                                    <div >
-                                                      <RexettButton  onClick={() => handleSendEmail(item?.id, item?.email, item?.verification_reminder_count)} disabled={item?.verification_reminder_count == 2 ? true : false} icon={<FaEnvelope />}  isLoading={item?.verification_reminder_count == 2 ? false  : smallLoader }/>
-                                                      <span className="email_shot">{item?.verification_reminder_count}</span>
-                                                    </div>
-                                                  </OverlayTrigger> */}
                                                 </div>
                                               </div>
-                                            </Col>
+                                            </Col>}
 
                                             {item?.jobs?.length > 0 && (
                                               <Col md={3} className="mb-3 ">
