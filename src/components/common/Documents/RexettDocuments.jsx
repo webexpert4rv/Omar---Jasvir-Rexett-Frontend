@@ -289,7 +289,7 @@ const RexettDocuments = ({ currentRole }) => {
                       );
                     })}
                   </div>
-                </section>{" "}
+                </section>
               </Col>
             ) : (
               ""

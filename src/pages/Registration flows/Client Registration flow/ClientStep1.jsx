@@ -50,6 +50,7 @@ const ClientStep1 = ({
 }) => {
   const { t } = useTranslation();
   let isStillWorking = watch("is_still_working")
+  console.log(stepFields,"stepFields")
   const filteredStepFields = stepFields.filter(field => {
     if (stepTwoAutoComplete && activeStep === 3 && nestedActiveStep === 2) {
       return field.fieldName !== "degree_id"; // Remove degree_id field
