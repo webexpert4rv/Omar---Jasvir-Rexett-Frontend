@@ -104,7 +104,7 @@ const EmployeeManagement = () => {
                                         <h5 className="mb-3">Permissions</h5>
                                         <Row>
                                             {
-                                                val?.roles[0]?.permissions?.map((item,index)=>{
+                                                val?.roles[0]?.permissions_category?.map((item,index)=>{
                                                     return (
                                                         <>
                                                             <Col md={4}>
@@ -112,30 +112,23 @@ const EmployeeManagement = () => {
                                                     <h4 className="permission-heading">{item?.name}</h4>
                                                     <div className="p-2">
                                                         <Row>
-                                                            <Col lg={12} className="mb-2">
+                                                            {
+                                                                item?.permissions?.map((ele,index)=>{
+                                                                    return (
+                                                                        <>
+                                                                         <Col lg={12} className="mb-2">
                                                                 <div className="d-flex justify-content-between align-items-center">
-                                                                    <p className="mb-0 font-14">Approve/Reject</p>
+                                                                    <p className="mb-0 font-14">{ele?.name}</p>
                                                                     <span className="full-approved">
                                                                         <FiCheck />
                                                                     </span>
                                                                 </div>
                                                             </Col>
-                                                            <Col lg={12} className="mb-2">
-                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                    <p className="mb-0 font-14">Complete Profile</p>
-                                                                    <span className="full-approved">
-                                                                        <FiCheck />
-                                                                    </span>
-                                                                </div>
-                                                            </Col>
-                                                            <Col lg={12} className="mb-0">
-                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                    <p className="mb-0 font-14">Schedule Screening</p>
-                                                                    <span className="full-approved">
-                                                                        <FiCheck />
-                                                                    </span>
-                                                                </div>
-                                                            </Col>
+                                                                        </>
+                                                                    )
+                                                                })
+                                                            }
+                                                           
                                                         </Row>
                                                     </div>
                                                 </div>
