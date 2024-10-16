@@ -153,7 +153,7 @@ const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
 const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
-let currentRole=localStorage.getItem("role")
+let currentRole=localStorage.getItem("permission_role_name") || "admin"
 
 export const route = [
   {
