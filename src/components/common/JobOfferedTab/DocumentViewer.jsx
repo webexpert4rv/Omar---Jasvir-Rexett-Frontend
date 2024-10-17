@@ -281,6 +281,8 @@ const DocumentViewer = ({
 
   const handleSaveEditedFile = async () => {
     if (items.length > 0) {
+      setScreenLoader(true);
+
       try {
         const pdfDoc = await PDFDocument.load(editorContent);
         const pages = pdfDoc.getPages();
@@ -323,31 +325,17 @@ const DocumentViewer = ({
             formData
           );
         }
-
-        // / Create a link element
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = "modified.pdf"; // Specify the file name
-
-        // Append the link to the body
-        document.body.appendChild(link);
-
-        // Programmatically click the link to trigger the download
-        link.click();
-
-        // Clean up and remove the link element
-        document.body.removeChild(link);
-        // createUpdateFile
-        //   .then((res) => {
-        //     setScreenLoader(false);
-        //     const message = "Document updated successfully";
-        //     toast.success(message, { position: "top-center" });
-        //   })
-        //   .catch((err) => {
-        //     setScreenLoader(false);
-        //     const message = err.message || "Something went wrong";
-        //     toast.error(message, { position: "top-center" });
-        //   });
+        createUpdateFile
+          .then((res) => {
+            setScreenLoader(false);
+            const message = "Document updated successfully";
+            toast.success(message, { position: "top-center" });
+          })
+          .catch((err) => {
+            setScreenLoader(false);
+            const message = err.message || "Something went wrong";
+            toast.error(message, { position: "top-center" });
+          });
       } catch (error) {
         setScreenLoader(false);
         const message = error.message || "Something went wrong";
@@ -450,7 +438,7 @@ const DocumentViewer = ({
           </Button>
           <RexettButton
             variant="transparent"
-            text="Save123"
+            text="Save"
             type="button"
             // disabled={items.length === 0}
             onClick={handleSaveEditedFile}
