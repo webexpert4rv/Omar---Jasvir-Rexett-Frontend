@@ -1,5 +1,4 @@
-// DraggableTag.js
-import React from "react";
+import React, { memo } from "react";
 import { useDrag } from "react-dnd";
 
 const DraggableTag = ({ dragDetails }) => {
@@ -12,13 +11,11 @@ const DraggableTag = ({ dragDetails }) => {
   }));
 
   return (
-    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} class={"d-flex"}>
-      <div className="drag-icon">
-        {dragDetails.icon}
-      </div>
+    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} class={"d-flex align-items-center gap-2"}>
+      <div className="drag-icon">{dragDetails.icon}</div>
       <p className="mb-0">{dragDetails.tag}</p>
     </div>
   );
 };
 
-export default DraggableTag;
+export default memo(DraggableTag);

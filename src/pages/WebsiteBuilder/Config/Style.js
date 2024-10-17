@@ -96,7 +96,6 @@ export const jobListingContent = (jobs) => {
                 <p class="job-skills" id="job-skills" data-gjs-droppable="false" data-gjs-editable="false" data-gjs-removable="false" data-gjs-copyable="false">
                   <strong>Skills Required:</strong> ${skillsHtml}
                 </p>
-                <button class="read-more-btn" id="read-more" data-job-id="${job.id}" data-gjs-copyable="false">Read More</button>
                 <button class="apply-job-btn" id="apply-more" data-job-id="${job.id}" data-gjs-copyable="false">Apply Now</button>
               </div>
             `;

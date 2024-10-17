@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import React from "react-bootstrap";
 import { OverlayTrigger, ProgressBar, Tooltip, Button } from "react-bootstrap";
-import { BsFillSendFill } from "react-icons/bs";
-import { FaFileSignature } from "react-icons/fa6";
+import { FaEye, FaFileSignature } from "react-icons/fa6";
 import { LuDownload } from "react-icons/lu";
 import { convertDateTime } from "../../../Utils/dateTimeConverter";
 import { ADOBE_BASE_URL } from "./constant/constant";
-import { adobeInstance } from "../../../services/adobe.instance";
-import { toast } from "react-toastify";
 
 const OfferedDetailsCard = ({
   callBack,
-  setShowDocumentView,
   agreementDetails,
   handleEditDraftDoc,
 }) => {
   const [emailList, setEmailList] = useState([]);
-  console.log(agreementDetails, "agreementDetails");
   useEffect(() => {
     const emails = agreementDetails?.adobe_tracking_meta_data?.participantSets
       .filter((vl) => vl.role !== "APPROVER")
@@ -64,20 +59,6 @@ const OfferedDetailsCard = ({
     document.body.removeChild(link);
   };
 
-  const handleSendEmail = async(templateId) => {
-    try {
-      await adobeInstance.get(
-        `api/templates/${templateId}/send-for-e-sign`
-      );
-      // setScreenLoader(false);
-    } catch (error) {
-      // setScreenLoader(false);
-      const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
-      console.log(error, "errror!!!!");
-    }
-  }
-
   return (
     <div className="d-flex justify-content-between align-items-center activity-doc-wrapper cursor-pointer mb-3">
       <div>
@@ -106,19 +87,20 @@ const OfferedDetailsCard = ({
       </div>
       {agreementDetails.status === "draft" && (
         <div>
-          <p>Email Not Sended Yet</p>
+          <p>Document Not Sended Yet</p>
         </div>
-      // ) : (
-      //   <div
-      //     className="waiting-wrapper"
-      //     onClick={() => callBack(agreementDetails)}
-      //   >
-      //     <ProgressBar now={50} />
-      //     <OverlayTrigger placement="bottom" overlay={waitingText}>
-      //       <p className="waiting-text">Waiting for Sahil</p>
-      //     </OverlayTrigger>
-      //   </div>
       )}
+      {/* ) : (
+        <div
+          className="waiting-wrapper"
+          onClick={() => callBack(agreementDetails)}
+        >
+          <ProgressBar now={50} />
+          <OverlayTrigger placement="bottom" overlay={waitingText}>
+            <p className="waiting-text">Waiting for Sahil</p>
+          </OverlayTrigger>
+        </div>
+      )} */}
       {/* {agreementDetails.status === "draft" && (
         <div>
           <p>Draft</p>
@@ -139,15 +121,24 @@ const OfferedDetailsCard = ({
             </OverlayTrigger>
           )} */}
           {agreementDetails.status !== "draft" && (
-            <OverlayTrigger placement="bottom" overlay={downloadContract}>
-              <Button
-                variant="transparent"
-                className="arrow-btn info-arrow"
-                onClick={handleDownloadFile}
+            <>
+              <OverlayTrigger placement="bottom" overlay={downloadContract}>
+                <Button
+                  variant="transparent"
+                  className="arrow-btn info-arrow"
+                  onClick={handleDownloadFile}
+                >
+                  <LuDownload />
+                </Button>
+              </OverlayTrigger>
+
+              <span
+                onClick={() => callBack(agreementDetails)}
+                className="px-3 arrow-btn primary-arrow font-16 text-decoration-none cursor-pointer"
               >
-                <LuDownload />
-              </Button>
-            </OverlayTrigger>
+                <FaEye />
+              </span>
+            </>
           )}
           {agreementDetails?.editable && (
             <>
@@ -158,8 +149,11 @@ const OfferedDetailsCard = ({
                   onClick={() =>
                     handleEditDraftDoc({
                       owner: agreementDetails.ownership,
-                      url: agreementDetails.template_file,
-                      documentType: agreementDetails.category_title,
+                      url: agreementDetails,
+                      documentType: {
+                        id: agreementDetails.category,
+                        category_title: agreementDetails.category_title,
+                      },
                     })
                   }
                 >
@@ -167,7 +161,7 @@ const OfferedDetailsCard = ({
                 </Button>
               </OverlayTrigger>
 
-              <OverlayTrigger placement="bottom" overlay={publishContract}>
+              {/* <OverlayTrigger placement="bottom" overlay={publishContract}>
                 <Button
                   variant="transparent"
                   className="arrow-btn primary-arrow"
@@ -175,7 +169,7 @@ const OfferedDetailsCard = ({
                 >
                   <BsFillSendFill />
                 </Button>
-              </OverlayTrigger>
+              </OverlayTrigger> */}
             </>
           )}
         </div>

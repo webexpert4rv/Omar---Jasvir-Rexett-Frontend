@@ -27,7 +27,6 @@ const JobOfferedTab = () => {
   const [templateList, setTempList] = useState([]);
   const userId = getDataFromLocalStorage("userId");
 
-  // for temprory can remove
   const editorRef = useRef(null);
   const [showCreatedDocument, setShowCreateDocument] = useState({
     show: false,
@@ -40,16 +39,14 @@ const JobOfferedTab = () => {
   }, []);
 
   useEffect(() => {
-    if(selectedTab==="offerTemplate")
-    getTemplateLists();
+    if (selectedTab === "offerTemplate") getTemplateLists();
   }, [selectedTab]);
 
-
   const getTemplateLists = () => {
+    setScreenLoader(true)
     adobeInstance
       .get(`api/templates/templates-user/?external_user_id=${userId}`)
       .then((res) => {
-        console.log(res.data, "response !!!");
         setScreenLoader(false);
         setAgreementDetails(res.data);
         setTempList(res.data);
@@ -58,7 +55,6 @@ const JobOfferedTab = () => {
         setScreenLoader(false);
         const message = err.message || "Something went wrong";
         toast.error(message, { position: "top-center" });
-        console.log(err, "error !!!");
       });
   };
 
@@ -82,7 +78,6 @@ const JobOfferedTab = () => {
   };
 
   const handleBack = () => {
-    console.log("calling this function !!!", selectedTab);
     switch (selectedTab) {
       case "owner":
         setDocumentOwner("");
@@ -104,23 +99,14 @@ const JobOfferedTab = () => {
     }
   };
 
-  const handleSave = () => {
-    // setDetailsFilled(true);
-    // setDocumentSaved(true);
-  };
-  console.log(agreementDetails, "agreementDetailsagreementDetails");
   const handleSaveCreatedDocument = async () => {
-    console.log(
-      selectedDocument,
-      "agreementDetailsagreementDetails",
-      documentOwner
-    );
     const formData = new FormData();
     let fileData = null;
     let fileName = `${showCreatedDocument.name}.pdf`;
     if (showCreatedDocument.type === NEW_TEMPLATE_TYPE.upload) {
       if (!showCreatedDocument.file) {
         setError({ show: true, msg: "Please Upload The file" });
+        return;
       } else {
         setError({ show: false, msg: "" });
         fileData = showCreatedDocument.file;
@@ -129,9 +115,6 @@ const JobOfferedTab = () => {
       const delta = editorRef.current?.editor?.getContents();
       const pdfAsBlob = await pdfExporter.generatePdf(delta);
       fileData = new Blob([pdfAsBlob], { type: "application/pdf" });
-      console.log(pdfAsBlob, "pdfAsBlob", showCreatedDocument);
-      // saveAs(pdfAsBlob, "pdf-export.pdf");
-      // fileName = `${showCreatedDocument.name}.pdf`;
     }
     const metaData = {
       name: "",
@@ -155,8 +138,11 @@ const JobOfferedTab = () => {
       )
       .then((res) => {
         console.log(res.data, "response");
+        const message = "Document created successfully";
+        toast.success(message, { position: "top-center" });
+        setShowCreateDocument({ show: false, name: "", newRecord: "" });
         setScreenLoader(false);
-        // setShowCreateDocument({ show: false, name: "", newRecord: res.data });
+        getTemplateLists();
       })
       .catch((err) => {
         setScreenLoader(false);
@@ -164,14 +150,10 @@ const JobOfferedTab = () => {
   };
 
   const handleEditDraftDoc = ({ url, owner, documentType }) => {
-    // handleSelectSteps()
-    console.log(selectedTab, "calling the function123", owner, url);
-    // setIsNewStepCompleted(true);
-    // setDocumentOwner(owner);
-    // setSelectedTemplate(url);
-    // setDocumentSaved(false);
-    // setSelectedDocument(documentType);
-    // setCreateDocumentButton(true);
+    setDocumentOwner(owner);
+    setSelectedTemplate(url);
+    setSelectedTab("viewDocument");
+    setSelectedDocument(documentType);
   };
 
   return (
@@ -200,6 +182,7 @@ const JobOfferedTab = () => {
                 showCreatedDocument={showCreatedDocument}
                 setTempList={setTempList}
                 templateList={templateList}
+                fileRequiredError={error}
               />
               {!showCreatedDocument.show && (
                 <DocumentHistory
@@ -233,7 +216,6 @@ const JobOfferedTab = () => {
             <>
               <DocumentViewerWrapper
                 handleBack={handleBack}
-                handleSave={handleSave}
                 documentOwner={documentOwner}
                 selectedTemplate={selectedTemplate}
                 selectedDocument={selectedDocument}

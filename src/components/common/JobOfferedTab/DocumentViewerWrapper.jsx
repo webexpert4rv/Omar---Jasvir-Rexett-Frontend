@@ -7,10 +7,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import DocumentViewer from "../JobOfferedTab/DocumentViewer";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import { CANDIDATE } from "../../../constent/constent";
-import DraggableTag from "../DragDropFeature/DraggableTag";
-import {
-  DRAGGABLE_TAG,
-} from "../JobOfferedTab/constant/constant";
 import { useSelector } from "react-redux";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
@@ -93,72 +89,18 @@ function DocumentViewerWrapper({
               </div>
             </div>
           )}
-          {/* {editDoc ? (
-            <CreateNewTemplate
-              editorRef={editorRef}
-              showCreatedDocument={{ type: NEW_TEMPLATE_TYPE.create }}
-            />
-          ) : ( */}
           <div>
             <DndProvider backend={HTML5Backend}>
-              <div className="justify-content-center document-preview-wrapper">
-                <div className="drag-options pe-2">
-                  <div>
-                    <h4>Fields</h4>
-                    <div className="drag-listing">
-                      {DRAGGABLE_TAG.map((drg, i) => (
-                        <div key={i}>
-                          <DraggableTag dragDetails={drg} />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
                 <DocumentViewerWrapper
                   ref={dropRef}
-                  // setItems={setItems}
-                  // setTagsByPage={setTagsByPage}
-                  // tagsByPage={tagsByPage}
-                  // items={items}
-                  // setFieldsDetails={setFieldsDetails}
-                  // pdfBytes={pdfBytes}
-                  // pageNumber={pageNumber}
-                  // setPageNumber={setPageNumber}
-                  // handleSaveEditedFile={handleSaveEditedFile}
                   handleBack={handleBack}
                   selectedTemplate={selectedTemplate}
                   documentOwner={documentOwner}
                   selectedCandidate={selectedCandidate}
                   selectedDocument={selectedDocument}
-                  // editorContent={editorContent}
                 />
-              </div>
             </DndProvider>
-            {/* <div className="text-center">
-              <Button
-                variant="transparent"
-                className="font-14 outline-main-btn main-btn px-5 me-2"
-                onClick={handleBack}
-              >
-                Back
-              </Button>
-              <RexettButton
-                variant="transparent"
-                text="Save"
-                type="button"
-                onClick={handleSaveEditedFile}
-                className="font-14 main-btn px-5"
-              />
-              <RexettButton
-                variant="transparent"
-                text="Send"
-                type="button"
-                onClick={handleSend}
-                className="font-14 main-btn px-5"
-              />
-            </div> */}
           </div>
-          {/* )} */}
         </div>
       </div>
       <CustomFieldModal

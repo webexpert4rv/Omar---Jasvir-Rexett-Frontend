@@ -13,11 +13,6 @@ const DocumentHistoryTabs = ({
   setShowDocumentView,
   type,
 }) => {
-  console.log(
-    tabData.filter((clt) => clt.category_title === CATEGORY_TITLE.sow),
-    selectedTab.client.selectedTab,
-    "vsds"
-  );
   return (
     <Tab.Container
       id="left-tabs-example"
@@ -38,7 +33,7 @@ const DocumentHistoryTabs = ({
       </Nav>
       <Tab.Content>
         <Tab.Pane eventKey={CATEGORY_TITLE.sow} className="pt-2 pb-4">
-          {selectedTab.client.selectedTab === CATEGORY_TITLE.sow &&
+          {selectedTab[type].selectedTab === CATEGORY_TITLE.sow &&
           tabData.filter((clt) => clt.category_title === CATEGORY_TITLE.sow)
             .length > 0 ? (
             tabData
@@ -56,7 +51,7 @@ const DocumentHistoryTabs = ({
           )}
         </Tab.Pane>
         <Tab.Pane eventKey={CATEGORY_TITLE.nda} className="pt-2 pb-4">
-          {selectedTab.client.selectedTab === CATEGORY_TITLE.nda &&
+          {selectedTab[type].selectedTab === CATEGORY_TITLE.nda &&
           tabData.filter((clt) => clt.category_title === CATEGORY_TITLE.nda)
             .length > 0 ? (
             tabData

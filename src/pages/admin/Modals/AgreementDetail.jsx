@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Button,
-  Form,
-  Row,
-  Col,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
-import devImg from "../../../assets/img/demo-img.jpg";
+import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaCopy, FaInfo } from "react-icons/fa6";
-import moment from "moment/moment";
 import NoDataFound from "../../../components/atomic/NoDataFound";
 import { convertDateTime } from "../../../Utils/dateTimeConverter";
+import { SIGNER_STATUS } from "../../../components/common/JobOfferedTab/constant/constant";
 const AgreementDetails = ({ show, handleClose, agreementDetails }) => {
   const [emailList, setEmailList] = useState([]);
   const userName = localStorage.getItem("userName");
 
-  console.log(agreementDetails, "agreementDetails");
   useEffect(() => {
     const emails = agreementDetails?.adobe_tracking_meta_data?.participantSets
       .filter((vl) => vl.role !== "APPROVER")
@@ -52,6 +42,22 @@ const AgreementDetails = ({ show, handleClose, agreementDetails }) => {
       </div>
     </Tooltip>
   );
+
+  const signerStatus = (status) => {
+    switch (status) {
+      case SIGNER_STATUS.NOT_YET_VISIBLE:
+        return "Not seen yet";
+
+      case SIGNER_STATUS.WAITING_FOR_OTHERS:
+        return "Signed waiting for other";
+
+      case SIGNER_STATUS.WAITING_FOR_MY_SIGNATURE:
+        return "Not signed";
+
+      default:
+        return "current";
+    }
+  };
 
   return (
     <Modal
@@ -128,9 +134,7 @@ const AgreementDetails = ({ show, handleClose, agreementDetails }) => {
                       </div>
                       <div>
                         <h5 className="reciept-name">
-                          {trackData.status === "NOT_YET_VISIBLE"
-                            ? "Needs to Sign"
-                            : "Current"}
+                          {signerStatus(trackData.status)}
                         </h5>
                         <p className="reciept-text mb-0">
                           Sent on{" "}

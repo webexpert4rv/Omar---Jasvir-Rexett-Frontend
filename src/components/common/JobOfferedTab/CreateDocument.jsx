@@ -15,7 +15,6 @@ const CreateDocument = ({ handleDocumentSelect, selectedDocument }) => {
     adobeInstance
       .get("api/templates/categories/")
       .then((res) => {
-        console.log(res.data, "response !!!");
         setScreenLoader(false);
         setDocumentList(res.data);
       })

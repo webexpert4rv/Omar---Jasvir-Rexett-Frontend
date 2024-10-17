@@ -11,8 +11,8 @@ const OfferTemplate = ({
   editorRef,
   showCreatedDocument,
   setShowCreateDocument,
-  templateList
-  // templateList,
+  templateList,
+  fileRequiredError,
 }) => {
   const [showNameModal, setShowNameModal] = useState(false);
   const viewPage = <Tooltip>View</Tooltip>;
@@ -40,6 +40,7 @@ const OfferTemplate = ({
           editorRef={editorRef}
           setShowCreateDocument={setShowCreateDocument}
           showCreatedDocument={showCreatedDocument}
+          fileRequiredError={fileRequiredError}
         />
       ) : (
         <div id="new-step">

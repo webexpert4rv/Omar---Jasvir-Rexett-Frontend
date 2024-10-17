@@ -31,10 +31,10 @@ const DocumentHistory = ({ agreementDetails, handleEditDraftDoc }) => {
     let candidateList = [];
     if (agreementDetails.length > 0) {
       clientList = agreementDetails.filter(
-        (dtl) => dtl.ownership === "client" || dtl.ownership === "Client"
+        (dtl) => dtl?.ownership?.toLowerCase() === "client"
       );
       candidateList = agreementDetails.filter(
-        (dtl) => dtl.ownership === "candidate" || dtl.ownership === 'Candidate'
+        (dtl) => dtl?.ownership?.toLowerCase() === "candidate"
       );
     }
     setTabsList({

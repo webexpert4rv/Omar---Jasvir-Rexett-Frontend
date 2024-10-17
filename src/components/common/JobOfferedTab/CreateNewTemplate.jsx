@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import ReactQuill from "react-quill";
 import { NEW_TEMPLATE_TYPE } from "./constant/constant";
@@ -7,15 +7,19 @@ const CreateNewTemplate = ({
   editorRef,
   showCreatedDocument,
   setShowCreateDocument,
+  fileRequiredError
 }) => {
   const [error, setError] = useState({ show: false, msg: "" });
-  const handleFileUpload = (event) => {
-    console.log(event.target.files, "data of file");
 
+  useEffect(() => {
+    setError(fileRequiredError);
+  }, [fileRequiredError]);
+
+  const handleFileUpload = (event) => {
     const allowedTypes = ["application/pdf"];
     const file = event.target.files[0];
     if (file && allowedTypes.includes(file.type)) {
-      setError({show: false, msg:""});
+      setError({ show: false, msg: "" });
       setShowCreateDocument({ ...showCreatedDocument, file: file });
     } else {
       setError({ show: true, msg: "Invalid type" });
@@ -38,7 +42,9 @@ const CreateNewTemplate = ({
           >
             Upload file
           </Form.Label>
-          {showCreatedDocument?.file && <span>{showCreatedDocument.file.name}</span>}
+          {showCreatedDocument?.file && (
+            <span>{showCreatedDocument.file.name}</span>
+          )}
           {error.show && <p className="error-message">{error.msg}</p>}
         </>
       ) : (

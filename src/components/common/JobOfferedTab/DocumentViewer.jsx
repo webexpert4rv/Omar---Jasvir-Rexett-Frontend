@@ -20,12 +20,11 @@ import ScreenLoader from "../../atomic/ScreenLoader";
 import { CANDIDATE, CLIENT } from "../../../constent/constent";
 import { useSelector } from "react-redux";
 import { getDataFromLocalStorage } from "../../../helper/utlis";
+import DraggableTag from "../DragDropFeature/DraggableTag";
 
-// Set the workerSrc for pdf.js
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const DraggableItem = ({ item, index, handleDelete, ref }) => {
-  console.log(item, "itemitem");
+const DraggableItem = ({ item, index, handleDelete }) => {
   const [, drag] = useDrag(() => ({
     type: "ITEM",
     item: { index },
@@ -44,7 +43,7 @@ const DraggableItem = ({ item, index, handleDelete, ref }) => {
         cursor: "move",
       }}
     >
-      {item.tag}
+      {item.tag} X: {item.x}, Y: {item.y}
       <button onClick={() => handleDelete(index)}>delete</button>
     </div>
   );
@@ -55,7 +54,7 @@ const DocumentViewer = ({
   documentOwner,
   selectedTemplate,
   selectedCandidate,
-  selectedDocument
+  selectedDocument,
 }) => {
   const [showDocumentFieldDrop, setSowDocumentFieldDrop] = useState({
     show: false,
@@ -64,15 +63,10 @@ const DocumentViewer = ({
   const [numPages, setNumPages] = useState(null);
   const [items, setItems] = useState([]);
   const [tagsByPage, setTagsByPage] = useState([]);
-  const [fieldsDetails, setFieldsDetails] = useState({});
   const [pageNumber, setPageNumber] = useState(1);
   const [editorContent, setEditorContent] = useState(null);
   const [pdfBytes, setPdfBytes] = useState(null);
   const [screenLoader, setScreenLoader] = useState(true);
-  const [pdfContainerSize, setPdfContainerSize] = useState({
-    height: 0,
-    width: 0,
-  });
   const dropRef = useRef(null);
   const dragRef = useRef(null);
 
@@ -81,30 +75,11 @@ const DocumentViewer = ({
 
   useEffect(() => {
     if (!editorContent) {
-      // const url = "/sow-template/sowTest.pdf";
       const url = ADOBE_BASE_URL + selectedTemplate.template_file;
-      // const url = 'https://rexett-e-sign.rvtechnologies.info/media/agreement/receiptTemplate_83X8T4d.pdf'
-
       const fetchPdf = async () => {
         const response = await fetch(url);
         const blob = await response.blob();
-        console.log(blob, ",123123123");
         const arrayBuffer = await blob.arrayBuffer();
-        console.log(arrayBuffer, "arrayBuffer123");
-        const pdfDoc = await PDFDocument.load(arrayBuffer);
-        const pdfBytesModified = await pdfDoc.save();
-        const urlURL = URL.createObjectURL(
-          new Blob([pdfBytesModified], { type: "application/pdf" })
-        );
-        const pages = pdfDoc.getPages();
-        const editedPage = pages[0];
-        const { width, height } = editedPage.getSize();
-        setPdfContainerSize({
-          height,
-          width,
-        });
-
-        console.log(pdfDoc, "pdfDoc123");
         setEditorContent(arrayBuffer);
         setPdfBytes(url);
         setScreenLoader(false);
@@ -117,27 +92,19 @@ const DocumentViewer = ({
     accept: ["TAG", "ITEM"],
     drop: async (item, monitor) => {
       const dropRect = dropRef.current.getBoundingClientRect();
-      // const currentRect = dragRef.current.getBoundingClientRect();
-
       const clientOffset = monitor.getClientOffset();
 
       const x = clientOffset.x - dropRect.left;
       const y = clientOffset.y - dropRect.top;
-
-      // const newX = clientOffset.x - dropRect.left - currentRect.width / 2;
-      // const newY = clientOffset.y - dropRect.top - currentRect.height / 2;
-
       if (item.tag) {
         setItems((prevItems) => [...prevItems, { x: x, y: y, ...item }]);
-        // const tempItem = { x, y, ...item }
-        if (item.tag !== "Name" && item.tag !== "Email") {
-          setSowDocumentFieldDrop((prev) => ({
-            show: true,
-            tagDetails: { ...item, x: x, y: y },
-          }));
-        } else {
-          // tempItem['value'] =
-        }
+        // Need for feature use if want to add the condition to show the modal on drop
+        // if (item.tag !== "name" && item.tag !== "email") {
+        setSowDocumentFieldDrop((prev) => ({
+          show: true,
+          tagDetails: { ...item, x: x, y: y },
+        }));
+        // }
       } else if (item.index !== undefined) {
         setItems((prevItems) => {
           const updatedItems = prevItems.map((prevItem, idx) =>
@@ -164,7 +131,6 @@ const DocumentViewer = ({
   };
 
   const handleSubmitSubTag = (tagData) => {
-    console.log(tagData, "tag name123", items);
     const index = items.findIndex(
       (itm) => itm.x === tagData.tagDetails.x && itm.y === tagData.tagDetails.y
     );
@@ -173,30 +139,34 @@ const DocumentViewer = ({
       tempItem[index].value = `${tagData.Price}$ ${tagData.Price}`;
     } else if (tagData.Address) {
       tempItem[index].value = tagData.Address;
+    } else if (tagData.name || tagData.email) {
+      tempItem[index].value = tagData.name || tagData.email;
     } else {
       tempItem[
         index
       ].value = `${tagData["Working Duration"]}$ ${tagData["Working Type"]}`;
     }
-    setFieldsDetails((prev) => {
-      return { ...prev, ...tagData };
-    });
     setSowDocumentFieldDrop({ show: false, tagDetails: {} });
   };
 
   const handleSend = async () => {
+    if (selectedCandidate.length === 0 && documentOwner !== CLIENT) {
+      const message = "Please select the candidate first";
+      toast.error(message, { position: "top-center" });
+      return;
+    }
     setScreenLoader(true);
     let payload = {};
     if (documentOwner === CLIENT) {
       const recipientsDetails = {
         name: jobPostedData?.job?.client?.name || null,
         email: jobPostedData?.job?.client?.email || null,
-        role: PDF_SIGNER_ROLE.signer
+        role: PDF_SIGNER_ROLE.signer,
       };
 
       payload = {
         ownership: CLIENT,
-        recipients: [{...recipientsDetails}],
+        recipients: [{ ...recipientsDetails }],
       };
     } else {
       payload = {
@@ -211,18 +181,16 @@ const DocumentViewer = ({
         payload
       )
       .then(async (res) => {
+        setScreenLoader(false);
+        try {
+          await adobeInstance.get(
+            `api/templates/${selectedTemplate.id}/send-for-e-sign`
+          );
+        } catch (error) {
           setScreenLoader(false);
-        // needs to remove from here
-        // try {
-        //   await adobeInstance.get(
-        //     `api/templates/${selectedTemplate.id}/send-for-e-sign`
-        //   );
-        // } catch (error) {
-        //   setScreenLoader(false);
-        //   const message = error.message || "Something went wrong";
-        //   toast.error(message, { position: "top-center" });
-        //   console.log(error, "errror!!!!");
-        // }
+          const message = error.message || "Something went wrong";
+          toast.error(message, { position: "top-center" });
+        }
       })
       .catch((err) => {
         const message = err.message || "Something went wrong";
@@ -230,21 +198,21 @@ const DocumentViewer = ({
         setScreenLoader(false);
       });
 
-    const blob = new Blob([editorContent], { type: "application/pdf" });
+    // const blob = new Blob([editorContent], { type: "application/pdf" });
 
     // Create a link element
-    const link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
-    link.download = "modified.pdf"; // Specify the file name
+    // const link = document.createElement("a");
+    // link.href = window.URL.createObjectURL(blob);
+    // link.download = "modified.pdf"; // Specify the file name
 
-    // Append the link to the body
-    document.body.appendChild(link);
+    // // Append the link to the body
+    // document.body.appendChild(link);
 
-    // Programmatically click the link to trigger the download
-    link.click();
+    // // Programmatically click the link to trigger the download
+    // link.click();
 
-    // Clean up and remove the link element
-    document.body.removeChild(link);
+    // // Clean up and remove the link element
+    // document.body.removeChild(link);
   };
 
   // const modifyPdf = async () => {
@@ -309,7 +277,7 @@ const DocumentViewer = ({
   };
 
   const handleSaveEditedFile = async () => {
-    setScreenLoader(true);
+    // setScreenLoader(true);
     if (items.length > 0) {
       try {
         const pdfDoc = await PDFDocument.load(editorContent);
@@ -318,8 +286,8 @@ const DocumentViewer = ({
         const { width, height } = editedPage.getSize();
         for (const item of items) {
           editedPage.drawText(`{{${item.tag}}}`, {
-            x: item.x - 10,
-            y: height - item.y - item.fontSize - 56,
+            x: item.x - 150,
+            y: height - item.y - item.fontSize -0.3,
             size: item.fontSize - 0.3,
           });
         }
@@ -328,7 +296,6 @@ const DocumentViewer = ({
         setEditorContent(contentBytes);
         const blob = new Blob([contentBytes], { type: "application/pdf" });
         const formData = new FormData();
-        console.log(fieldsDetails, "fieldDetails, 123q23", items);
         const tempTags = items.reduce((acc, item) => {
           acc[item.tag.toLowerCase()] = item.value;
           return acc;
@@ -336,13 +303,13 @@ const DocumentViewer = ({
         formData.append("template_title", selectedTemplate.template_title);
         formData.append("meta_data", JSON.stringify(tempTags));
         formData.append("template_file", blob, selectedTemplate.template_file);
-        let createUpdateFile = null
+        let createUpdateFile = null;
         if (selectedTemplate.external_user_id) {
           // Send the updated PDF to the API
           createUpdateFile = adobeFormInstance.put(
             `/api/templates/template-documents/${selectedTemplate.id}/`,
             formData
-          )
+          );
         } else {
           // If the template is default create the updated PDF
           formData.append("ownership", documentOwner);
@@ -354,12 +321,26 @@ const DocumentViewer = ({
             formData
           );
         }
-        
+
+
+        // / Create a link element
+    // const link = document.createElement("a");
+    // link.href = window.URL.createObjectURL(blob);
+    // link.download = "modified.pdf"; // Specify the file name
+
+    // // Append the link to the body
+    // document.body.appendChild(link);
+
+    // // Programmatically click the link to trigger the download
+    // link.click();
+
+    // // Clean up and remove the link element
+    // document.body.removeChild(link);
         createUpdateFile
           .then((res) => {
             setScreenLoader(false);
-            handleSend()
-            console.log(res, "//////");
+            const message = "Document updated successfully";
+            toast.success(message, { position: "top-center" });
           })
           .catch((err) => {
             setScreenLoader(false);
@@ -374,11 +355,6 @@ const DocumentViewer = ({
     }
   };
 
-
-  const PageWrapper = forwardRef((props, ref) => (
-    <Page {...props} inputRef={ref} />
-  ));
-
   const renderCustomElements = useMemo(() => {
     return items?.map((ele, idx) => {
       return (
@@ -391,111 +367,109 @@ const DocumentViewer = ({
         />
       );
     });
-    //   return (
-    //     <DraggableItem
-    //       key={ele.title + idx}
-    //       ref={containerRef}
-    //       index={idx}
-    //       page={pageNumber - 1}
-    //       onChange={setData}
-    //       {...ele}
-    //     />
-    //   );
-    // });
   }, [items, pageNumber]);
-
   return (
     <>
-      <div className="preview-document">
-        <div
-          className="docs-container"
-          ref={(node) => {
-            drop(node);
-            dropRef.current = node;
-          }}
-          style={{
-            border: "2px solid red",
-            minHeight: "700px",
-            height: "100%",
-            position: "relative",
-          }}
-          >
-          {screenLoader ? (
-            <ScreenLoader />
-          ) : (
-            <div style={{ border: "2px solid yellow" }}>
-              <Document
-                file={pdfBytes}
-                // file={URL.createObjectURL(new Blob([pdfBytes]))}
-                onLoadSuccess={onDocumentLoadSuccess}
-              >
-                <PageWrapper
-                  pageNumber={pageNumber}
-                  renderTextLayer={false}
-                  renderAnnotationLayer={false}
-                  customTextRenderer={false}
-                  style={{ border: "2px solid blue" }}
-                  className="border border-danger border-3 custom-pdf"
-                  ref={(node) => {
-                    drop(node);
-                    dropRef.current = node;
-                  }}
-                />
-              </Document>
-              <p>
-                Page {pageNumber} of {numPages}
-              </p>
-
-              {/* Navigation Controls */}
-              <button
-                disabled={pageNumber <= 1}
-                onClick={() => handlePrevious()}
-              >
-                Previous Page
-              </button>
-              <button
-                disabled={pageNumber >= numPages}
-                onClick={() => handleNext()}
-              >
-                Next Page
-              </button>
+      <div className="justify-content-center document-preview-wrapper">
+        <div className="drag-options pe-2">
+          <div>
+            <h4>Fields</h4>
+            <div className="drag-listing">
+              {DRAGGABLE_TAG.map((drg, i) => (
+                <div key={i}>
+                  <DraggableTag dragDetails={drg} />
+                </div>
+              ))}
             </div>
-          )}
-          {renderCustomElements}
-          {/* {items.map((item, index) => (
-            <DraggableItem
-              key={index}
-              item={item}
-              index={index}
-              handleDelete={handleDelete}
-            />
-          ))} */}
+          </div>
         </div>
-      </div>
-      <div className="text-center">
-        <Button
-          variant="transparent"
-          className="font-14 outline-main-btn main-btn px-5 me-2"
-          onClick={handleBack}
-        >
-          Back
-        </Button>
-        <RexettButton
-          variant="transparent"
-          text="Save"
-          type="button"
-          disabled={items.length === 0}
-          onClick={handleSaveEditedFile}
-          className="font-14 main-btn px-5"
-        />
-        <RexettButton
-          variant="transparent"
-          text="Send"
-          type="button"
-          disabled={items.length === 0}
-          onClick={handleSend}
-          className="font-14 main-btn px-5"
-        />
+        <div className="preview-document">
+          <div
+            className="docs-container"
+            ref={(node) => {
+              drop(node);
+              dropRef.current = node;
+            }}
+            style={{
+              // border: "2px solid red",
+              minHeight: "700px",
+              height: "100%",
+              position: "relative",
+            }}
+          >
+            {screenLoader ? (
+              <ScreenLoader />
+            ) : (
+              // <div style={{ border: "2px solid yellow" }}>
+               <div>
+                <Document
+                  file={pdfBytes}
+                  // file={URL.createObjectURL(new Blob([pdfBytes]))}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                    customTextRenderer={false}
+                    // style={{ border: "2px solid blue" }}
+                    className="border-bottom custom-pdf"
+                    ref={(node) => {
+                      drop(node);
+                      dropRef.current = node;
+                    }}
+                  />
+                </Document>
+                <p className="text-center fw-medium mt-2">
+                  Page {pageNumber} of {numPages}
+                </p>
+                <div className="d-flex justify-content-center align-items-center gap-2">
+                  {/* Navigation Controls */}
+                  <button
+                    disabled={pageNumber <= 1}
+                    className="doc-action-btn"
+                    onClick={() => handlePrevious()}
+                  >
+                    Previous Page
+                  </button>
+                  <button
+                    disabled={pageNumber >= numPages}
+                    className="doc-action-btn"
+                    onClick={() => handleNext()}
+                  >
+                    Next Page
+                  </button>
+                </div>
+              </div>
+            )}
+            {renderCustomElements}
+          </div>
+        </div>
+        <div className="text-center">
+          <Button
+            variant="transparent"
+            className="font-14 outline-main-btn main-btn px-5 mb-2"
+            onClick={handleBack}
+          >
+            Back
+          </Button>
+          <RexettButton
+            variant="transparent"
+            text="Save"
+            type="button"
+            // disabled={items.length === 0}
+            onClick={handleSaveEditedFile}
+            className="font-14 main-btn px-5 mb-2"
+          />
+          <RexettButton
+            variant="transparent"
+            text="Send"
+            type="button"
+            // disabled={items.length === 0}
+            onClick={handleSend}
+            className="font-14 main-btn px-5"
+          />
+        </div>
       </div>
       {showDocumentFieldDrop.show && (
         <DocumentFieldModal

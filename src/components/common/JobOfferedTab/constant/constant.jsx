@@ -2,7 +2,6 @@ import { CiAt } from "react-icons/ci";
 import { FiDollarSign } from "react-icons/fi";
 import { GoClock } from "react-icons/go";
 import { IoLocationOutline, IoTextSharp } from "react-icons/io5";
-import { RiText } from "react-icons/ri";
 
 export const PRICE_OPTION = { label: "Currency", value: ["USD", "SDG"] };
 export const DURATION = {
@@ -11,7 +10,7 @@ export const DURATION = {
 };
 export const DRAGGABLE_TAG = [
   {
-    tag: "Name",
+    tag: "name",
     value: "asd",
     icon: <IoTextSharp />,
     subOption: null,
@@ -19,7 +18,7 @@ export const DRAGGABLE_TAG = [
     fontSize: 10,
   },
   {
-    tag: "Email",
+    tag: "email",
     value: "asd",
     icon: <CiAt />,
     subOption: null,
@@ -69,4 +68,10 @@ export const CATEGORY_TITLE = {
 export const NEW_TEMPLATE_TYPE = {
   upload: "upload-document",
   create: "create-document",
+};
+
+export const SIGNER_STATUS = {
+  NOT_YET_VISIBLE: "NOT_YET_VISIBLE",
+  WAITING_FOR_OTHERS: "WAITING_FOR_OTHERS",
+  WAITING_FOR_MY_SIGNATURE: "WAITING_FOR_MY_SIGNATURE",
 };

@@ -10917,3 +10917,13 @@ select.apply-field
         width: 100%;
     }
 }
+.doc-action-btn
+{
+    padding: 10px 20px;
+    border: 1px solid #333;
+    color: #333;
+    width: auto;
+    background-color: transparent !important;
+    border-radius: 5px;
+    cursor: pointer;
+}
