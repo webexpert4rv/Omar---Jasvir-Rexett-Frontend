@@ -5,7 +5,7 @@ import DocumentOwner from "./DocumentOwner";
 import OfferTemplate from "./OfferTemplate";
 import { Button } from "react-bootstrap";
 import DocumentViewerWrapper from "./DocumentViewerWrapper";
-import { NEW_TEMPLATE_TYPE } from "./constant/constant";
+import { NEW_TEMPLATE_TYPE, SIGNER_STATUS } from "./constant/constant";
 import RexettButton from "../../atomic/RexettButton";
 import { pdfExporter } from "quill-to-pdf";
 import {
@@ -15,13 +15,14 @@ import {
 import { getDataFromLocalStorage } from "../../../helper/utlis";
 import DocumentHistory from "./DocumentHistory";
 import { toast } from "react-toastify";
+import { CANDIDATE, CLIENT } from "../../../constent/constent";
+import { useSelector } from "react-redux";
 
 const JobOfferedTab = () => {
   const [selectedDocument, setSelectedDocument] = useState("");
   const [selectedTab, setSelectedTab] = useState("document");
   const [screenLoader, setScreenLoader] = useState(false);
   const [documentOwner, setDocumentOwner] = useState("");
-  const [agreementDetails, setAgreementDetails] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState({});
   const [error, setError] = useState({ show: false, msg: "" });
   const [templateList, setTempList] = useState([]);
@@ -34,22 +35,25 @@ const JobOfferedTab = () => {
     newRecord: "",
   });
 
-  // useEffect(() => {
-  //   getTemplateLists();
-  // }, []);
+  const { jobPostedData } = useSelector((state) => state.clientData);
 
   useEffect(() => {
     if (selectedTab === "offerTemplate") getTemplateLists();
   }, [selectedTab]);
 
   const getTemplateLists = () => {
-    setScreenLoader(true)
+    setScreenLoader(true);
     adobeInstance
       .get(`api/templates/templates-user/?external_user_id=${userId}`)
       .then((res) => {
-        setScreenLoader(false);
-        setAgreementDetails(res.data);
+        const signedCompleted = res.data?.filter((itm) =>
+          itm?.adobe_tracking_meta_data?.participantSets.some(
+            (prt) => prt.status === SIGNER_STATUS.COMPLETED
+          ) || false
+        );
+        console.log(signedCompleted,"signedCompletedsignedCompleted")
         setTempList(res.data);
+        setScreenLoader(false);
       })
       .catch((err) => {
         setScreenLoader(false);
@@ -66,6 +70,16 @@ const JobOfferedTab = () => {
         break;
 
       case "owner":
+        if (stepValue === CANDIDATE) {
+          const finalCandidates =
+            jobPostedData?.job?.job_applications?.interviews
+              ?.interview_completed || [];
+          if (finalCandidates.length === 0) {
+            const message = "Interview is completed yet for this job";
+            toast.error(message, { position: "top-center" });
+            return;
+          }
+        }
         setDocumentOwner(stepValue);
         setSelectedTab("offerTemplate");
         break;
@@ -146,6 +160,8 @@ const JobOfferedTab = () => {
       })
       .catch((err) => {
         setScreenLoader(false);
+        const message = err.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
       });
   };
 
@@ -186,9 +202,8 @@ const JobOfferedTab = () => {
               />
               {!showCreatedDocument.show && (
                 <DocumentHistory
-                  agreementDetails={agreementDetails}
+                  agreementDetails={templateList}
                   handleEditDraftDoc={handleEditDraftDoc}
-                  templateList={templateList}
                   setTempList={setTempList}
                 />
               )}

@@ -67,6 +67,7 @@ const DocumentViewer = ({
   const [editorContent, setEditorContent] = useState(null);
   const [pdfBytes, setPdfBytes] = useState(null);
   const [screenLoader, setScreenLoader] = useState(true);
+  const [pdfHeight, setPdfHeight] = useState();
   const dropRef = useRef(null);
   const dragRef = useRef(null);
 
@@ -181,11 +182,13 @@ const DocumentViewer = ({
         payload
       )
       .then(async (res) => {
-        setScreenLoader(false);
         try {
           await adobeInstance.get(
             `api/templates/${selectedTemplate.id}/send-for-e-sign`
           );
+          setScreenLoader(false);
+          toast.success("Document is sended for signature");
+          handleBack();
         } catch (error) {
           setScreenLoader(false);
           const message = error.message || "Something went wrong";
@@ -277,7 +280,6 @@ const DocumentViewer = ({
   };
 
   const handleSaveEditedFile = async () => {
-    // setScreenLoader(true);
     if (items.length > 0) {
       try {
         const pdfDoc = await PDFDocument.load(editorContent);
@@ -286,8 +288,8 @@ const DocumentViewer = ({
         const { width, height } = editedPage.getSize();
         for (const item of items) {
           editedPage.drawText(`{{${item.tag}}}`, {
-            x: item.x - 150,
-            y: height - item.y - item.fontSize -0.3,
+            x: item.x,
+            y: height - item.y - item.fontSize - 0.3,
             size: item.fontSize - 0.3,
           });
         }
@@ -322,31 +324,30 @@ const DocumentViewer = ({
           );
         }
 
-
         // / Create a link element
-    // const link = document.createElement("a");
-    // link.href = window.URL.createObjectURL(blob);
-    // link.download = "modified.pdf"; // Specify the file name
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "modified.pdf"; // Specify the file name
 
-    // // Append the link to the body
-    // document.body.appendChild(link);
+        // Append the link to the body
+        document.body.appendChild(link);
 
-    // // Programmatically click the link to trigger the download
-    // link.click();
+        // Programmatically click the link to trigger the download
+        link.click();
 
-    // // Clean up and remove the link element
-    // document.body.removeChild(link);
-        createUpdateFile
-          .then((res) => {
-            setScreenLoader(false);
-            const message = "Document updated successfully";
-            toast.success(message, { position: "top-center" });
-          })
-          .catch((err) => {
-            setScreenLoader(false);
-            const message = err.message || "Something went wrong";
-            toast.error(message, { position: "top-center" });
-          });
+        // Clean up and remove the link element
+        document.body.removeChild(link);
+        // createUpdateFile
+        //   .then((res) => {
+        //     setScreenLoader(false);
+        //     const message = "Document updated successfully";
+        //     toast.success(message, { position: "top-center" });
+        //   })
+        //   .catch((err) => {
+        //     setScreenLoader(false);
+        //     const message = err.message || "Something went wrong";
+        //     toast.error(message, { position: "top-center" });
+        //   });
       } catch (error) {
         setScreenLoader(false);
         const message = error.message || "Something went wrong";
@@ -363,7 +364,6 @@ const DocumentViewer = ({
           item={ele}
           index={idx}
           handleDelete={handleDelete}
-          ref={dragRef}
         />
       );
     });
@@ -384,47 +384,43 @@ const DocumentViewer = ({
           </div>
         </div>
         <div className="preview-document">
-          <div
-            className="docs-container"
-            ref={(node) => {
-              drop(node);
-              dropRef.current = node;
-            }}
-            style={{
-              // border: "2px solid red",
-              minHeight: "700px",
-              height: "100%",
-              position: "relative",
-            }}
-          >
+          <div className="docs-container">
             {screenLoader ? (
               <ScreenLoader />
             ) : (
-              // <div style={{ border: "2px solid yellow" }}>
-               <div>
+              <div>
                 <Document
                   file={pdfBytes}
                   // file={URL.createObjectURL(new Blob([pdfBytes]))}
                   onLoadSuccess={onDocumentLoadSuccess}
                 >
-                  <Page
-                    pageNumber={pageNumber}
-                    renderTextLayer={false}
-                    renderAnnotationLayer={false}
-                    customTextRenderer={false}
-                    // style={{ border: "2px solid blue" }}
-                    className="border-bottom custom-pdf"
+                  <div
+                    className="position-relative"
                     ref={(node) => {
                       drop(node);
                       dropRef.current = node;
                     }}
-                  />
+                    style={{
+                      minHeight: "700px",
+                      height: "100%",
+                      position: "relative",
+                      width: "612px"
+                    }}
+                  >
+                    <Page
+                      pageNumber={pageNumber}
+                      renderTextLayer={false}
+                      renderAnnotationLayer={false}
+                      customTextRenderer={false}
+                      className="border-bottom custom-pdf"
+                    />
+                    {renderCustomElements}
+                  </div>
                 </Document>
                 <p className="text-center fw-medium mt-2">
                   Page {pageNumber} of {numPages}
                 </p>
                 <div className="d-flex justify-content-center align-items-center gap-2">
-                  {/* Navigation Controls */}
                   <button
                     disabled={pageNumber <= 1}
                     className="doc-action-btn"
@@ -442,7 +438,6 @@ const DocumentViewer = ({
                 </div>
               </div>
             )}
-            {renderCustomElements}
           </div>
         </div>
         <div className="text-center">
@@ -455,7 +450,7 @@ const DocumentViewer = ({
           </Button>
           <RexettButton
             variant="transparent"
-            text="Save"
+            text="Save123"
             type="button"
             // disabled={items.length === 0}
             onClick={handleSaveEditedFile}

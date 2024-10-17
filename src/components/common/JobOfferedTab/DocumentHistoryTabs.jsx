@@ -34,10 +34,17 @@ const DocumentHistoryTabs = ({
       <Tab.Content>
         <Tab.Pane eventKey={CATEGORY_TITLE.sow} className="pt-2 pb-4">
           {selectedTab[type].selectedTab === CATEGORY_TITLE.sow &&
-          tabData.filter((clt) => clt.category_title === CATEGORY_TITLE.sow)
-            .length > 0 ? (
+          tabData.filter(
+            (clt) =>
+              clt.category_title === CATEGORY_TITLE.sow &&
+              clt.status !== "draft"
+          ).length > 0 ? (
             tabData
-              .filter((clt) => clt.category_title === CATEGORY_TITLE.sow)
+              .filter(
+                (clt) =>
+                  clt.category_title === CATEGORY_TITLE.sow &&
+                  clt.status !== "draft"
+              )
               .map((details) => (
                 <OfferedDetailsCard
                   setShowDocumentView={setShowDocumentView}
@@ -52,10 +59,17 @@ const DocumentHistoryTabs = ({
         </Tab.Pane>
         <Tab.Pane eventKey={CATEGORY_TITLE.nda} className="pt-2 pb-4">
           {selectedTab[type].selectedTab === CATEGORY_TITLE.nda &&
-          tabData.filter((clt) => clt.category_title === CATEGORY_TITLE.nda)
-            .length > 0 ? (
+          tabData.filter(
+            (clt) =>
+              clt.category_title === CATEGORY_TITLE.nda &&
+              clt.status !== "draft"
+          ).length > 0 ? (
             tabData
-              .filter((clt) => clt.category_title === CATEGORY_TITLE.nda)
+              .filter(
+                (clt) =>
+                  clt.category_title === CATEGORY_TITLE.nda &&
+                  clt.status !== "draft"
+              )
               .map((details) => (
                 <OfferedDetailsCard
                   setShowDocumentView={setShowDocumentView}

@@ -54,6 +54,9 @@ const AgreementDetails = ({ show, handleClose, agreementDetails }) => {
       case SIGNER_STATUS.WAITING_FOR_MY_SIGNATURE:
         return "Not signed";
 
+      case SIGNER_STATUS.COMPLETED:
+        return "Signed";
+
       default:
         return "current";
     }

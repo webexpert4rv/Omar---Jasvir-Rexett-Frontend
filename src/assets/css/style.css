@@ -5630,12 +5630,11 @@ input[type="radio"]:checked {
 
 .docs-container {
     margin: 20px auto;
-    /* padding: 20px; */
+    padding: 20px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-size: 13px;
-    /* max-height: 600px; */
     overflow: auto;
 }
 
@@ -10271,7 +10270,6 @@ select.apply-field
 }
 .meeting-sidebar .event-date abbr
 {
-    background-color: ;
 }
 .meeting-sidebar .meeting-booking .react-calendar__navigation button.react-calendar__navigation__arrow
 {

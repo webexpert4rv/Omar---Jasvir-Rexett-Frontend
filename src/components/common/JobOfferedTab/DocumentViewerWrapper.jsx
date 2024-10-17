@@ -19,7 +19,6 @@ function DocumentViewerWrapper({
 }) {
   const [showcustomfield, setCustomField] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState([]);
-  const dropRef = useRef(null);
 
   const { jobPostedData } = useSelector((state) => state.clientData);
 
@@ -30,9 +29,6 @@ function DocumentViewerWrapper({
     setCustomField(!showcustomfield);
   };
 
-  const DocumentViewerWrapper = forwardRef((props, ref) => (
-    <DocumentViewer {...props} dropRef={ref} />
-  ));
 
   const handleSelectCandidate = (candidate) => {
     const index = selectedCandidate.findIndex(
@@ -91,14 +87,21 @@ function DocumentViewerWrapper({
           )}
           <div>
             <DndProvider backend={HTML5Backend}>
-                <DocumentViewerWrapper
+              <DocumentViewer
+                handleBack={handleBack}
+                selectedTemplate={selectedTemplate}
+                documentOwner={documentOwner}
+                selectedCandidate={selectedCandidate}
+                selectedDocument={selectedDocument}
+              />
+              {/* <DocumentViewerWrapper
                   ref={dropRef}
                   handleBack={handleBack}
                   selectedTemplate={selectedTemplate}
                   documentOwner={documentOwner}
                   selectedCandidate={selectedCandidate}
                   selectedDocument={selectedDocument}
-                />
+                /> */}
             </DndProvider>
           </div>
         </div>
