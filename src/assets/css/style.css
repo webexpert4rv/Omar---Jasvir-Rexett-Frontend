@@ -3348,6 +3348,10 @@ input[type="radio"]:checked {
     opacity: .3;
     background-color: #fff !important;
 }
+.disabled {
+    cursor: not-allowed;
+    opacity: 0.5; 
+  }
 
 .primary-arrow {
     background-color: #defade;

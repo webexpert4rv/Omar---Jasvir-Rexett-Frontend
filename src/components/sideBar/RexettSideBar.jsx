@@ -11,42 +11,40 @@ import { useSelector } from "react-redux";
 
 
 const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) => {
-    console.log(sidebarItems, "sidebarItems")
     const { t } = useTranslation();
-    const { configDetails,allPermissionDetails } = useSelector(state => state.adminData)
-    const [sidebarDataWithPermi,setSideBarDataWithPermi]=useState([])
+    const { configDetails, allPermissionDetails } = useSelector(state => state.adminData)
+    const [sidebarDataWithPermi, setSideBarDataWithPermi] = useState([])
     let currentRoute = role == "client" ? "/" : `/${role}-login`
-    let {permissionCategories}=allPermissionDetails
-    console.log(configDetails,"configDetails")
+    let { permissionCategories } = allPermissionDetails
 
     const logout = () => {
         localStorage.clear();
         window.location.href = currentRoute;
     };
 
-   
+
     const [floatingShow, setFloatingShow] = useState(false);
     const handleFloating = () => {
         setFloatingShow(!floatingShow);
     }
 
-    useEffect(()=>{
-        if(role=="employee"){
-        if(permissionCategories && permissionCategories?.length>0){
-
-        const updatedSecondArray = sidebarItems.map(item => {
-            const isActive = permissionCategories?.some(firstItem =>firstItem.active );
-            return { ...item,active:isActive};
-          });
-          setSideBarDataWithPermi(updatedSecondArray)
+    useEffect(() => {
+        if (role == "employee") {
+            if (permissionCategories && permissionCategories?.length > 0) {
+                const updatedSecondArray = sidebarItems.map(item => {
+                    const matchingPermission = permissionCategories.find(
+                        permission => permission.slug === item.slug
+                    );
+                    return { ...item, active: matchingPermission ? matchingPermission.active : false };
+                });
+                setSideBarDataWithPermi(updatedSecondArray)
+            }
+        } else {
+            setSideBarDataWithPermi(sidebarItems)
         }
-    }else{
-        setSideBarDataWithPermi(sidebarItems)
-    }
 
-    },[allPermissionDetails])
+    }, [allPermissionDetails])
 
-    console.log(sidebarDataWithPermi,"sidebarDataWithPermi")
 
     return (
         <>
@@ -55,8 +53,8 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                     <div className="w-100 d-flex flex-column justify-content-between align-items-center">
                         <div className={collapseActive ? "sidebar-logo mt-3 mb-4" : "sidebar-logo mt-3 mb-4 logo-sidebar-wrapper"}>
                             <a href="https://www.rexett.com/">
-                                { !collapseActive ?
-                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo2   } alt="Sidebar Logo" />
+                                {!collapseActive ?
+                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo2} alt="Sidebar Logo" />
                                     :
                                     <img src={sidebarLogo2} alt="Sidebar Logo" />
                                 }
@@ -64,7 +62,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                         </div>
                         {sidebarDataWithPermi?.map((item, index) => (
                             <>
-                                {item.active? collapseActive ?
+                                {item.active ? collapseActive ?
                                     <NavLink
                                         key={index}
                                         to={item.to}
@@ -94,7 +92,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                                             </span>
                                         </NavLink>
                                     </OverlayTrigger>
-                             :""   }
+                                    : ""}
                             </>
                         ))}
                     </div>

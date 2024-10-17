@@ -867,6 +867,7 @@ export function sendMailForCompleteProfile(payload, data, callback) {
         dispatch(setBtnLoader())
         try {
             let result = await clientInstance.post(`/admin/send-reminder`, { ...payload })
+            console.log(result.data,"daytaa")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
@@ -876,8 +877,8 @@ export function sendMailForCompleteProfile(payload, data, callback) {
                 return callback()
             }
         } catch (error) {
-            // const message = error?.response?.data?.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
+            const message = error?.response?.data?.message;
+            toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };
