@@ -26,6 +26,7 @@ import ClientStep1 from "../../Registration flows/Client Registration flow/Clien
 import { Controller } from "react-hook-form";
 import RecommendationAI from "../../Registration flows/DeveloperRegistrationFlow/RecommendationAI";
 import { createOptionsForReactSelect } from "../../websiteRegisterForm/developer/developeStepConstant";
+
 const AddEducation = ({
   control,
   errors,
@@ -46,9 +47,14 @@ const AddEducation = ({
   setSelectedRecommend,
   selectedRecommend,
   skillOptions,
-  name
+  name,
+  stepTwoAutoComplete
 }) => {
+
+console.log("step6")
+  console.log(name,"name")
   const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
+  console.log(selectedRecommend,"selectedRecommend")
   useEffect(() => {
     if (skillOptions?.length) {
       const formattedSkillOptions = createOptionsForReactSelect(
@@ -60,7 +66,10 @@ const AddEducation = ({
     }
   }, [skillOptions]);
 
-  console.log(watch(),'watchwatchkk')
+  useEffect(()=>{
+    setValue(name,selectedRecommend)
+
+  },[selectedRecommend])
 
   const tipstext = (
     <Popover id="popover-basic">
@@ -106,18 +115,19 @@ const AddEducation = ({
           setImageFile={setImageFile}
           isProfileSectionRequired={activeStep === 1 && nestedActiveStep == 0}
           skillOptions={formattedSkillOptions}
+          stepTwoAutoComplete={stepTwoAutoComplete}
         />
       </div>
 
       <Row>
-        <Col md={6}>
+        <Col md={6} className="px-md-3 px-0">
           <div>
-          <RecommendationAI control={control} setSelectedRecommend={setSelectedRecommend}/>
+          <RecommendationAI control={control} setRecommend={setSelectedRecommend}/>
           </div>
         </Col>
-        <Col md={6}>
+        <Col md={6} className="px-md-3 px-0 mt-md-0 mt-4">
           <div id="custom-ck">
-          <p className="font-14 fw-medium mb-1">Description</p>
+          <label className="font-14 fw-medium mb-1">Description</label>
           <Controller
             name={name}
             control={control}
@@ -126,7 +136,7 @@ const AddEducation = ({
             render={({ field }) => (
               <ReactQuill
                 {...field}
-                value={field.value ? field.value : selectedRecommend}
+                value={field.value}
                 className={`common-field ${
                   errors.description?.message && "invalid-field"
                 }`}

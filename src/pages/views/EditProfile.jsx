@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -6,10 +6,10 @@ import AllRoleEditProfile from "../../components/common/EditProfile/AllRoleEditP
 import ProfileWrapper from "../../components/common/EditProfile/ProfileWrapper";
 import CompanyProfile from "../../components/common/EditProfile/CompanyProfile";
 import { useDispatch, useSelector } from "react-redux";
-import { getCoutriesList,getCitiesList,getStatesList, getTimeZoneForCountry} from "../../redux/slices/clientDataSlice";
+import { getCoutriesList, getCitiesList, getStatesList, getTimeZoneForCountry } from "../../redux/slices/clientDataSlice";
 import { fileUploadForWeb, getDeveloperProfileDetails } from "../../redux/slices/developerDataSlice";
 import { developerRegistration } from "../../redux/slices/developerDataSlice";
-import { getDeveloperActiveStepFields, getStepDataFromAPI, getActiveStepFields } from "../Registration flows/registrationConstant";
+import { getDeveloperActiveStepFields, getStepDataFromAPI, getActiveStepFields, getClientEditFields } from "../Registration flows/registrationConstant";
 import { clientRegistration } from "../../redux/slices/clientDataSlice";
 import { getClientProfileDetails } from "../../redux/slices/clientDataSlice";
 
@@ -25,8 +25,8 @@ const EditProfile = () => {
     setValue,
     clearErrors,
   } = useForm({});
-  const dispatch =useDispatch()
-  const { smallLoader ,clientProfileData} = useSelector(
+  const dispatch = useDispatch()
+  const { smallLoader, clientProfileData } = useSelector(
     (state) => state?.clientData
   );
   const [previewImage, setPreviewImage] = useState({
@@ -34,24 +34,22 @@ const EditProfile = () => {
     resume: "",
     introVideo: "",
   });
+  const { t } = useTranslation();
+  let userId = localStorage.getItem("userId")
   const [imageFile, setImageFile] = useState({
     resume: "",
     introVideo: "",
   });
 
-  const { t } = useTranslation();
-  let userId=localStorage.getItem("userId")
   const onSubmit = (values) => {
     console.log(values, "vaues");
-
     const uploadFiles = (files) => {
+      console.log(files,"files")
       let uploadedUrls = {};
-
       const uploadPromises = Object.keys(files).map((key) => {
         if (files[key]) {
           let fileData = new FormData();
           fileData.append("file", files[key]);
-
           return new Promise((resolve) => {
             dispatch(
               fileUploadForWeb(fileData, (url) => {
@@ -68,6 +66,7 @@ const EditProfile = () => {
 
       Promise.all(uploadPromises).then(() => {
         let payload = {
+          user_id: userId,
           first_name: values?.first_name,
           last_name: values?.last_name,
           profile_picture: uploadedUrls?.profile_picture,
@@ -75,10 +74,12 @@ const EditProfile = () => {
           email: values?.email,
           country: values?.country_code?.label,
           address: values?.address,
+          previous_password: values?.previous_password,
           password: values?.password,
           language_preference: values?.language_preference?.value,
           total_experience: values?.total_experience,
           city: null,
+          cin: values?.cin,
           state: values?.state_iso_code?.label,
           country_iso_code: values?.country_iso_code?.value,
           state_iso_code: values?.state_iso_code?.value,
@@ -93,15 +94,13 @@ const EditProfile = () => {
           intro_video_url: uploadedUrls?.introVideo,
           user_id: userId,
           company_name: values?.company_name,
-          company_tax_id: values?.company_tax_id,
+          tax_id: values?.tax_id,
           establishment_year: values?.establishment_year,
           website_url: values?.website_url,
           yearly_revenue: values?.yearly_revenue,
           employee_strength: values?.employee_strength,
           is_2FA_enabled: values?.is_2FA_enabled,
         };
-        console.log(payload,"payload")
-
         dispatch(clientRegistration(payload));
       });
     };
@@ -116,16 +115,14 @@ const EditProfile = () => {
 
   const activeStep = 1; // Assuming activeStep is defined somewhere
   const nestedActiveStep = 0; // Assuming nestedActiveStep is defined somewhere
-  
- const activeStepFields = getActiveStepFields(
+
+  const activeStepFields = getActiveStepFields(
     activeStep,
   );
-  console.log(activeStepFields,'hihi clientdata')
   useEffect(() => {
-
-    if(userId){
-    dispatch(getClientProfileDetails(userId));
-    dispatch(getCoutriesList());
+    if (userId) {
+      dispatch(getClientProfileDetails(userId));
+      dispatch(getCoutriesList());
     }
   }, []);
 
@@ -146,7 +143,7 @@ const EditProfile = () => {
   return (
     <>
       <ProfileWrapper>
-         <AllRoleEditProfile role="client" name={"individual"} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData} activeStepFields={activeStepFields?.individual}/>
+        <AllRoleEditProfile role="client" name={"individual"} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData} activeStepFields={activeStepFields?.individual} />
       </ProfileWrapper>
     </>
   );

@@ -12,13 +12,15 @@ const PasswordSection = ({
   clearErrors,
   watch,
   isColSixRequired = false,
-  invalidFieldRequired = false
+  invalidFieldRequired = false,
+  flowName
 }) => {
   const { t } = useTranslation();
   const [isPassword, setPassword] = useState({
     firstPass: false,
     secondPass: false,
   });
+  console.log(flowName, "flowName")
   const handleChangePassword = (value, type) => {
     const password = watch("password");
     const confirmPassword = watch("confirm_password");
@@ -44,10 +46,10 @@ const PasswordSection = ({
         <>
           <Col md={6}>
             <div className="mb-3">
-              <Form.Label className="font-14 fw-medium form-label">{t("Password")} *</Form.Label>
+              <Form.Label className="font-14 fw-medium form-label">{flowName === "edit_profile" ? "Old Password" : `${t("Password")}`} *</Form.Label>
               <div className="position-relative">
                 <Controller
-                  name="password"
+                  name={flowName === "edit_profile" ? "previous_password"  : "password"}
                   control={control}
                   rules={{
                     required: "Password is required",
@@ -68,7 +70,7 @@ const PasswordSection = ({
                         field.onChange(e);
                       }}
                       className={`common-field ${(invalidFieldRequired && errors?.password?.message) && "invalid-field"}`}
-                      // id='developer-image'
+                    // id='developer-image'
                     />
                   )}
                 />
@@ -80,27 +82,27 @@ const PasswordSection = ({
                       firstPass: !isPassword?.firstPass,
                     });
                   }}
-                  // aria-label={
-                  //   isPassword?.firstPass ? "Hide password" : "Show password"
-                  // }
+                // aria-label={
+                //   isPassword?.firstPass ? "Hide password" : "Show password"
+                // }
                 >
                   {isPassword?.firstPass ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
               {errors?.password && (
-                <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>{errors?.password?.message}</p>
+                <p className={`${(invalidFieldRequired) ? "field-error" : "error-message"}`}>{errors?.password?.message}</p>
               )}
             </div>
           </Col>
           <Col md={6}>
             <div className="mb-3">
               <Form.Label className="font-14 fw-medium form-label">
-                {t("Confirm Password")} *
+                {flowName === "edit_profile" ? "New Password" : `${t("Confirm Password")}`}*
               </Form.Label>
               <div className="position-relative">
                 <Controller
                   control={control}
-                  name="confirm_password"
+                  name= {flowName === "edit_profile" ? "password" : "confirm_password"}
                   rules={{
                     required: "Confirm password is required",
                     validate: (value) =>
@@ -120,7 +122,7 @@ const PasswordSection = ({
                         field.onChange(e);
                       }}
                       className={`common-field ${(invalidFieldRequired && errors?.confirm_password?.message) && "invalid-field"}`}
-                      // id='developer-image'
+                    // id='developer-image'
                     />
                   )}
                 />
@@ -140,7 +142,7 @@ const PasswordSection = ({
                 </span>
               </div>
               {errors?.confirm_password && (
-                <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>
+                <p className={`${(invalidFieldRequired) ? "field-error" : "error-message"}`}>
                   {errors?.confirm_password?.message}
                 </p>
               )}
@@ -173,7 +175,7 @@ const PasswordSection = ({
                       field.onChange(e);
                     }}
                     className={`common-field`}
-                    // id='developer-image'
+                  // id='developer-image'
                   />
                 )}
               />
@@ -185,9 +187,9 @@ const PasswordSection = ({
                     firstPass: !isPassword?.firstPass,
                   });
                 }}
-                // aria-label={
-                //   isPassword?.firstPass ? "Hide password" : "Show password"
-                // }
+              // aria-label={
+              //   isPassword?.firstPass ? "Hide password" : "Show password"
+              // }
               >
                 {isPassword?.firstPass ? <FaEyeSlash /> : <FaEye />}
               </span>
@@ -219,7 +221,7 @@ const PasswordSection = ({
                       field.onChange(e);
                     }}
                     className={`common-field`}
-                    // id='developer-image'
+                  // id='developer-image'
                   />
                 )}
               />

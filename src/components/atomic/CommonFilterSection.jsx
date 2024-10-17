@@ -51,6 +51,8 @@ const CommonFilterSection = ({
     return Object.values(fields).some((value) => value !== "");
   };
 
+
+  console.log(filterFields,"filterFields")
   return (
     <div className="filter-section d-lg-flex align-items-center mb-4 justify-content-between">
       {text && <h2 className="section-head border-0 mb-0 pb-0">{text}</h2>}

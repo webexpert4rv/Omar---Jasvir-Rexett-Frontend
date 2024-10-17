@@ -178,48 +178,6 @@ const SingleJobDetails = () => {
             setCurrnetTabsStatus(key)
         }
     };
-    // const handleJobStatusAction = (e, data) => {
-    //     e.preventDefault();
-    //     if (data.status == "ended") {
-    //         dispatch(
-    //             publishedPost(singleJobDescription?.id, data, () => {
-    //                 setStatusModal({});
-    //                 dispatch(singleJobPostData(id, () => { }));
-    //             })
-    //         );
-    //     } else if (data.status == "application") {
-    //         dispatch(
-    //             getDeleteJob(statusModal?.id, () => {
-    //                 setStatusModal({});
-    //                 navigate("/client/job-posted");
-    //             })
-    //         );
-    //     } else {
-    //         dispatch(
-    //             changeJobStatus(currentTab, statusModal?.id, data, () => {
-    //                 dispatch(
-    //                     singleJobPostData(id, () => {
-    //                         setStatusModal({});
-    //                         let prevData = { ...jobPostedData?.job?.job_applications };
-    //                         let d = prevData[currentTab]?.filter(
-    //                             (item) => item.id !== statusModal?.id
-    //                         );
-    //                         prevData[currentTab] = d;
-    //                         setSelectedTabsData(prevData[currentTab]);
-
-    //                     })
-    //                 );
-    //             })
-    //         );
-    //     }
-    // };
-
-    // const handleEdit = () => {
-    //     if (singleJobDescription?.status == "Unpublished") {
-    //         navigate(`/job-edit-post/${id}`);
-    //     }
-    // };
-
     const fetchMeetingDetails = async (meetingCode) => {
         const response = await gapi.client.reports.activities.list({
           userKey: 'all',
@@ -887,31 +845,6 @@ const SingleJobDetails = () => {
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>
-                        {/* <div className="developers-list job-card">
-                        <div className="developer-card">
-                            <div className="tag-developer">Shortlisted</div>
-                            <div className="user-imgbx">
-                                <img src={userImg} className="user-img" />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="user-name">Test dev</h3>
-                                <p className="designation-user">Software Developer</p>
-                                <p className="email-user">dev@rexett.com</p>
-                                <ul className="social-icons">
-                                    <li>
-                                        <Link to="#"><FaGithub /></Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#"><FaLinkedin /></Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#"><MdEmail /></Link>
-                                    </li>
-                                </ul>
-                                <Button variant="danger" onClick= className="w-100 mt-3">Reject</Button>
-                            </div>
-                        </div>
-                    </div> */}
 
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>

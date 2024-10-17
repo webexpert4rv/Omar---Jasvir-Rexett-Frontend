@@ -46,6 +46,9 @@ import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 import VendorEditProfile from "./pages/vendor/vendorEditProfile.jsx";
+import Statistics from "./pages/admin/Statistics.jsx";
+
+
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -150,6 +153,8 @@ const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
 const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
+let currentRole=localStorage.getItem("permission_role_name") || "admin"
+
 export const route = [
   {
     path: "/client-registration",
@@ -160,7 +165,8 @@ export const route = [
   {
     path: "/meeting-detail",
     element: <MeetingDetail />,
-    public: true,
+    // public: true,
+    common: true,
   },
   {
     path: "/expert-area",
@@ -174,11 +180,12 @@ export const route = [
   //   element: <ClientStep1 />,
   //   public: true,
   // },
-  {
-    path: "/talent-registration",
-    element: <DeveloperRegistrationStepper />,
-    public: true,
-  },
+  // {
+  //   path: "/talent-registration",
+  //   element: <DeveloperRegistrationStepper />,
+  //   private: true,
+  //   isClient: true,
+  // },
 
   {
     path: "/partner-registration",
@@ -542,25 +549,25 @@ export const route = [
 
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
   {
-    path: "/admin/admin-dashboard",
+    path: `/${currentRole}/dashboard`,
     element: <AdminDashboard />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/developer-registration",
+    path: `/${currentRole}/developer-registration`,
     element: <DeveloperRegistrationStepper />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/developer-list",
+    path: `/${currentRole}/developer-list`,
     element: <DeveloperList />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/list-clients",
+    path: `/${currentRole}/list-clients`,
     element: <AdminDashboard />,
     isAdmin: true,
     private: true,
@@ -572,19 +579,19 @@ export const route = [
   //   private: true,
   // },
   {
-    path: "/admin/job-post",
+    path: `/${currentRole}/job-post`,
     element: <AdminJobPost />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/admin-documents",
+    path: `/${currentRole}/${currentRole}-documents`,
     element: <AdminDocuments />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/admin-time-reporting",
+    path: `/${currentRole}/${currentRole}-time-reporting`,
     element: <AdminTimeReporting />,
     isAdmin: true,
     private: true,
@@ -602,117 +609,117 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/admin-invoice",
+    path: `/${currentRole}/${currentRole}-invoice`,
     // element: <AdminInvoice />,
     element: <Revenue />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-single-developer/:id",
+    path: `/${currentRole}-single-developer/:id`,
     element: <AdminSingleDeveloper />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-time-reporting-detail/:clientId",
+    path: `/${currentRole}-time-reporting-detail/:clientId`,
     element: <TimeReportingDetail />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/members",
+    path: `/${currentRole}/members`,
     element: <Members />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/admin-job-listing",
+    path: `/${currentRole}/${currentRole}-job-listing`,
     element: <AdminJobListing />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/admin-single-job/:id",
+    path: `/${currentRole}/${currentRole}-single-job/:id`,
     element: <AdminSingleJob />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/notification-admin",
+    path: `/${currentRole}/notification-admin`,
     element: <NotificationAdmin />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/applications",
+    path: `/${currentRole}/applications`,
     element: <Applications />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-single-client/:id",
+    path: `/${currentRole}-single-client/:id`,
     element: <SingleClient />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-faq",
+    path: `/${currentRole}-faq`,
     element: <Faq />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/customization",
+    path: `/${currentRole}/customization`,
     element: <Customization />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/roles-permissions",
+    path: `/${currentRole}/roles-permissions`,
     element: <RolesPermission />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/interviews",
+    path: `/${currentRole}/interviews`,
     element: <InterviewListing />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/interview-detail",
+    path: `/${currentRole}/interview-detail`,
     element: <InterviewDetail />,
     isAdmin: true,
-    private: true,
+    common: true,
   },
 
   {
-    path: "/admin/interview-feedback",
-    element: <InterviewFeedback />,
+    path: `/${currentRole}/interview-feedback`,
+    element: <ClientInterviewFeedback />,
     isAdmin: true,
-    private: true,
+    common: true,
   },
   {
-    path: "/admin/create-message-template",
+    path: `/${currentRole}/create-message-template`,
     element: <CreateMessageTemplate />,
     isAdmin: true,
     private: true,
   },
   {
-    path: '/admin/create-message-template/:id',
+    path: `/${currentRole}/create-message-template/:id`,
     element: <CreateMessageTemplate />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/website-builder/:pageId",
+    path: `/${currentRole}/website-builder/:pageId`,
     element: <WebsiteBuilder />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/website-pages",
+    path: `/${currentRole}/website-pages`,
     element: <WebsitePages />,
     isAdmin: true,
     private: true,
@@ -774,6 +781,12 @@ export const route = [
   {
     path: "admin/register-developer",
     element: <DeveloperRegistrationStepper />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: `${currentRole}/statistics`,
+    element: <Statistics />,
     isAdmin: true,
     private: true,
   },

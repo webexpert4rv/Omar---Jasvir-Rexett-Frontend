@@ -20,8 +20,6 @@ function HeaderTable({
   screenLoader,
 
 }) {
-  console.log(approveIndex , "approveINdex")
-  console.log(tableData , "tableData")
   return (
     <div>
       {screenLoader ? <ScreenLoader/> : 
@@ -85,7 +83,7 @@ function HeaderTable({
                           variant="transparent"
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                           icon={approveIndex == index ? approvedLoader :  <IoCheckmark />}
-                          onClick={() =>handleApproveReject(item?.id, "Approved", index)}
+                          onClick={() =>handleApproveReject(item?.id, "approved", index)}
                           isLoading = {approveIndex == index ? approvedLoader : false } 
                         />
                       </ToolTip>
@@ -95,7 +93,7 @@ function HeaderTable({
                           className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                           icon = { <IoCloseOutline />}
                           onClick={() =>
-                            handleApproveReject(item?.id, "Rejected" ,index)
+                            handleApproveReject(item?.id, "rejected" ,index)
                           }
                           // isLoading={  selectedRejectIndex == index ? approvedLoader: false}
                         >

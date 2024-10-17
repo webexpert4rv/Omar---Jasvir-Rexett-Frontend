@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCitiesList,
@@ -26,19 +26,31 @@ const LocationSection = ({
   const { countriesList, statesList, citiesList, timeZones } = useSelector(
     (state) => state.clientData
   );
-useEffect(() => {
-  if (watch("country_code")) {
+  const [timeZoneState, setTimeZoneState] = useState([])
+
+  let suggestedTime = watch("time_zone")
+
+  useEffect(() => {
+    if (suggestedTime?.length > 0) {
+      setTimeZoneState([suggestedTime])
+    } else {
+      setTimeZoneState(timeZones)
+    }
+  }, [suggestedTime])
+
+  useEffect(() => {
+    if (watch("country_code")) {
       const countryCode = watch("country_code").value; // Assuming watch("country_code") returns an object with a 'value' property
       dispatch(getStatesList(countryCode));
       dispatch(getTimeZoneForCountry(countryCode));
-  } else if (countryCode) {
+    } else if (countryCode) {
       dispatch(getStatesList(countryCode));
       dispatch(getTimeZoneForCountry(countryCode));
-  }
-}, [countryCode, watch]);
+    }
+  }, [countryCode, watch]);
 
   const handleDropDownChange = (value, name) => {
-    console.log(value,"cityValue")
+    console.log(value, "cityValue")
     if (name === "country_code") {
       setValue("country_code", value);
       clearErrors("country_code");
@@ -60,22 +72,22 @@ useEffect(() => {
         )
       );
       // setValue("city", null);
-    } else if (name === "city"){
-      setValue("city",value)
-      
-    }else if (name === "time_zone") {
+    } else if (name === "city") {
+      setValue("city", value)
+
+    } else if (name === "time_zone") {
       setValue("time_zone", value);
       clearErrors("time_zone");
     }
   };
-  console.log(watch("city"),"NmeState")
+  console.log(watch("city"), "NmeState")
   return (
     <>
       {isRegistrationStep ? (
         <>
-          <Col md={6}>
+          <Col md={4}>
             <div className="mb-3">
-              <CommonReactSelect
+              {/* <CommonReactSelect
                 name="country_code"
                 errors={errors}
                 invalidFieldRequired={true}
@@ -86,6 +98,16 @@ useEffect(() => {
                 label="Country"
                 type="country"
                 options={countriesList}
+              /> */}
+
+              <CommonInput
+                label={`Country *`}
+                name={"country_code"}
+                invalidFieldRequired={true}
+                control={control}
+                rules={{ required: "Country is required" }}
+                error={errors?.["country_code"]}
+                placeholder={"e.g. USA"}
               />
             </div>
           </Col>
@@ -121,12 +143,12 @@ useEffect(() => {
               />
             </div>
           </Col> */}
-          <Col md={6}>
+          <Col md={4}>
             <div className="mb-3">
               <CommonInput
                 label={t(`pincode`) + ` *`}
                 // name={"passcode"}
-                name={isVendorStep1 =="true" ? "post_code" : "passcode"}
+                name={isVendorStep1 == "true" ? "post_code" : "passcode"}
                 invalidFieldRequired={true}
                 control={control}
                 rules={{ required: "Pin code is required" }}
@@ -136,8 +158,8 @@ useEffect(() => {
               />
             </div>
           </Col>
-          <Col md={8}>
-            <CommonReactSelect
+          <Col md={4}>
+            {/* <CommonReactSelect
               name="time_zone"
               errors={errors}
               invalidFieldRequired={true}
@@ -149,6 +171,16 @@ useEffect(() => {
               required="Timezone is required"
               watch={watch}
               options={timeZones}
+            /> */}
+            <CommonInput
+              label={t(`TimeZone`) + ` *`}
+              name={"time_zone"}
+              // name={isVendorStep1==="true" ? "post_code" : "passcode"}
+              invalidFieldRequired={true}
+              control={control}
+              rules={{ required: "Time Zone is required" }}
+              error={errors?.["time_zone"]}
+              placeholder={"Eg:Asia/Calcutta +5:30"}
             />
           </Col>
         </>

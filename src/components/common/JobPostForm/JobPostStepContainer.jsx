@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getActiveStepKeys, step1keys, step2keys, step3keys } from "./constant";
 import {
+  addDegree,
   clientJobPost,
   clientUpdatePost,
   getCoutriesList,
@@ -23,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { current } from "@reduxjs/toolkit";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import { getDegreeList } from "../../../redux/slices/developerDataSlice";
-import { createForReactSelect } from "../../utils";
+import { convertjobSkillsFromApiResponse, createForReactSelect, createPayloadForJobSkills } from "../../utils";
 import moment from "moment";
 
 // add this inside constant file later
@@ -73,12 +74,13 @@ const DEFAULT_SCREENING_DATA = [
 ];
 
 const JobPostStepContainer = ({ role }) => {
+  const { smallLoader } = useSelector(state => state.clientData)
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [jobID, setJobID] = useState(null);
-  const [traitSkill, setTraitSkill] = useState([])
+  const [traitSkill, setTraitSkill] = useState([]) // for skill and weightage "job_skills"
   // const { skillList } = useSelector((state) => state.clientData);
   // const skillListMapped = skillList.map((item) => {
   //   return { value: item.id, label: item.title };
@@ -91,7 +93,6 @@ const JobPostStepContainer = ({ role }) => {
     (state) => state.clientData
   );
   const navigate = useNavigate();
-  const [smallLoader, setSmallLoader] = useState(false);
   const {
     register,
     control,
@@ -146,109 +147,6 @@ const JobPostStepContainer = ({ role }) => {
     }
   }, [activeStep, dispatch]);
 
-  // useEffect(() => {
-  //   // localStorage.setItem("activeStep", activeStep);
-  //   let jobId = localStorage.getItem("jobId");
-  //   if (id) {
-  //     setJobID(id);
-  //     jobId = id;
-  //   } else if (jobId) {
-  //     setJobID(Number(jobId));
-  //   }
-  //   console.log(jobId,"jobId")
-  //   if (jobId) {
-  //     dispatch(
-  //       getJobPostData(jobId, (jobpost) => {
-  //         console.log(jobpost,"jobpost")
-  //         // managing is edit or not
-  //         if (
-  //           jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
-  //           Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
-  //         ) {
-  //           console.log("insideapicall")
-  //           const IsNull = hasNullOrUndefinedProperties(
-  //             jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]],
-  //             activeStep
-  //           );
-  //           console.log(isEdit, "isEditinseide")
-  //           console.log(IsNull,"IsNull")
-  //           console.log(!IsNull,"IsEdit")
-  //           setIsEdit(!IsNull);
-  //         }
-  //          if( jobpost?.client["company_name"]){
-  //           console.log("inside company name ")
-  //         setValue("company_name",jobpost?.client["company_name"])
-  //         console.log(jobpost?.client["company_name"],"company name ")
-  //           } 
-  //           else if (
-  //           jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
-  //           Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
-  //         ) {
-  //           Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]).map(
-  //             (key) => {
-  //               if (activeStep === 1) {
-
-  //                 const data = jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]];
-  //                 console.log(data?.client["company_name"],"company name")
-  //                 console.log(data,"data")
-  //                 if(key === "time_zone"){
-  //                   // const newValue = createForReactSelect({value:watch("time_zone"),label:watch("time_zone")});
-  //                   const newValue = {value:data[key],label:data[key]}
-  //                   console.log(newValue,"newValue");
-  //                   setValue(key,newValue);
-
-  //               }else{
-  //                 setValue(key,data[key])
-  //               }
-  //               } else if (activeStep === 2) {
-  //                 if (key === "skills" || key === "optional_skills") {
-  //                   if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
-  //                     const convertedArray =
-  //                       jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[
-  //                         key
-  //                       ]?.split(",");
-  //                     const arrayForSelect = skillCate?.filter((curElem) =>
-  //                       convertedArray?.includes(curElem?.label)
-  //                     );
-  //                     setValue(key, arrayForSelect);
-  //                   }
-  //                 } else {
-  //                   if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
-  //                     setValue(
-  //                       key,
-  //                       jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
-  //                     );
-  //                   }
-  //                 }
-  //               } else if (activeStep === 3) {
-  //                 if (key === "screening_questions") {
-  //                   const data =
-  //                     jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key];
-  //                   console.log(data, "screening question data inside data");
-  //                   if (
-  //                     jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]?.length
-  //                   ) {
-  //                     setValue(
-  //                       key,
-  //                       jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
-  //                     );
-  //                   } else {
-  //                     setValue("screening_questions", DEFAULT_SCREENING_DATA);
-  //                   }
-  //                 }
-  //               } else {
-  //                 setValue(
-  //                   key,
-  //                   jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
-  //                 );
-  //               }
-  //             }
-  //           );
-  //         }
-  //       })
-  //     );
-  //   }
-  // }, [activeStep, dispatch, skillCate]);
   useEffect(() => {
     let jobId = localStorage.getItem("jobId");
     if (id) {
@@ -292,9 +190,9 @@ const JobPostStepContainer = ({ role }) => {
               if (activeStep === 1) {
                 if (key === "time_zone") {
                   const newValue = { value: data[key], label: data[key] };
-                  setValue(key, newValue);
+                  setValue(key, data[key]);
                 } else if (key === "response_date") {
-                  let newDate = data[key].slice(0,10)
+                  let newDate = data[key].slice(0, 10)
                   setValue(key, newDate);
                 } else {
                   setValue(key, data[key]);
@@ -308,7 +206,15 @@ const JobPostStepContainer = ({ role }) => {
                     );
                     setValue(key, arrayForSelect);
                   }
-                } else {
+
+                } else if (key === "job_skills") {
+                  if (data[key]) {
+                    const temp = convertjobSkillsFromApiResponse(data[key]);
+                    console.log(temp, "this is temp")
+                    setTraitSkill(temp);
+                  }
+                }
+                else {
                   if (data[key]) {
                     setValue(key, data[key]);
                   }
@@ -331,8 +237,8 @@ const JobPostStepContainer = ({ role }) => {
         })
       );
     }
-  }, [activeStep, dispatch, skillCate, id]); 
-  
+  }, [activeStep, dispatch, skillCate, id]);
+
   const getActiveStepComponent = () => {
     switch (activeStep) {
       case 1:
@@ -357,6 +263,8 @@ const JobPostStepContainer = ({ role }) => {
             control={control}
             setTraitSkill={setTraitSkill}
             traitSkill={traitSkill}
+            setError={setError}
+            clearErrors={clearErrors}
           />
         );
       case 3:
@@ -368,13 +276,15 @@ const JobPostStepContainer = ({ role }) => {
             errors={errors}
             watch={watch}
             setValue={setValue}
+            clearErrors={clearErrors}
+            handleCreateOption={handleCreateOption}
           />
         );
     }
   };
   const increaseStep = () => {
     if (activeStep < 3) {
-      console.log(activeStep,"activeStep")
+      console.log(activeStep, "activeStep")
       setActiveStep((prev) => prev + 1);
       localStorage.setItem(getActiveStepLocalStorageKey(), activeStep + 1);
     } else {
@@ -392,13 +302,23 @@ const JobPostStepContainer = ({ role }) => {
   };
   let finalValue = traitSkill?.map((item) => {
     return {
-      "skill_id": item?.value,
+      "skill_id": item?.value ? item?.value : undefined ,
       "skill_name": item?.label,
       "weight": item?.level?.find((itm, idx) => (itm?.isTrue == true))?.name
     }
   })
   console.log(finalValue, "weightvalue")
   console.log(getActiveStepKeys[1], "step1keys")
+
+  const handleCreateOption = (newOption) => {
+    const degreePayload = {
+        title: newOption,
+      };
+    dispatch(
+        addDegree(degreePayload, (result) => {
+          dispatch(getDegreeList());
+        }))
+  }
 
   const onSubmit = (stepData) => {
     console.log(stepData, "stepdata")
@@ -427,7 +347,7 @@ const JobPostStepContainer = ({ role }) => {
         country_code: payload?.country_code?.value,
         state: payload?.state_iso_code?.label,
         state_iso_code: payload?.state_iso_code?.value,
-        time_zone: payload?.time_zone?.label,
+        time_zone: payload?.time_zone,
         response_date: stepData?.response_date
       };
     }
@@ -443,7 +363,7 @@ const JobPostStepContainer = ({ role }) => {
       const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
       const formattedOptionSkills = arrayOfOptionSkills.toString();
       payload["optional_skills"] = formattedOptionSkills;
-      payload["job_skills"] = finalValue;
+      payload["job_skills"] = createPayloadForJobSkills(traitSkill);
     }
     console.log(payload, "payload")
     if (isEdit === true) {
@@ -451,7 +371,7 @@ const JobPostStepContainer = ({ role }) => {
         clientUpdatePost(payload, isEdit, activeStep, jobID, userId, increaseStep)
       )
     } else {
-      dispatch(clientJobPost(payload, activeStep,userId, increaseStep));
+      dispatch(clientJobPost(payload, activeStep, userId, increaseStep));
     }
   };
 
@@ -474,8 +394,8 @@ const JobPostStepContainer = ({ role }) => {
                     text="Back"
                     onClick={decreaseStep}
                     className="main-btn outline-main-btn px-5"
-                    disabled={smallLoader}
-                    isLoading={smallLoader}
+                    // disabled={smallLoader}
+                    // isLoading={smallLoader}
                   />
                 )}
                 <RexettButton

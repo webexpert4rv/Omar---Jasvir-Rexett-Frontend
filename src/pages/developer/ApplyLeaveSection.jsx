@@ -54,7 +54,7 @@ const ApplyLeaveSection=({ allContracts, handleRange,id,selectionRange,setSelect
       await dispatch(applyLeave(data));
     }
     let payload = {
-      approval_status: "Under Approval",
+      approval_status: "under_approval",
     };
     dispatch(getLeaveHistory(user_id, payload))
     setIsEdit({ status: false, leaveId: "" })

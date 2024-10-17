@@ -21,22 +21,29 @@ import resumeImg from "../../../assets/img/demo-img.jpg";
 import ThankRegister from "./Modals/ThankRegister";
 import { useDispatch, useSelector } from "react-redux";
 import { getDeveloperProfileDetails } from "../../../redux/slices/developerDataSlice";
-const FinalizeResume = () => {
+
+
+const FinalizeResume = ({skillOptions,watch}) => {
   const dispatch = useDispatch()
   const { smallLoader, developerRegistrationData } = useSelector(
     (state) => state?.developerData
   );
   let developerId=localStorage.getItem("developerId")
+  console.log(developerRegistrationData,"developerRegistrationData")
 
   useEffect(()=>{
       if(developerId){
           dispatch(getDeveloperProfileDetails(developerId));
       }
-    
   },[developerId])
 
-  console.log(developerRegistrationData,"developerDetails")
 
+
+  // const getSkill=()=>{
+  //   const reqSkill = skillOptions?.filter((skill)=>skill?.id===id)
+  //   console.log(reqSkill,"reqskilll")
+  //   return reqSkill?.title
+  // }
 
   return (
     <>
@@ -60,13 +67,13 @@ const FinalizeResume = () => {
                               <FaCirclePlay />
                             </span>
                           </h3>
-                          <p className="resume-designation">John doe</p>
+                          {/* <p className="resume-designation">John doe</p> */}
                           <div className="text-start mt-1 d-flex align-items-center flex-wrap justify-content-center mb-1 personal-info-wrapper">
                             <div>
                               <p className="mb-0 font-14">
                                 <span>
                                   <FaEnvelope />
-                                </span>{" "}
+                                </span>
                                 {developerRegistrationData?.step1?.email}
                               </p>
                             </div>
@@ -82,8 +89,8 @@ const FinalizeResume = () => {
                               <p className="mb-0 font-14">
                                 <span>
                                   <MdWork />
-                                </span>{" "}
-                                5 years
+                                </span>
+                                {developerRegistrationData?.step1?.total_experience} years
                               </p>
                             </div>
                             <div>
@@ -98,7 +105,7 @@ const FinalizeResume = () => {
                               <p className="mb-0 font-14">
                                 <span>
                                   <MdWork />
-                                </span>{" "}
+                                </span>
                                 Remote
                               </p>
                             </div>
@@ -106,7 +113,7 @@ const FinalizeResume = () => {
                               <p className="mb-0 font-14">
                                 <span>
                                   <GoClockFill />
-                                </span>{" "}
+                                </span>
                                {developerRegistrationData?.step1?.time_zone}
                               </p>
                             </div>
@@ -114,10 +121,10 @@ const FinalizeResume = () => {
                           <div className="px-3 d-flex justify-content-center align-items-center gap-2">
                             <ul className="social-media">
                               <li>
-                                <FaGithub />
+                                <Link to={developerRegistrationData?.step1?.github_url}><FaGithub /></Link>
                               </li>
                               <li>
-                                <FaLinkedin />
+                               <Link to={developerRegistrationData?.step1?.linkedin_url}><FaLinkedin /></Link>
                               </li>
                             </ul>
                           </div>
@@ -186,8 +193,8 @@ const FinalizeResume = () => {
                                 <div>
                                   <ul className="skills-pill text-start" >
                                     <li>
-                                      {ele?.tech_stacks_used?.split(',')?.map((val)=>(
-                                      <span>{val}</span>
+                                      {ele?.tech_stacks_used?.map(({label,value})=>(
+                                      <span>{label}</span>
                                       ))}
                                     </li>
                                   </ul>

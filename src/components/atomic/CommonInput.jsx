@@ -31,19 +31,18 @@ const CommonInput = ({
   options, // For radio inputs or select options
   selectOptions, // For react-select options
   isMulti = false,
-  isMinRequired ,
+  isMinRequired,
   isMaxRequired,
   invalidFieldRequired = false,
   defaultOption = "",
   disabled,
   rows = null,
   className,
-  selectedRecommend
+  selectedRecommend,
+  flowName
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-console.log(options,"options")
-console.log(isMinRequired,"isMinRequired")
-console.log(isMaxRequired,"ismax")
+ 
   const handleTogglePassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
     if (onTogglePassword) {
@@ -55,10 +54,11 @@ console.log(isMaxRequired,"ismax")
       return <CloseIcon />;
     }
   };
- 
+
+
   return (
     <Form.Group className="mb-3">
-      {label?<Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>:""}
+      {label ? <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label> : ""}
       <div className="position-relative">
         <Controller
           name={name}
@@ -66,29 +66,29 @@ console.log(isMaxRequired,"ismax")
           rules={rules}
           render={({ field }) => {
             if (type === "radio") {
-                  <Form.Check
-                  {...field}
-                  label={label}
-                  type="radio"
-                  id="radio1"
-                  className={className}
-                  checked={field.value}
-                  onChange={(e) =>{
-                    field.onChange(e.target.checked)
-                  } }
-                />
+              <Form.Check
+                {...field}
+                label={label}
+                type="radio"
+                id="radio1"
+                className={className}
+                checked={field.value}
+                onChange={(e) => {
+                  field.onChange(e.target.checked)
+                }}
+              />
             }
             if (type === "checkbox") {
-              return   <Form.Check
-              {...field}
-              type="checkbox"
-              id="radio1"
-              checked={field.value}
-              onChange={(e) =>{
-                field.onChange(e.target.checked)
-              } }
-            />
-            } 
+              return <Form.Check
+                {...field}
+                type="checkbox"
+                id="radio1"
+                checked={field.value}
+                onChange={(e) => {
+                  field.onChange(e.target.checked)
+                }}
+              />
+            }
             else if (type === "phone") {
               return (
                 <>
@@ -102,11 +102,10 @@ console.log(isMaxRequired,"ismax")
                       name: name,
                       readOnly: readOnly,
                       autoComplete: autoComplete,
-                      className: `common-field ${
-                        invalidFieldRequired &&
+                      className: `common-field ${invalidFieldRequired &&
                         error?.message &&
                         "invalid-field"
-                      }`,
+                        }`,
                     }}
                   />
                   {showCloseIcon()}
@@ -115,10 +114,12 @@ console.log(isMaxRequired,"ismax")
             } else if (type === "select2") {
               return (
                 <>
-                  <Select
+                   <Select
                     {...field}
                     options={selectOptions}
-                    className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"} `}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    } `}
                     isDisabled={readOnly}
                     // onChange={(selectedOption) => field.onChange(selectedOption)}
                     // value={selectOptions?.find(
@@ -137,9 +138,8 @@ console.log(isMaxRequired,"ismax")
                   <Select
                     {...field}
                     options={selectOptions}
-                    className={`common-field ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     isDisabled={readOnly}
                     onChange={(selectedOption) =>
                       field.onChange(selectedOption)
@@ -158,11 +158,10 @@ console.log(isMaxRequired,"ismax")
                 <>
                   <Form.Select
                     {...field}
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
-                    // value={value}
-                    // onChange={onChange}
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
+                  // value={value}
+                  // onChange={onChange}
                   >
                     <option disabled selected value="">
                       {defaultOption}
@@ -182,9 +181,8 @@ console.log(isMaxRequired,"ismax")
                 <>
                   <Select
                     {...field}
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     // value={value}
                     // onChange={onChange}
                     options={options}
@@ -202,19 +200,18 @@ console.log(isMaxRequired,"ismax")
                 </>
               );
             }
-            
+
             else if (type === "multi-select") {
               return (
                 <>
                   <Select
                     {...field}
-                    options={selectOptions}
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    options={options}
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     // isDisabled={readOnly}
-                    // onChange={(selectedOption) => field.onChange(selectedOption)}
-                    // value={selectOptions?.find(option => option.value === field.value)}
+                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                    // value={options?.find(option => option.value === field.value)}
                     placeholder={placeholder}
                     isMulti={true}
                   />
@@ -225,15 +222,14 @@ console.log(isMaxRequired,"ismax")
             else if (type === "creatable") {
               return (
                 <>
-                  <CreatableSelect 
+                  <CreatableSelect
                     {...field}
-                    isClearable 
-                    className={`common-field ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    isClearable
+                    className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     // isDisabled={readOnly}
                     // onChange={(selectedOption) => field.onChange(selectedOption)}
-                    
+
                     placeholder={placeholder}
                     isMulti={true}
                   />
@@ -247,19 +243,18 @@ console.log(isMaxRequired,"ismax")
                   <Form.Control
                     {...field}
                     type="date"
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     // value={new Date(watch("response_date")).toISOString().split("T")[0]}
                     // if date should not be less than current date
-                    min={
-                      isMinRequired && new Date().toISOString().split("T")[0]
-                    }
+                    // min={
+                    //   isMinRequired && new Date().toISOString().split("T")[0]
+                    // }
                     // if date should not be less than current date
                     max={
                       isMaxRequired && new Date().toISOString().split("T")[0]
                     }
-                    disabled={disabled && name=="end_date"}
+                    disabled={disabled && name == "end_date"}
                   />
                   {showCloseIcon()}
                 </>
@@ -270,9 +265,8 @@ console.log(isMaxRequired,"ismax")
                   <Form.Control
                     {...field}
                     type="text"
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     onChange={(e) => {
                       const numericValue = e.target.value.replace(
                         /[^0-9]/g,
@@ -294,9 +288,9 @@ console.log(isMaxRequired,"ismax")
                   <Form.Control
                     {...field}
                     as={type}
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                   
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     rows={3}
                   />
                   {showCloseIcon()}
@@ -322,19 +316,13 @@ console.log(isMaxRequired,"ismax")
                 <>
                   <Form.Control
                     {...field}
-                    type={
-                      isPassword
-                        ? isPasswordVisible
-                          ? "text"
-                          : "password"
-                        : type
-                    }
-                    className={`common-field font-14 ${
-                      invalidFieldRequired && error?.message && "invalid-field"
-                    }`}
+                    type={ isPassword ? isPasswordVisible ? "text" : "password": type }
+                    className={`common-field font-14 ${invalidFieldRequired && error?.message && "invalid-field"
+                      }`}
                     // id='developer-image'
+                    disabled={disabled || flowName==="edit_profile" && type ==="email"}
                     placeholder={placeholder}
-                    readOnly={readOnly}
+                    readOnly={disabled}
                     autoComplete={autoComplete}
                     onChange={
                       onChange ? (e) => onChange(e, field) : field.onChange
@@ -359,9 +347,8 @@ console.log(isMaxRequired,"ismax")
       </div>
       {error && (
         <p
-          className={`${
-            invalidFieldRequired ? "field-error" : "error-message"
-          }`}
+          className={`${invalidFieldRequired ? "field-error" : "error-message"
+            }`}
         >
           {error.message}
         </p>

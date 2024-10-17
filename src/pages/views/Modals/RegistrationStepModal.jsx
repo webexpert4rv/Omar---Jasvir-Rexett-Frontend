@@ -4,10 +4,17 @@ import FinalizeResume from "../../admin/ResumeSteps/FinalizeResume";
 import RexettButton from "../../../components/atomic/RexettButton";
 
 const RegistrationStepModal = ({ show, role,handleClose, nextStep }) => {
+   const jobId= localStorage.getItem("jobId")
+ const job = localStorage.getItem("job")
   const redirectToLogin = () => {
     if(role==="vendor"){
       window.location.href = "https://rexett-frontend.rvtechnologies.info/vendor-login"
-    }else{
+    }else if (job === "Add Candidate"){
+       window.location.href = `/admin/admin-single-job/${jobId}`
+       localStorage.removeItem("job")
+       localStorage.removeItem("jobId")
+
+    } else{
        window.location.href = "https://rexett-frontend.rvtechnologies.info/developer-login"
     }
   }

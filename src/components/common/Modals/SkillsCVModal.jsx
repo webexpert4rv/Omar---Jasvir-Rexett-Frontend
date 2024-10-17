@@ -57,7 +57,7 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
     dispatch(
       updateDeveloperSkills(data, role, () => {
         if (role === "developer") {
-          dispatch(fetchDeveloperCv());
+          dispatch(fetchDeveloperCv(()=>{}));
         } else {
           dispatch(getDeveloperDetails(id));
         }

@@ -40,7 +40,7 @@ const VendorRegistrationStepper = () => {
     setValue,
     clearErrors,
   } = useForm({});
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
@@ -80,7 +80,6 @@ const VendorRegistrationStepper = () => {
     if (userId && [activeStepKeys[activeStep]]) {
       dispatch(getVendorUpdatedDetails(userId, (response) => {
         const data = response[activeStepKeys[activeStep]];
-        console.log(data,"data")
         for (let key in data) {
         
           if (activeStep === 1) {
@@ -181,7 +180,6 @@ const VendorRegistrationStepper = () => {
   };
   const handleProceed = () => {
     const stepData = watch();
-    console.log(stepData,"stepDataNew")
     let formData = new FormData();
     formData.append('file', imageFile?.profile_picture);
     dispatch(uploadFileToS3Bucket(formData, (url) => {
@@ -228,7 +226,6 @@ const VendorRegistrationStepper = () => {
 
   const callAreaOfExpertiseAPI = () => {
     const stepData = watch();
-    console.log(stepData?.success_story,"success_story")
     let payload = {
       user_id : userId,
       specialization: stepData?.specialization,

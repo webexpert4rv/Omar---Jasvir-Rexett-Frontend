@@ -6,71 +6,36 @@ import favIconImgLogo from '../../../../assets/img/favicon.png'
 import { getConfigDetails, getUploadFile } from '../../../../redux/slices/adminDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { filePreassignedUrlGenerate } from '../../../../redux/slices/clientDataSlice';
+import { IMAGE_ALLOWED_EXTENSIONS } from '../../../websiteRegisterForm/developer/developeStepConstant';
 
-function UploadFiles({ previewUrl, setPreviewUrl }) {
+function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, register }) {
     const [favIconPreviewUrl, setFavIconPreviewUrl] = useState('')
-    const [companyLogo, setCompanyLogo] = useState(null);
-    const [selectedImage, setSelectedImage] = useState("")
-    const [favIconLogo, setFavIconLogo] = useState(null);
-    const [uploadFavIcon, setUploadedFavIcon] = useState("")
     const { configDetails } = useSelector(state => state.adminData)
-    const dispatch = useDispatch()
 
-
-    const handleImageUpload = async (event, filename) => {
-        console.log(filename, "filename");
+    const handleImageUpload = (event, filename) => {
+        setFileName(filename)
         const file = event.target.files[0];
-    
+        setFiles({ ...files, [filename]: file })
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-                if (filename === "companyLogo") {
-                    setPreviewUrl(reader.result);
+            if (IMAGE_ALLOWED_EXTENSIONS.includes(file.type)) {
+                const url = URL.createObjectURL(file);
+                if (filename === "company_logo") {
+                    setPreviewUrl(url);
                 } else {
-                    setFavIconPreviewUrl(reader.result);
+                    setFavIconPreviewUrl(url)
                 }
-            };
-            reader.readAsDataURL(file);
-    
-            let fileData = new FormData();
-            fileData.append("file", file);
-    
-            try {
-                const url = await new Promise((resolve, reject) => {
-                    dispatch(filePreassignedUrlGenerate(fileData, resolve, reject));
-                });
-    
-                if (filename === "companyLogo") {
-                    let payload = {
-                        company_logo: url,
-                    };
-                    await dispatch(getUploadFile(payload));
-                     dispatch(getConfigDetails());
-                } else {
-                    let payload = {
-                        favicon: url,
-                    };
-                    await dispatch(getUploadFile(payload));
-                     dispatch(getConfigDetails());
-                }
-            } catch (error) {
-                console.error("Error handling image upload:", error);
             }
         }
-    };
-    
+    }
 
     const handleRemoveImage = () => {
-        setCompanyLogo(null);
         setPreviewUrl('');
     };
 
-
     const handleRemoveFavIcon = () => {
-        setFavIconLogo(null);
         setFavIconPreviewUrl('');
     };
+
 
     return (
         <div>
@@ -84,21 +49,22 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <Form.Control
                             type="file"
                             className="upload-custom-field"
-                            name="company-logo"
                             id="company-logo"
                             accept="image/jpeg, image/png, image/svg+xml"
-                            onChange={(e) => handleImageUpload(e, "companyLogo")}
+                            {...register("company-logo", {
+                                onChange: (e) => handleImageUpload(e, "company_logo"),
+                            })}
                         />
                         <Form.Label htmlFor="company-logo" className="upload-field-label">
                             Upload File
                         </Form.Label>
                         <p className="note-text">Only Accepted formats: JPEG, PNG, SVG</p>
-                            <div className="preview-upload-imgwrapper">
-                                <img src={configDetails?.company_logo ? configDetails?.company_logo :previewUrl} className="upload-preview-img" alt="Company Logo" />
-                                <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveImage}>
-                                    &times;
-                                </Button>
-                            </div>
+                        <div className="preview-upload-imgwrapper">
+                            <img src={previewUrl || configDetails?.company_logo} className="upload-preview-img" alt="Company Logo" />
+                            <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveImage}>
+                                &times;
+                            </Button>
+                        </div>
                     </div>
                 </Col>
                 <Col md={6} className="mb-4">
@@ -106,7 +72,7 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <div className="position-relative">
                             <div className="preview-sidebar">
                                 <div>
-                                        <img src={configDetails?.company_logo ? configDetails?.company_logo :previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                    <img src={previewUrl || configDetails?.company_logo} className="preview-company-logo" alt="Company Logo Preview" />
                                     {/* ) : (
                                         <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                     )} */}
@@ -132,23 +98,25 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <Form.Control
                             type="file"
                             className="upload-custom-field"
-                            name="company-logo_1"
-                            id="company-logo_1"
+                            name="company_logo_1"
+                            id="company_logo_1"
                             accept="image/jpeg, image/png, image/svg+xml"
-                            onChange={(e) => handleImageUpload(e, "favicon")}
+                            {...register("company_logo_1", {
+                                onChange: (e) => handleImageUpload(e, "favicon"),
+                            })}
                         />
-                        <Form.Label htmlFor="company-logo_1" className="upload-field-label">
+                        <Form.Label htmlFor="company_logo_1" className="upload-field-label">
                             Upload File
                         </Form.Label>
                         <p className="note-text">Only Accepted formats: JPEG, PNG, SVG. Recommended size: 16x16 pixels, 32x32 pixels, or 48x48 pixels</p>
                     </div>
 
-                        <div className="preview-upload-imgwrapper">
-                            <img src={configDetails?.favicon ? configDetails?.favicon : favIconPreviewUrl} className="upload-preview-img" alt="Company Logo" />
-                            <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveFavIcon}>
-                                &times;
-                            </Button>
-                        </div>
+                    <div className="preview-upload-imgwrapper">
+                        <img src={favIconPreviewUrl || configDetails?.favicon} className="upload-preview-img" alt="Company Logo" />
+                        <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveFavIcon}>
+                            &times;
+                        </Button>
+                    </div>
                 </Col>
                 <Col md={6} className="mb-4">
                     <div className="preview-statusbar-wrapper">
@@ -156,7 +124,7 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                             <div className="preview-statusbar">
                                 <div className="d-flex align-items-center w-100 gap-2">
                                     {/* {favIconPreviewUrl ? ( */}
-                                        <img src={configDetails?.favicon ? configDetails?.favicon : favIconPreviewUrl}className="preview-favicon-logo" alt="Favicon Preview" />
+                                    <img src={favIconPreviewUrl || configDetails?.favicon} className="preview-favicon-logo" alt="Favicon Preview" />
                                     {/* ) : (
                                         <img src={favIconImgLogo} className="preview-favicon-logo" alt="Favicon Preview" />
                                     )} */}

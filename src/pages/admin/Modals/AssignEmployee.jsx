@@ -4,18 +4,21 @@ import devImg from "../../../assets/img/demo-img.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   allEmployeeList,
+  allMemberList,
   assignEmployee,
 } from "../../../redux/slices/adminDataSlice";
 import useDebounce from "../../../hooks/useDebounce";
 import RexettButton from "../../../components/atomic/RexettButton";
-const AssignEmployee = ({ show, handleClose, id }) => {
+const AssignEmployee = ({ show, handleClose, currentTab,page }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployeeData, setFilterdEmployeeData] = useState([]);
   const [selectedMember, setSelectedMember] = useState({});
   const dispatch = useDispatch();
   const { assignEmployeeList, smallLoader } = useSelector((state) => state.adminData);
+  const id = localStorage.getItem("userId")
 
   //   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  console.log(id, "idea")
 
   useEffect(() => {
     dispatch(allEmployeeList());
@@ -51,7 +54,19 @@ const AssignEmployee = ({ show, handleClose, id }) => {
       assigned_member_id: +selectedMember?.id,
       assigned_member_role: selectedMember?.roles[0]?.name,
     };
-    dispatch(assignEmployee(payload,()=> handleClose()));
+    dispatch(assignEmployee(payload, () => {
+      let queryFilters = {
+        search: "",
+        order_alphabetically: "asc",
+        order_created_at: "",
+        approval_status: "",
+        created_at: "",
+        page: page,
+        active_tab: currentTab,
+      }
+      dispatch(allMemberList(queryFilters))
+    }));
+    handleClose()
   };
   console.log(selectedMember, "selectedMember");
   return (

@@ -23,14 +23,20 @@ const JobCard = ({
   type,
   data,
   jobStatus,
-  role,
+  // role,
   setPage,
   page,
 }) => {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role")
+  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const { singleJobPagination, screenLoader } = useSelector(
     (state) => state.adminData
   );
+console.log(role,"role")
+  console.log(type,"type")
+  console.log(jobStatus,"jobStatus")
+  console.log(data,"data")
   const scheduleInterview = (
     <Tooltip>Move to Interview</Tooltip>
   )
@@ -40,18 +46,12 @@ const JobCard = ({
   const rejectedApply = (
     <Tooltip>Reject</Tooltip>
   )
-  console.log(screenLoader, "screenloader")
   const developerCardToolTip = (
     <Tooltip id="tooltip">
-      {type === "Interviewing"
-        ? "Hire"
-        : type === "Shortlisted"
-          ? " Move to Interview"
-          : "Shortlist"}
+      {type === "interviewing" ? "Hire" : type === "Shortlisted" ? " Move to Interview" : "Shortlist"}
     </Tooltip>
   );
 
-  const rejectedCardToolTip = <Tooltip id="tooltip">Reject</Tooltip>;
 
   const suggestedCardToolTip = (status) => {
     return (
@@ -69,21 +69,22 @@ const JobCard = ({
     }
   };
   
-  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const handleShowScheduleMeeting = () => {
     setShowScheduleMeet(!showScheduleMeeting);
   }
   const handleCloseScheduleMeeting = () =>{
     setShowScheduleMeet(false);
   }
+  const rejectedCardToolTip = <Tooltip id="tooltip">Reject</Tooltip>;
 
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <>
-        <div className="developers-list job-card pt-0">
-          {data?.length > 0 ? (
-            <>
-              {data?.map((item, index) => {
+        <h5>List of {type} Developers</h5>
+       { data?.length > 0 ?  <div className="developers-list job-card pt-0">
+         
+       
+             { data?.map((item, index) => {
                 return (
                   <>
                     <div
@@ -95,15 +96,13 @@ const JobCard = ({
                     >
                       {/* <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div> */}
                       <div className="tag-developer">
-                        {type && type === "Suggested" ? "Suggest" : type}
+                        {type && type === "suggested" ? "Suggest" : type}
                       </div>
-                      <div className="overflow-hidden inner-dev-card">
-                        <div
-                          className="user-imgbx"
-                          onClick={(e) =>
-                            handleDeveloperCard(e, item?.developer?.id)
-                          }
-                        >
+                      <div
+                        className="overflow-hidden inner-dev-card"
+                        onClick={(e) => handleDeveloperCard(e, item?.developer?.id)}
+                      >
+                        <div className="user-imgbx">
                           <img
                             src={
                               item?.developer?.profile_picture
@@ -117,23 +116,37 @@ const JobCard = ({
                         <div className="text-center">
                           <h3 className="user-name">{item?.developer?.name}</h3>
                           <div className="text-center mt-2">
-                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                            <span className="status-finished w-auto d-inline-block mb-2">
+                              Profile Match -{" "}
+                              <strong>{item?.matchPercentage}%</strong>
+                            </span>
                           </div>
                           <div className="mb-2">
                             <span className="status-upcoming d-inline-flex align-items-center gap-1">
                               <FaStar /> 4.4
                             </span>
                           </div>
-                          <p className="designation-user">Software Developer</p>
-                          <p className="email-user">{item?.developer?.email}</p>
+                          {/* <p className="designation-user">{item?.name}</p> */}
+                          <p className="email-user">
+                            {item?.developer?.developer?.email}
+                          </p>
                           <ul className="social-icons">
                             <li>
-                              <Link to="#">
+                              <Link
+                                to={
+                                  item?.developer?.developer_detail?.github_url
+                                }
+                              >
                                 <FaGithub />
                               </Link>
                             </li>
                             <li>
-                              <Link to="#">
+                              <Link
+                                to={
+                                  item?.developer?.developer_detail
+                                    ?.linkedin_url
+                                }
+                              >
                                 <FaLinkedin />
                               </Link>
                             </li>
@@ -142,11 +155,13 @@ const JobCard = ({
                                                 </li> */}
                           </ul>
                           <div className="job-card-btns">
-                            {role !== "admin" &&
+                            {role === "admin" ||
+                            (role === "client" &&
                               (type == "Shortlisted" ||
-                                type === "Suggested" ||
-                                type === "Interviewing") &&
-                              type !== "Hired" ? (
+                                type === "suggested" ||
+                                type == "applied" ||
+                                type === "interviewing") &&
+                              type !== "Hired") ? (
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={developerCardToolTip}
@@ -156,15 +171,18 @@ const JobCard = ({
                                   disabled={
                                     jobStatus === "Ended" ? true : false
                                   }
-                                  onClick={(e) =>{
-                                    handleJobStatusModal(e, item?.id, type)
-                                    console.log("hell")
-                                  }
-                                   
-                                  }
+                                  onClick={(e) => {
+                                    handleJobStatusModal(
+                                      e,
+                                      item?.developer?.id,
+                                      "shortlisted",
+                                      type,
+                                      item?.id
+                                    );
+                                  }}
                                   className="w-100 main-btn text-black border-white mt-3"
                                 >
-                                  {type === "Interviewing" ? (
+                                  {type === "interviewing" ? (
                                     <RiUserAddFill />
                                   ) : type === "Shortlisted" ? (
                                     <PiUserRectangleFill />
@@ -176,30 +194,30 @@ const JobCard = ({
                             ) : (
                               ""
                             )}
-                            {role !== "admin" && (
-                              <OverlayTrigger
-                                placement="bottom"
-                                overlay={rejectedCardToolTip}
+                            {/* {role === "admin"    && ( */}
+                            <OverlayTrigger
+                              placement="bottom"
+                              overlay={rejectedCardToolTip}
+                            >
+                              <Button
+                                variant="danger"
+                                onClick={(e) =>
+                                  handleJobStatusModal(
+                                    e,
+                                    item?.developer?.id,
+                                    "rejected",
+                                    type,
+                                    item?.id
+                                  )
+                                }
+                                disabled={jobStatus === "Ended" ? true : false}
+                                className="w-100"
                               >
-                                <Button
-                                  variant="danger"
-                                  onClick={(e) =>
-                                    handleJobStatusModal(
-                                      e,
-                                      item?.id,
-                                      "rejected"
-                                    )
-                                  }
-                                  disabled={
-                                    jobStatus === "Ended" ? true : false
-                                  }
-                                  className="w-100"
-                                >
-                                  <ImUserMinus />
-                                </Button>
-                              </OverlayTrigger>
-                            )}
-                            {role === "admin" && (
+                                <ImUserMinus />
+                              </Button>
+                            </OverlayTrigger>
+                            {/* )} */}
+                            {/* {role !== "admin" && (
                               <OverlayTrigger
                                 placement="top"
                                 overlay={suggestedCardToolTip(
@@ -227,21 +245,21 @@ const JobCard = ({
                                   )}
                                 </Button>
                               </OverlayTrigger>
-                            )}
-                            {role === "admin" && (
-                            <OverlayTrigger placement="top" overlay={approvedApply}>
-                              <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
-                                <FaCheck />
-                              </Button>
-                            </OverlayTrigger>
-                            )}
-                            {role === "admin" && (
+                            )} */}
+                            {/* {role !== "admin" && (
+                              <OverlayTrigger placement="top" overlay={approvedApply}>
+                                <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
+                                  <FaCheck />
+                                </Button>
+                              </OverlayTrigger>
+                              )} */}
+                            {/* {role !== "admin" && (
                             <OverlayTrigger placement="top" overlay={rejectedApply}>
                               <Button variant="danger" className="w-100">
                                 <FaTimes />
                               </Button>
                             </OverlayTrigger>
-                            )}
+                            )} */}
                           </div>
                         </div>
                       </div>
@@ -249,16 +267,18 @@ const JobCard = ({
                   </>
                 );
               })}
-            </>
-          ) : (
-            <div>
+               </div>
+           
+          :
+            <div className="simple-no-data">
               <NoDataFound data="⚙️ No Developer in Sight" />
             </div>
-          )}
+       }
+          
 
-        </div>
+       
 
-        {role === "admin" && type === "Suggested" ? (
+        {/* {role === "admin" && type === "suggested" ? (
           <div className="d-flex w-100 align-items-center justify-content-between my-4">
             <p className="mb-0">
               Showing {singleJobPagination?.data?.length} results
@@ -271,7 +291,7 @@ const JobCard = ({
           </div>
         ) : (
           ""
-        )}
+        )} */}
       </>}
       <ScheduleMeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting}  />
     </>

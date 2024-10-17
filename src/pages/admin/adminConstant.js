@@ -238,11 +238,11 @@ export const TIME_REPORTING_FILTER_FIELDS = {
 
 export const MEMBERS_FILTER_FIELDS = {
   selectFilters: [
-    {
-      filterLabel: "Select Status",
-      key: "approval_status",
-      options: MEMBERS_STATUS_OPTIONS,
-    },
+    // {
+    //   filterLabel: "Select Status",
+    //   key: "approval_status",
+    //   options: MEMBERS_STATUS_OPTIONS,
+    // },
     {
       filterLabel: "Sort by name",
       key:"order_alphabetically",
@@ -266,11 +266,11 @@ export const MEMBERS_FILTER_FIELDS = {
 
 export const APPLICANT_FILTER_FIELDS = {
   selectFilters: [
-    {
-      filterLabel: "Select Status",
-      key: "approval_status",
-      options: MEMBERS_STATUS_OPTIONS,
-    },
+    // {
+    //   filterLabel: "Select Status",
+    //   key: "approval_status",
+    //   options: MEMBERS_STATUS_OPTIONS,
+    // },
     {
       filterLabel: "Sort by name",
       key:"order_alphabetically",

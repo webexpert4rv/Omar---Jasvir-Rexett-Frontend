@@ -13,13 +13,14 @@ import moment from 'moment';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { useMsal } from '@azure/msal-react';
-const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+// import { DISCOVERY_DOCS, SCOPES } from '../../../helper/utlis';
 
-const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
+ const DISCOVERY_DOCS = [
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+  "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+];
 
-
+const SCOPES = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/admin.reports.audit.readonly https://www.googleapis.com/auth/apps.reports.audit.readonly';
 
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
@@ -31,7 +32,6 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const dispatch = useDispatch()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const currentTime = moment();
-  console.log(currentTime,"currentTime")
 
   useEffect(()=>{
     if(allEvents?.events?.length>0){
@@ -44,10 +44,10 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   useEffect(() => {
     function start() {
       gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES
+        apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
+            clientId: "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
       }).then(() => {
         console.log('GAPI Initialized');
         const authInstance = gapi.auth2.getAuthInstance();
@@ -87,7 +87,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       'timeMax': timeMax,
       'showDeleted': false,
       'singleEvents': true,
-      'maxResults': 10,
+      'maxResults': 20,
       'orderBy': 'startTime',
      }
 
@@ -140,20 +140,15 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
 
 
 
-   
-
-  const isEventDate = (date) => {
-    return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
-  };
-  const syncCreatedMeetingsWithGoogle = (e,item) => {
+   const syncCreatedMeetingsWithGoogle = (e,item) => {
     console.log(item,"item")
     e.stopPropagation()
-    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    if (!gapi.auth2.getAuthInstance()?.isSignedIn?.get()) {
       console.log('User not authenticated');
       return;
     }
     const newEvent = {
-      'summary': item.summary,
+      'summary': item.summary,  
       'location': item.location,
       'description': item.description,
       'start': {
@@ -174,6 +169,10 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     }).catch((error) => {
       console.error('Error creating event:', error);
     });
+  };
+
+  const isEventDate = (date) => {
+    return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
   };
 
   const getGoogleEventDetails=(event, fieldName)=>{

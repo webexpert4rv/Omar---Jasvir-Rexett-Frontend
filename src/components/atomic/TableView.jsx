@@ -4,9 +4,23 @@ import devImg from '../../assets/img/user-img.jpg'
 import { FaStar, FaTimes } from 'react-icons/fa'
 import { LuMessagesSquare } from 'react-icons/lu'
 import NoDataFound from './NoDataFound'
+import { PiUserRectangleFill } from 'react-icons/pi'
+import { useNavigate } from 'react-router-dom'
 
 const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,listing,handleJobStatusModal,type}) => {
   console.log(listing,"listing")
+  console.log(type,"gridviewType")
+
+  const navigate = useNavigate();
+  const role = localStorage.getItem("role")
+
+  const handleDeveloperCard = (e, id) => {
+    if (role == "client") {
+      navigate(`/client/client-single-developer/${id}`);
+    } else if (role === "admin") {
+      navigate(`/admin-single-developer/${id}`);
+    }
+  };
 
   return (
     <>
@@ -28,7 +42,7 @@ const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,li
                            listing?.length>0? listing?.map((item,index)=>{
                               return (
                                 <>
-                                 <tr>
+                                 <tr onClick={(e) => handleDeveloperCard(e, item?.developer_id)}>
                               <td className="document-data px-3">
                                 <div className="d-flex align-items-center gap-2">
                                   <img src={item?.developer?.profile_picture} className="developer-img" />
@@ -87,12 +101,12 @@ const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,li
                                 <div className="d-flex align-items-center gap-2 job-action-btns">
                                   <OverlayTrigger placement="top" overlay={scheduleInterview}>
                                     {/* <Button onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)} className="main-btn py-2 text-black font-15"> */}
-                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.id, type)} className="main-btn py-2 text-black font-15">
-                                      <LuMessagesSquare />
+                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.developer?.id,"interviewing", type,item?.id)} className="main-btn py-2 text-black font-15">
+                                    <PiUserRectangleFill />
                                     </Button>
                                   </OverlayTrigger>
                                   <OverlayTrigger placement="top" overlay={rejectedApply}>
-                                    <Button variant="danger">
+                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.developer?.id,"rejected", type,item?.id)} variant="danger">
                                       <FaTimes />
                                     </Button>
                                   </OverlayTrigger>

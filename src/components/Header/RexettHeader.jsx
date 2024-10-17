@@ -26,17 +26,22 @@ import ToDoComponent from "./ToDoComponent";
 import MessageInbox from "./MessageInbox";
 import Meetings from "../common/meetings/Meetings";
 
-const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
+// const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
+const  clientName = localStorage.getItem("userName")
+const profileImg =  localStorage.getItem("profile_picture")
 
-const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
+const RexettHeader = ({handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
   const [details, setDetails] = useState()
   const { t } = useTranslation();
   const [fridayMarquee, setFridayMarquee] = useState(false);
   const { pathname } = useLocation();
   const isSingleJob = pathname.split("/")[2];
+  const [createdMeetings, setCreatedMeetings] = useState()
   const { configDetails } = useSelector(state => state.adminData)
   const dispatch = useDispatch()
+  let role=localStorage.getItem("role");
+  let roleId=localStorage.getItem("roleId")
   const routePath = (isSingleJob) => {
     const data = {
       "single-job": "/client/job-posted",
@@ -69,8 +74,11 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   }
 
   useEffect(()=>{
-     dispatch(getAllPermissionDetails())
-  },[])
+    console.log("000000000000000000")
+    if(role=="employee"){
+     dispatch(getAllPermissionDetails(roleId))
+    }
+  },[role])
 
   console.log(details, "details")
   const handleCloseMeetingInfo = () => {
@@ -99,6 +107,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const headingTextColor = configDetails?.crm_heading_color
   const bodyTextColor = configDetails?.crm_body_text_color
   const linkBgColor = configDetails?.crm_sidebar_bg_link_color
+  const sideBarIconColor = configDetails?.side_bar_icon_color
+  const sideBarIconWidth = configDetails?.side_bar_icon_width
+  const sideBarIconHeight = configDetails?.side_bar_icon_height
+
 
 
   useEffect(() => {
@@ -115,16 +127,16 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     document.documentElement.style.setProperty('--heading_color', headingTextColor)
     document.documentElement.style.setProperty('--body_text_color', bodyTextColor)
     document.documentElement.style.setProperty('--sidebar-link-bg-color', linkBgColor)
+    document.documentElement.style.setProperty('--sidebar_icon_font_color', sideBarIconColor)
+    document.documentElement.style.setProperty('--sidebar_icon_font_width', sideBarIconWidth)
+    document.documentElement.style.setProperty('--sidebar_icon_font_height', sideBarIconHeight)
     document.getElementById('favicon').href = filename;
-
   }, [configDetails])
 
   useEffect(() => {
     dispatch(getConfigDetails())
     dispatch(getAllEvents())
   }, [dispatch])
-
-
 
   const backBtn = () => {
     navigate(-1)
@@ -149,7 +161,6 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     ShowScheduleMeeting(false);
   }
 
-  const [createdMeetings, setCreatedMeetings] = useState()
   console.log(createdMeetings, "createdMeetings")
 
 
@@ -160,10 +171,12 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       ) : (
         ""
       )}
-      <header className="mb-4 zIndex3">
+      <header className="mb-4 zIndex3 dash_header">
+          
         <div className="d-flex align-items-center justify-content-between gap-3">
+          {/* <span className="d-flex justify-content-start align-items-center fw-500 welcome_Text" >Welcome {clientName}</span> */}
           <div>
-            <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2" : "shadow-none p-0 collapsable_btn me-2 active-collapse"}><TbArrowBarToLeft /></Button>
+            {/* <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2" : "shadow-none p-0 collapsable_btn me-2 active-collapse"}><TbArrowBarToLeft /></Button> */}
             {routePath(isSingleJob) && (
               <Button
                 onClick={backBtn}
@@ -174,7 +187,12 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
               </Button>
             )}
           </div>
-          <div className="d-flex align-items-center gap-3">
+          <div className="d-flex align-items-center gap-3 secondary_nav">
+            {role == "admin" ? (
+              <Button className="main-btn font-14" onClick={()=>{
+                navigate("/admin/members")
+              }}>View Clients</Button>
+              ) : ("")}
             {role == "admin" ? (
               <ToolTip text={"To Do List"} >
                 <span onClick={handleShowToDo} className="cursor-pointer to-do-icon">
@@ -233,13 +251,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
               <Dropdown className="profile-dropdown">
                 <Dropdown.Toggle variant="transparent" id="dropdown-basic">
                   <div className="profile-view">
-                    <span>{clientName?.charAt(0)}</span>
+                    {/* <span>{clientName?.charAt(0)}</span> */}
+                    <img src={profileImg ? profileImg : "/demo-user.png"} />
                   </div>
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu className="sort-dropdown">
+                  <Dropdown.Item href="/admin/customization">Configuration</Dropdown.Item>
                   <Dropdown.Item href="/admin/website-pages">Pages</Dropdown.Item>
                   <Dropdown.Item href="#">Website</Dropdown.Item>
+                  <Dropdown.Item href="#" className="text-danger">Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </ToolTip>

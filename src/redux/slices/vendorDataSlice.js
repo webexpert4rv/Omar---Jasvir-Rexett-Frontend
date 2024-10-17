@@ -387,7 +387,7 @@ export function getVendorStepData(user_id ,callback) {
 }
 export const uploadFileToS3Bucket = (payload,callback) => {
     return async (dispatch) => {
-    //   dispatch(setScreenLoader());
+      dispatch(setSmallLoader());
       try {
         let result = await clientFormInstance.post(`web/upload-file`,payload);
         console.log(result?.data?.data?.Location,"location")
@@ -438,6 +438,7 @@ export function getEditDecision(payload,callback) {
       try {
         let result = await authInstance.post(`common/vendor-area-expertise`,{...payload});
         localStorage.setItem("vendorId",result?.data?.data?.vendor?.id);
+        toast.success(result.data?.message, { position: "top-center" })
         dispatch(setVendorSuccess())
         return callback()
       } catch (error) {

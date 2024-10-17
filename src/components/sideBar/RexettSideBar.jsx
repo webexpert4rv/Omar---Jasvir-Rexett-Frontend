@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
-import sidebarLogo2 from "../../assets/img/rexett-logo-white2.png";
+import sidebarLogo2 from "../../assets/img/favicon.png";
 import { Link, NavLink } from "react-router-dom";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -16,49 +16,55 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
     const { configDetails,allPermissionDetails } = useSelector(state => state.adminData)
     const [sidebarDataWithPermi,setSideBarDataWithPermi]=useState([])
     let currentRoute = role == "client" ? "/" : `/${role}-login`
-    let {rolesWithPermissions}=allPermissionDetails
+    let {permissionCategories}=allPermissionDetails
+    console.log(configDetails,"configDetails")
 
     const logout = () => {
         localStorage.clear();
         window.location.href = currentRoute;
     };
- console.log(rolesWithPermissions,"allPermissionDetails")
+
    
     const [floatingShow, setFloatingShow] = useState(false);
     const handleFloating = () => {
         setFloatingShow(!floatingShow);
     }
 
-    // useEffect(()=>{
-    //     if(rolesWithPermissions && rolesWithPermissions?.length>0){
+    useEffect(()=>{
+        if(role=="employee"){
+        if(permissionCategories && permissionCategories?.length>0){
 
-    //     const updatedSecondArray = sidebarItems.map(item => {
-    //         const isActive = rolesWithPermissions[0]?.permissions?.some(firstItem => firstItem.slug === item.slug);
-    //         return { ...item, active: isActive };
-    //       });
-    //       setSideBarDataWithPermi(updatedSecondArray)
-    //     }
-        
+        const updatedSecondArray = sidebarItems.map(item => {
+            const isActive = permissionCategories?.some(firstItem =>firstItem.active );
+            return { ...item,active:isActive};
+          });
+          setSideBarDataWithPermi(updatedSecondArray)
+        }
+    }else{
+        setSideBarDataWithPermi(sidebarItems)
+    }
 
-    // },[allPermissionDetails])
+    },[allPermissionDetails])
+
+    console.log(sidebarDataWithPermi,"sidebarDataWithPermi")
 
     return (
         <>
             <aside className={collapseActive ? "sidebar" : "sidebar collapse-active"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
-                    <div className="w-100">
+                    <div className="w-100 d-flex flex-column justify-content-between align-items-center">
                         <div className={collapseActive ? "sidebar-logo mt-3 mb-4" : "sidebar-logo mt-3 mb-4 logo-sidebar-wrapper"}>
                             <a href="https://www.rexett.com/">
-                                { collapseActive ?
-                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo   } alt="Sidebar Logo" />
+                                { !collapseActive ?
+                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo2   } alt="Sidebar Logo" />
                                     :
                                     <img src={sidebarLogo2} alt="Sidebar Logo" />
                                 }
                             </a>
                         </div>
-                        {sidebarItems.map((item, index) => (
+                        {sidebarDataWithPermi?.map((item, index) => (
                             <>
-                                { collapseActive ?
+                                {item.active? collapseActive ?
                                     <NavLink
                                         key={index}
                                         to={item.to}
@@ -88,18 +94,19 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                                             </span>
                                         </NavLink>
                                     </OverlayTrigger>
-                               }
+                             :""   }
                             </>
                         ))}
                     </div>
                     <div className="w-100 px-3 mt-3">
-                        <div>
+                        <div className="d-flex justify-content-center">
                             <Link
                                 onClick={logout}
                                 className="bottom-link"
                                 activeClassName="active"
                             >
-                                <span className="sidebar-icon"><PiSignOutBold /></span> <span className="sidebar-text">{t("signOut")}</span>
+                                <span className="sidebar-icon"><PiSignOutBold /></span>
+                                {/* <span className="sidebar-text">{t("signOut")}</span> */}
                             </Link>
                         </div>
                     </div>
