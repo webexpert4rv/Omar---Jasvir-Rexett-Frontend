@@ -86,13 +86,13 @@ const COLUMNS = {
     { label: "", key: "" },
   ],
 };
-let role=localStorage.getItem("role")
+let role = localStorage.getItem("role")
 const Applications = () => {
   const targetRef = useRef();
   const [screeninginfo, showScreeningInfo] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allApplications, approvedLoader, screenLoader, smallLoader,allPermissionDetails } = useSelector((state) => state.adminData);
+  const { allApplications, approvedLoader, screenLoader, smallLoader, allPermissionDetails } = useSelector((state) => state.adminData);
   const [search, setSearch] = useState("");
   const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
@@ -109,7 +109,8 @@ const Applications = () => {
   const [loading, setLoading] = useState(false)
   const { t } = useTranslation();
   const [showScreening, setScreeningShow] = useState(false);
-  const [showQuestions, setQuestionsShow ] = useState(false);
+  const [showQuestions, setQuestionsShow] = useState(false);
+  const [emailId , setEmailId] = useState()
   const [filters, setFilters] = useState({
     search: "",
     // order_alphabetically: "asc",
@@ -122,12 +123,18 @@ const Applications = () => {
     deletedId: null,
     isDeleted: false
   })
+  const [sendEmailModal,setSendEmailModal] = useState(false)
 
   const handleScreeningClose = () => setScreeningShow(false);
   const handleScreeningShow = () => setScreeningShow(true);
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
   const [emailNum, setEmailNum] = useState()
   const [emailIndx, setEmailIndx] = useState()
+  const [modalType, setModalType] = useState("");
+  const [emailLink ,setEmailLink] = useState()
+
+
+  console.log(accessPermissions, "accessPermissions")
 
   const handleTimeslotChange = (e) => {
     setSelectedTimeslot(e.target.id);
@@ -143,25 +150,26 @@ const Applications = () => {
     window.open(resume, "_blank");
   };
 
-  useEffect(()=>{
-    if(allPermissionDetails?.permissionCategories?.length>0){
-      let permission=accessModalAccordingToRoles(allPermissionDetails?.permissionCategories,"new-applicants")
+  useEffect(() => {
+    if (allPermissionDetails?.permissionCategories?.length > 0) {
+      let permission = accessModalAccordingToRoles(allPermissionDetails?.permissionCategories, "new-applicants")
       setAccessPermissions(permission?.permissions)
     }
-},[allPermissionDetails?.permissionCategories])
+  }, [allPermissionDetails?.permissionCategories])
 
 
-   const subModulesAccess=(slug)=>{
-     if(role=="employee"){
-    if(accessPermissions?.length>0){
-   let slugWithPermission= accessPermissions?.find((item)=>item.slug==slug)
-   return slugWithPermission?.status=="active" ?true:false
+  const subModulesAccess = (slug) => {
+    if (role == "employee") {
+      if (accessPermissions?.length > 0) {
+        let slugWithPermission = accessPermissions?.find((item) => item.slug == slug)
+        return slugWithPermission?.status == "active" ? true : false
+      }
+    } else {
+      return true
     }
-  }else{
-    return true
   }
 
-   }
+  console.log(sendEmailModal,"sendEmailModal")
 
 
   useEffect(() => {
@@ -243,15 +251,24 @@ const Applications = () => {
   const rescheduleText = <Tooltip>Reschedule</Tooltip>;
 
   console.log(emailNum, "emailNum")
-  const handleSendEmail = async (id, email, verificationReminderCount, index) => {
-    console.log(verificationReminderCount, "verificationReminderCount")
+  const handleConfirmSendEmail=(e,id, email, verificationReminderCount, index)=>{
+    e.stopPropagation()
+    setEmailLink(email)
+    setEmailId(id)
     setEmailIndx(index)
     setEmailNum(verificationReminderCount)
     setLoading(true)
-    if (verificationReminderCount < 3) {
+    setSendEmailModal(true)
+    setModalType("reminder")
+  }
+  const handleSendEmail = async () => {
+    // setEmailIndx(index)
+    // setEmailNum(verificationReminderCount)
+    // setLoading(true)
+    if (emailNum < 3) {
       const data = {
-        user_id: id,
-        link: email,
+        user_id: emailId,
+        link: emailLink,
         page: page,
         active_tab: currentTab,
         // ...filters
@@ -269,6 +286,7 @@ const Applications = () => {
       setLoading(false)
 
     }
+    setSendEmailModal(false)
   }
 
   const redirectToWebsiteForm = (
@@ -360,6 +378,8 @@ const Applications = () => {
       isDeleted: !profileDeleted.isDeleted,
       deletedId: id
     })
+    setSendEmailModal(false)
+    setModalType("")
   }
 
   const handleDeleteProlfile = () => {
@@ -376,7 +396,7 @@ const Applications = () => {
         deletedId: null
       })
       dispatch(allApplicationsList(data));
-
+      setModalType("delete")
     }))
   }
   const handleShowQuestion = () => {
@@ -384,6 +404,14 @@ const Applications = () => {
   }
   const handleCloseQuestion = () => {
     setQuestionsShow(false);
+  }
+ 
+  const handleAction=()=>{
+    if (modalType === "delete") {
+      handleDeleteProlfile(); 
+  } else if (modalType === "reminder") {
+      handleSendEmail(); 
+  }
   }
 
   return (
@@ -422,7 +450,7 @@ const Applications = () => {
               onSelect={handleSelect}
             >
               <Nav variant="pills" className="application-pills">
-              {subModulesAccess("clients") && <Nav.Item className="application-item">
+                {subModulesAccess("clients") && <Nav.Item className="application-item">
                   <Nav.Link eventKey="clients" className="application-link">
                     {t("clients")}
                     <span className="new-app">
@@ -430,7 +458,7 @@ const Applications = () => {
                     </span>
                   </Nav.Link>
                 </Nav.Item>}
-              {subModulesAccess("vendors") &&  <Nav.Item className="application-item">
+                {subModulesAccess("vendors") && <Nav.Item className="application-item">
                   <Nav.Link eventKey="vendors" className="application-link">
                     Partners
                     <span className="new-app">
@@ -446,7 +474,7 @@ const Applications = () => {
                     </span>
                   </Nav.Link>
                 </Nav.Item>}
-               {subModulesAccess("unregister") && <Nav.Item className="application-item">
+                {subModulesAccess("unregister") && <Nav.Item className="application-item">
                   <Nav.Link eventKey="unregistered" className="application-link">
                     Unregistered
                     <span className="new-app">
@@ -467,9 +495,9 @@ const Applications = () => {
                           </th>
                           <th>{t("phoneNumber")}</th>
                           <th>Type</th>
-                          {/* <th className="text-center">Send Email</th> */}
+                          <th className="text-center">Send Email</th>
                           <th>{t("status")}</th>
-                         {subModulesAccess("clients-complete-profile-action") && <th>{t("action")}</th>}
+                          {subModulesAccess("clients-complete-profile-action") && <th>{t("action")}</th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -520,15 +548,15 @@ const Applications = () => {
                                     </td>
                                     <td>{item?.phone_number}</td>
                                     <td>{item.client_type}</td>
-                                    {/* <td className="text-center">
+                                    <td className="text-center">
                                       <div className="d-inline-flex gap-1 align-items-center">
-                                        <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                          <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                            <span className="email_shot">1</span>
+                                        {/* <OverlayTrigger placement="bottom" overlay={sendEmail}> */}
+                                          <span  className={`status-email position-relative ${item?.verification_reminder_count >= 3 || item?.is_profile_completed===true ? 'disabled' : ''}`} onClick={(e)=>handleConfirmSendEmail(e,item?.id, item?.email, item?.verification_reminder_count, index)}><span className="email_count"><FaEnvelope /></span>
+                                          {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                           </span>
-                                        </OverlayTrigger>
+                                        {/* </OverlayTrigger> */}
                                       </div>
-                                    </td> */}
+                                    </td>
                                     <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
@@ -549,7 +577,7 @@ const Applications = () => {
 
                                         <Dropdown.Menu className="action-dropdown-menu">
 
-                                          {item?.is_profile_completed ? (
+                                          {subModulesAccess("approve-clients") && item?.is_profile_completed ? (
                                             <div className="d-flex gap-3">
                                               <RexettButton
                                                 icon={
@@ -578,7 +606,7 @@ const Applications = () => {
                                                     : false
                                                 }
                                               />
-                                              <RexettButton
+                                              {subModulesAccess("reject-clients") && <RexettButton
                                                 icon={
                                                   selectedRejectedBtn === index ? (
                                                     approvedLoader
@@ -604,30 +632,31 @@ const Applications = () => {
                                                     ? approvedLoader
                                                     : false
                                                 }
-                                              />
+                                              />}
                                             </div>
-                                          ) : (
-                                            <div className="d-flex justify-content-center gap-3">
-                                              <div
-                                                onClick={() =>
-                                                  !smallLoader &&
-                                                  redirectToWebsiteForm(
-                                                    "client",
-                                                    item?.id,
-                                                    item,
-                                                    3
+                                          ) :
+                                            subModulesAccess("vendors-complete-profile-action") && (
+                                              <div className="d-flex justify-content-center gap-3">
+                                                <div
+                                                  onClick={() =>
+                                                    !smallLoader &&
+                                                    redirectToWebsiteForm(
+                                                      "client",
+                                                      item?.id,
+                                                      item,
+                                                      3
 
-                                                  )
-                                                }
-                                              >
-                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                                    )
+                                                  }
+                                                >
+                                                  <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
 
-                                                  Complete profile
-                                                  <FiExternalLink />
-                                                </span>
+                                                    Complete profile
+                                                    <FiExternalLink />
+                                                  </span>
+                                                </div>
                                               </div>
-                                            </div>
-                                          )}
+                                            )}
                                           <div className="text-center py-1">
                                             {/* <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link> */}
                                           </div>
@@ -731,21 +760,23 @@ const Applications = () => {
                                                 </p>
                                               </div>
                                             </Col>
-                                        { subModulesAccess("clients-send-email") && <Col md={3} className="mb-3">
+                                            {subModulesAccess("clients-send-email") && <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
                                                   Send Email
                                                 </h3>
                                                 <div className="d-inline-flex gap-1 align-items-center">
                                                   <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                                    <span className="status-email position-relative"
-                                                      onClick={() => {
+                                                    <span 
+                                                    className={`status-email position-relative ${item?.verification_reminder_count >= 3 || item?.is_profile_completed===true ? 'disabled' : ''}`}
+                                                      onClick={(e) => {
                                                         if (!loading && item?.verification_reminder_count < 3) {
-                                                          handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                         handleConfirmSendEmail(e ,item?.id, item?.email, item?.verification_reminder_count, index);
                                                         }
                                                       }}
                                                     >
-                                                      <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}
+                                                      {/* <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />} */}
+                                                      <span  className="email_count"><FaEnvelope />
                                                       </span>
                                                       {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                                     </span>
@@ -831,12 +862,12 @@ const Applications = () => {
                     <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                       {currentTab == "clients" ? (
                         <p className="showing-result">
-                          {t("showing")} {allApplications?.clients?.length}{" "}
+                          {t("showing")} {allApplications?.clients?.length}
                           {t("results")}
                         </p>
                       ) : (
                         <p className="showing-result">
-                          {t("showing")} {allApplications?.vendors?.length}{" "}
+                          {t("showing")} {allApplications?.vendors?.length}
                           {t("results")}
                         </p>
                       )}
@@ -868,7 +899,7 @@ const Applications = () => {
                       <th>{t("availability")}</th> */}
                           <th>{t("status")}</th>
                           <th className="text-center">Send Email</th>
-                          <th>{t("action")}</th>
+                         { subModulesAccess("vendors-complete-profile-action") && <th>{t("action")}</th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -895,7 +926,7 @@ const Applications = () => {
                                           }
                                         >
                                           <RxChevronRight />
-                                        </span>{" "}
+                                        </span>
                                         <div className="user-imgbx application-userbx">
                                           <img
                                             src={
@@ -935,14 +966,17 @@ const Applications = () => {
                                       <div className="d-flex align-items-center justify-content-center gap-3">
                                         <div className="d-inline-flex gap-1 align-items-center">
                                           <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                            <span className="status-email position-relative"
-                                              onClick={() => {
+                                            <span  
+                                            className={`status-email position-relative ${item?.verification_reminder_count >= 3 || item?.is_profile_completed===true ? 'disabled' : ''}`}
+                                              onClick={(e) => {
                                                 if (!loading && item?.verification_reminder_count < 3) {
-                                                  handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                              handleConfirmSendEmail(e,item?.id, item?.email, item?.verification_reminder_count, index);
                                                 }
                                               }}
                                             >
-                                              <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                              {/* <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span> */}
+                                              <span  className="email_count"><FaEnvelope />
+                                                      </span>
                                               {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                             </span>
                                           </OverlayTrigger>
@@ -1061,7 +1095,7 @@ const Applications = () => {
 
                                         <Dropdown.Menu className="action-dropdown-menu">
 
-                                          {item?.is_profile_completed ? (
+                                          {subModulesAccess("approve-vendors") && item?.is_profile_completed ? (
                                             <div className="d-flex gap-3">
                                               <RexettButton
                                                 icon={
@@ -1090,7 +1124,7 @@ const Applications = () => {
                                                     : false
                                                 }
                                               />
-                                              <RexettButton
+                                              {subModulesAccess("reject-vendors") && <RexettButton
                                                 icon={
                                                   selectedRejectedBtn === index ? (
                                                     approvedLoader
@@ -1116,9 +1150,11 @@ const Applications = () => {
                                                     ? approvedLoader
                                                     : false
                                                 }
-                                              />
+                                              />}
                                             </div>
-                                          ) : (
+                                          ) : 
+                                          subModulesAccess("vendors-complete-profile-action")&& !item?.is_profile_completed &&
+                                          (
                                             <div className="d-flex justify-content-center gap-3">
                                               <div
                                                 onClick={() =>
@@ -1491,7 +1527,7 @@ const Applications = () => {
                     <table className="table w-100 engagement-table table-ui-custom">
                       <thead>
                         <tr>
-                          <th>Job Id</th>
+                          {/* <th>Job Id</th> */}
                           <th>Name</th>
                           <th>
                             {t("email")} {t("address")}
@@ -1500,8 +1536,9 @@ const Applications = () => {
 
                           <th>Coming from</th>
                           <th>Status</th>
+                          <th className="text-center">Send Email</th>
                           <th>Screening</th>
-                          <th>{t("action")}</th>
+                          { subModulesAccess("developers-complete-profile-action") && <th>{t("action")}</th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -1517,7 +1554,7 @@ const Applications = () => {
                                     className="application-row"
                                     onClick={() => handleRowClick(index)}
                                   >
-                                    <td>
+                                    {/* <td> */}
                                       {/* <div className="d-flex align-items-center">
                                         <span
                                           className={
@@ -1531,7 +1568,7 @@ const Applications = () => {
                                         </span>
                                         RXT-1234
                                       </div> */}
-                                    </td>
+                                    {/* </td> */}
                                     <td className="white-nowrap">
                                       <div className="d-flex align-items-center">
                                         <div className="user-imgbx application-userbx">
@@ -1613,17 +1650,25 @@ const Applications = () => {
                                         </span>}
                                       </div>
                                     </td>
-                                    {/* <td>
+                                    <td>
                                       <div className="d-flex align-items-center gap-2 justify-content-center">
                                         <div className="d-inline-flex gap-1 align-items-center">
                                           <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                              <span className="email_shot">1</span>
+                                            <span 
+                                            // className="status-email position-relative"
+                                            className={`status-email position-relative ${item?.verification_reminder_count >= 3 || item?.is_profile_completed===true ? 'disabled' : ''}`}
+                                             onClick={(e) => {
+                                              if (!loading && item?.verification_reminder_count < 3) {
+                                               handleConfirmSendEmail(e,item?.id, item?.email, item?.verification_reminder_count, index);
+                                              }
+                                            }}
+                                            ><span className="email_count" ><FaEnvelope /></span>
+                                            {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                             </span>
                                           </OverlayTrigger>
                                         </div>
                                       </div>
-                                    </td> */}
+                                    </td>
                                     <td className="text-center">
                                       {/* Show Schedule Screening button if no interviews */}
                                       {item?.interviews?.length <= 0 ? (
@@ -1817,7 +1862,7 @@ const Applications = () => {
 
                                         <Dropdown.Menu className="action-dropdown-menu">
 
-                                          {item?.is_profile_completed ? (
+                                          {subModulesAccess("approve-developers") && item?.is_profile_completed ? (
                                             <div className="d-flex justify-content-center gap-3">
                                               <RexettButton
                                                 icon={
@@ -1874,7 +1919,9 @@ const Applications = () => {
                                                 }
                                               />
                                             </div>
-                                          ) : (
+                                          ) : 
+                                          subModulesAccess("developers-complete-profile-action")&& !item?.is_profile_completed &&
+                                          (
                                             <div className="d-flex justify-content-center gap-3">
                                               <div
                                                 onClick={() =>
@@ -2276,14 +2323,16 @@ const Applications = () => {
                                                 </h3>
                                                 <div className="d-inline-flex gap-1 align-items-center">
                                                   <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                                    <span className="status-email position-relative"
-                                                      onClick={() => {
+                                                    <span  className={`status-email position-relative ${item?.verification_reminder_count >= 3 || item?.is_profile_completed===true  ? 'disabled' : ''}`}
+                                                      onClick={(e) => {
                                                         if (!loading && item?.verification_reminder_count < 3) {
-                                                          handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                         handleConfirmSendEmail(e,item?.id, item?.email, item?.verification_reminder_count, index);
                                                         }
                                                       }}
                                                     >
-                                                      <span className="email_count"> {emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                                      {/* <span className="email_count"> {emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span> */}
+                                                      <span  className="email_count"><FaEnvelope />
+                                                      </span>
                                                       {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                                     </span>
                                                   </OverlayTrigger>
@@ -2449,7 +2498,7 @@ const Applications = () => {
 
                                           </div>
                                         </div> : "Maximum Limit reached"} */}
-                                      {/* </div>
+                                    {/* </div>
                                     </td>  */}
 
                                     {/* <td>
@@ -3204,20 +3253,20 @@ const Applications = () => {
             selectedId={selectedId}
           /> */}
 
-          {profileDeleted.isDeleted
-            && (
+          {/* {profileDeleted.isDeleted || sendEmailModal
+            && ( */}
               <ConfirmationModal
-                show={profileDeleted.isDeleted}
-                handleClose={deleteProfile}
+                show={ profileDeleted.isDeleted || sendEmailModal}
+                handleClose={ deleteProfile }
                 smallLoader={smallLoader}
-                text={"Are you sure to delete this profile?"}
-                handleAction={handleDeleteProlfile}
+                text={modalType === "delete" ? "Are you sure to delete this profile?" : "Do you want a reminder for Profile Completion"}
+                handleAction={handleAction }
               />
-            )}
+            {/* )} */}
           <Schedulemeeting show={schedulescreeening} selectedDeveloper={selectedEmail} handleClose={handleCloseScheduleScreening} type={"screen"} />
 
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
-          <ScreeningQuestion show={showQuestions} handleClose={handleCloseQuestion}  />
+          <ScreeningQuestion show={showQuestions} handleClose={handleCloseQuestion} />
         </>
       )}
     </>

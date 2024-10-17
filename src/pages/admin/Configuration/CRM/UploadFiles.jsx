@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filePreassignedUrlGenerate } from '../../../../redux/slices/clientDataSlice';
 import { IMAGE_ALLOWED_EXTENSIONS } from '../../../websiteRegisterForm/developer/developeStepConstant';
 
-function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, register }) {
+function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, register,subModulesAccess }) {
     const [favIconPreviewUrl, setFavIconPreviewUrl] = useState('')
     const { configDetails } = useSelector(state => state.adminData)
 
@@ -40,7 +40,7 @@ function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, 
     return (
         <div>
             <Row>
-                <Col md={6} className="mb-4">
+               {subModulesAccess("crm-upload-logo") && <Col md={6} className="mb-4">
                     <h3 className="customization-heading">Upload Company Logo</h3>
                     <p className="customization-text">
                         Your company logo is an essential part of your brand identity. Uploading it here will ensure it is prominently displayed across various sections of our platform, enhancing your brand's visibility and consistency.
@@ -66,7 +66,7 @@ function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, 
                             </Button>
                         </div>
                     </div>
-                </Col>
+                </Col>}
                 <Col md={6} className="mb-4">
                     <div className="preview-company-wrapper">
                         <div className="position-relative">
@@ -89,7 +89,7 @@ function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, 
                         </div>
                     </div>
                 </Col>
-                <Col md={6} className="mb-4">
+               { subModulesAccess("crm-upload-favicon") && <Col md={6} className="mb-4">
                     <h3 className="customization-heading">Upload Favicon</h3>
                     <p className="customization-text">
                         The favicon is a small but crucial element of your brand's online presence. It appears in browser tabs, bookmarks, and other places to help users quickly identify your site.
@@ -117,7 +117,7 @@ function UploadFiles({ previewUrl, setPreviewUrl, setFileName, files, setFiles, 
                             &times;
                         </Button>
                     </div>
-                </Col>
+                </Col>}
                 <Col md={6} className="mb-4">
                     <div className="preview-statusbar-wrapper">
                         <div className="position-relative">

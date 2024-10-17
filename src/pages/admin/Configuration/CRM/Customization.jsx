@@ -17,19 +17,22 @@ import PaymentSetup from "../PaymentSetup/PaymentSetup";
 import RexettButton from "../../../../components/atomic/RexettButton";
 import { setSmallLoader } from "../../../../redux/slices/developerDataSlice";
 import { useForm } from "react-hook-form";
+import { accessModalAccordingToRoles } from "../../../../components/common/EditProfile/helper";
 
 const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
     const [currentTab, setCurrentTab] = useState("first")
     const dispatch = useDispatch()
     const [featureName, setFeatureName] = useState()
+    const [accessPermissions, setAccessPermissions] = useState([]);
     const { register, reset, handleSubmit } = useForm({})
     const [files, setFiles] = useState({
         company_logo: "",
         favicon: ""
     })
     const [fileName, setFileName] = useState()
-    const { screenLoader } = useSelector(state => state.adminData)
+    const role = localStorage.getItem("role")
+    const { screenLoader, allPermissionDetails } = useSelector(state => state.adminData)
     const [colorSchema, setColorSchema] = useState({
         crm_sidebar_bg_gradient_color_1: "",
         crm_sidebar_bg_gradient_color_2: "",
@@ -48,7 +51,7 @@ const Customization = () => {
         side_bar_icon_width: "",
         side_bar_icon_height: "",
     })
-   
+
 
     useEffect(() => {
         dispatch(getConfigDetails())
@@ -57,6 +60,25 @@ const Customization = () => {
 
     const handleSelect = (selectedTab) => {
         setCurrentTab(selectedTab);
+    }
+
+    useEffect(() => {
+        if (allPermissionDetails?.permissionCategories?.length > 0) {
+            let permission = accessModalAccordingToRoles(allPermissionDetails?.permissionCategories, "configuration")
+            setAccessPermissions(permission?.permissions)
+        }
+    }, [allPermissionDetails?.permissionCategories])
+
+
+    const subModulesAccess = (slug) => {
+        if (role == "employee") {
+            if (accessPermissions?.length > 0) {
+                let slugWithPermission = accessPermissions?.find((item) => item.slug == slug)
+                return slugWithPermission?.status == "active" ? true : false
+            }
+        } else {
+            return true
+        }
     }
     const onSubmit = async (values) => {
         console.log(values, "values")
@@ -171,20 +193,23 @@ const Customization = () => {
                             {currentTab === "first" &&
                                 <>
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div>
-                                            <Row>
-                                                <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} files={files} setFiles={setFiles} setFileName={setFileName} register={register} />
-                                                <ColorScheme
-                                                    previewUrl={previewUrl}
-                                                    setPreviewUrl={setPreviewUrl}
-                                                    setColorSchema={setColorSchema}
-                                                    colorSchema={colorSchema}
-                                                    setFeatureName={setFeatureName}
-                                                    register={register}
-                                                />
-                                                <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} register={register} setTypoChange={setTypoChange} typoChange={typoChange} />
-                                            </Row>
-                                        </div>
+                                        {subModulesAccess("crm-configuration") &&
+                                            <div>
+                                                <Row>
+                                                    <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} files={files} setFiles={setFiles} setFileName={setFileName} register={register} subModulesAccess={subModulesAccess} />
+                                                  {subModulesAccess("crm-color-scheme") && <ColorScheme
+                                                        previewUrl={previewUrl}
+                                                        setPreviewUrl={setPreviewUrl}
+                                                        setColorSchema={setColorSchema}
+                                                        colorSchema={colorSchema}
+                                                        setFeatureName={setFeatureName}
+                                                        register={register}
+                                                       
+                                                    />}
+                                                   {subModulesAccess("crm-typography") && <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} register={register} setTypoChange={setTypoChange} typoChange={typoChange}  />}
+                                                </Row>
+                                            </div>
+                                        }
                                         <div>
                                             <RexettButton
                                                 type="button"
@@ -203,8 +228,8 @@ const Customization = () => {
                                     </form>
                                 </>
                             }
-                            <EmailTemplate currentTab={currentTab} previewUrl={previewUrl} />
-                            <CompanyDetails currentTab={currentTab} />
+                            {subModulesAccess("email-configuration") && <EmailTemplate currentTab={currentTab} previewUrl={previewUrl} />}
+                            {subModulesAccess("company-details-configuration") && <CompanyDetails currentTab={currentTab} />}
                             <MessageTemplate currentTab={currentTab} />
                             <NotificationSetting currentTab={currentTab} />
                             <ConnectCalendar currentTab={currentTab} />
@@ -217,3 +242,5 @@ const Customization = () => {
     )
 }
 export default Customization;
+
+// New Day New beginning brings out new energies  so keep moving with new energies
