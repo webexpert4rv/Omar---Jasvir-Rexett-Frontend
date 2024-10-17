@@ -839,14 +839,14 @@ const Members = () => {
                                 <td>
                                   <div>
                                     <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
                                         <TiUserAdd />
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                    <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm)=>itm?.assignedMember?.email)}</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                        <span onClick={()=>handleShowAssignEmployee(item.id)}className="reschedule-btn flex-none">
                                           <FaRotateRight />
                                         </span>
                                       </OverlayTrigger>
@@ -1299,14 +1299,14 @@ const Members = () => {
                                 <td>
                                   <div>
                                     <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
                                         <TiUserAdd />
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex gap-2 align-items-center">
-                                      {/* <span className="associate white-nowrap">{item?.developers?.assigned_team_members}</span>     // open it assign Devlopers */}
+                                    <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm)=>itm?.assignedMember?.email)}</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                        <span onClick={()=>handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
                                         </span>
                                       </OverlayTrigger>
@@ -1625,7 +1625,7 @@ const Members = () => {
           />
         )}
       </div>
-      {assignemployee.show && <AssignEmployee show={assignemployee.show} handleClose={handleCloseAssignEmployee} currentTab={currentTab} page={page} />}
+      {assignemployee.show && <AssignEmployee show={assignemployee.show} developerId={assignemployee.id} handleClose={handleCloseAssignEmployee} currentTab={currentTab} page={page} />}
     </>
   );
 };
