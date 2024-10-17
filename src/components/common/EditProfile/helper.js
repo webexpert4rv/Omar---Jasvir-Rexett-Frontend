@@ -20,3 +20,10 @@ export const updateCurrentRoleEndPoint = (role) => {
 
   return obj[role];
 };
+
+
+export const accessModalAccordingToRoles=(data,slug)=>{
+  let findWithSlug=data?.find((item)=>item.slug==slug)
+  return findWithSlug
+  
+}

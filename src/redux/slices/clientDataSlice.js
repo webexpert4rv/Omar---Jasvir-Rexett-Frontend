@@ -1510,3 +1510,16 @@ export const addCustomSkills = (payload, callback) => {
   };
 };
 
+export function addDegree(payload, callback) {
+  return async (dispatch) => {
+    try {
+      let result = await authInstance.post(`common/add-degree`, {
+        ...payload,
+      });
+      dispatch(setSuccessActionData());
+       callback(result);
+    } catch (error) {
+      dispatch(setFailClientData());
+    }
+  };
+}

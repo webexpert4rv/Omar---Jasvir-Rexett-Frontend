@@ -54,21 +54,6 @@ export const JOB_TYPES_OPTIONS = [
   },
 ];
 
-export const LANGUAGE_PREFERENCES_OPTIONS = [
-  {
-    value: "english",
-    label: "English",
-  },
-  {
-    value: "swedish",
-    label: "Swedish",
-  },
-  {
-    value: "Norwegian",
-    label: "Norwegian",
-  },
-];
-
 export const MONTH_YEAR = [
   { label: "January", value: "January" },
   { label: "February", value: "February" },
@@ -138,73 +123,373 @@ export const TEAM_SIZE = [
 ];
 export const WEIGHT_OPTIONS = ["Beginner", "Intermediate", "Expert"];
 
-export const DEGREE= [
+export const DEGREE = [
   {
-      "value": "1",
-      "label": "Secondary School Diploma",
-    
+    "value": "1",
+    "label": "Secondary School Diploma",
+
   },
   {
-      "value": "2",
-      "label": "Bachelor of Science",
-    
+    "value": "2",
+    "label": "Bachelor of Science",
+
   },
   {
-      "value": "3",
-      "label": "Bachelor of Arts",
-    
+    "value": "3",
+    "label": "Bachelor of Arts",
+
   },
   {
-      "value": "4",
-      "label": "Bachelor of Computer Science",
-    
+    "value": "4",
+    "label": "Bachelor of Computer Science",
+
   },
   {
-      "value": "5",
-      "label": "Bachelor of Computer Applications",
-    
+    "value": "5",
+    "label": "Bachelor of Computer Applications",
+
   },
   {
-      "value": "6",
-      "label": "Bachelor of Technology",
-    
+    "value": "6",
+    "label": "Bachelor of Technology",
+
   },
   {
-      "value": "7",
-      "label": "Master of Science",
-    
+    "value": "7",
+    "label": "Master of Science",
+
   },
   {
-      "value": "8",
-      "label": "Master of Arts",
-    
+    "value": "8",
+    "label": "Master of Arts",
+
   },
   {
-      "value": "9",
-      "label": "Master of Computer Science",
-    
+    "value": "9",
+    "label": "Master of Computer Science",
+
   },
   {
-      "value": "10",
-      "label": "Master of Computer Applications",
-    
+    "value": "10",
+    "label": "Master of Computer Applications",
+
   },
   {
-      "value": "11",
-      "label": "Master of Technology",
-    
+    "value": "11",
+    "label": "Master of Technology",
+
   },
   {
-      "value": "12",
-      "label": "Ph.D. in Electrical Engineering",
-    
+    "value": "12",
+    "label": "Ph.D. in Electrical Engineering",
+
   },
   {
-      "value": "13",
-      "label": "Master of Business Administration",
-    
+    "value": "13",
+    "label": "Master of Business Administration",
+
   }
 ]
 export const DEAFULT_EXPERTISE = [
   { skill: "", skill_weight: "", experience: "" },
 ];
+
+export const LANGUAGE_PREFERENCES_OPTIONS =
+    [
+      {
+          "value": "Afrikaans",
+          "label": "Afrikaans"
+      },
+      {
+          "value": "Albanian",
+          "label": "Albanian"
+      },
+      {
+          "value": "Arabic",
+          "label": "Arabic"
+      },
+      {
+          "value": "Armenian",
+          "label": "Armenian"
+      },
+      {
+          "value": "Azerbaijani",
+          "label": "Azerbaijani"
+      },
+      {
+          "value": "Basque",
+          "label": "Basque"
+      },
+      {
+          "value": "Belarusian",
+          "label": "Belarusian"
+      },
+      {
+          "value": "Bengali",
+          "label": "Bengali"
+      },
+      {
+          "value": "Bosnian",
+          "label": "Bosnian"
+      },
+      {
+          "value": "Bulgarian",
+          "label": "Bulgarian"
+      },
+      {
+          "value": "Catalan",
+          "label": "Catalan"
+      },
+      {
+          "value": "Chinese (Simplified)",
+          "label": "Chinese (Simplified)"
+      },
+      {
+          "value": "Chinese (Traditional)",
+          "label": "Chinese (Traditional)"
+      },
+      {
+          "value": "Croatian",
+          "label": "Croatian"
+      },
+      {
+          "value": "Czech",
+          "label": "Czech"
+      },
+      {
+          "value": "Danish",
+          "label": "Danish"
+      },
+      {
+          "value": "Dutch",
+          "label": "Dutch"
+      },
+      {
+          "value": "English",
+          "label": "English"
+      },
+      {
+          "value": "Estonian",
+          "label": "Estonian"
+      },
+      {
+          "value": "Filipino",
+          "label": "Filipino"
+      },
+      {
+          "value": "Finnish",
+          "label": "Finnish"
+      },
+      {
+          "value": "French",
+          "label": "French"
+      },
+      {
+          "value": "Galician",
+          "label": "Galician"
+      },
+      {
+          "value": "Georgian",
+          "label": "Georgian"
+      },
+      {
+          "value": "German",
+          "label": "German"
+      },
+      {
+          "value": "Greek",
+          "label": "Greek"
+      },
+      {
+          "value": "Gujarati",
+          "label": "Gujarati"
+      },
+      {
+          "value": "Hebrew",
+          "label": "Hebrew"
+      },
+      {
+          "value": "Hindi",
+          "label": "Hindi"
+      },
+      {
+          "value": "Hungarian",
+          "label": "Hungarian"
+      },
+      {
+          "value": "Icelandic",
+          "label": "Icelandic"
+      },
+      {
+          "value": "Indonesian",
+          "label": "Indonesian"
+      },
+      {
+          "value": "Irish",
+          "label": "Irish"
+      },
+      {
+          "value": "Italian",
+          "label": "Italian"
+      },
+      {
+          "value": "Japanese",
+          "label": "Japanese"
+      },
+      {
+          "value": "Javanese",
+          "label": "Javanese"
+      },
+      {
+          "value": "Kazakh",
+          "label": "Kazakh"
+      },
+      {
+          "value": "Korean",
+          "label": "Korean"
+      },
+      {
+          "value": "Kurdish (Kurmanji)",
+          "label": "Kurdish (Kurmanji)"
+      },
+      {
+          "value": "Kyrgyz",
+          "label": "Kyrgyz"
+      },
+      {
+          "value": "Lao",
+          "label": "Lao"
+      },
+      {
+          "value": "Latvian",
+          "label": "Latvian"
+      },
+      {
+          "value": "Lithuanian",
+          "label": "Lithuanian"
+      },
+      {
+          "value": "Luxembourgish",
+          "label": "Luxembourgish"
+      },
+      {
+          "value": "Macedonian",
+          "label": "Macedonian"
+      },
+      {
+          "value": "Malay",
+          "label": "Malay"
+      },
+      {
+          "value": "Maltese",
+          "label": "Maltese"
+      },
+      {
+          "value": "Norwegian",
+          "label": "Norwegian"
+      },
+      {
+          "value": "Persian",
+          "label": "Persian"
+      },
+      {
+          "value": "Polish",
+          "label": "Polish"
+      },
+      {
+          "value": "Portuguese",
+          "label": "Portuguese"
+      },
+      {
+          "value": "Punjabi",
+          "label": "Punjabi"
+      },
+      {
+          "value": "Romanian",
+          "label": "Romanian"
+      },
+      {
+          "value": "Russian",
+          "label": "Russian"
+      },
+      {
+          "value": "Serbian",
+          "label": "Serbian"
+      },
+      {
+          "value": "Slovak",
+          "label": "Slovak"
+      },
+      {
+          "value": "Slovenian",
+          "label": "Slovenian"
+      },
+      {
+          "value": "Somali",
+          "label": "Somali"
+      },
+      {
+          "value": "Spanish",
+          "label": "Spanish"
+      },
+      {
+          "value": "Swahili",
+          "label": "Swahili"
+      },
+      {
+          "value": "Swedish",
+          "label": "Swedish"
+      },
+      {
+          "value": "Tamil",
+          "label": "Tamil"
+      },
+      {
+          "value": "Telugu",
+          "label": "Telugu"
+      },
+      {
+          "value": "Thai",
+          "label": "Thai"
+      },
+      {
+          "value": "Turkish",
+          "label": "Turkish"
+      },
+      {
+          "value": "Ukrainian",
+          "label": "Ukrainian"
+      },
+      {
+          "value": "Urdu",
+          "label": "Urdu"
+      },
+      {
+          "value": "Uzbek",
+          "label": "Uzbek"
+      },
+      {
+          "value": "Vietnamese",
+          "label": "Vietnamese"
+      },
+      {
+          "value": "Welsh",
+          "label": "Welsh"
+      },
+      {
+          "value": "Xhosa",
+          "label": "Xhosa"
+      },
+      {
+          "value": "Yiddish",
+          "label": "Yiddish"
+      },
+      {
+          "value": "Yoruba",
+          "label": "Yoruba"
+      },
+      {
+          "value": "Zulu",
+          "label": "Zulu"
+      }
+  ]

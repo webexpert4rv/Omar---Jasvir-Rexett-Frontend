@@ -1005,11 +1005,11 @@ export function getUpdateRolePermission(payload, callback) {
     }
 }
 
-export function getAllPermissionDetails() {
+export function getAllPermissionDetails(roleId) {
     return async (dispatch) => {
         try {
 
-            let result = await clientInstance.get(`admin/permissions-details`)
+            let result = await clientInstance.get(`admin/permissions-details?role_id=${roleId}`)
             dispatch(setAllPermissionDetails(result.data))
 
         } catch (error) {

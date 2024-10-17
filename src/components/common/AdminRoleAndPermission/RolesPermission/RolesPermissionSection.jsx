@@ -147,7 +147,7 @@ const RolesPermissionSection = () => {
                     </thead>
                     <tbody>
                         {
-                            allPermissionList?.permissions?.map((item, idx) => {
+                          allPermissionList?.permissions?.slice(1)?.map((item, idx) => {
                                 return (
                                     <>
                                         <tr className="main-permission-data">
@@ -222,7 +222,7 @@ const RolesPermissionSection = () => {
                                                                     <Form.Check
                                                                         type="checkbox"
                                                                         className="permission-checkbox"
-                                                                        onChange={(e) => handleCheckStatus(e.target,item?.id, role?.id)}
+                                                                        onChange={(e) => handleCheckStatus(e.target,field?.id, role?.id)}
                                                                         checked={role?.checked}
                                                                     />
                                                                 </td>
