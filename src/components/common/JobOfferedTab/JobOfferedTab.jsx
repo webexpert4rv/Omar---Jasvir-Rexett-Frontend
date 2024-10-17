@@ -34,9 +34,9 @@ const JobOfferedTab = () => {
     newRecord: "",
   });
 
-  useEffect(() => {
-    getTemplateLists();
-  }, []);
+  // useEffect(() => {
+  //   getTemplateLists();
+  // }, []);
 
   useEffect(() => {
     if (selectedTab === "offerTemplate") getTemplateLists();
