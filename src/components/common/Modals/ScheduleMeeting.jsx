@@ -30,6 +30,7 @@ import {
 import { gapi } from "gapi-script";
 import ThirdPartyServices from "./ThirdParyServices";
 import moment from "moment";
+import { Time_ZONE } from "../../../helper/timeZone";
 const Schedulemeeting = ({
   show,
   handleClose,
@@ -148,18 +149,17 @@ const Schedulemeeting = ({
   };
 
   useEffect(() => {
-    if (timeZoneList.length > 0) {
-      let groupedTimeZones = timeZoneList?.map((item) => {
+    if (Time_ZONE.length > 0) {
+      let groupedTimeZones = Time_ZONE?.map((item) => {
         return {
-          label: item?.country_name,
-          options: item?.timezones.map((it) => {
-            return { label: it, value: it };
-          }),
+          label: `${item.zone} ${item?.utc}`,
+          value:item?.utc
+         
         };
       });
       setGroupedTime(groupedTimeZones);
     }
-  }, [timeZoneList]);
+  }, []);
   const generateTimeSlots = () => {
     const slots = [];
     for (let hour = 0; hour < 24; hour++) {
@@ -309,24 +309,30 @@ const Schedulemeeting = ({
   //   return utcDateTime.toISOString();
   // };
 
-  const convertToUTC = (date, time, timeZone) => {
-    const localDateTimeString = `${date}T${time}:00`;
   
-    const localDateTime = new Date(localDateTimeString);
-  
-    const options = { timeZone: timeZone };
-    const utcDateTime = new Date(localDateTime.toLocaleString('en-US', options));
-  
-    return utcDateTime.toISOString();
+
+  // const convertToUTC = (date, time) => {
+  //   const dateString = new Date(date).toISOString();
+  //   const datePart = dateString.split('T')[0]; 
+  //   return new Date(`${datePart}T${time}Z`).toISOString(); // Append 'Z' to indicate UTC
+  // };
+
+  const convertToUTC = (date1, time) => {
+    const localDate = new Date(`${date1}T${time}`);
+    const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000); // Convert to UTC
+    return utcDate.toISOString().split('T')[1].split('Z')[0]; // Extract only the time part
   };
   
+  
+
+
+
 
   const onSubmit = (data) => {
     // setCreatedMeetings(data)
     console.log(data, "valuesss");
     setMeetingPlatform(data?.meeting_platform?.value);
     
-    const validTimeZone = data?.time_zone.split(' ')[0];
 
     if (type === "events") {
       let payload = {
@@ -338,9 +344,9 @@ const Schedulemeeting = ({
         // event_date: data?.instant_date,
         // event_time: data?.meeting_start_time,
         // event_end_time: data?.meeting_end_time,
-        event_date: convertToUTC(data?.instant_date, data?.meeting_start_time,validTimeZone),
-        event_time: convertToUTC(data?.instant_date, data?.meeting_start_time,validTimeZone),
-        event_end_time: convertToUTC(data?.instant_date, data?.meeting_end_time,validTimeZone), 
+        event_date: convertToUTC(data?.instant_date, data?.meeting_start_time),
+        event_time: convertToUTC(data?.instant_date, data?.meeting_start_time),
+        event_end_time: convertToUTC(data?.instant_date, data?.meeting_end_time), 
         time_zone: data?.time_zone,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
@@ -367,9 +373,9 @@ const Schedulemeeting = ({
         // meeting_date: data?.instant_date,
         // meeting_time: data?.meeting_start_time,
         // meeting_end_time: data?.meeting_end_time,
-        meeting_date: convertToUTC(data?.instant_date, data?.meeting_start_time,validTimeZone),
-      meeting_time: convertToUTC(data?.instant_date, data?.meeting_start_time,validTimeZone),
-      meeting_end_time: convertToUTC(data?.instant_date, data?.meeting_end_time,validTimeZone),
+      //   meeting_date: data?.instant_date,
+      // meeting_time: "12:10:00",
+      // meeting_end_time: "13:04:00",
         title: data?.title,
         meeting_platform: data?.meeting_platform?.value,
         meeting_link: meetingLink,
@@ -377,13 +383,15 @@ const Schedulemeeting = ({
         interviewers_list: data?.interviewers_list
           ?.map((item) => item.value)
           .join(", "),
-        time_zone: data?.time_zone,
+        time_zone: data?.time_zone.value,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
         type: isAdminSingleJob ? 'interview' : 'screening',
         event_id: serviceEventId,
       };
+
+      console.log(payload,"apu")
 
       dispatch(postCandidateInterview(payload,()=>{
         dispatch(getAllEvents());
@@ -702,7 +710,7 @@ const Schedulemeeting = ({
                             </div>
                           </div>
                           <div style={{ marginTop: "20px" }}>
-                            {/* <CommonInput
+                            <CommonInput
                               name={"time_zone"}
                               type={"select"}
                               control={control}
@@ -711,15 +719,15 @@ const Schedulemeeting = ({
                               invalidFieldRequired={true}
                               defaultOption="Time zone"
                               placeholder="Select Timezone"
-                            /> */}
-                            <CommonInput
+                            />
+                            {/* <CommonInput
                               name={"time_zone"}
                               type="text"
                               control={control}
                               rules={{ required: "This field is required" }}
                               invalidFieldRequired={true}
                               placeholder="Enter Timezone"
-                            />
+                            /> */}
                           </div>
                         </>
                       ) : (
@@ -770,7 +778,7 @@ const Schedulemeeting = ({
                             />
                           </div>
                           <div>
-                            {/* <CommonInput
+                            <CommonInput
                               name={"time_zone"}
                               type={"select"}
                               control={control}
@@ -779,15 +787,15 @@ const Schedulemeeting = ({
                               invalidFieldRequired={true}
                               defaultOption="Time zone"
                               placeholder="Select Timezone"
-                            /> */}
-                            <CommonInput
+                            />
+                            {/* <CommonInput
                               name={"time_zone"}
                               type="text"
                               control={control}
                               rules={{ required: "This field is required" }}
                               invalidFieldRequired={true}
                               placeholder="Enter Timezone"
-                            />
+                            /> */}
                           </div>
                         </div>
                       )

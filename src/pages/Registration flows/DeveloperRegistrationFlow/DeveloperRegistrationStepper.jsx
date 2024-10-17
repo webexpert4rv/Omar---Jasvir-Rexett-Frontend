@@ -1084,6 +1084,11 @@ const DeveloperRegistrationStepper = () => {
               description: (stripHtmlTags(itm?.education_description)),
             }
           })
+          if (payloads?.start_year && payloads?.end_year && payloads?.start_year >= payloads?.end_year) {
+            alert("Start year must be less than end year.");
+            setError("st")
+            return; // Prevent submission
+          }
           dispatch(
             registerDeveloperEducation(payloads, developerId, () => {
               increaseStepCount(true);
