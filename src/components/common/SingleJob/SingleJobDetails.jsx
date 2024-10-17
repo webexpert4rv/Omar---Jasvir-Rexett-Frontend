@@ -1961,7 +1961,7 @@ const SingleJobDetails = () => {
                 type={currentTabsStatus}
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
-            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} timeZone={singleJobDescription?.time_zone}/>
             {showPopup && (
                 <FeedbackPopup
                     interviewId={selectedInterviewId}
