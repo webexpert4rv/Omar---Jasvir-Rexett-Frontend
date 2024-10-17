@@ -16,9 +16,11 @@ import { getDataFromLocalStorage } from "../../../helper/utlis";
 import DocumentHistory from "./DocumentHistory";
 import { toast } from "react-toastify";
 import { CANDIDATE, CLIENT } from "../../../constent/constent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { changeJobStatus } from "../../../redux/slices/clientDataSlice";
 
 const JobOfferedTab = () => {
+  const dispatch = useDispatch();
   const [selectedDocument, setSelectedDocument] = useState("");
   const [selectedTab, setSelectedTab] = useState("document");
   const [screenLoader, setScreenLoader] = useState(false);
@@ -37,6 +39,7 @@ const JobOfferedTab = () => {
 
   const { jobPostedData } = useSelector((state) => state.clientData);
 
+
   useEffect(() => {
     if (selectedTab === "offerTemplate") getTemplateLists();
   }, [selectedTab]);
@@ -51,7 +54,15 @@ const JobOfferedTab = () => {
             (prt) => prt.status === SIGNER_STATUS.COMPLETED
           ) || false
         );
-        console.log(signedCompleted,"signedCompletedsignedCompleted")
+        const hiresCandidate = jobPostedData?.job?.job_applications?.hired || [];
+        const isAlreadyHired = hiresCandidate.filter((can)=> can.developer.email === signedCompleted.memberInfos[0])
+        if(signedCompleted.length > 0 && hiresCandidate.length > 0  && isAlreadyHired === 0) {
+          // let newData={
+        //   "applicationId": statusModal?.id,
+        //   "newStatus":data.status
+        // }
+        // dispatch(changeJobStatus("offered",newData))
+        }
         setTempList(res.data);
         setScreenLoader(false);
       })

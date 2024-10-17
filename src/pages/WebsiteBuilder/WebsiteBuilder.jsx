@@ -21,6 +21,7 @@ import { sliderContent } from "./Config/SliderComponent";
 import { headerContent } from "./Config/HeaderContet";
 import { accordionContent } from "./Config/AccordionContent";
 import { JOB_LIST } from "./Constant/Constant";
+import { EMAIL_CONTACT } from "./Config/EmailContact";
 
 const featuredDev =
   "https://www.dgvaishnavcollege.edu.in/dgvaishnav-c/uploads/2021/01/dummy-profile-pic.jpg";
@@ -496,25 +497,35 @@ export const WebsiteBuilder = () => {
 
     // job filter
 
-    editor.BlockManager.add("job-filter", {
-      label: "Job-filter",
+    // editor.BlockManager.add("job-filter", {
+    //   label: "Job-filter",
+    //   content: {
+    //     type: "job-filter",
+    //   },
+    //   category: "Custom",
+    // });
+
+    // editor.DomComponents.addType("job-filter", {
+    //   model: {
+    //     defaults: {
+    //       tagName: "div",
+    //       draggable: true,
+    //       droppable: false,
+    //       attributes: { class: "job-list", id: "job-list" },
+    //       components: jobFilter
+    //     }
+    //   },
+    // });
+
+    // send email
+    editor.BlockManager.add("email-contact-block", {
+      label: "Email Contact",
       content: {
-        type: "job-filter",
+        type: "email-contact",
       },
       category: "Custom",
     });
-
-    editor.DomComponents.addType("job-filter", {
-      model: {
-        defaults: {
-          tagName: "div",
-          draggable: true,
-          droppable: false,
-          attributes: { class: "job-list", id: "job-list" },
-          components: jobFilter
-        }
-      },
-    });
+    editor.DomComponents.addType("email-contact", EMAIL_CONTACT);
 
     // Job Details block
     if (pageId === "job-details" || pageId === "Job-details") {
