@@ -43,7 +43,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
         if (isEdit === true) {
             setValue("title", selectedToDo?.title)
             setValue("description", selectedToDo?.description)
-            setPriorityColor(selectedToDo?.priority_color)
+            setPriorityColor(selectedToDo?.priority)
         }else{
             setValue("title","")
             setValue("description","")
@@ -257,6 +257,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                                     <Form.Select
                                         className="common-field font-12 mb-2"
                                         name="priority"
+                                        defaultValue={selectedToDo?.priority}
                                         {...register("priority", {
                                             // required: "Please select candidate",
                                             onChange: (e) => handleChange(e.target.value)
@@ -278,8 +279,6 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                                 text={"Cancel"}
                                 type="button"
                                 onClick={handleClear}
-                            // disabled={smallLoader}
-                            // isLoading={smallLoader}
                             />
                             <RexettButton
                                 variant="transparent"
