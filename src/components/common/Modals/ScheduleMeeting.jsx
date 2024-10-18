@@ -23,6 +23,7 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import { useLocation, useParams } from "react-router-dom";
 import {
+  allEmployeeList,
   getAllEvents,
   getDeveloperList,
   postScheduleMeeting,
@@ -55,7 +56,7 @@ const Schedulemeeting = ({
   const location = useLocation();
   const [data, setData] = useState();
   const [loader, setLoader] = useState(false);
-  const { developerList } = useSelector((state) => state.adminData);
+  const { developerList,assignEmployeeList } = useSelector((state) => state.adminData);
   const { smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
@@ -87,6 +88,14 @@ const Schedulemeeting = ({
     });
     return newOptions;
   };
+  
+
+  const getFormattedEmployeeOptions = () => {
+    const newOptions = assignEmployeeList?.map((item) => {
+      return { label: item?.email, value: item.id };
+    });
+    return newOptions;
+  };
 
   const [firstSlot, setFirstSlot] = useState("");
   const [meetingPlatform, setMeetingPlatform] = useState();
@@ -101,6 +110,7 @@ const Schedulemeeting = ({
   useEffect(() => {
     dispatch(getTimeZoneList());
     dispatch(getDeveloperList());
+    dispatch(allEmployeeList())
   }, []);
 
   useEffect(() => {
@@ -637,6 +647,7 @@ const Schedulemeeting = ({
                           name={"interviewers_list"}
                           type={"creatable"}
                           control={control}
+                          options={getFormattedEmployeeOptions()}
                           rules={{ required: "This field is required" }}
                           invalidFieldRequired={true}
                           placeholder="Select Interviewer"
