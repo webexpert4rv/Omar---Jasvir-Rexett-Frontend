@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import authInstance from '../../services/auth.instance';
 import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
-import adobeInstance from '../../services/adobe.instance';
+import { adobeInstance } from '../../services/adobe.instance';
 
 const initialAuthData = {
     screenLoader: false,

@@ -4,12 +4,27 @@ import basicBlockPlugin from "grapesjs-blocks-basic";
 import formPlugin from "grapesjs-plugin-forms";
 import { useEffect, useRef, useState } from "react";
 import grapesjs from "grapesjs";
-import featuredDev from "../../assets/img/demo-img.jpg";
+// import featuredDev from "../../assets/img/demo-img.jpg";
 import { useNavigate, useParams } from "react-router-dom";
 import webSiteBuilderInstance from "../../services/webSiteBuilderInstance";
 import { toast } from "react-toastify";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { Button } from "react-bootstrap";
+import { WEBSITE_BUILDER_JOB_LISTING_URL } from "../../services/urlConfig";
+import {
+  JOB_LISTING_STYLE,
+  jobFilter,
+  jobListingContent,
+  singleJobContent,
+} from "./Config/Style";
+import { sliderContent } from "./Config/SliderComponent";
+import { headerContent } from "./Config/HeaderContet";
+import { accordionContent } from "./Config/AccordionContent";
+import { JOB_LIST } from "./Constant/Constant";
+import { EMAIL_CONTACT } from "./Config/EmailContact";
+
+const featuredDev =
+  "https://www.dgvaishnavcollege.edu.in/dgvaishnav-c/uploads/2021/01/dummy-profile-pic.jpg";
 
 export const WebsiteBuilder = () => {
   const { pageId } = useParams();
@@ -183,221 +198,10 @@ export const WebsiteBuilder = () => {
       canvas: {
         styles: ["https://unpkg.com/grapesjs/dist/css/grapes.min.css"],
       },
-      pageManager: {
-        pages: [
-          {
-            id: "page-id",
-            styles: `.my-class { color: red }`, // or a JSON of styles
-            component: '<div class="my-class">My element</div>', // or a JSON of components
-          },
-        ],
-      },
     });
 
     // Add custom header component
-    editor.DomComponents.addType("header", {
-      model: {
-        defaults: {
-          tagName: "header",
-          draggable: true,
-          droppable: true,
-          components: [
-            {
-              tagName: "div",
-              attributes: { class: "header-logo" },
-              components: [
-                {
-                  // Use the built-in image component
-                  type: "image",
-                  attributes: {
-                    src: "https://via.placeholder.com/100",
-                    alt: "Logo",
-                  },
-                },
-              ],
-            },
-            {
-              tagName: "nav",
-              components: [
-                {
-                  tagName: "ul",
-                  components: [
-                    {
-                      tagName: "li",
-                      components: [
-                        {
-                          tagName: "a",
-                          attributes: { href: "#home" },
-                          content: "Home",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                    {
-                      tagName: "li",
-                      components: [
-                        {
-                          tagName: "a",
-                          attributes: { href: "#about" },
-                          content: "About",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                    {
-                      tagName: "li",
-                      components: [
-                        {
-                          tagName: "a",
-                          attributes: { href: "#services" },
-                          content: "Services",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                    {
-                      tagName: "li",
-                      components: [
-                        {
-                          tagName: "a",
-                          attributes: { href: "#contact" },
-                          content: "Contact",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-          attributes: { class: "header-builder" },
-          styles: `
-              .header-builder {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                color: #fff;
-              }
-              .header-builder .header-logo img {
-                max-width: 80px;
-                height: auto;
-              }
-              .header-builder nav ul {
-                list-style: none;
-                display: flex;
-                margin: 0;
-                padding: 0;
-              }
-              .header-builder nav ul li {
-                margin: 0 10px;
-              }
-              .header-builder nav ul li a {
-                color: #000;
-                text-decoration: none;
-              }
-              @media (max-width: 768px) {
-                .header-builder nav ul {
-                  flex-direction: column;
-                  display: none;
-                }
-                .header-builder nav ul.active {
-                  display: flex;
-                }
-              }
-            `,
-        },
-      },
-    });
+    editor.DomComponents.addType("header", headerContent);
 
     // Add custom block for header
     editor.BlockManager.add("header", {
@@ -408,60 +212,7 @@ export const WebsiteBuilder = () => {
       category: "Custom",
     });
 
-    editor.DomComponents.addType("accordion", {
-      model: {
-        defaults: {
-          script: function () {
-            const headers = this.querySelectorAll(".accordion-header");
-            headers.forEach((header) => {
-              header.addEventListener("click", function () {
-                const content = this.nextElementSibling;
-                content.style.display =
-                  content.style.display === "block" ? "none" : "block";
-              });
-            });
-          },
-          tagName: "div",
-          attributes: { class: "accordion" },
-          components: [
-            {
-              tagName: "div",
-              attributes: { class: "accordion-item" },
-              components: [
-                {
-                  tagName: "div",
-                  attributes: { class: "accordion-header" },
-                  content: "Section 1",
-                },
-                {
-                  tagName: "div",
-                  attributes: { class: "accordion-content" },
-                  content: "Content 1",
-                  style: { display: "none" },
-                },
-              ],
-            },
-            {
-              tagName: "div",
-              attributes: { class: "accordion-item" },
-              components: [
-                {
-                  tagName: "div",
-                  attributes: { class: "accordion-header" },
-                  content: "Section 2",
-                },
-                {
-                  tagName: "div",
-                  attributes: { class: "accordion-content" },
-                  content: "Content 2",
-                  style: { display: "none" },
-                },
-              ],
-            },
-          ],
-        },
-      },
-    });
+    editor.DomComponents.addType("accordion", accordionContent);
 
     // Add custom block for accordion
     editor.BlockManager.add("accordion", {
@@ -590,205 +341,7 @@ export const WebsiteBuilder = () => {
       category: "Custom",
     });
     // Add custom slider component
-    editor.DomComponents.addType("slider", {
-      model: {
-        defaults: {
-          tagName: "div",
-          draggable: true,
-          droppable: true,
-          attributes: { class: "slider" },
-          components: [
-            {
-              tagName: "div",
-              attributes: { class: "slider-track" },
-              components: [
-                {
-                  tagName: "div",
-                  attributes: { class: "card" },
-                  components: [
-                    {
-                      type: "image",
-                      attributes: { src: featuredDev, alt: "Image" },
-                    },
-                    { tagName: "h4", content: "Name 1" },
-                    { tagName: "p", content: "Description 1" },
-                    { tagName: "p", content: "Location 1" },
-                    {
-                      tagName: "div",
-                      components: [
-                        {
-                          tagName: "a",
-                          attributes: { href: "#link1" },
-                          content: "Link 1",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          tagName: "a",
-                          attributes: { href: "#link2" },
-                          content: "Link 2",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  tagName: "div",
-                  attributes: { class: "card" },
-                  components: [
-                    {
-                      type: "image",
-                      attributes: { src: featuredDev, alt: "Image 2" },
-                    },
-                    { tagName: "h4", content: "Name 2" },
-                    { tagName: "p", content: "Description 2" },
-                    { tagName: "p", content: "Location 2" },
-                    {
-                      tagName: "div",
-                      components: [
-                        {
-                          tagName: "a",
-                          attributes: { href: "#link1" },
-                          content: "Link 1",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          tagName: "a",
-                          attributes: { href: "#link2" },
-                          content: "Link 2",
-                          traits: [
-                            {
-                              type: "text",
-                              label: "URL",
-                              name: "href",
-                            },
-                            {
-                              type: "text",
-                              label: "Text",
-                              name: "content",
-                            },
-                            {
-                              type: "select",
-                              label: "Target",
-                              name: "target",
-                              options: [
-                                { value: "_self", name: "Same Window" },
-                                { value: "_blank", name: "New Window" },
-                                { value: "_parent", name: "Parent Frame" },
-                                { value: "_top", name: "Full Window" },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-                // Add more cards as needed
-              ],
-            },
-          ],
-          styles: `
-                        .slider {
-                            overflow: hidden;
-                            position: relative;
-                            width: 100%;
-                        }
-                        .slider-track {
-                            display: flex;
-                            transition: transform 0.5s ease;
-                        }
-                        .card {
-                            flex: 0 0 auto;
-                            width: 300px;
-                            margin: 10px;
-                            border: 1px solid #ccc;
-                            padding: 20px;
-                            text-align: center;
-                        }
-                        .card img {
-                            max-width: 100%;
-                            height: auto;
-                        }
-                    `,
-          script: `
-                        // Add slider functionality
-                        let index = 0;
-                        const track = document.querySelector('.slider-track');
-                        const nextSlide = () => {
-                            index = (index + 1) % track.children.length;
-                            track.style.transform = \`translateX(-\${index * 100}%)\`;
-                        };
-                    `,
-        },
-      },
-    });
+    editor.DomComponents.addType("slider", sliderContent);
 
     // Add custom block for slider
     editor.BlockManager.add("slider", {
@@ -798,6 +351,235 @@ export const WebsiteBuilder = () => {
       },
       category: "Custom",
     });
+
+    editor.BlockManager.add("job-list-block", {
+      label: "Job List",
+      content: { type: "job-list" },
+      category: "Custom",
+    });
+
+    // editor.DomComponents.addType("job-list", {
+    //   model: {
+    //     defaults: {
+    //       tagName: "div",
+    //       draggable: true,
+    //       droppable: false,
+    //       attributes: { class: "job-list" },
+    //       jobsList: [], // This will store the job data
+    //       url: WEBSITE_BUILDER_JOB_LISTING_URL,
+    //       editable: false, // Attempt to prevent content editing
+    //       removable: false,
+    //     },
+    //     init() {
+    //       console.log(
+    //         "Local hook: model.init",
+    //         this.attributes.jobsList,
+    //         this.attributes.url
+    //       );
+    //       fetch(this.attributes.url)
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //           this.set("jobsList", data.data.jobs);
+    //         })
+    //         .catch((error) => {
+    //           console.error("Failed to fetch jobs:", error);
+    //         });
+
+    //       this.listenTo(this, "change:jobsList", this.handlePropChange);
+    //       this.on("component:update", this.preventContentChange);
+    //     },
+    //     updated(property, value, prevValue) {
+    //       console.log(
+    //         "Local hook: model.updated",
+    //         "property",
+    //         property,
+    //         "value",
+    //         value,
+    //         "prevValue",
+    //         prevValue
+    //       );
+    //     },
+    //     removed() {
+    //       console.log("Local hook: model.removed");
+    //     },
+    //     handlePropChange() {
+    //       let jobs = this.get("jobsList");
+    //       let htmlContent = "";
+
+    //       jobs.forEach((job) => {
+    //         let skillsHtml = "";
+    //         if (job.job_skills && job.job_skills.length > 0) {
+    //           skillsHtml =
+    //             "<ul data-gjs-editable='false' data-gjs-removable='false' >";
+    //           job.job_skills.forEach((skill) => {
+    //             skillsHtml += `<li data-gjs-editable='false' data-gjs-removable='false'>${skill.skill_name} (${skill.weight})</li>`;
+    //           });
+    //           skillsHtml += "</ul>";
+    //         }
+
+    //         htmlContent += `
+    //           <div class="job-item" data-gjs-editable="false" data-gjs-removable="false">
+    //             <h3 data-gjs-editable="false" data-gjs-removable="false">${job.title}</h3>
+    //             <p data-gjs-editable="false" data-gjs-removable="false">${job.description}</p>
+    //             <p data-gjs-editable="false" data-gjs-removable="false"><strong data-gjs-editable="false" data-gjs-removable="false">Location:</strong> ${job.job_location}</p>
+    //             <p data-gjs-editable="false" data-gjs-removable="false"><strong data-gjs-editable="false" data-gjs-removable="false">Skills Required:</strong> ${skillsHtml}</p>
+    //             <button data-gjs-removable="false" class="apply-job-btn" data-job-id="${job.id}">Apply</button>
+    //             </div>
+    //         `;
+    //       });
+
+    //       const component = editor.addComponents(htmlContent);
+    //       return component;
+    //     },
+    //     preventContentChange() {
+    //       // This function can be used to revert changes or prevent modifications
+    //       const el = this.view.el;
+    //       const originalHtml = el.innerHTML;
+
+    //       // Revert content changes
+    //       el.innerHTML = originalHtml;
+
+    //       // Optionally, you can display a message or log a warning
+    //       console.log("Content changes are not allowed for this component.");
+    //     },
+    //   },
+    // });
+
+    editor.DomComponents.addType("job-list", {
+      model: {
+        defaults: {
+          tagName: "div",
+          draggable: true,
+          droppable: false,
+          attributes: { class: "job-list", id: "job-list" },
+          components: jobListingContent(JOB_LIST),
+          // jobsList: [], // This will store the job data
+          // url: WEBSITE_BUILDER_JOB_LISTING_URL,
+          // editable: false, // Prevent content editing
+          // removable: false,
+          styles: JOB_LISTING_STYLE,
+        },
+        // init() {
+        //   // remove it and open the blow code if need to use the api ***start***
+        //   this.set("jobsList", JOB_LIST);
+        //   this.handlePropChange();
+        //   // ***End***
+        //   // setScreenLoader(true);
+        //   // fetch(this.attributes.url)
+        //   //   .then((response) => response.json())
+        //   //   .then((data) => {
+        //   //     setScreenLoader(false);
+        //   //     this.set("jobsList", data.data.jobs);
+        //   //   })
+        //   //   .catch((error) => {
+        //   //     setScreenLoader(false);
+        //   //     console.error("Failed to fetch jobs:", error);
+        //   //   });
+
+        //   this.listenTo(this, "change:jobsList", this.handlePropChange);
+        //   this.on("component:update", this.preventContentChange);
+        // },
+        // handlePropChange() {
+        //   let jobs = this.get("jobsList");
+        //   let htmlContent = jobListingContent(jobs);
+
+        //   const component = editor.addComponents(htmlContent);
+        //   return component;
+        // },
+        // preventContentChange() {
+        //   const el = this.view.el;
+        //   const originalHtml = el.innerHTML;
+        //   el.innerHTML = originalHtml;
+        //   console.log("Content changes are not allowed for this component.");
+        // },
+      },
+    });
+
+    // job filter
+
+    // editor.BlockManager.add("job-filter", {
+    //   label: "Job-filter",
+    //   content: {
+    //     type: "job-filter",
+    //   },
+    //   category: "Custom",
+    // });
+
+    // editor.DomComponents.addType("job-filter", {
+    //   model: {
+    //     defaults: {
+    //       tagName: "div",
+    //       draggable: true,
+    //       droppable: false,
+    //       attributes: { class: "job-list", id: "job-list" },
+    //       components: jobFilter
+    //     }
+    //   },
+    // });
+
+    // send email
+    editor.BlockManager.add("email-contact-block", {
+      label: "Email Contact",
+      content: {
+        type: "email-contact",
+      },
+      category: "Custom",
+    });
+    editor.DomComponents.addType("email-contact", EMAIL_CONTACT);
+
+    // Job Details block
+    if (pageId === "job-details" || pageId === "Job-details") {
+      editor.BlockManager.add("job-detail-block", {
+        label: "Job Details",
+        content: { type: "job-details" },
+        category: "Custom",
+      });
+      editor.DomComponents.addType("job-details", {
+        model: {
+          defaults: {
+            tagName: "div",
+            draggable: true,
+            droppable: false,
+            attributes: { class: "job-details" },
+            jobsList: [], // This will store the job data
+            url: WEBSITE_BUILDER_JOB_LISTING_URL,
+            editable: false, // Prevent content editing
+            removable: false,
+            styles: JOB_LISTING_STYLE,
+          },
+          init() {
+            fetch(this.attributes.url)
+              .then((response) => response.json())
+              .then((data) => {
+                this.set("jobsList", data.data.jobs);
+              })
+              .catch((error) => {
+                console.error("Failed to fetch jobs:", error);
+              });
+
+            this.listenTo(this, "change:jobsList", this.handlePropChange);
+            this.on("component:update", this.preventContentChange);
+          },
+          handlePropChange() {
+            let jobs = this.get("jobsList");
+            let htmlContent = singleJobContent([jobs[0]]);
+
+            const component = editor.addComponents(htmlContent);
+            return component;
+          },
+          preventContentChange() {
+            const el = this.view.el;
+            const originalHtml = el.innerHTML;
+            el.innerHTML = originalHtml;
+            console.log("Content changes are not allowed for this component.");
+          },
+        },
+      });
+    }
+
+    // Job Details block
+
+    // New changes
 
     editorInstance.current = editor;
 
@@ -916,16 +698,26 @@ export const WebsiteBuilder = () => {
 
   return (
     <>
-      <button className="save-button" onClick={handleSave}>
+      {/* <button className="save-button" onClick={handleSave}>
         Save
-      </button>
-        <Button
+      </button> */}
+      <div className="d-flex gap-2 mb-2">
+      <Button
           variant="transparent"
-          className="font-14 main-btn px-5"
+          className="font-14 outline-main-btn px-5"
           onClick={handleBack}
         >
           Back
         </Button>
+        <Button
+          variant="transparent"
+          className="font-14 main-btn px-5"
+          onClick={handleSave}
+        >
+          Save
+        </Button>
+        
+      </div>
       <div ref={editorRef}></div>
       {screenLoader && <ScreenLoader />}
     </>

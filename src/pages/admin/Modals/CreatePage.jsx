@@ -21,16 +21,20 @@ const CreateWebsitePage = ({
   } = useForm();
 
   useEffect(() => {
-    console.log(isEdit, pageData);
     if (isEdit && pageData) {
       setUpdatedList(() => pageList.filter((pg) => pg._id !== pageData._id));
-      setValue("name", pageData.name);
-      setValue("isHomePage", pageData.isHomePage);
-      setValue("template", pageData.template ? pageData.template : "blank");
     } else {
       setUpdatedList([...pageList]);
     }
   }, [pageData]);
+
+  useEffect(() => {
+    if (isEdit && pageData) {
+      setValue("name", pageData.name);
+      setValue("isHomePage", pageData.isHomePage);
+      setValue("template", pageData.template ? pageData.template : "blank");
+    }
+  }, [updateList]);
 
   const onSubmit = (data) => {
     const payload = {
@@ -39,6 +43,20 @@ const CreateWebsitePage = ({
     };
     setScreenLoader(true);
     if (isEdit) {
+      const isBlankTemplate = pageData.template
+        ? pageData.template === data.template
+        : data.template === "blank"
+        ? true
+        : false;
+      if (
+        pageData.name === data.name &&
+        isBlankTemplate &&
+        pageData.isHomePage === data.isHomePage
+      ) {
+        setScreenLoader(false);
+        handleClose();
+        return;
+      }
       webSiteBuilderInstance
         .put(`/api/pages/${pageData._id}`, payload)
         .then((response) => {
@@ -116,7 +134,7 @@ const CreateWebsitePage = ({
                   required: "Template selection is required",
                 })}
               >
-                <option selected value="">
+                <option hidden selected value="">
                   Select Template
                 </option>
                 <option value="blank">Blank page</option>

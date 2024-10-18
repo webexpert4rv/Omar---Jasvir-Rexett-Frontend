@@ -5653,15 +5653,17 @@ input[type="radio"]:checked {
 
 
 /* Docs container */
-
+.preview-document
+{
+    width: 75%;
+}
 .docs-container {
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
+    background: #dadada;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-size: 13px;
-    max-height: 600px;
     overflow: auto;
 }
 
@@ -9955,7 +9957,9 @@ select.apply-field
     max-width: 200px;
     width: 100%;
     flex: none;
-    max-height: 640px;
+    max-height: 330px;
+    position: sticky;
+    top: 0;
     overflow: auto;
 }
 .drag-options h4
@@ -10295,7 +10299,6 @@ select.apply-field
 }
 .meeting-sidebar .event-date abbr
 {
-    background-color: ;
 }
 .meeting-sidebar .meeting-booking .react-calendar__navigation button.react-calendar__navigation__arrow
 {
@@ -11186,6 +11189,16 @@ select.apply-field
         width: 100%;
     }
 }
+.doc-action-btn
+{
+    padding: 10px 20px;
+    border: 1px solid #333;
+    color: #333;
+    width: auto;
+    background-color: transparent !important;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 /* 03/10/2024 */
 
@@ -11223,4 +11236,26 @@ select.apply-field
 }
 .priority-btn{
     background-color: var(--primary) !important;;
+}
+.sow-action {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+.delete-drag
+{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    width: 21px;
+    height: 22px;
+    border-radius: 50% !important;
+    border: none;
+    background-color: transparent;
+    color: #cc0000;
 }
