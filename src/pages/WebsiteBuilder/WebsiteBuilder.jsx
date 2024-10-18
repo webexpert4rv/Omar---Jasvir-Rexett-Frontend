@@ -453,10 +453,6 @@ export const WebsiteBuilder = () => {
           droppable: false,
           attributes: { class: "job-list", id: "job-list" },
           components: jobListingContent(JOB_LIST),
-          // jobsList: [], // This will store the job data
-          // url: WEBSITE_BUILDER_JOB_LISTING_URL,
-          // editable: false, // Prevent content editing
-          // removable: false,
           styles: JOB_LISTING_STYLE,
         },
         // init() {
