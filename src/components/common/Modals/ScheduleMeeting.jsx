@@ -110,19 +110,19 @@ const Schedulemeeting = ({
   useEffect(() => {
     dispatch(getTimeZoneList());
     dispatch(getDeveloperList());
-    dispatch(allEmployeeList())
+    // dispatch(allEmployeeList())
   }, []);
 
-  useEffect(() => {
-    setValue("candidate_reminder", true);
-    setValue("interviewer_reminder", true);
-  }, []);
+  // useEffect(() => {
+  //   setValue("candidate_reminder", true);
+  //   setValue("interviewer_reminder", true);
+  // }, []);
 
-  useEffect(() => {
-    if (accounts.length > 0) {
-      setIsAuthenticated(true);
-    }
-  }, [accounts]);
+  // useEffect(() => {
+  //   if (accounts.length > 0) {
+  //     setIsAuthenticated(true);
+  //   }
+  // }, [accounts]);
 
   const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
     account: accounts[0],
@@ -130,14 +130,14 @@ const Schedulemeeting = ({
     prompt: "consent",
   });
 
-  useEffect(() => {
-    if (selectedDeveloper) {
-      setValue("select_candidate", [
-        { label: selectedDeveloper?.email, value: selectedDeveloper?.email },
-      ]);
-      setValue("time_zone",timeZone)
-    }
-  }, [selectedDeveloper]);
+  // useEffect(() => {
+  //   if (selectedDeveloper) {
+  //     setValue("select_candidate", [
+  //       { label: selectedDeveloper?.email, value: selectedDeveloper?.email },
+  //     ]);
+  //     setValue("time_zone",timeZone)
+  //   }
+  // }, [selectedDeveloper]);
 
   const createCalendarEvent = async () => {
     if (!isAuthenticated) {
@@ -158,18 +158,18 @@ const Schedulemeeting = ({
     } 
   };
 
-  useEffect(() => {
-    if (Time_ZONE.length > 0) {
-      let groupedTimeZones = Time_ZONE?.map((item) => {
-        return {
-          label: `${item.zone} ${item?.utc}`,
-          value:item?.utc
+  // useEffect(() => {
+  //   if (Time_ZONE.length > 0) {
+  //     let groupedTimeZones = Time_ZONE?.map((item) => {
+  //       return {
+  //         label: `${item.zone} ${item?.utc}`,
+  //         value:item?.utc
          
-        };
-      });
-      setGroupedTime(groupedTimeZones);
-    }
-  }, []);
+  //       };
+  //     });
+  //     setGroupedTime(groupedTimeZones);
+  //   }
+  // }, []);
   const generateTimeSlots = () => {
     const slots = [];
     for (let hour = 0; hour < 24; hour++) {
