@@ -296,13 +296,6 @@ export const JOB_LISTING_STYLE = `
             text-align:center;
             color:#ffffff;
           }
-          .job-list{
-            display:flex;
-            flex-wrap:wrap;
-            justify-content:flex-start;
-            row-gap:20px;
-            column-gap:20px;
-          }
           .job-card{
             display:flex;
             padding: 20px;
@@ -433,6 +426,9 @@ export const JOB_LISTING_STYLE = `
             font-size:16px;
             font-family:Poppins;
           }
+            .job-card-wrapper{
+            padding: 15px
+            }
           #i4ntlq{
             font-family:'Poppins', sans-serif;
             font-size:16px;
@@ -485,6 +481,9 @@ export const JOB_LISTING_STYLE = `
               flex-basis:100%;
             }
           }
+            .job-list {
+            display: block !important
+            } 
 
         `;
 
@@ -523,8 +522,7 @@ export const jobListingContent = (jobs) => {
             `;
   });
 
-  return `
-            <div id="job-card-wrapper" data-gjs-droppable="false" data-gjs-editable="false" data-gjs-removable="false" data-gjs-copyable="false">
+  return `<div id="job-card-wrapper" class="job-card-wrapper" data-gjs-droppable="false" data-gjs-copyable="false">
               ${htmlContent}
             </div>`;
 };
@@ -557,7 +555,7 @@ export const jobFilter = () => {
         onChange={handleInputChange}
       />
     </div>
-  </div>`
+  </div>`;
 };
 
 export const singleJobContent = (jobs) => {

@@ -96,8 +96,8 @@ export const headerContent = {
                   components: [
                     {
                       tagName: "a",
-                      attributes: { href: "#services" },
-                      content: "Services",
+                      attributes: { href: "#Career" },
+                      content: "Career",
                       traits: [
                         {
                           type: "text",
