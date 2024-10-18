@@ -11,6 +11,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import io from "socket.io-client";
 import {
   changeJobStatus,
   meetingCancel,
@@ -29,7 +30,7 @@ import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
 import { meetingWebhookApi, updateStatus } from "../../../redux/slices/adminDataSlice";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
-import { convertSeconds } from "../../../helper/utlis";
+import { convertSeconds, NOTIFICATIONBASEURL } from "../../../helper/utlis";
 const MARK_AS_OPTIONS = [
   {
     label: "Completed",
@@ -241,9 +242,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
   const googleEventId = localStorage.getItem("googleEventId")
 
-  const checkInterviewStatus = async () => {
+  const checkInterviewStatus = async (externalID) => {
     const meeting_platform = details?.interview?.meeting_platform;
-    console.log(meeting_platform, "meeting_platform");
     setLoader((prev) => true);
     if (meeting_platform === "microsoft_team") {
       if (!isAuthenticated) {
@@ -327,6 +327,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           alert("The meeting is still scheduled.");
         }
       }
+    }else {
+      const socket = io(NOTIFICATIONBASEURL);
+      socket.on("meetingEnded_"+ externalID , (meetingDetails) => {
+       console.log(meetingDetails,"meetingDetails")
+      });
     }
     setLoader((prev) => false);
   };
@@ -615,7 +620,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
-                onClick={() => checkInterviewStatus()}
+                onClick={() => checkInterviewStatus(details?.interview?.job_external_id)}
               >
                 {loader ? <RexettSpinner /> : "Check Interview Status"}
               </Button>

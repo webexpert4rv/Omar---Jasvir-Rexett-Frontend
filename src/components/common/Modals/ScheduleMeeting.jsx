@@ -110,7 +110,7 @@ const Schedulemeeting = ({
   useEffect(() => {
     dispatch(getTimeZoneList());
     dispatch(getDeveloperList());
-    dispatch(allEmployeeList())
+    // dispatch(allEmployeeList())
   }, []);
 
   useEffect(() => {
