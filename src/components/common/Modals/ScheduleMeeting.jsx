@@ -391,7 +391,7 @@ const Schedulemeeting = ({
         meeting_link: meetingLink,
         status: "pending",
         interviewers_list: data?.interviewers_list
-          ?.map((item) => item.value)
+          ?.map((item) => item.label)
           .join(", "),
         time_zone: data?.time_zone.value,
         candidate_reminder: data?.candidate_reminder,
