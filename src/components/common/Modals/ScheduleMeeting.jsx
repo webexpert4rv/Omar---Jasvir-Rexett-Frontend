@@ -498,7 +498,7 @@ const Schedulemeeting = ({
         fetchCalendarEvents(); // Fetch the updated events list
         if (response.onlineMeeting) {
           setMeetingLink(response?.onlineMeeting?.joinUrl);
-          setMicrosoftEventId(response?.id)
+          setServiceEventID(response?.id)
           console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
         }
       } catch (error) {

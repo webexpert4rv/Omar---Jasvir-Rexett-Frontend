@@ -7,7 +7,7 @@ const NotFound = () => {
   const getCurrentRole = (currentRole) => {
     let obj = {
       developer: "developer/dashboard",
-      admin: "admin/admin-dashboard",
+      admin: "admin/dashboard",
       client: "client/dashboard",
     };
 

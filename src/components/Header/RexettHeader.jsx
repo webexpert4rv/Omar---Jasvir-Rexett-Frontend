@@ -31,7 +31,7 @@ import { PiUsersFourFill } from "react-icons/pi";
 const  clientName = localStorage.getItem("userName")
 const profileImg =  localStorage.getItem("profile_picture")
 
-const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
+const RexettHeader = ({handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
   const [details, setDetails] = useState()
   const { t } = useTranslation();
@@ -41,6 +41,8 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const [createdMeetings, setCreatedMeetings] = useState()
   const { configDetails } = useSelector(state => state.adminData)
   const dispatch = useDispatch()
+  let role=localStorage.getItem("role");
+  let roleId=localStorage.getItem("roleId")
   const routePath = (isSingleJob) => {
     const data = {
       "single-job": "/client/job-posted",
@@ -73,8 +75,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   }
 
   useEffect(()=>{
-    if(role==="admin"){
-     dispatch(getAllPermissionDetails(role))
+    console.log("000000000000000000")
+    if(role=="employee"){
+     dispatch(getAllPermissionDetails(roleId))
     }
   },[role])
 
@@ -189,7 +192,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
             {role == "admin" ? (
               <>
                 <ToolTip text={"View Clients"} >
-                  <span className="cursor-pointer to-do-icon">
+                  <span className="cursor-pointer to-do-icon" onClick={()=>{
+                navigate("/admin/members")
+              }}>
                     <PiUsersFourFill />
                   </span>
                 </ToolTip>

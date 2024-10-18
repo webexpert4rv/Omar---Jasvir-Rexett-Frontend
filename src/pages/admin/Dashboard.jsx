@@ -27,20 +27,21 @@ import MeetingInfo from "./Modals/MeetingInfo";
 import Calendar from 'react-calendar';
 import { BsFillHandThumbsDownFill, BsFillHandThumbsUpFill } from "react-icons/bs";
 import { GiHandOk } from "react-icons/gi";
+import { accessModalAccordingToRoles } from "../../components/common/EditProfile/helper";
 
+const  userName = localStorage.getItem("userName")
 
 
 const AdminDashboard = () => {
     const chartContainer = useRef(null);
     const chartInstance = useRef(null);
     const dispatch = useDispatch()
-    const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
+    const { listOfClients, adminDashboard, screenLoader,allPermissionDetails } = useSelector(state => state.adminData)
     const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
     const { t } = useTranslation()
     const [value, onChange] = useState(new Date());
-
-    const userName = localStorage.getItem("userName")
+console.log(allPermissionDetails,"allPermissionDetails")
 
     useEffect(() => {
         dispatch(getAdminDashboard())
@@ -54,26 +55,14 @@ const AdminDashboard = () => {
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }
-    var capturedMessage
-    function captureConsoleMessage() {
-        var oldConsoleLog = console.log;
-        console.log = function (message) {
-            if (typeof message === 'object') {
-                message = JSON && JSON.stringify ? JSON.stringify(message) : message;
-            }
-            capturedMessage = message; // Store the message
-            oldConsoleLog.apply(console, arguments); // Call the original console.log
-        };
-    }
 
-    captureConsoleMessage(); // Call the function to start capturing console log messages
+    useEffect(()=>{
+        if(allPermissionDetails?.permissionCategories?.length>0){
+            accessModalAccordingToRoles(allPermissionDetails?.permissionCategories,"dashboard")
+        }
+    },[allPermissionDetails?.permissionCategories])
 
-
-    function getCapturedMessage() {
-        return capturedMessage;
-    }
-    let c = getCapturedMessage()
-    console.log(c, "op")
+   
 
 
     const data = {

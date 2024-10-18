@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Form, Row, Button } from "react-bootstrap";
 import { IoClose } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
@@ -7,6 +7,7 @@ import { Controller, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import CommonInput from "../../atomic/CommonInput";
 import CreatableSelect from "react-select/creatable";
+import { LANGUAGE_PREFERENCES_OPTIONS } from "./constant";
 
 const SCREENING_OPTIONS = [
   {
@@ -73,7 +74,7 @@ const SCREENING_OPTIONS = [
     question_type: "custom",
     question: "",
     responseType: "",
-    // inputType: "",
+    inputType: "",
     ideal_answer: "",
   },
 ];
@@ -98,13 +99,13 @@ const JobPostStep3 = ({
   clearErrors,
   isRegistrationStep = false,
   invalidFieldRequired = false,
+  handleCreateOption
 }) => {
   const { t } = useTranslation();
   const { fields, append, remove } = useFieldArray({
     control: control,
     name: "screening_questions",
   });
-
 
   // const handleOnChange = (item) => {
   //   console.log(item, "event")
@@ -121,7 +122,7 @@ const JobPostStep3 = ({
       optionId: opt.optionId,
     });
     {
-      opt?.responseType && append({ responseType: "yes/no" });
+      opt?.responseType && append({ responseType: "radio" });
     }
   };
   const isFieldAlreadyAdded = (optId) => {
@@ -135,6 +136,16 @@ const JobPostStep3 = ({
       return false;
     }
   };
+
+  const handleChangeCustom = (e, idx) => {
+    const { name, value, type, checked } = e.target;
+  
+    const newValue = type === 'checkbox' ? checked : value;
+  
+    setValue(name, newValue);
+  
+  };
+  
   return (
     <div>
       <section className="job-post-section">
@@ -163,6 +174,7 @@ const JobPostStep3 = ({
                       "invalid-field"
                     }`}
                     placeholder="Try asking a question"
+                    onChange={(e) => handleChangeCustom(e, idx)}
                   />
                   <Button
                     variant="transparent"
@@ -195,11 +207,12 @@ const JobPostStep3 = ({
                       //     e.target.value
                       //   )
                       // }
+                      onChange={(e) => handleChangeCustom(e, idx)}
                     >
-                      <option value="yes/no" selected>
+                      <option value="radio" selected>
                         Yes/No
                       </option>
-                      <option value="subjective">Subjective</option>
+                      <option value="input">Subjective</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -208,7 +221,7 @@ const JobPostStep3 = ({
                     <Form.Label className="font-14">Ideal answer</Form.Label>
                     <div className="d-flex align-items-center gap-3">
                       {watch(`screening_questions.${idx}.responseType`) ===
-                      "yes/no" ? (
+                      "radio" ? (
                         <>
                           <Controller
                             name={`screening_questions.${idx}.ideal_answer`}
@@ -223,9 +236,10 @@ const JobPostStep3 = ({
                                   label={option.label}
                                   value={option.value}
                                   checked={field.value === option.value}
-                                  onChange={(e) =>
-                                    field.onChange(e.target.value)
-                                  }
+                                  // onChange={(e) =>
+                                  //   field.onChange(e.target.value)
+                                  // }
+                                  onChange={(e) => handleChangeCustom(e, idx)}
                                 />
                               ))
                             }
@@ -240,6 +254,7 @@ const JobPostStep3 = ({
                           type="text"
                           className="common-field font-14"
                           placeholder="Enter Answer"
+                          onChange={(e) => handleChangeCustom(e, idx)}
                         />
                       )}
                     </div>
@@ -266,6 +281,7 @@ const JobPostStep3 = ({
                     className="font-14 job-post-checkbox"
                     id="must2"
                     label="Must have qualification"
+                    onChange={(e) => handleChangeCustom(e, idx)}
                   />
                 </Col>
               </Row>
@@ -301,18 +317,20 @@ const JobPostStep3 = ({
                                 field: { onChange, onBlur, value, ref },
                               }) => (
                                 <CreatableSelect
-                                  isClearable
-                                  onChange={(val) =>
-                                    setValue(
-                                      `screening_questions.${idx}.title`,
-                                      val ? val.label : ""
-                                    )
-                                  }
+                                  {...field}
                                   options={degreeList}
-                                  value={value}
+                                  onChange={(selectedOption) => {
+                                    console.log(
+                                      "Selected Option:",
+                                      selectedOption
+                                    );
+                                    onChange(selectedOption.value);
+                                  }}
+                                  onCreateOption={handleCreateOption}
                                 />
                               )}
                             />
+
                             {/* {errors?.screening_questions[idx].Degree && (
                               <p className="error-message">
                                 {errors.screening_questions[idx].Degree.message}
@@ -326,14 +344,19 @@ const JobPostStep3 = ({
                             <Form.Label className="font-14">
                               {field?.question_type}
                             </Form.Label>
-                            <Form.Control
-                              type="text"
+                            <Form.Select
+                              // type="text"
+                              className={`common-field font-14`}
                               {...register(`screening_questions.${idx}.title`, {
                                 required: t("required_message"),
                               })}
-                              className="common-field font-14"
+                              // options={LANGUAGE_PREFERENCES_OPTIONS}
+                              // className="common-field font-14"
                               placeholder={`Enter ${field?.question_type} name`}
-                            />
+                            >{LANGUAGE_PREFERENCES_OPTIONS?.map((option)=>(
+                               <option value={option.value}>{option.label}</option>
+                              ))}
+                              </Form.Select>
                           </>
                         )}
 
@@ -362,7 +385,7 @@ const JobPostStep3 = ({
                   <Col md="4" className="mb-md-0 mb-4">
                     <Form.Group>
                       <Form.Label className="font-14">Ideal answer</Form.Label>
-                      {field?.ideal_answer === "Yes" ? (
+                      {field?.ideal_answer === "Yes" || field?.ideal_answer === "yes" || field?.ideal_answer === "no" ? (
                         <Form.Select
                           {...register(
                             `screening_questions.${idx}.ideal_answer`,
