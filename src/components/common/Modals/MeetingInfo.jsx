@@ -244,7 +244,6 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
   const checkInterviewStatus = async (eventId,job_external_id) => {
     const meeting_platform = details?.interview?.meeting_platform;
-    console.log(meeting_platform, "meeting_platform");
     setLoader((prev) => true);
     if (meeting_platform === "microsoft_team") {
       if (!isAuthenticated) {
