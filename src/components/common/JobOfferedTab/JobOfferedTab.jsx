@@ -15,7 +15,7 @@ import {
 import { getDataFromLocalStorage } from "../../../helper/utlis";
 import DocumentHistory from "./DocumentHistory";
 import { toast } from "react-toastify";
-import { CANDIDATE, CLIENT } from "../../../constent/constent";
+import { CANDIDATE, CLIENT, JOB_STATUS } from "../../../constent/constent";
 import { useDispatch, useSelector } from "react-redux";
 import { changeJobStatus } from "../../../redux/slices/clientDataSlice";
 
@@ -39,7 +39,6 @@ const JobOfferedTab = () => {
 
   const { jobPostedData } = useSelector((state) => state.clientData);
 
-
   useEffect(() => {
     if (selectedTab === "offerTemplate") getTemplateLists();
   }, [selectedTab]);
@@ -49,19 +48,37 @@ const JobOfferedTab = () => {
     adobeInstance
       .get(`api/templates/templates-user/?external_user_id=${userId}`)
       .then((res) => {
-        const signedCompleted = res.data?.filter((itm) =>
-          itm?.adobe_tracking_meta_data?.participantSets.some(
-            (prt) => prt.status === SIGNER_STATUS.COMPLETED
-          ) || false
+        const signedCompleted = res.data?.filter(
+          (itm) =>
+            itm?.adobe_tracking_meta_data?.participantSets.some(
+              (prt) => prt.status === SIGNER_STATUS.COMPLETED
+            ) || false
         );
-        const hiresCandidate = jobPostedData?.job?.job_applications?.hired || [];
-        const isAlreadyHired = hiresCandidate.filter((can)=> can.developer.email === signedCompleted.memberInfos[0])
-        if(signedCompleted.length > 0 && hiresCandidate.length > 0  && isAlreadyHired === 0) {
+        const hiresCandidate =
+          jobPostedData?.job?.job_applications?.hired || [];
+        const isAlreadyHired = hiresCandidate.filter(
+          (can) => can.developer.email === signedCompleted.memberInfos[0]
+        );
+        console.log(signedCompleted, "signedCompleted", isAlreadyHired);
+        if (signedCompleted.length > 0 && isAlreadyHired.length === 0) {
+          signedCompleted.forEach((signed) => {
+            // let newData = {
+            //   applicationId: signed?.meta_data?.jobId,
+            //   newStatus: JOB_STATUS.hired,
+            // };
+
+            // let payload = {
+            //   developerId: developerId,
+            //   jobId: signed?.meta_data?.jobId,
+            //   newStatus: JOB_STATUS.hired,
+            // };
+            // dispatch(changeJobStatus("offered", newData));
+          });
           // let newData={
-        //   "applicationId": statusModal?.id,
-        //   "newStatus":data.status
-        // }
-        // dispatch(changeJobStatus("offered",newData))
+          //   "applicationId": statusModal?.id,
+          //   "newStatus":data.status
+          // }
+          // dispatch(changeJobStatus("offered",newData))
         }
         setTempList(res.data);
         setScreenLoader(false);

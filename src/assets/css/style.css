@@ -5630,11 +5630,14 @@ input[type="radio"]:checked {
 
 
 /* Docs container */
-
+.preview-document
+{
+    width: 75%;
+}
 .docs-container {
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
+    background: #dadada;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-size: 13px;
@@ -9932,7 +9935,9 @@ select.apply-field
     max-width: 200px;
     width: 100%;
     flex: none;
-    max-height: 640px;
+    max-height: 330px;
+    position: sticky;
+    top: 0;
     overflow: auto;
 }
 .drag-options h4
@@ -11053,4 +11058,26 @@ header.dash_header {
 }
 .priority-btn{
     background-color: var(--primary) !important;;
+}
+.sow-action {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+.delete-drag
+{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    width: 21px;
+    height: 22px;
+    border-radius: 50% !important;
+    border: none;
+    background-color: transparent;
+    color: #cc0000;
 }

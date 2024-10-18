@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
-import { IoCheckmarkOutline } from "react-icons/io5";
+import { IoArrowBack, IoCheckmarkOutline } from "react-icons/io5";
 import CustomFieldModal from "../Modals/CustomField";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -8,6 +8,7 @@ import DocumentViewer from "../JobOfferedTab/DocumentViewer";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import { CANDIDATE } from "../../../constent/constent";
 import { useSelector } from "react-redux";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
@@ -29,7 +30,6 @@ function DocumentViewerWrapper({
     setCustomField(!showcustomfield);
   };
 
-
   const handleSelectCandidate = (candidate) => {
     const index = selectedCandidate.findIndex(
       (dev) => dev.email === candidate.email
@@ -43,11 +43,24 @@ function DocumentViewerWrapper({
     }
   };
 
+  const backTooltip = <Tooltip>Back</Tooltip>;
+
   return (
     <>
       <div>
         <div id="fill-details">
-          <h4 className="text-center">Preview Document</h4>
+          <div className="d-flex justify-content-center align-items-center gap-2 mb-4">
+            <OverlayTrigger placement="bottom" overlay={backTooltip}>
+              <Button
+                variant="transparent"
+                className="main-btn outline-main-btn sow-action"
+                onClick={handleBack}
+              >
+                <IoArrowBack />
+              </Button>
+            </OverlayTrigger>
+            <h4 className="mb-0">Preview Document</h4>
+          </div>
           {documentOwner === CANDIDATE && (
             <div>
               <Form.Label className="font-14 fw-medium">
@@ -65,6 +78,7 @@ function DocumentViewerWrapper({
                         handleSelectCandidate({
                           name: candidate.developer.name,
                           email: candidate.developer.email,
+                          developerId: candidate.developer.id,
                         })
                       }
                     />

@@ -698,16 +698,26 @@ export const WebsiteBuilder = () => {
 
   return (
     <>
-      <button className="save-button" onClick={handleSave}>
+      {/* <button className="save-button" onClick={handleSave}>
         Save
-      </button>
+      </button> */}
+      <div className="d-flex gap-2 mb-2">
       <Button
-        variant="transparent"
-        className="font-14 main-btn px-5"
-        onClick={handleBack}
-      >
-        Back
-      </Button>
+          variant="transparent"
+          className="font-14 outline-main-btn px-5"
+          onClick={handleBack}
+        >
+          Back
+        </Button>
+        <Button
+          variant="transparent"
+          className="font-14 main-btn px-5"
+          onClick={handleSave}
+        >
+          Save
+        </Button>
+        
+      </div>
       <div ref={editorRef}></div>
       {screenLoader && <ScreenLoader />}
     </>

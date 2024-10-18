@@ -9,8 +9,7 @@ import {
   PDF_SIGNER_ROLE,
 } from "../JobOfferedTab/constant/constant";
 import "./style.css";
-import RexettButton from "../../atomic/RexettButton";
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { toast } from "react-toastify";
 import {
   adobeFormInstance,
@@ -21,6 +20,9 @@ import { CANDIDATE, CLIENT } from "../../../constent/constent";
 import { useSelector } from "react-redux";
 import { getDataFromLocalStorage } from "../../../helper/utlis";
 import DraggableTag from "../DragDropFeature/DraggableTag";
+import { useParams } from "react-router-dom";
+import { IoArrowBack, IoSave, IoSend } from "react-icons/io5";
+import { IoIosCloseCircle } from "react-icons/io";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -37,14 +39,17 @@ const DraggableItem = ({ item, index, handleDelete }) => {
         position: "absolute",
         top: item.y,
         left: item.x,
-
+        padding: "5px 4px 5px 10px",
         backgroundColor: "lightgray",
-        borderRadius: "3px",
+        borderRadius: "13px",
         cursor: "move",
       }}
+      className="d-flex justify-content-center align-items-center"
     >
-      {item.tag} X: {item.x}, Y: {item.y}
-      <button onClick={() => handleDelete(index)}>delete</button>
+      {item.tag}
+      <button className="delete-drag" onClick={() => handleDelete(index)}>
+        <IoIosCloseCircle />
+      </button>
     </div>
   );
 };
@@ -67,23 +72,27 @@ const DocumentViewer = ({
   const [editorContent, setEditorContent] = useState(null);
   const [pdfBytes, setPdfBytes] = useState(null);
   const [screenLoader, setScreenLoader] = useState(true);
-  const [pdfHeight, setPdfHeight] = useState();
   const dropRef = useRef(null);
-  const dragRef = useRef(null);
 
-  const { jobPostedData } = useSelector((state) => state.clientData);
+  const { singleJobPost } = useSelector((state) => state.clientData);
   const userId = getDataFromLocalStorage("userId");
-
+  const { id } = useParams();
   useEffect(() => {
     if (!editorContent) {
       const url = ADOBE_BASE_URL + selectedTemplate.template_file;
+
       const fetchPdf = async () => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const arrayBuffer = await blob.arrayBuffer();
-        setEditorContent(arrayBuffer);
-        setPdfBytes(url);
-        setScreenLoader(false);
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const arrayBuffer = await blob.arrayBuffer();
+          setEditorContent(arrayBuffer);
+          setPdfBytes(url);
+          setScreenLoader(false);
+        } catch (error) {
+          setScreenLoader(false);
+          console.log(error);
+        }
       };
       fetchPdf();
     }
@@ -160,8 +169,8 @@ const DocumentViewer = ({
     let payload = {};
     if (documentOwner === CLIENT) {
       const recipientsDetails = {
-        name: jobPostedData?.job?.client?.name || null,
-        email: jobPostedData?.job?.client?.email || null,
+        name: singleJobPost?.job?.client?.name || null,
+        email: singleJobPost?.job?.client?.email || null,
         role: PDF_SIGNER_ROLE.signer,
       };
 
@@ -304,6 +313,7 @@ const DocumentViewer = ({
           acc[item.tag.toLowerCase()] = item.value;
           return acc;
         }, {});
+        tempTags["jobId"] = id;
         formData.append("template_title", selectedTemplate.template_title);
         formData.append("meta_data", JSON.stringify(tempTags));
         formData.append("template_file", blob, selectedTemplate.template_file);
@@ -356,6 +366,10 @@ const DocumentViewer = ({
       );
     });
   }, [items, pageNumber]);
+
+  const backTooltip = <Tooltip>Back</Tooltip>;
+  const saveTooltip = <Tooltip>Save</Tooltip>;
+  const sendTooltip = <Tooltip>Send</Tooltip>;
   return (
     <>
       <div className="justify-content-center document-preview-wrapper">
@@ -372,86 +386,97 @@ const DocumentViewer = ({
           </div>
         </div>
         <div className="preview-document">
-          <div className="docs-container">
-            {screenLoader ? (
-              <ScreenLoader />
-            ) : (
-              <div>
-                <Document
-                  file={pdfBytes}
-                  // file={URL.createObjectURL(new Blob([pdfBytes]))}
-                  onLoadSuccess={onDocumentLoadSuccess}
+          <div className="docs-container d-flex justify-content-center align-items-center">
+            {screenLoader && <ScreenLoader />}
+            <div>
+              <Document
+                file={pdfBytes}
+                // file={URL.createObjectURL(new Blob([pdfBytes]))}
+                onLoadSuccess={onDocumentLoadSuccess}
+              >
+                <div
+                  className="position-relative"
+                  ref={(node) => {
+                    drop(node);
+                    dropRef.current = node;
+                  }}
+                  style={{
+                    minHeight: "700px",
+                    height: "100%",
+                    position: "relative",
+                    width: "612px",
+                  }}
                 >
-                  <div
-                    className="position-relative"
-                    ref={(node) => {
-                      drop(node);
-                      dropRef.current = node;
-                    }}
-                    style={{
-                      minHeight: "700px",
-                      height: "100%",
-                      position: "relative",
-                      width: "612px"
-                    }}
-                  >
-                    <Page
-                      pageNumber={pageNumber}
-                      renderTextLayer={false}
-                      renderAnnotationLayer={false}
-                      customTextRenderer={false}
-                      className="border-bottom custom-pdf"
-                    />
-                    {renderCustomElements}
-                  </div>
-                </Document>
-                <p className="text-center fw-medium mt-2">
-                  Page {pageNumber} of {numPages}
-                </p>
-                <div className="d-flex justify-content-center align-items-center gap-2">
-                  <button
-                    disabled={pageNumber <= 1}
-                    className="doc-action-btn"
-                    onClick={() => handlePrevious()}
-                  >
-                    Previous Page
-                  </button>
-                  <button
-                    disabled={pageNumber >= numPages}
-                    className="doc-action-btn"
-                    onClick={() => handleNext()}
-                  >
-                    Next Page
-                  </button>
+                  <Page
+                    pageNumber={pageNumber}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                    customTextRenderer={false}
+                    className="border-bottom custom-pdf"
+                  />
+                  {renderCustomElements}
                 </div>
+              </Document>
+              <p className="text-center fw-medium mt-2">
+                Page {pageNumber} of {numPages}
+              </p>
+              <div className="d-flex justify-content-center align-items-center gap-2">
+                <button
+                  disabled={pageNumber <= 1}
+                  className="doc-action-btn"
+                  onClick={() => handlePrevious()}
+                >
+                  Previous Page
+                </button>
+                <button
+                  disabled={pageNumber >= numPages}
+                  className="doc-action-btn"
+                  onClick={() => handleNext()}
+                >
+                  Next Page
+                </button>
               </div>
-            )}
+            </div>
           </div>
         </div>
-        <div className="text-center">
-          <Button
-            variant="transparent"
-            className="font-14 outline-main-btn main-btn px-5 mb-2"
-            onClick={handleBack}
-          >
-            Back
-          </Button>
-          <RexettButton
-            variant="transparent"
-            text="Save"
-            type="button"
-            // disabled={items.length === 0}
-            onClick={handleSaveEditedFile}
-            className="font-14 main-btn px-5 mb-2"
-          />
-          <RexettButton
-            variant="transparent"
-            text="Send"
-            type="button"
-            // disabled={items.length === 0}
-            onClick={handleSend}
-            className="font-14 main-btn px-5"
-          />
+        <div className="text-center d-flex gap-2">
+          {/* <OverlayTrigger placement="bottom" overlay={backTooltip}> */}
+          {/* <Button
+              variant="transparent"
+              className="font-14 outline-main-btn main-btn px-5 mb-2"
+              onClick={handleBack}
+            >
+              <IoArrowBack />
+            </Button> */}
+          {/* </OverlayTrigger> */}
+          <OverlayTrigger placement="bottom" overlay={saveTooltip}>
+            <Button
+              variant="transparent"
+              className="main-btn outline-main-btn mb-2 sow-action"
+              onClick={handleSaveEditedFile}
+            >
+              <IoSave />
+            </Button>
+          </OverlayTrigger>
+
+          <OverlayTrigger placement="bottom" overlay={sendTooltip}>
+            <Button
+              variant="transparent"
+              className="btn main-btn mb-2 sow-action"
+              onClick={handleSend}
+            >
+              <IoSend />
+            </Button>
+            {/* <RexettButton
+              variant="transparent"
+              text="Send"
+              type="button"
+              // disabled={items.length === 0}
+              onClick={handleSend}
+              className="font-14 main-btn px-5"
+              icon={<IoSend />}
+            /> */}
+          </OverlayTrigger>
         </div>
       </div>
       {showDocumentFieldDrop.show && (
