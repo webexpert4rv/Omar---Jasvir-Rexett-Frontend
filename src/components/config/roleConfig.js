@@ -40,7 +40,7 @@ const roleConfig = {
     privateRoute:"/super-admin-dashboard",
     // publicRoute:'/super-login'
   },
-  subAdmin:{
+  employee:{
     sidebarItems: ADMIN_SIDE_BAR_ITEMS,
     floatingOptions: OTHER_OPTIONS_ADMIN,
     headerProps: { role: "admin" },

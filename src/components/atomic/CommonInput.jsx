@@ -225,6 +225,7 @@ const CommonInput = ({
                   <CreatableSelect
                     {...field}
                     isClearable
+                    options={options}
                     className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     // isDisabled={readOnly}

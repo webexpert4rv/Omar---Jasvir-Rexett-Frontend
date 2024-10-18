@@ -62,11 +62,6 @@ console.log(chatRoomMessageList?.chatRooms,"chatrooms")
                         messageWrapperVisible ? "active-chat" : ""
                       }`}
                     >
-                      <MoreChatOptions
-                        item={it}
-                        type={type}
-                        setSelectedTab={setSelectedTab}
-                      />
                       <div
                         onClick={() => {
                           handleChatProfileClick(it?.members[0]?.chatroom_id);
@@ -74,18 +69,25 @@ console.log(chatRoomMessageList?.chatRooms,"chatrooms")
                         }}
                         className="cursor-pointer"
                       >
-                        <div className="chat-profile-img">
-                          <img src={it?.members[0]?.user?.profile_picture} />
-                        </div>
                         <div className="chat-profile-info w-100">
-                          <div className="d-flex align-items-center justify-content-between">
-                            <h3 className="chat-name">
-                              {it?.members[0]?.user?.name}
-                            </h3>
+                          <div className="d-flex align-items-center justify-content-between mb-2">
+                            <div className="d-flex align-items-center gap-2">
+                              <div className="chat-profile-img">
+                                <img src={it?.members[0]?.user?.profile_picture} />
+                              </div>
+                              <h3 className="chat-name mb-0">
+                                {it?.members[0]?.user?.name}
+                              </h3>
+                            </div>
                             {/* <p className="chat-time"> {moment(it?.created_at).fromNow()}</p> */}
-                            <p className="chat-time">
+                            <p className="chat-time mb-0">
                               {getlastMsgOrMsgTime("time", it)}
                             </p>
+                            <MoreChatOptions
+                              item={it}
+                              type={type}
+                              setSelectedTab={setSelectedTab}
+                            />
                           </div>
                           {/* <p className="chat-message mb-0">
                                             {(stripHtmlTags(it?.messages[0]?.message_body))}
