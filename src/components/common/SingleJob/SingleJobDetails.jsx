@@ -222,7 +222,7 @@ const SingleJobDetails = () => {
     console.log(key, "key");
     setCurrentTab(key);
     setSelectedTabsData(singleJobDescription?.job_applications[key]);
-    if (key == "suggested") {
+    if (key == "suggestions") {
       setCurrnetTabsStatus("shortlisted");
     } else if (key == "shortlisted") {
       setCurrnetTabsStatus("interviewing");
@@ -665,6 +665,7 @@ const SingleJobDetails = () => {
   };
 
   const handleChangeJobStatus = (developerId, jobId, status) => {
+    console.log(status,"stat")
     let payload = {
       developerId: developerId,
       jobId: jobId,
