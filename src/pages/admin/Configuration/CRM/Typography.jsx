@@ -4,7 +4,7 @@ import companyLogoImg from '../../../../assets/img/rexett-logo-white.png';
 import { useSelector } from 'react-redux';
 
 
-function Typography({ previewUrl, register, setTypoChange, typoChange }) {
+function Typography({ previewUrl, register, setTypoChange, typoChange, subModulesAccess }) {
     const { configDetails } = useSelector(state => state.adminData)
     console.log(configDetails, "configDetails")
     console.log(typoChange?.crm_body_font_size ,"typography")
@@ -16,7 +16,7 @@ function Typography({ previewUrl, register, setTypoChange, typoChange }) {
     return (
 
         <div>
-            <Row>
+           <Row>
                 <Col md={12} className="mb-2">
                     <div>
                         <h3 className="main-customization-heading mb-3">Typography</h3>

@@ -219,24 +219,21 @@ const SingleJobDetails = () => {
     );
   };
   const handleSelect = (key) => {
-    console.log(key, "key")
+    console.log(key, "key");
     setCurrentTab(key);
     setSelectedTabsData(singleJobDescription?.job_applications[key]);
     if (key == "suggested") {
-        setCurrnetTabsStatus("shortlisted");
-    }
-    else if (key == "shortlisted") {
-        setCurrnetTabsStatus("interviewing");
-    }
-    else if (key == "interviewing") {
-        setCurrnetTabsStatus("hired");
-    }
-    else if (key == "application") {
-        setCurrnetTabsStatus("application");
+      setCurrnetTabsStatus("shortlisted");
+    } else if (key == "shortlisted") {
+      setCurrnetTabsStatus("interviewing");
+    } else if (key == "interviewing") {
+      setCurrnetTabsStatus("hired");
+    } else if (key == "application") {
+      setCurrnetTabsStatus("application");
     } else {
-        setCurrnetTabsStatus(key)
+      setCurrnetTabsStatus(key);
     }
-};
+  };
   console.log(currentTab, "currentTab");
   console.log(currentTabsStatus, "currentTabsStatus");
   console.log(singleJobDescription, "singleJobDescription");
@@ -295,6 +292,8 @@ const SingleJobDetails = () => {
   };
 
   const handleJobStatusAction = (e, data) => {
+    console.log(devId, "devid");
+    console.log(data?.status, "newSttas");
     e.preventDefault();
     if (data.status == "ended") {
       dispatch(
@@ -349,6 +348,7 @@ const SingleJobDetails = () => {
       );
     }
   };
+
   const handleEdit = () => {
     if (singleJobDescription?.status == "Unpublished") {
       const savedStep = localStorage.getItem("activeStep");
@@ -360,6 +360,10 @@ const SingleJobDetails = () => {
   };
 
   const handleJobStatusModal = (e, id, status, type, aplnId) => {
+    console.log(aplnId, "aplnId");
+    console.log(type, "type");
+    console.log(status, "status");
+    console.log(id, "helloId");
     setDevType(type);
     setApplicationId(aplnId);
     setDevId(id);
@@ -1644,6 +1648,7 @@ const SingleJobDetails = () => {
               {currentTabsStatus === "documentation" && <JobOfferedTab />}
             </Tab>
           )}
+
           {role !== "developer" && (
             <Tab eventKey="hired" title={hired}>
               <JobCard

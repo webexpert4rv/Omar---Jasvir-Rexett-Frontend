@@ -28,9 +28,6 @@ const CommonLayout = ({ children }) => {
   const RoleConfig = roleConfig[role || derivedRole];
   const redirectPath = role ? RoleConfig?.privateRoute : RoleConfig?.publicRoute;
 
-//   if (token && (role !== "admin" && role!=="superAdmin")) {
-//     return <Navigate to={`${redirectPath}`} />;
-//   }
 
   return (
     <div className="dashboard-layout">

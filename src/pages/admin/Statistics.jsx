@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { Col, Form, Nav, Row, Tab } from "react-bootstrap";
+import { Col, Form, Nav, OverlayTrigger, Row, Tab, Tooltip } from "react-bootstrap";
 import { Line, Doughnut } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import { IoTrendingUpSharp } from "react-icons/io5";
+import { PiListChecksFill, PiUsersFourFill } from "react-icons/pi";
+import { FaFileInvoiceDollar, FaHandshake, FaMoneyBillTrendUp } from "react-icons/fa6";
+import { GoProjectRoadmap } from "react-icons/go";
 const Statistics = () => {
     const chartContainer = useRef(null);
     const chartInstance = useRef(null);
@@ -316,6 +319,22 @@ const Statistics = () => {
         },
     };
 
+    const revenueTooltip = (
+        <Tooltip>Revenue</Tooltip>
+    )
+    const clientTooltip = (
+        <Tooltip>Clients</Tooltip>
+    )
+    const devTooltip = (
+        <Tooltip>Candidates</Tooltip>
+    )
+    const invoiceTooltip = (
+        <Tooltip>Invoice</Tooltip>
+    )
+    const projectTooltip = (
+        <Tooltip>Projects</Tooltip>
+    )
+
     return (
         <>
             <div>
@@ -350,49 +369,54 @@ const Statistics = () => {
                         </div>
 
                     </Col>
-                    <Col xxl={8} lg={12} className="mb-4">
-                        <Row>
-                            <Col md={3} className="mb-3">
+                    <Col xxl={8} lg={12}>
+                        <div className="h-100">
+                            <div className="overview-slider h-100">
                                 <div className="overview-card">
+                                    <span className="icon-overview"><PiUsersFourFill /></span>
                                     <div>
                                         <h4 className="overview-card-subhead">Client Joined</h4>
                                         <h3 className="overview-card-heading mb-0">100</h3>
                                     </div>
-                                    <span className="over-icon"><IoTrendingUpSharp /></span>
                                 </div>
-                            </Col>
-                            <Col md={3} className="mb-3">
                                 <div className="overview-card">
+                                    <span className="icon-overview"><FaHandshake /></span>
                                     <div>
-                                        <h4 className="overview-card-subhead">Vendor Joined</h4>
+                                        <h4 className="overview-card-subhead">Partner Joined</h4>
                                         <h3 className="overview-card-heading mb-0">20</h3>
                                     </div>
-                                    <span className="over-icon"><IoTrendingUpSharp /></span>
                                 </div>
-                            </Col>
-                            <Col md={3} className="mb-3">
                                 <div className="overview-card">
+                                    <span className="icon-overview"><PiUsersFourFill /></span>
+                                    <div>
+                                        <h4 className="overview-card-subhead">Candidate Joined</h4>
+                                        <h3 className="overview-card-heading mb-0">20</h3>
+                                    </div>
+                                </div>
+                                <div className="overview-card">
+                                    <span className="icon-overview"><FaFileInvoiceDollar /></span>
                                     <div>
                                         <h4 className="overview-card-subhead">Invoice Raised</h4>
                                         <h3 className="overview-card-heading mb-0">100</h3>
                                     </div>
-                                    <span className="over-icon"><IoTrendingUpSharp /></span>
                                 </div>
-                            </Col>
-                            <Col md={3} className="mb-3">
                                 <div className="overview-card">
+                                    <span className="icon-overview"><PiListChecksFill /></span>
                                     <div>
-                                        <h4 className="overview-card-subhead">Developers Joined</h4>
-                                        <h3 className="overview-card-heading mb-0">30</h3>
+                                        <h4 className="overview-card-subhead">Total Projects</h4>
+                                        <h3 className="overview-card-heading mb-0">100</h3>
                                     </div>
-                                    <span className="over-icon"><IoTrendingUpSharp /></span>
                                 </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="status-card d-flex justify-content-between align-items-center">
-                                    {/* <div className="icon-status-card">
-                                                <GoProjectRoadmap />
-                                            </div> */}
+                                <div className="overview-card">
+                                    <span className="icon-overview"><PiUsersFourFill /></span>
+                                    <div>
+                                        <h4 className="overview-card-subhead">On Going Projects</h4>
+                                        <h3 className="overview-card-heading mb-0">100</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="status-card d-flex justify-content-between align-items-center">
                                     <div>
                                         <h3>Total Projects</h3>
                                         <div>
@@ -404,75 +428,47 @@ const Statistics = () => {
                                             <Line data={TotalProjectData} options={TotalProjectOptions} />
                                         </div>
                                     </div>
-                                </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="status-card d-flex justify-content-between align-items-center">
-                                    {/* <div className="icon-status-card">
-                                                <FaCircleCheck />
-                                            </div> */}
-                                    <div>
-                                        <h3>On Going Projects</h3>
-                                        <div>
-                                            <p className="status-text-card">50</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="graph-status">
-                                            <Line data={CompletedProjectData} options={CompletedProjectOptions} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="status-card d-flex justify-content-between align-items-center">
-                                    {/* <div className="icon-status-card">
-                                                <FaCircleCheck />
-                                            </div> */}
-                                    <div>
-                                        <h3>Completed Projects</h3>
-                                        <div>
-                                            <p className="status-text-card">70</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="graph-status">
-                                            <Line data={CompletedProjectData} options={CompletedProjectOptions} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
+                                </div> */}
                     </Col>
                 </Row>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="revenue-stat">
-                    <div className="card-box mb-4 p-3">
-                        <div className="d-flex justify-content-center mb-4">
+                    <div className="card-box mb-4 p-3 d-flex gap-4">
+                        <div className="d-flex justify-content-center flex-column mb-4 stats-tabs-listing">
                             <Nav variant="pills" className="weekly-tabs mb-0">
                                 <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="revenue-stat">Revenue</Nav.Link>
+                                    <OverlayTrigger position="end" overlay={revenueTooltip}>
+                                        <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="revenue-stat"><FaMoneyBillTrendUp /></Nav.Link>
+                                    </OverlayTrigger>
                                 </Nav.Item>
                                 <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="client-stats">Clients</Nav.Link>
+                                    <OverlayTrigger position="end" overlay={clientTooltip}>
+                                        <Nav.Link className='weekly-tab-link' eventKey="client-stats"><PiUsersFourFill /></Nav.Link>
+                                    </OverlayTrigger>
                                 </Nav.Item>
                                 <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="dev-stats">Developers</Nav.Link>
+                                    <OverlayTrigger position="end" overlay={devTooltip}>
+                                        <Nav.Link className='weekly-tab-link' eventKey="dev-stats"><PiUsersFourFill /></Nav.Link>
+                                    </OverlayTrigger>
                                 </Nav.Item>
                                 <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="invoice-stats">Invoices</Nav.Link>
+                                    <OverlayTrigger position="end" overlay={invoiceTooltip}>
+                                        <Nav.Link className='weekly-tab-link' eventKey="invoice-stats"><FaFileInvoiceDollar /></Nav.Link>
+                                    </OverlayTrigger>
                                 </Nav.Item>
-                                <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="project-stats">Projects</Nav.Link>
+                                <Nav.Item className='weekly-tab-item mb-0'>
+                                    <OverlayTrigger position="end" overlay={projectTooltip}>
+                                        <Nav.Link className='weekly-tab-link' eventKey="project-stats"><PiListChecksFill /></Nav.Link>
+                                    </OverlayTrigger>
                                 </Nav.Item>
                             </Nav>
                         </div>
-                        <Tab.Content>
+                        <Tab.Content className="w-100">
                             <Tab.Pane eventKey="revenue-stat">
                                 <Row>
                                     <Col xxl={6} lg={12} className="mb-4">
                                         <div className="card-box h-100">
                                             <h3 className="section-head pb-0 border-0 mb-4">Total Revenue (Monthly)</h3>
-                                            <div className="revenue-graph">
+                                            <div className="revenue-graph w-100">
                                                 <Line data={lineData} options={lineOptions} />
                                             </div>
                                         </div>
@@ -555,7 +551,7 @@ const Statistics = () => {
                                     </Col>
                                 </Row>
                             </Tab.Pane>
-                            <Tab.Pane eventKey="invoice-stats">
+                            <Tab.Pane eventKey="project-stats">
                                 <Row>
                                     <Col xxl={6} lg={12} className="mb-4">
                                         <div className="card-box h-100">

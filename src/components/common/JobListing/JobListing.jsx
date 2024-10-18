@@ -76,22 +76,22 @@ const JobListing = () => {
         <>
 
             <section className="job-posted-section">
-                <div>
+                <div className="d-flex gap-2 align-items-center mb-4">
                     <input
                         type="text"
                         placeholder="Search here..."
-                        className=" font-14 mb-4"
+                        className=" font-14 form-control common-field bg-white"
                         value={filterValues}
                         onChange={(e) => handleFilter(e)}
                     />
-                    <button className="cursor-pointer text-danger" onClick={handleClear}>
-                        Reset
+                    <button className="outline-main-btn rounded-2 cursor-pointer text-danger py-2 px-3" onClick={handleClear}>
+                        <IoClose />
                     </button>
                     <Button
                         type="submit"
                         // disabled = {watchSearch("developerName") === ""}
                         variant="transparent"
-                        className="main-btn px-3 search-btn"
+                        className="main-btn py-2 px-3 search-btn"
                         onClick={handleSubmit}
                     >
                         <IoSearch />
