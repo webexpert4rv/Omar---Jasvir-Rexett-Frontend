@@ -466,6 +466,10 @@ ul {
 .simple-no-data .no-data-container {
     min-height: 1px;
     width: 100%;
+    padding: 20px;
+    background: #fff8f8;
+    border: 1px solid #ff7373;
+    border-radius: 15px;
 }
 
 .name_folder_text {
@@ -487,7 +491,7 @@ ul {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 0px;
     width: 600px;
 }
 
@@ -6807,8 +6811,8 @@ input[type="radio"]:checked {
 
 
 .chat-profile-img {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     flex: none;
     border-radius: 50%;
     border: 2px solid #031275;
@@ -8312,9 +8316,8 @@ select.apply-field
 .more-chat-options
 {
     position: absolute;
-    top: 50%;
+    top: 20%;
     right: 0px;
-    transform: translateY(-50%);
     opacity: 0;
     visibility: hidden;
 }
@@ -10624,6 +10627,15 @@ select.apply-field
 {
     max-height: 340px;
     overflow: auto;
+}
+.todo-error
+{
+    font-size: 14px;
+    padding: 13px;
+    border: 1px solid #dbdbdb;
+    color: #5b5b5b;
+    text-align: center;
+    border-radius: 9px;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
