@@ -27,8 +27,9 @@ import RadioGroupField from "../../RadioGroupField";
 import { getDifferenceFromTwoDates } from "../../utils";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
-import { updateStatus } from "../../../redux/slices/adminDataSlice";
+import { meetingWebhookApi, updateStatus } from "../../../redux/slices/adminDataSlice";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
+import { convertSeconds } from "../../../helper/utlis";
 const MARK_AS_OPTIONS = [
   {
     label: "Completed",
@@ -75,8 +76,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedDeveloper, setSelectedDeveloper] = useState({});
   const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
-  const {
-    interview: {
+  const {interview: {  
       id, // application id
       title,
       developer_name,
@@ -85,7 +85,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       meeting_time,
       status,
       developer_id,
-      reason
+      reason,
+      job_external_id
     },
   } = details;
   console.log(details, "details");
@@ -115,6 +116,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       "OnlineMeetingRecording.Read.All",
       "Calendars.ReadWrite",
       "Calendars.Read",
+      "OnlineMeetingArtifact.Read.All"
     ],
     prompt: "consent",
   });
@@ -137,8 +139,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       gapi.client
         .init({
           apiKey: "AIzaSyDRb_BGMWY3XocACa_K976a0g6y-5QwkqU",
-          clientId:
-            "982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
+          clientId:"982505282330-ei63qgf2b0b0djm6dfkdapnpcl7oc8en.apps.googleusercontent.com",
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES,
         })
@@ -158,12 +159,14 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     const startTime = new Date("2024-10-08T05:43:00+05:30").toISOString(); // Adjust start date
     const endTime = new Date( "2024-10-08T06:43:00+05:30").toISOString();
     // alert(meetingCode);
+    const meetingCo = "vokb3ct1s6si633osucojracn8";
+    const filters = `calendar_event_id==${meetingCo}`
     const response = await gapi.client.reports.activities.list({
       userKey: "all",
       applicationName: "meet",
       eventName: "call_ended",
       maxResults: 10,
-      filters: `meeting_code==${googleEventId}`,
+      filters: filters,
     });
     // const activities = response.result.items || [];
     // const participants = activities.flatMap((activity) =>
@@ -176,15 +179,17 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     
 
     // const duration = activities
-    //   .flatMap((activity) =>
+    //   .flatMap(() =>
     //     activity.events.flatMap((event) =>
     //       event.parameters
     //         .filter((param) => param.name === "duration_seconds")
     //         .map((param) => parseInt(param.value, 10))
     //     )
-    //   )
+    //   )activity
     //   .reduce((acc, val) => acc + val, 0);
     const events = response.result.items; // assuming 'items' contains the events
+    let joinedMeet=[]
+    let duration;
     if (events && events.length > 0) {
       // Process each event
       events.forEach(event => {
@@ -199,10 +204,39 @@ const MeetingInfo = ({ show, handleClose, details }) => {
           displayName: parameters.find(p => p.name === "display_name")?.value,
           callEndedTime: event.id.time,
         };
+         
 
-        console.log(callEndedData,"CALLEND"); // Log or further process the extracted data
+       let duration_seconds= parameters.find(p => p.name === "duration_seconds")?.intValue
+
+      let value= convertSeconds(duration_seconds)
+      duration=value
+    
+        joinedMeet.push({
+          attendee_external_id:null,
+          name:parameters.find(p => p.name === "identifier")?.value,
+          "is_joined": true
+        })        
       });
+
+            
+      let joinedAttende=[]
+        
+
+
+   
+    let payload=  {
+        "meeting_external_id": job_external_id,
+        "status": "completed",
+        "duration": duration,
+        "attendees": joinedMeet
+      }
+
+      console.log(payload,"payload")
+         
+      dispatch(meetingWebhookApi(payload,"ZbKD2/st1jLezibHDL6GXcYiwHIVvQcyU/9M55ty",()=>{}))
     }
+
+
   };
 
   const googleEventId = localStorage.getItem("googleEventId")
@@ -220,39 +254,57 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
       try {
         // Fetch the online meeting details using the meeting ID
-        const joinUrl = details?.interview?.meeting_link;
+        // const joinUrl = details?.interview?.meeting_link;
+        const joinUrl="https://teams.microsoft.com/l/meetup-join/19%3ameeting_Zjg4MjgyMDUtNzA1Ny00M2E3LWE1N2MtNWEyNjZlZmMzYjRl%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d"
         const id = joinUrl;
 
         // const id = "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzcxMTdhMTMtZDI4NC00ODc2LTg2ZGUtZDc1ZTI0MDEyZDc1%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d";
-        const meetingResponse = await client
-          .api("/me/onlineMeetings")
-          .filter(`JoinWebUrl eq '${id}'`)
-          .get();
+        // const meetingResponse = await client
+        //   .api("/me/onlineMeetings")
+        //   .filter(`JoinWebUrl eq '${id}'`)
+        //   .get();
 
-        if (meetingResponse) {
-          const res = meetingResponse.value[0];
-          setShowDetailsSection(true);
-          const info = {
-            callDuration: `${getDifferenceFromTwoDates(
-              res?.startDateTime,
-              res?.endDateTime
-            )} hours`,
-            attendees: res?.participants?.attendees,
-          };
-          setInfo(info);
-          console.log(meetingResponse, "meetingResponse");
-          console.log(info, "info");
-        }
+       // Call the Graph API for fetching attendance records
+       const meetingId = `MSpiN2RjMzNlMC1mMGI5LTQyY2MtYWUzMi05NmI3Y2JjYzZjNTMqMCoqMTk6bWVldGluZ19aamc0TWpneU1EVXROekExTnkwME0yRTNMV0UxTjJNdE5XRXlOalpsWm1NellqUmxAdGhyZWFkLnYy`;
+       const reportId = 'f5474701-57c8-4156-9494-6be764df764a';
+       const endpoint = `https://graph.microsoft.com/v1.0/me/onlineMeetings/MSpiN2RjMzNlMC1mMGI5LTQyY2MtYWUzMi05NmI3Y2JjYzZjNTMqMCoqMTk6bWVldGluZ19aamc0TWpneU1EVXROekExTnkwME0yRTNMV0UxTjJNdE5XRXlOalpsWm1NellqUmxAdGhyZWFkLnYy/attendanceReports`;
+
+       const response = await client
+       .api(endpoint)
+       .get();
+  
+       const endpointRecord =`https://graph.microsoft.com/v1.0/me/onlineMeetings/${meetingId}/attendanceReports/${reportId}/attendanceRecords`
+       const resRecord = await client
+       .api(endpointRecord)
+       .get();
+       console.log(resRecord,"response")
+
+        // if (meetingResponse) {
+        //   const res = meetingResponse.value[0];
+        //   setShowDetailsSection(true);
+        //   const info = {
+        //     callDuration: `${getDifferenceFromTwoDates(
+        //       res?.startDateTime,
+        //       res?.endDateTime
+        //     )} hours`,
+        //     attendees: res?.participants?.attendees,
+        //   };
+        //   setInfo(info);
+        //   console.log(meetingResponse, "meetingResponse");
+        //   console.log(info, "info");
+        // }
         // Extract meeting details
-        const subject = meetingResponse.subject;
-        const startTime = meetingResponse.startDateTime;
-        const endTime = meetingResponse.endDateTime;
-        const duration = endTime ? new Date(endTime) - new Date(startTime) : 0; // Duration in milliseconds 
+        // const subject = meetingResponse.subject;
+        // const startTime = meetingResponse.startDateTime;
+        // const endTime = meetingResponse.endDateTime;
+        // const duration = endTime ? new Date(endTime) - new Date(startTime) : 0;  
 
-        console.log(`Meeting: ${subject}`);
-        console.log(`Start Time: ${startTime}`);
-        console.log(`End Time: ${endTime}`);
-        console.log(`Duration: ${duration / 60000} minutes`); // Duration in minute
+        // console.log(`Meeting: ${subject}`);
+        // console.log(`Start Time: ${startTime}`);
+        // console.log(`End Time: ${endTime}`);
+        // console.log(`Duration: ${duration / 60000} minutes`);
+
+
       } catch (error) {
         console.error("Error fetching meeting details:", error);
       }
@@ -260,7 +312,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       console.log("inside google meet")
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
-        eventId: googleEventId,
+        eventId: "vokb3ct1s6si633osucojracn8",
       });
 
       if (response.result.status === "cancelled") {
@@ -269,7 +321,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
         if (!meetingStart < now) {
-          fetchMeetingDetails(googleEventId);
+          fetchMeetingDetails("vokb3ct1s6si633osucojracn8");
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");
@@ -394,6 +446,19 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                 <div className="d-flex align-items-center gap-3 client-imgbx">
                   <img src={details?.developer?.profile_picture} />
                   <p className="font-14 mb-0">{details?.developer?.name}</p>
+                </div>
+              </Col>
+              <Col lg={4} className="mb-lg-3 mb-1">
+                <p className="font-14 schedule-heading">
+                  <span>
+                    <RiUser3Fill />
+                  </span>
+                  Developer Email
+                </p>
+              </Col>
+              <Col lg={8} className="mb-3">
+                <div className="d-flex align-items-center gap-3 client-imgbx">
+                  <p className="font-14 mb-0">{details?.developer?.email}</p>
                 </div>
               </Col>
               {/* <Col lg={4} className="mb-lg-3 mb-1">
@@ -567,7 +632,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               </Button> */}
             </div>
           </div>
-          {true && (
+          {showDetailsSection && (
             <div className="detailedSection" style={{ marginTop: "10px" }}>
               <Row>
                 <Col lg={8}>

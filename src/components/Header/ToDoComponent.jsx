@@ -170,7 +170,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                     <div>
                                         {Object.keys(toDoList).map(status => (
                                             <div key={status}>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                                <div className="d-flex justify-content-between align-items-center mb-2">
                                                     <h3 className="font-14 fw-semibold">
                                                         {status.charAt(0).toUpperCase() + status.slice(1)}
                                                     </h3>
@@ -210,7 +210,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                             </div>
                                                         ))
                                                     ) : (
-                                                        <p>No completed tasks available.</p>
+                                                        <p className='todo-error'>❌ No Completed Tasks Yet! ✅✨</p>
                                                     )
                                                 ) : (
                                                     <div>
@@ -266,7 +266,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                 )
                                                             ))
                                                         ) : (
-                                                            <p>No tasks available.</p>
+                                                            <p className='todo-error'>🚫 No Tasks Found! 📝✨</p>
                                                         )}
                                                     </div>
                                                 )}

@@ -519,7 +519,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">Need Full stack MERN developer</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg :devImg } className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">
@@ -538,7 +538,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">Node js developer</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg : devImg } className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">
@@ -557,7 +557,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">Need Full stack MERN developer</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg : devImg} className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">
@@ -573,7 +573,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">React js developer</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg : devImg} className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">
@@ -592,7 +592,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">Figma to UI</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg : devImg} className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">
@@ -610,7 +610,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">AI Bot Project</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg : devImg} className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">
@@ -629,7 +629,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">AI Bot Project</td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={clientImg} className="project-client" />
+                                                        <img src={clientImg ? clientImg : devImg} className="project-client" />
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <div className="developer-stack">

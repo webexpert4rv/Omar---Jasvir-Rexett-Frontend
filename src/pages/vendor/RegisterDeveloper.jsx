@@ -665,7 +665,7 @@ const RegisterDeveloper = () => {
                                 className="common-field font-14 w-100"
                                 apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                                 onPlaceSelected={(place) => {
-                                  console.log(place);
+                                  console.log(place,"place");
                                 }}
                                 options={{
                                   types: ["establishment", "geocode"],
@@ -709,7 +709,7 @@ const RegisterDeveloper = () => {
                             })}
                           />
                           <p className="error-message">
-                            {errors.professional_title?.message}{" "}
+                            {errors.professional_title?.message}
                           </p>
                         </Form.Group>
                       </Col>

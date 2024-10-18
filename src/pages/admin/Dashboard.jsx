@@ -20,27 +20,28 @@ import clientImg from '../../assets/img/amazon.png';
 import devImg from '../../assets/img/user-img.jpg';
 import devImg2 from '../../assets/img/demo-img.jpg';
 import devImg3 from '../../assets/img/laura.jpg';
-import { GoProjectRoadmap } from "react-icons/go";
+import { GoArrowRight, GoProjectRoadmap } from "react-icons/go";
 import { FaCircleCheck, FaLink } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
 import MeetingInfo from "./Modals/MeetingInfo";
 import Calendar from 'react-calendar';
 import { BsFillHandThumbsDownFill, BsFillHandThumbsUpFill } from "react-icons/bs";
 import { GiHandOk } from "react-icons/gi";
+import { accessModalAccordingToRoles } from "../../components/common/EditProfile/helper";
 
+const  userName = localStorage.getItem("userName")
 
 
 const AdminDashboard = () => {
     const chartContainer = useRef(null);
     const chartInstance = useRef(null);
     const dispatch = useDispatch()
-    const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
+    const { listOfClients, adminDashboard, screenLoader,allPermissionDetails } = useSelector(state => state.adminData)
     const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
     const { t } = useTranslation()
     const [value, onChange] = useState(new Date());
-
-    const userName = localStorage.getItem("userName")
+console.log(allPermissionDetails,"allPermissionDetails")
 
     useEffect(() => {
         dispatch(getAdminDashboard())
@@ -54,26 +55,14 @@ const AdminDashboard = () => {
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }
-    var capturedMessage
-    function captureConsoleMessage() {
-        var oldConsoleLog = console.log;
-        console.log = function (message) {
-            if (typeof message === 'object') {
-                message = JSON && JSON.stringify ? JSON.stringify(message) : message;
-            }
-            capturedMessage = message; // Store the message
-            oldConsoleLog.apply(console, arguments); // Call the original console.log
-        };
-    }
 
-    captureConsoleMessage(); // Call the function to start capturing console log messages
+    useEffect(()=>{
+        if(allPermissionDetails?.permissionCategories?.length>0){
+            accessModalAccordingToRoles(allPermissionDetails?.permissionCategories,"dashboard")
+        }
+    },[allPermissionDetails?.permissionCategories])
 
-
-    function getCapturedMessage() {
-        return capturedMessage;
-    }
-    let c = getCapturedMessage()
-    console.log(c, "op")
+   
 
 
     const data = {
@@ -397,61 +386,26 @@ const AdminDashboard = () => {
 
     return (
         <>
-            {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">{t("overview")}</h2>
-                <div className="overview-card-wrapper mb-5">
-                    {/* <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Fund</h4>
-                        <h3 className="overview-card-heading mb-0">Spent</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div> */}
-                    <div className="overview-card active">
-                        <div>
-                            <h4 className="overview-card-subhead">This Month Revenue</h4>
-                            <h3 className="overview-card-heading mb-0">$10,000</h3>
-                        </div>
-                        <span className="over-icon"><IoTrendingUpSharp /></span>
-                    </div>
-                    {/* <div className="overview-card">
-                        <div>
-                            <h4 className="overview-card-subhead">{t("income")}</h4>
-                            <h3 className="overview-card-heading mb-0">{t("earned")}</h3>
-                        </div>
-                        <span className="over-icon"><IoTrendingUpSharp /></span>
-                    </div> */}
-                    <div className="overview-card">
-                        <div>
-                            <h4 className="overview-card-subhead">{t("clientJoined")}</h4>
-                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined}</h3>
-                        </div>
-                        <span className="over-icon"><IoTrendingUpSharp /></span>
-                    </div>
-                    <div className="overview-card">
-                        <div>
-                            <h4 className="overview-card-subhead">{t("vendorJoined")}</h4>
-                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined}</h3>
-                        </div>
-                        <span className="over-icon"><IoTrendingUpSharp /></span>
-                    </div>
-                    <div className="overview-card">
-                        <div>
-                            <h4 className="overview-card-subhead">Invoice Raised</h4>
-                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted}</h3>
-                        </div>
-                        <span className="over-icon"><IoTrendingUpSharp /></span>
-                    </div>
-                    <div className="overview-card">
-                        <div>
-                            <h4 className="overview-card-subhead">Total Developer Joined</h4>
-                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfDevelopersJoined}</h3>
-                        </div>
-                        <span className="over-icon"><IoTrendingUpSharp /></span>
-                    </div>
-                </div>
-
+            <h1 className="welcome-heading">Welcome, <span>Admin Doe</span></h1>
+            {screenLoader ? <ScreenLoader /> :
                 <div>
+                    <Tab.Container id="left-tabs-example" defaultActiveKey="overview-dashboard">
+                        <div className="">
+                            <div className="d-flex justify-content-center flex-column mb-2 dashboard-tabs-listing">
+                                <Nav variant="pills" className="weekly-tabs mb-0">
+                                    <Nav.Item className='weekly-tab-item'>
+                                        <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="overview-dashboard"><span>01</span> Overview</Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className='weekly-tab-item'>
+                                        <Nav.Link className='weekly-tab-link' eventKey="todo-meeting"><span>02</span> Todo & Meetings</Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className='weekly-tab-item'>
+                                        <Nav.Link className='weekly-tab-link' eventKey="assigned-dev"><span>03</span> Assigned Developers</Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content className="w-100">
+                                {/* <div>
                     <Row>
                         <Col xxl={6} lg={12} className="mb-4">
                             <div className="card-box h-100">
@@ -461,72 +415,6 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </Col>
-                        {/* <Col xxl={6} lg={12} className="mb-4">
-                            <div className="card-box">
-                                <div className="d-flex align-items-center justify-content-between mb-3">
-                                    <h3 className="heading-section mb-0">Customer Satisfaction</h3>
-                                    <Link to={'/customer-feedback'} className="main-btn font-14">View Feedbacks</Link>
-                                </div>
-                                <div>
-                                    <Row>
-                                        <Col md={6}>
-                                            <div>
-                                                <h4 className="subheading-card">Total Received</h4>
-                                                <h3 className="mainheading-card total-text">753</h3>
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className="feedback-wrapper positive-wrapper">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="feedback-icon">
-                                                        <BsFillHandThumbsUpFill />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="subheading-card">Great</h4>
-                                                        <h3 className="mainheading-card">89%</h3>
-                                                    </div>
-                                                </div>
-                                                <div className="feedback-progressbar positive">
-                                                    <div className="feedback-progress"></div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className="feedback-wrapper neutral-wrapper">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="feedback-icon">
-                                                        <GiHandOk />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="subheading-card">Neutral</h4>
-                                                        <h3 className="mainheading-card">18%</h3>
-                                                    </div>
-                                                </div>
-                                                <div className="feedback-progressbar neutral">
-                                                    <div className="feedback-progress"></div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className="feedback-wrapper negative-wrapper">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="feedback-icon">
-                                                        <BsFillHandThumbsDownFill />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="subheading-card">Poor</h4>
-                                                        <h3 className="mainheading-card">5%</h3>
-                                                    </div>
-                                                </div>
-                                                <div className="feedback-progressbar negative">
-                                                    <div className="feedback-progress"></div>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </div>
-                        </Col> */}
                         <Col xxl={6} lg={12} className="mb-4">
                             <div className="card-box">
                                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -585,203 +473,142 @@ const AdminDashboard = () => {
                             </div>
                         </Col>
                     </Row>
-                </div>
-                <div>
-                    <Row>
-                        <Col lg={6} className="mb-4">
-                            <div className="card-box h-100">
-                                <h3 className="section-head pb-0 border-0 mb-4">To Do List</h3>
-                                <div className="today-todo-wrapper">
-                                    <span className="today-todo-number">
-                                        3
-                                    </span>
-                                    <div>
-                                        <p className="mb-1 font-14">Three to-do left!</p>
-                                        <p className="font-13 mb-0">Let’s do this 💪</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="todo-wrapper mb-2">
-                                        <div className="d-flex align-items-start gap-2">
-                                            <div>
-                                                <Form.Check type="checkbox" className="checkbox-custom" />
-                                            </div>
-                                            <div>
-                                                <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
-                                                <p className="mb-2 font-14">Review it and create  an appliacation</p>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="d-flex align-items-center gap-1 today-text font-14">
-                                                        <span><FaCalendarDays /></span>
-                                                        <span>Today</span>
+                </div> */}
+                                <Tab.Pane eventKey="overview-dashboard">
+                                    <Row>
+                                        <Col md={5}>
+
+                                            <div className="overview-card-wrapper dashboard-overview mb-4">
+                                                <div className="d-flex justify-content-between align-items-center summary-header">
+                                                    <h3 className="mb-0">Summary</h3>
+                                                    <Link to={'/admin/statistics'} className="stats-link">Full Stats <GoArrowRight /></Link>
+                                                </div>
+                                                <div className="overview-card active">
+                                                    <div>
+                                                        <h4 className="overview-card-subhead">This Month Revenue</h4>
+                                                        <h3 className="overview-card-heading mb-0">$10,000 <span className="over-icon"><IoTrendingUpSharp /></span></h3>
                                                     </div>
-                                                    <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                        <img src={devImg} />
-                                                        Rohit Sharma
+
+                                                </div>
+                                                <div className="overview-card">
+                                                    <div>
+                                                        <h4 className="overview-card-subhead">{t("clientJoined")}</h4>
+                                                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined} <span className="over-icon"><IoTrendingUpSharp /></span></h3>
+                                                    </div>
+
+                                                </div>
+                                                <div className="overview-card">
+                                                    <div>
+                                                        <h4 className="overview-card-subhead">{t("vendorJoined")}</h4>
+                                                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined} <span className="over-icon"><IoTrendingUpSharp /></span></h3>
+                                                    </div>
+
+                                                </div>
+                                                <div className="overview-card">
+                                                    <div>
+                                                        <h4 className="overview-card-subhead">Invoice Raised</h4>
+                                                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted} <span className="over-icon"><IoTrendingUpSharp /></span></h3>
+                                                    </div>
+
+                                                </div>
+                                                <div className="overview-card">
+                                                    <div>
+                                                        <h4 className="overview-card-subhead">Total Developer Joined</h4>
+                                                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfDevelopersJoined} <span className="over-icon"><IoTrendingUpSharp /></span></h3>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col lg={7}>
+                                            <div className="card-box">
+                                                <div className="d-flex justify-content-between align-items-center mb-4">
+                                                    <h3 className="section-head pb-0 border-0 mb-0">Activity Logs</h3>
+                                                </div>
+                                                <div className="">
+                                                    <div className="table-responsive activity-log-table">
+                                                        <table className="table table-ui-custom">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Date</th>
+                                                                    <th>Activity</th>
+                                                                    <th>Time</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">Amazon posted a job</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">1 min ago</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">David Williams is shortlisted for figma ui job</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">2 mins ago</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">John Doe wants to edit his profile</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">3 mins ago</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">You have approved Smith application</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">10 mins ago</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">Rohit's timesheet has been approved by Amazon for AI Bot project</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">10:30 AM</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">Amazon posted a job</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">15 min ago</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">20-05-2024</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal">Rohit's timesheet has been approved by Amazon for AI Bot project</td>
+                                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">10:30 AM</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="todo-wrapper mb-2">
-                                        <div className="d-flex align-items-start gap-2">
-                                            <div>
-                                                <Form.Check type="checkbox" className="checkbox-custom" />
+                                        </Col>
+                                        
+                                        <Col md={12}>
+                                            <div className="d-flex justify-content-between mb-3 ">
+                                                <h2 className="section-head-sub mb-0">{t("listOfClients")}</h2>
                                             </div>
-                                            <div>
-                                                <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
-                                                <p className="mb-2 font-14">Review it and create  an appliacation</p>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="d-flex align-items-center gap-1 today-text font-14">
-                                                        <span><FaCalendarDays /></span>
-                                                        <span>Today</span>
-                                                    </div>
-                                                    <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                        <img src={devImg} />
-                                                        Rohit Sharma
-                                                    </div>
-                                                </div>
+                                            <div className="developers-list">
+                                                {adminDashboard?.data?.clients.length > 0 ? adminDashboard?.data?.clients.map((item, index) => {
+                                                    return (
+                                                        <>
+                                                            <div className="developer-card client-card" onClick={() => handleClientCardClick(item?.id)} >
+                                                                <div className="user-imgbx ">
+                                                                    <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" alt="developer" />
+                                                                </div>
+                                                                <div className="text-center">
+                                                                    <h3 className="user-name ">{item?.name}</h3>
+                                                                    <p className="email-user">{item?.email}</p>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                }) : <NoDataFound />}
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="todo-wrapper mb-2">
-                                        <div className="d-flex align-items-start gap-2">
-                                            <div>
-                                                <Form.Check type="checkbox" className="checkbox-custom" />
-                                            </div>
-                                            <div>
-                                                <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
-                                                <p className="mb-2 font-14">Review it and create  an appliacation</p>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="d-flex align-items-center gap-1 today-text font-14">
-                                                        <span><FaCalendarDays /></span>
-                                                        <span>Today</span>
-                                                    </div>
-                                                    <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                        <img src={devImg} />
-                                                        Rohit Sharma
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="todo-wrapper mb-2">
-                                        <div className="d-flex align-items-start gap-2">
-                                            <div>
-                                                <Form.Check type="checkbox" className="checkbox-custom" />
-                                            </div>
-                                            <div>
-                                                <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
-                                                <p className="mb-2 font-14">Review it and create  an appliacation</p>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="d-flex align-items-center gap-1 tomorrow-text font-14">
-                                                        <span><FaCalendarDays /></span>
-                                                        <span>Tomorrow</span>
-                                                    </div>
-                                                    <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                        <img src={devImg} />
-                                                        Rohit Sharma
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <Button variant="transparent" className="link-btn pb-0 mt-2 font-14">View All to dos <span className="to-donumber">9+</span></Button>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={6} className="mb-4">
-                            <div className="card-box h-100">
-                                <h3 className="section-head pb-0 border-0 mb-4">Upcoming Meetings</h3>
-                                <div className="meeting-booking">
-                                    <Calendar onChange={onChange} value={value} />
-                                </div>
-                                <div className="interview-scheduled mt-3">
-                                    <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Pankaj Pundir
-                                            </p>
-                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-upcoming">Upcoming in 1hr</span>
-                                        </div>
-                                    </div>
-                                    <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Pankaj Pundir
-                                            </p>
-                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-upcoming">Upcoming in 3hr</span>
-                                        </div>
-                                    </div>
-                                    {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Pankaj Pundir
-                                            </p>
-                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-upcoming">Upcoming in 3hr</span>
-                                        </div>
-                                    </div> */}
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-                <Row className="mb-5">
-                    <Col md={12}>
-                        <div className="d-flex justify-content-between mb-4 ">
-                            <h2 className="section-head-sub">{t("listOfClients")}</h2>
-                        </div>
-                        <div className="developers-list">
-                            {adminDashboard?.data?.clients.length > 0 ? adminDashboard?.data?.clients.map((item, index) => {
-                                return (
-                                    <>
-                                        <div className="developer-card client-card" onClick={() => handleClientCardClick(item?.id)} >
-                                            <div className="user-imgbx ">
-                                                <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" alt="developer" />
-                                            </div>
-                                            <div className="text-center">
-                                                <h3 className="user-name ">{item?.name}</h3>
-                                                <p className="email-user">{item?.email}</p>
-                                            </div>
-                                        </div>
-                                    </>
-                                )
-                            }) : <NoDataFound />}
-                        </div>
-                    </Col>
-                </Row>
-                <div>
+                                        </Col>
+                                    </Row>
+                                </Tab.Pane>
+                                {/* <div>
                     <Row>
                         <Col md={6} className="mb-4">
                             <div className="mb-3">
                                 <Row>
                                     <Col md={6}>
                                         <div className="status-card d-flex justify-content-between align-items-center">
-                                            {/* <div className="icon-status-card">
-                                                <GoProjectRoadmap />
-                                            </div> */}
                                             <div>
                                                 <h3>Total Projects</h3>
                                                 <div>
@@ -797,9 +624,6 @@ const AdminDashboard = () => {
                                     </Col>
                                     <Col md={6}>
                                         <div className="status-card d-flex justify-content-between align-items-center">
-                                            {/* <div className="icon-status-card">
-                                                <FaCircleCheck />
-                                            </div> */}
                                             <div>
                                                 <h3>Completed Projects</h3>
                                                 <div>
@@ -981,51 +805,221 @@ const AdminDashboard = () => {
                             </div>
                         </Col>
                     </Row>
-                </div>
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h2 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h2>
-                    {adminDashboard?.data?.assignedDevelopers.length > 0 ? <div className="text-center mt-3">
-                        <Link to={"/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
-                    </div> : ""}
-                </div>
-                <div className="developers-list mb-4">
+                </div> */}
 
-                    {adminDashboard?.data?.assignedDevelopers.length > 0 ? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
-                        return (
-                            <>
-                                <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>
-                                    <div className="user-imgbx">
-                                        <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} alt="developer" className="user-img" />
+                                <Tab.Pane eventKey="todo-meeting">
+                                    <div>
+                                        <Row>
+                                            <Col lg={6} className="mb-4">
+                                                <div className="card-box h-100">
+                                                    <h3 className="section-head pb-0 border-0 mb-4">To Do List</h3>
+                                                    <div className="today-todo-wrapper">
+                                                        <span className="today-todo-number">
+                                                            3
+                                                        </span>
+                                                        <div>
+                                                            <p className="mb-1 font-14">Three to-do left!</p>
+                                                            <p className="font-13 mb-0">Let’s do this 💪</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="todo-listing-wrapper">
+                                                        <div className="todo-wrapper mb-2">
+                                                            <div className="d-flex align-items-start gap-2">
+                                                                <div>
+                                                                    <Form.Check type="checkbox" className="checkbox-custom" />
+                                                                </div>
+                                                                <div>
+                                                                    <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
+                                                                    <p className="mb-2 font-14">Review it and create  an appliacation</p>
+                                                                    <div className="d-flex align-items-center gap-3">
+                                                                        <div className="d-flex align-items-center gap-1 today-text font-14">
+                                                                            <span><FaCalendarDays /></span>
+                                                                            <span>Today</span>
+                                                                        </div>
+                                                                        <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                            <img src={devImg} />
+                                                                            Rohit Sharma
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="todo-wrapper mb-2">
+                                                            <div className="d-flex align-items-start gap-2">
+                                                                <div>
+                                                                    <Form.Check type="checkbox" className="checkbox-custom" />
+                                                                </div>
+                                                                <div>
+                                                                    <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
+                                                                    <p className="mb-2 font-14">Review it and create  an appliacation</p>
+                                                                    <div className="d-flex align-items-center gap-3">
+                                                                        <div className="d-flex align-items-center gap-1 today-text font-14">
+                                                                            <span><FaCalendarDays /></span>
+                                                                            <span>Today</span>
+                                                                        </div>
+                                                                        <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                            <img src={devImg} />
+                                                                            Rohit Sharma
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="todo-wrapper mb-2">
+                                                            <div className="d-flex align-items-start gap-2">
+                                                                <div>
+                                                                    <Form.Check type="checkbox" className="checkbox-custom" />
+                                                                </div>
+                                                                <div>
+                                                                    <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
+                                                                    <p className="mb-2 font-14">Review it and create  an appliacation</p>
+                                                                    <div className="d-flex align-items-center gap-3">
+                                                                        <div className="d-flex align-items-center gap-1 today-text font-14">
+                                                                            <span><FaCalendarDays /></span>
+                                                                            <span>Today</span>
+                                                                        </div>
+                                                                        <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                            <img src={devImg} />
+                                                                            Rohit Sharma
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="todo-wrapper mb-2">
+                                                            <div className="d-flex align-items-start gap-2">
+                                                                <div>
+                                                                    <Form.Check type="checkbox" className="checkbox-custom" />
+                                                                </div>
+                                                                <div>
+                                                                    <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
+                                                                    <p className="mb-2 font-14">Review it and create  an appliacation</p>
+                                                                    <div className="d-flex align-items-center gap-3">
+                                                                        <div className="d-flex align-items-center gap-1 tomorrow-text font-14">
+                                                                            <span><FaCalendarDays /></span>
+                                                                            <span>Tomorrow</span>
+                                                                        </div>
+                                                                        <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                            <img src={devImg} />
+                                                                            Rohit Sharma
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <Button variant="transparent" className="link-btn pb-0 mt-2 font-14">View All to dos <span className="to-donumber">9+</span></Button>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            <Col lg={6} className="mb-4">
+                                                <div className="card-box h-100">
+                                                    <h3 className="section-head pb-0 border-0 mb-4">Upcoming Meetings</h3>
+                                                    {/* <div className="meeting-booking">
+                                    <Calendar onChange={onChange} value={value} />
+                                </div> */}
+                                                    <div className="interview-scheduled mt-3">
+                                                        <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4">
+                                                            <div>
+                                                                <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                                                <p className="dev-name mb-2 font-14">
+                                                                    <div className="me-1">
+                                                                        <img src={devImg} />
+                                                                    </div>
+                                                                    Pankaj Pundir
+                                                                </p>
+                                                                <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                                            </div>
+                                                            <div className="mb-2 status-interview">
+                                                                <span className="status-upcoming">Upcoming in 1hr</span>
+                                                            </div>
+                                                        </div>
+                                                        <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+                                                            <div>
+                                                                <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                                                <p className="dev-name mb-2 font-14">
+                                                                    <div className="me-1">
+                                                                        <img src={devImg} />
+                                                                    </div>
+                                                                    Pankaj Pundir
+                                                                </p>
+                                                                <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                                            </div>
+                                                            <div className="mb-2 status-interview">
+                                                                <span className="status-upcoming">Upcoming in 3hr</span>
+                                                            </div>
+                                                        </div>
+                                                        {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 3hr</span>
+                                        </div>
+                                    </div> */}
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                        </Row>
                                     </div>
-                                    <div className="text-center">
-                                        <h3 className="user-name">{item?.developer?.name}</h3>
-                                        <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
-                                        <p className="email-user">{item?.developer?.email}</p>
-                                        <ul className="social-icons">
-                                            <li>
-                                                <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
-                                            </li>
-                                            {/* <li>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="assigned-dev">
+                                    <div className="d-flex justify-content-between align-items-center mb-4">
+                                        <h2 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h2>
+                                        {adminDashboard?.data?.assignedDevelopers.length > 0 ? <div className="text-center mt-3">
+                                            <Link to={"/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
+                                        </div> : ""}
+                                    </div>
+                                    <div className="developers-list mb-4">
+
+                                        {adminDashboard?.data?.assignedDevelopers.length > 0 ? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>
+                                                        <div className="user-imgbx">
+                                                            <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} alt="developer" className="user-img" />
+                                                        </div>
+                                                        <div className="text-center">
+                                                            <h3 className="user-name">{item?.developer?.name}</h3>
+                                                            <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
+                                                            <p className="email-user">{item?.developer?.email}</p>
+                                                            <ul className="social-icons">
+                                                                <li>
+                                                                    <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                                                </li>
+                                                                {/* <li>
                                                 <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
                                             </li> */}
-                                        </ul>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )
+                                        })
+                                            : <NoDataFound />}
                                     </div>
-                                </div>
-                            </>
-                        )
-                    })
-                        : <NoDataFound />}
-                </div>
-                {/* <div className="card-box">
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </div>
+                    </Tab.Container>
+                    {/* <div className="card-box">
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head-sub mb-0">Recent Raised Invoices</h2>
                         <Link to={"/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
                     </div>
                 </div> */}
-            </div >}
+                </div>}
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
         </>
     )

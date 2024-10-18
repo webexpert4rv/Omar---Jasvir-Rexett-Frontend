@@ -16,7 +16,7 @@ const roleConfig = {
     sidebarItems: ADMIN_SIDE_BAR_ITEMS,
     floatingOptions: OTHER_OPTIONS_ADMIN,
     headerProps: { role: "admin" },
-    privateRoute:"/admin/admin-dashboard",
+    privateRoute:"/admin/dashboard",
     publicRoute:'/admin-login'
   },
   vendor: {
@@ -40,11 +40,11 @@ const roleConfig = {
     privateRoute:"/super-admin-dashboard",
     // publicRoute:'/super-login'
   },
-  subAdmin:{
+  employee:{
     sidebarItems: ADMIN_SIDE_BAR_ITEMS,
     floatingOptions: OTHER_OPTIONS_ADMIN,
     headerProps: { role: "admin" },
-    privateRoute:"/admin/admin-dashboard",
+    privateRoute:"/admin/dashboard",
     publicRoute:'/member-login'
   },
   otp:{

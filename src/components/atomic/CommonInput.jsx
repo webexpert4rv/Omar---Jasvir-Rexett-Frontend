@@ -114,10 +114,12 @@ const CommonInput = ({
             } else if (type === "select2") {
               return (
                 <>
-                  <Select
+                   <Select
                     {...field}
                     options={selectOptions}
-                    className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"} `}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    } `}
                     isDisabled={readOnly}
                     // onChange={(selectedOption) => field.onChange(selectedOption)}
                     // value={selectOptions?.find(
@@ -223,6 +225,7 @@ const CommonInput = ({
                   <CreatableSelect
                     {...field}
                     isClearable
+                    options={options}
                     className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"
                       }`}
                     // isDisabled={readOnly}

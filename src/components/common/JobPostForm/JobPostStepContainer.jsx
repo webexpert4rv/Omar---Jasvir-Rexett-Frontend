@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getActiveStepKeys, step1keys, step2keys, step3keys } from "./constant";
 import {
+  addDegree,
   clientJobPost,
   clientUpdatePost,
   getCoutriesList,
@@ -189,7 +190,7 @@ const JobPostStepContainer = ({ role }) => {
               if (activeStep === 1) {
                 if (key === "time_zone") {
                   const newValue = { value: data[key], label: data[key] };
-                  setValue(key, newValue);
+                  setValue(key, data[key]);
                 } else if (key === "response_date") {
                   let newDate = data[key].slice(0, 10)
                   setValue(key, newDate);
@@ -275,6 +276,8 @@ const JobPostStepContainer = ({ role }) => {
             errors={errors}
             watch={watch}
             setValue={setValue}
+            clearErrors={clearErrors}
+            handleCreateOption={handleCreateOption}
           />
         );
     }
@@ -307,6 +310,16 @@ const JobPostStepContainer = ({ role }) => {
   console.log(finalValue, "weightvalue")
   console.log(getActiveStepKeys[1], "step1keys")
 
+  const handleCreateOption = (newOption) => {
+    const degreePayload = {
+        title: newOption,
+      };
+    dispatch(
+        addDegree(degreePayload, (result) => {
+          dispatch(getDegreeList());
+        }))
+  }
+
   const onSubmit = (stepData) => {
     console.log(stepData, "stepdata")
     let payload = {};
@@ -334,7 +347,7 @@ const JobPostStepContainer = ({ role }) => {
         country_code: payload?.country_code?.value,
         state: payload?.state_iso_code?.label,
         state_iso_code: payload?.state_iso_code?.value,
-        time_zone: payload?.time_zone?.label,
+        time_zone: payload?.time_zone,
         response_date: stepData?.response_date
       };
     }

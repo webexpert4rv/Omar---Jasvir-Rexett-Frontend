@@ -81,10 +81,10 @@ console.log(role,"role")
     <>
       {screenLoader ? <ScreenLoader /> : <>
         <h5>List of {type} Developers</h5>
-        <div className="developers-list job-card pt-0">
-          {data?.length > 0 ? (
-            <>
-              {data?.map((item, index) => {
+       { data?.length > 0 ?  <div className="developers-list job-card pt-0">
+         
+       
+             { data?.map((item, index) => {
                 return (
                   <>
                     <div
@@ -267,16 +267,18 @@ console.log(role,"role")
                   </>
                 );
               })}
-            </>
-          ) : (
-            <div>
+               </div>
+           
+          :
+            <div className="simple-no-data">
               <NoDataFound data="⚙️ No Developer in Sight" />
             </div>
-          )}
+       }
+          
 
-        </div>
+       
 
-        {role === "admin" && type === "suggested" ? (
+        {/* {role === "admin" && type === "suggested" ? (
           <div className="d-flex w-100 align-items-center justify-content-between my-4">
             <p className="mb-0">
               Showing {singleJobPagination?.data?.length} results
@@ -289,7 +291,7 @@ console.log(role,"role")
           </div>
         ) : (
           ""
-        )}
+        )} */}
       </>}
       <ScheduleMeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting}  />
     </>

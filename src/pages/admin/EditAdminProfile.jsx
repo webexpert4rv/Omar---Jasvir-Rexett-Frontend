@@ -134,7 +134,6 @@ const EditAdminProfile = () => {
   const nestedActiveStep = 0; // Assuming nestedActiveStep is defined somewhere
   
   const activeStepFields = getAdminActiveFields();
-  console.log(activeStepFields,'activeStepFields adminnnn');
   // let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
   // console.log(clientProfileData,'hihi clientdata')
 

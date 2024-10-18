@@ -867,6 +867,7 @@ export function sendMailForCompleteProfile(payload, data, callback) {
         dispatch(setBtnLoader())
         try {
             let result = await clientInstance.post(`/admin/send-reminder`, { ...payload })
+            console.log(result.data,"daytaa")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
@@ -876,8 +877,8 @@ export function sendMailForCompleteProfile(payload, data, callback) {
                 return callback()
             }
         } catch (error) {
-            // const message = error?.response?.data?.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
+            const message = error?.response?.data?.message;
+            toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };
@@ -1005,11 +1006,11 @@ export function getUpdateRolePermission(payload, callback) {
     }
 }
 
-export function getAllPermissionDetails() {
+export function getAllPermissionDetails(roleId) {
     return async (dispatch) => {
         try {
 
-            let result = await clientInstance.get(`admin/permissions-details`)
+            let result = await clientInstance.get(`admin/permissions-details?role_id=${roleId}`)
             dispatch(setAllPermissionDetails(result.data))
 
         } catch (error) {
@@ -1250,6 +1251,21 @@ export function getSelectedEvent(id, callback) {
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
+            return callback(result.data);
+        } catch (error) {
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+
+export function meetingWebhookApi(payload,token, callback) {
+    return async (dispatch) => {
+        // dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`common/meeting-details?token=${token}`,{...payload})
+
             return callback(result.data);
         } catch (error) {
             const message = error?.response?.data?.message || "Something went wrong";

@@ -38,6 +38,7 @@ import { TiUserAdd } from "react-icons/ti";
 import AssignEmployee from "./Modals/AssignEmployee";
 import { FaRotateRight } from "react-icons/fa6";
 import { FaInfoCircle } from "react-icons/fa";
+import { accessModalAccordingToRoles } from "../../components/common/EditProfile/helper";
 
 let STATUS = [
   {
@@ -52,7 +53,7 @@ let STATUS = [
 
 const Members = () => {
   const dispatch = useDispatch();
-  const { allApplications, approvedLoader, screenLoader, smallLoader } =
+  const { allApplications, approvedLoader, screenLoader, allPermissionDetails, smallLoader } =
     useSelector((state) => state.adminData);
   const [search, setSearch] = useState("");
   const [timerValue, setTimerValue] = useState("");
@@ -72,6 +73,7 @@ const Members = () => {
     isTrustedTech: false,
   });
   const [searchText, setSearchText] = useState("");
+  const [accessPermissions, setAccessPermissions] = useState([]);
   const [searchFilter, setSearchFilter] = useState("");
   const [sortByOption, setSortByOption] = useState("");
   const [filters, setFilters] = useState({
@@ -81,7 +83,7 @@ const Members = () => {
     approval_status: "",
     created_at: "",
   });
-
+  const role = localStorage.getItem("role")
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
   const [details, setDetails] = useState({
@@ -108,7 +110,7 @@ const Members = () => {
       isTrustedTech: checked,
     });
   };
-  
+
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
@@ -288,15 +290,15 @@ const Members = () => {
       )
     );
   };
-  const [assignemployee, showAssignEmployee] = useState({show:false, id: true});
+  const [assignemployee, showAssignEmployee] = useState({ show: false, id: true });
   const handleShowAssignEmployee = (id) => {
     showAssignEmployee({
       show: true,
       id: id
-    });  
+    });
   }
   const handleCloseAssignEmployee = () => {
-    showAssignEmployee({show:false, id: null});
+    showAssignEmployee({ show: false, id: null });
   }
   const assignEmployeeText = (
     <Tooltip>Assign Team Member</Tooltip>
@@ -310,6 +312,29 @@ const Members = () => {
   const featuredMember = (
     <Tooltip>Feature developer on website</Tooltip>
   )
+
+
+  useEffect(() => {
+    if (allPermissionDetails?.permissionCategories?.length > 0) {
+      let permission = accessModalAccordingToRoles(allPermissionDetails?.permissionCategories, "members")
+      setAccessPermissions(permission?.permissions)
+    }
+  }, [allPermissionDetails?.permissionCategories])
+
+  console.log(accessPermissions, "accessPermissions")
+
+
+  const subModulesAccess = (slug) => {
+    console.log(slug, "sluggg")
+    if (role == "employee") {
+      if (accessPermissions?.length > 0) {
+        let slugWithPermission = accessPermissions?.find((item) => item.slug == slug)
+        return slugWithPermission?.status == "active" ? true : false
+      }
+    } else {
+      return true
+    }
+  }
   return (
     <>
       <CommonFilterSection
@@ -379,30 +404,36 @@ const Members = () => {
           onSelect={handleSelect}
         >
           <Nav variant="pills" className="application-pills">
-            <Nav.Item className="application-item">
-              <Nav.Link eventKey="clients" className="application-link">
-                {t("clients")}{" "}
-                <span className="new-app">
-                  {allApplications?.clients?.length}
-                </span>
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item className="application-item">
-              <Nav.Link eventKey="vendors" className="application-link">
-                Partners{" "}
-                <span className="new-app">
-                  {allApplications?.vendors?.length}
-                </span>
-              </Nav.Link>
-            </Nav.Item>
+            {subModulesAccess("members-clients") &&
+              <Nav.Item className="application-item">
+                <Nav.Link eventKey="clients" className="application-link">
+                  {t("clients")}
+                  <span className="new-app">
+                    {allApplications?.clients?.length}
+                  </span>
+                </Nav.Link>
+              </Nav.Item>
+            }
+            {subModulesAccess("members-vendors") &&
+              <Nav.Item className="application-item">
+                <Nav.Link eventKey="vendors" className="application-link">
+                  Partner
+                  <span className="new-app">
+                    {allApplications?.vendors?.length}
+                  </span>
+                </Nav.Link>
+              </Nav.Item>
+            }
+            {/* {subModulesAccess("members-developers") && */}
             <Nav.Item className="application-item">
               <Nav.Link eventKey="developers" className="application-link">
-                Candidates{" "}
+                Candidates
                 <span className="new-app">
                   {allApplications?.developers?.length}
                 </span>
               </Nav.Link>
             </Nav.Item>
+            {/* }  */}
           </Nav>
           <Tab.Content>
             {/* {currentTab === "clients" && (
@@ -433,7 +464,7 @@ const Members = () => {
                       <th>Company Type</th>
                       <th>Applied on</th>
                       <th>{t("status")}</th>
-                      <th className="text-center">Action</th>
+                      { subModulesAccess("clients-disabled-enabled") && <th className="text-center">Action</th>}
                       <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
@@ -496,7 +527,7 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td className="text-center">
+                                {subModulesAccess("clients-disabled-enabled") && <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
@@ -511,18 +542,18 @@ const Members = () => {
                                       />
                                     </div>
                                   </OverlayTrigger>
-                                </td>
+                                </td>}
                                 <td>
                                   <div>
                                     <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
+                                      <Button variant="transparent" onClick={() => handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
                                         <TiUserAdd />
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm)=>itm?.assignedMember?.email)}</span>
+                                      <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm) => itm?.assignedMember?.email)}</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                        <span onClick={()=>handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
+                                        <span onClick={() => handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
                                         </span>
                                       </OverlayTrigger>
@@ -760,7 +791,7 @@ const Members = () => {
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("status")}</th>
-                      <th className="text-center">Action</th>
+                      { subModulesAccess("vendors disabled/enabled") && <th className="text-center">Action</th>}
                       <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
@@ -787,7 +818,7 @@ const Members = () => {
                                       }
                                     >
                                       <RxChevronRight />
-                                    </span>{" "}
+                                    </span>
                                     <div className="user-imgbx application-userbx">
                                       <img
                                         src={
@@ -820,7 +851,7 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td className="text-center">
+                                {subModulesAccess("vendors-disabled-enabled") && <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
@@ -835,18 +866,18 @@ const Members = () => {
                                       />
                                     </div>
                                   </OverlayTrigger>
-                                </td>
+                                </td>}
                                 <td>
                                   <div>
                                     <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
                                         <TiUserAdd />
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                    <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm)=>itm?.assignedMember?.email)}</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                        <span onClick={()=>handleShowAssignEmployee(item.id)}className="reschedule-btn flex-none">
                                           <FaRotateRight />
                                         </span>
                                       </OverlayTrigger>
@@ -1169,11 +1200,12 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
-                      <th>Action</th>
-                      <th><span className="d-flex align-items-center gap-1">Featured 
-                      <OverlayTrigger placement="bottom" overlay={featuredMember}>
-                      <span><FaInfoCircle /></span></OverlayTrigger></span> </th>
-                      <th>Trusted Tech Expert</th>
+                      {subModulesAccess("developers-disabled-enabled") && <th>Action</th>}
+                     {subModulesAccess("developers-featured-on-website") && <th><span className="d-flex align-items-center gap-1">Featured
+                        <OverlayTrigger placement="bottom" overlay={featuredMember}>
+                          <span><FaInfoCircle /></span></OverlayTrigger></span> </th>}
+                      {subModulesAccess("developers-trusted-tech-expert") &&
+                        <th>Trusted Tech Expert</th>}
                       <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
@@ -1236,6 +1268,7 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
+                                { subModulesAccess("developers-disabled-enabled") &&
                                 <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
@@ -1252,61 +1285,66 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
-                                <td className="text-center">
-                                  <OverlayTrigger
-                                    placement="bottom"
-                                    overlay={
-                                      item?.featured_member
-                                        ? removeFromFeaturedMembers
-                                        : addToFeaturedMembers
-                                    }
-                                  >
-                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
-                                      <input
-                                        class="form-check-input mx-auto toggle-switch-custom pointer"
-                                        type="checkbox"
-                                        role="switch"
-                                        checked={item?.featured_member}
-                                        onClick={(e) =>
-                                          handleFeature(e, item.id)
-                                        }
-                                      />
-                                    </div>
-                                  </OverlayTrigger>
-                                </td>
-                                <td className="text-center">
-                                  <OverlayTrigger
-                                    placement="bottom"
-                                    overlay={
-                                      item?.trusted_tech_expert
-                                        ? removeFromTrustedTech
-                                        : addToTrustedTech
-                                    }
-                                  >
-                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
-                                      <input
-                                        class="form-check-input toggle-switch-custom pointer mx-auto"
-                                        type="checkbox"
-                                        role="switch"
-                                        checked={item?.trusted_tech_expert}
-                                        onClick={(e) =>
-                                          handleIsTrustedTech(e, item.id)
-                                        }
-                                      />
-                                    </div>
-                                  </OverlayTrigger>
-                                </td>
+                                 } 
+                                {subModulesAccess("developers-featured-on-website") &&
+                                  <td className="text-center">
+                                    <OverlayTrigger
+                                      placement="bottom"
+                                      overlay={
+                                        item?.featured_member
+                                          ? removeFromFeaturedMembers
+                                          : addToFeaturedMembers
+                                      }
+                                    >
+                                      <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
+                                        <input
+                                          class="form-check-input mx-auto toggle-switch-custom pointer"
+                                          type="checkbox"
+                                          role="switch"
+                                          checked={item?.featured_member}
+                                          onClick={(e) =>
+                                            handleFeature(e, item.id)
+                                          }
+                                        />
+                                      </div>
+                                    </OverlayTrigger>
+                                  </td>
+                                }
+                                {subModulesAccess("developers-trusted-tech-expert") &&
+                                  <td className="text-center">
+                                    <OverlayTrigger
+                                      placement="bottom"
+                                      overlay={
+                                        item?.trusted_tech_expert
+                                          ? removeFromTrustedTech
+                                          : addToTrustedTech
+                                      }
+                                    >
+                                      <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
+                                        <input
+                                          class="form-check-input toggle-switch-custom pointer mx-auto"
+                                          type="checkbox"
+                                          role="switch"
+                                          checked={item?.trusted_tech_expert}
+                                          onClick={(e) =>
+                                            handleIsTrustedTech(e, item.id)
+                                          }
+                                        />
+                                      </div>
+                                    </OverlayTrigger>
+                                  </td>
+                                }
                                 <td>
                                   <div>
                                     <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
                                         <TiUserAdd />
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex gap-2 align-items-center">
-                                      <span className="associate white-nowrap">johndoe123gmail.com</span>
+                                    <span className="associate white-nowrap">{item?.assigned_team_members?.map((itm)=>itm?.assignedMember?.email)}</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                        <span onClick={()=>handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
                                         </span>
                                       </OverlayTrigger>
@@ -1625,7 +1663,7 @@ const Members = () => {
           />
         )}
       </div>
-      {assignemployee.show && <AssignEmployee show={assignemployee.show} handleClose={handleCloseAssignEmployee} id={assignemployee.id} />}
+      {assignemployee.show && <AssignEmployee show={assignemployee.show} developerId={assignemployee.id} handleClose={handleCloseAssignEmployee} currentTab={currentTab} page={page} />}
     </>
   );
 };
