@@ -25,6 +25,7 @@ import { TbArrowBarToLeft } from "react-icons/tb";
 import ToDoComponent from "./ToDoComponent";
 import MessageInbox from "./MessageInbox";
 import Meetings from "../common/meetings/Meetings";
+import { PiUsersFourFill } from "react-icons/pi";
 
 // const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
 const  clientName = localStorage.getItem("userName")
@@ -189,9 +190,15 @@ const RexettHeader = ({handleCollapseSidebar, collapseLayout }) => {
           </div>
           <div className="d-flex align-items-center gap-3 secondary_nav">
             {role == "admin" ? (
-              <Button className="main-btn font-14" onClick={()=>{
+              <>
+                <ToolTip text={"View Clients"} >
+                  <span className="cursor-pointer to-do-icon" onClick={()=>{
                 navigate("/admin/members")
-              }}>View Clients</Button>
+              }}>
+                    <PiUsersFourFill />
+                  </span>
+                </ToolTip>
+              </>
               ) : ("")}
             {role == "admin" ? (
               <ToolTip text={"To Do List"} >

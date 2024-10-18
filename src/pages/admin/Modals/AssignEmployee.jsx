@@ -9,7 +9,7 @@ import {
 } from "../../../redux/slices/adminDataSlice";
 import useDebounce from "../../../hooks/useDebounce";
 import RexettButton from "../../../components/atomic/RexettButton";
-const AssignEmployee = ({ show, handleClose, currentTab,page }) => {
+const AssignEmployee = ({ show, handleClose, currentTab,page,developerId }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployeeData, setFilterdEmployeeData] = useState([]);
   const [selectedMember, setSelectedMember] = useState({});
@@ -50,7 +50,7 @@ const AssignEmployee = ({ show, handleClose, currentTab,page }) => {
 
   const handleAssignEmployee = () => {
     const payload = {
-      user_id: +id,
+      user_id: +developerId,
       assigned_member_id: +selectedMember?.id,
       assigned_member_role: selectedMember?.roles[0]?.name,
     };
