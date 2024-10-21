@@ -1464,13 +1464,13 @@ export function updateStatus(payload, id, callback) {
 }
 
 
-export function getDetailsByRexettMeeting(payload) {
+export function getDetailsByRexettMeeting(id) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get("/common/meeting-details-by-job-external-id", {...payload });
-           console.log(result.data,"resulted")
-            dispatch(setRexettMeetingData(result.data));
+            let result = await clientInstance.get(`/common/meeting-details-by-job-external-id?job_external_id=${id}`);
+           console.log(result.data.data,"resultedData")
+            dispatch(setRexettMeetingData(result.data?.data));
             toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
         } catch (error) {
             console.log(error, "errrrr");
