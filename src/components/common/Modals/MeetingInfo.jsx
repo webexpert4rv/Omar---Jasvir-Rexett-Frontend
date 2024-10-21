@@ -28,7 +28,7 @@ import RadioGroupField from "../../RadioGroupField";
 import { getDifferenceFromTwoDates } from "../../utils";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import SingleAttendeeInfo from "../SingleAttendeeInfo";
-import { meetingWebhookApi, updateStatus } from "../../../redux/slices/adminDataSlice";
+import { getDetailsByRexettMeeting, meetingWebhookApi, updateStatus } from "../../../redux/slices/adminDataSlice";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
 import { convertSeconds, NOTIFICATIONBASEURL } from "../../../helper/utlis";
 const MARK_AS_OPTIONS = [
@@ -68,6 +68,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const { register, errors, values, setValue, watch } = useForm();
   const [showDetailsSection, setShowDetailsSection] = useState(false);
   const [info, setInfo] = useState({});
+
   const [joinUrl, setJoinUrl] = useState("");
   const [loader, setLoader] = useState(false);
   const [isCancelModal, setCancelModal] = useState({
@@ -156,11 +157,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     gapi.load("client:auth2", start);
   }, []);
 
-  const fetchMeetingDetails = async (meetingCode) => {
+  const fetchMeetingDetails = async (eventId) => {
     const startTime = new Date("2024-10-08T05:43:00+05:30").toISOString(); // Adjust start date
     const endTime = new Date( "2024-10-08T06:43:00+05:30").toISOString();
     // alert(meetingCode);
-    const meetingCo = "vokb3ct1s6si633osucojracn8";
+    const meetingCo = eventId;
     const filters = `calendar_event_id==${meetingCo}`
     const response = await gapi.client.reports.activities.list({
       userKey: "all",
@@ -242,7 +243,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
   const googleEventId = localStorage.getItem("googleEventId")
 
-  const checkInterviewStatus = async (externalID) => {
+  const checkInterviewStatus = async (eventId,job_external_id) => {
     const meeting_platform = details?.interview?.meeting_platform;
     setLoader((prev) => true);
     if (meeting_platform === "microsoft_team") {
@@ -312,7 +313,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
       console.log("inside google meet")
       const response = await gapi.client.calendar.events.get({
         calendarId: "primary",
-        eventId: "vokb3ct1s6si633osucojracn8",
+        eventId: eventId,
       });
 
       if (response.result.status === "cancelled") {
@@ -321,17 +322,17 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         const now = new Date();
         const meetingStart = new Date(response.result.start.dateTime);
         if (!meetingStart < now) {
-          fetchMeetingDetails("vokb3ct1s6si633osucojracn8");
+          fetchMeetingDetails(eventId);
           // alert('The meeting should have started or is over.');
         } else {
           alert("The meeting is still scheduled.");
         }
       }
-    }else {
-      const socket = io(NOTIFICATIONBASEURL);
-      socket.on("meetingEnded_"+ externalID , (meetingDetails) => {
-       console.log(meetingDetails,"meetingDetails")
-      });
+    }else{
+      let payload={
+        job_external_id:job_external_id
+      }
+      dispatch(getDetailsByRexettMeeting(payload))
     }
     setLoader((prev) => false);
   };
@@ -410,6 +411,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
   const handleCloseScheduleMeeting = () => {
     setShowScheduleMeet(false);
   }
+  console.log(details,"details")
 
   return (
     <>
@@ -620,7 +622,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
-                onClick={() => checkInterviewStatus(details?.interview?.job_external_id)}
+                onClick={() => checkInterviewStatus(details?.interview?.event_id,details?.job_external_id)}
               >
                 {loader ? <RexettSpinner /> : "Check Interview Status"}
               </Button>
@@ -658,6 +660,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                       register={register}
                       fieldName="mark_as"
                       handleMarkAsStatusChange={handleMarkAsStatusChange}
+                      onChangeRequired = {true}
                     />
                   </div>
                 </Col>

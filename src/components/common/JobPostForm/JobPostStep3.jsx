@@ -16,6 +16,7 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "Years",
     question: "How many years of experience do you currently have?",
+    inputType: "radio",
   },
   {
     optionId: 2,
@@ -25,6 +26,7 @@ const SCREENING_OPTIONS = [
     question: "Have you completed the following level of education: [Degree]",
     ideal_answer: "Yes",
     uniqueId: "2",
+    inputType: "radio",
   },
   {
     optionId: 3,
@@ -33,6 +35,7 @@ const SCREENING_OPTIONS = [
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
     uniqueId: "3",
+    inputType: "radio",
   },
 
   {
@@ -42,6 +45,7 @@ const SCREENING_OPTIONS = [
     question_type: "",
     ideal_answer: "Yes",
     question: "Are you comfortable commuting to this job's location?",
+    inputType: "radio",
   },
   {
     optionId: 5,
@@ -50,6 +54,7 @@ const SCREENING_OPTIONS = [
     question_type: "",
     question: "Are you comfortable working in a remote setting?",
     ideal_answer: "Yes",
+    inputType: "radio",
   },
   {
     optionId: 6,
@@ -57,13 +62,14 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "Skill",
     question: "Have many years of work experience do you have with [Skill]?",
+    inputType: "radio",
   },
   {
     optionId: 7,
     label: "Onsite Work",
     title: "",
     question: "Are you comfortable working in an onsite setting?",
-    // inputType: "",
+    inputType: "radio",
     ideal_answer: "Yes",
     uniqueId: "1",
   },
@@ -73,7 +79,6 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "custom",
     question: "",
-    responseType: "",
     inputType: "",
     ideal_answer: "",
   },
@@ -120,10 +125,8 @@ const JobPostStep3 = ({
       must_have: false,
       alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
       optionId: opt.optionId,
+      inputType:opt.inputType,
     });
-    {
-      opt?.responseType && append({ responseType: "radio" });
-    }
   };
   const isFieldAlreadyAdded = (optId) => {
     const screeningQuestions = watch("screening_questions");
@@ -338,6 +341,7 @@ const JobPostStep3 = ({
                             )} */}
                           </>
                         )}
+
                       {field?.question_type &&
                         field?.question_type === "language" && (
                           <>

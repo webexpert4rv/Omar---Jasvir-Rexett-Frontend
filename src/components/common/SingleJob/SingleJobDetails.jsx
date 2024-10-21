@@ -434,6 +434,20 @@ const SingleJobDetails = () => {
     }
   };
 
+  const cardCurrentStatus=(status)=>{
+    switch (status){
+      case "completed":
+        return "Completed";
+        case "pending":
+          return "Need to Schedule";
+          case "declined":
+            return "Declined"
+            default :
+            return ;
+    }
+
+  }
+
   const handleSuggestions = () => {
     let payload = {
       clientId: clientId,
@@ -1156,16 +1170,7 @@ const SingleJobDetails = () => {
                               <span
                                 className={`status-${item.interview.status.toLowerCase()}`}
                               >
-                                {item.interview.status
-                                  .toLowerCase()
-                                  .split(" ")
-                                  .map((word) =>
-                                    word === "complete"
-                                      ? "Complete"
-                                      : word.charAt(0).toUpperCase() +
-                                        word.slice(1)
-                                  )
-                                  .join(" ")}
+                                { cardCurrentStatus(item.interview.status)}
                               </span>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
@@ -1457,7 +1462,7 @@ const SingleJobDetails = () => {
                                   <div>
                                     <span className="associate-text">
                                       <span className="associate">
-                                        Experience : <b>3 years</b>
+                                        Experience : <b>{item?.developer?.developer_detail?.total_experience} years</b>
                                       </span>
                                     </span>
                                     <span className="associate-text">
