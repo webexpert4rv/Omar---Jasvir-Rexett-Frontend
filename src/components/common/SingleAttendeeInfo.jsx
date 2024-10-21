@@ -1,8 +1,9 @@
 import React from 'react';
 
 const SingleAttendeeInfo = ({attendeeData}) => {
+console.log(attendeeData,"attendeeData")
   return (
-    <div>SingleAttendeeInfo</div>
+    <div>{attendeeData?.email}</div>
   )
 }
 
