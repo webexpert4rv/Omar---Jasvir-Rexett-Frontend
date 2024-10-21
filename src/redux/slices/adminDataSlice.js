@@ -40,7 +40,8 @@ const initialAdminData = {
     allAdminEmployees: [],
     chatRoom: {},
     allPermissionDetails: {},
-    allIntegrationData: []
+    allIntegrationData: [],
+    rexettMeetingData:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -219,11 +220,14 @@ export const adminDataSlice = createSlice({
         setAllPermissionDetails: (state, action) => {
             state.allPermissionDetails = action.payload
             state.smallLoader = false
+        },
+        setRexettMeetingData:(state,action) =>{
+            state.rexettMeetingData = action.payload
         }
     }
 })
 
-export const { setAllIntegration, setIsChatOpen, setAllPermissionDetails, setTimeReportDetails, setAdminEmployees, setSmallLoader, setChatRoom, setConfigDetails, setTodoData, setMessageTemplates, setAllEvents, setAllPermissionList, setDeveloperList, setEmployeeList, setDeveloperTimeReport, setInvoiceDetails, setSuggestedDeveloper, setAccountEnableDisable, setAdminClientList, setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setAllIntegration, setIsChatOpen, setAllPermissionDetails, setRexettMeetingData,setTimeReportDetails, setAdminEmployees, setSmallLoader, setChatRoom, setConfigDetails, setTodoData, setMessageTemplates, setAllEvents, setAllPermissionList, setDeveloperList, setEmployeeList, setDeveloperTimeReport, setInvoiceDetails, setSuggestedDeveloper, setAccountEnableDisable, setAdminClientList, setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -1077,19 +1081,19 @@ export function getAdminTodos(payload) {
 }
 export function getEditToDo(payload, id, callback) {
     return async (dispatch) => {
-        // dispatch(setApprovedLoader())
+        dispatch(setApprovedLoader())
         try {
             let result = await clientInstance.put(`admin/todos/${id}`, { ...payload })
             console.log(result.data, "resultdata")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            //  dispatch( setSuccessAdminData())
+             dispatch( setSuccessAdminData())
             return callback();
         } catch (error) {
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
-            // dispatch(setFailAdminData())
+            dispatch(setFailAdminData())
         }
     }
 }
@@ -1446,7 +1450,6 @@ export function suggestDevelopers(payload, callback) {
 }
 
 export function updateStatus(payload, id, callback) {
-
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
@@ -1457,6 +1460,21 @@ export function updateStatus(payload, id, callback) {
             console.log(error, "errrrr");
         }
         return callback()
+    };
+}
+
+
+export function getDetailsByRexettMeeting(id) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`/common/meeting-details-by-job-external-id?job_external_id=${id}`);
+           console.log(result.data.data,"resultedData")
+            dispatch(setRexettMeetingData(result.data?.data));
+            toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
+        } catch (error) {
+            console.log(error, "errrrr");
+        }
     };
 }
 
