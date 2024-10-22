@@ -27,7 +27,7 @@ const DocumentFieldModal = ({ show, handleClose, tagDetails, onSubmit }) => {
       <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
 
       <Modal.Body>
-        <h3 className="popup-heading">Enter The Value</h3>
+        <h3 className="popup-heading">Enter The {tagDetails.tag}</h3>
         <form onSubmit={handleSubmit(handleOnSubmit)} noValidate>
           <Form.Group className="mb-4">
             <Form.Label className="font-14">{tagDetails.tag}</Form.Label>
