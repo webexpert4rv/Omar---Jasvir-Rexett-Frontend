@@ -355,6 +355,7 @@ const JobPostStepContainer = ({ role }) => {
     tempScreeningQuestions.forEach((curElem) => {
       if (curElem?.question_type === "custom") {
         curElem.inputType = curElem.responseType;
+        curElem.web_type = curElem.responseType
       }
     });
 
