@@ -21,10 +21,10 @@ function DocumentViewerWrapper({
   const [showcustomfield, setCustomField] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState([]);
 
-  const { jobPostedData } = useSelector((state) => state.clientData);
+  const { singleJobPost } = useSelector((state) => state.clientData);
 
   const candidateList =
-    jobPostedData?.job?.job_applications?.interviews?.interview_completed || [];
+    singleJobPost?.job?.job_applications?.offered || [];
 
   const handleCloseCustomField = () => {
     setCustomField(!showcustomfield);

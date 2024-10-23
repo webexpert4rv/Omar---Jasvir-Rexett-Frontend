@@ -17,16 +17,16 @@ import { FaList } from "react-icons/fa6";
 const permission_role_name=localStorage.getItem("permission_role_name") || "admin"
 
 export const DEVELOPER_SIDE_BAR_ITEMS = [
-    { to: "/developer/dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/developer/developer-cv", icon: <FaUserLarge />, text: "cv" },
-    { to: "/developer/edit-developer-profile", icon: <IoIosSettings />, text:"editProfile" },
-    { to: "/developer/developer-documents", icon: <IoDocuments />, text: "documents" },
-    { to: "/developer/job-posted", icon: <FaListUl />, text: "jobs" },
-    { to: "/developer/developer-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
-    { to: "/developer/project-history", icon: <FaList />, text: "Project History" },
-    { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
-    { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
-    { to: "/developer/developer-settings", icon: <FaGear />, text: "Settings" },
+    { to: "/developer/dashboard", icon: <MdSpaceDashboard />, text: "dashboard",active:true },
+    { to: "/developer/developer-cv", icon: <FaUserLarge />, text: "cv",active:true },
+    { to: "/developer/edit-developer-profile", icon: <IoIosSettings />, text:"editProfile",active:true },
+    { to: "/developer/developer-documents", icon: <IoDocuments />, text: "documents",active:true },
+    { to: "/developer/job-posted", icon: <FaListUl />, text: "jobs",active:true },
+    { to: "/developer/developer-time-reporting", icon: <BsClockFill />, text: "timeReporting",active:true},
+    { to: "/developer/project-history", icon: <FaList />, text: "Project History",active:true },
+    { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday",active:true },
+    { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip",active:true},
+    { to: "/developer/developer-settings", icon: <FaGear />, text: "Settings",active:true },
 
 
 ];
@@ -49,16 +49,16 @@ export const OTHER_OPTIONS_VENDOR  = [
 ];
 
 export const CLIENT_SIDE_BAR_ITEMS = [
-    { to: "/client/dashboard", icon: <MdSpaceDashboard />, text: "dashboard"},
-    { to: "/client/hired-developers", icon: <FaUserLarge />, text: "hireDevelopers" },
-    { to: "/client/edit-profile", icon: <IoIosSettings />, text: "editProfile" },
-    { to: "/client/documents", icon: <IoDocuments />, text: "documents" },
-    { to: "/client/time-reporting", icon: <BsClockFill />, text: "timeReporting" },
-    { to: "/client/leave-request", icon: <GiPalmTree />, text: "leaveRequests" },
-    { to: "/client/job-posted", icon: <FaListUl />, text: "jobs" },
+    { to: "/client/dashboard", icon: <MdSpaceDashboard />, text: "dashboard" ,active:true},
+    { to: "/client/hired-developers", icon: <FaUserLarge />, text: "hireDevelopers",active:true },
+    { to: "/client/edit-profile", icon: <IoIosSettings />, text: "editProfile" ,active:true},
+    { to: "/client/documents", icon: <IoDocuments />, text: "documents",active:true },
+    { to: "/client/time-reporting", icon: <BsClockFill />, text: "timeReporting",active:true },
+    { to: "/client/leave-request", icon: <GiPalmTree />, text: "leaveRequests",active:true },
+    { to: "/client/job-posted", icon: <FaListUl />, text: "jobs",active:true },
     // { to: "/client/earned-back", icon: <PiCoinsFill />, text: "earnedBack" },
-    { to: "/client/invoice", icon: <FaFileInvoice />, text: "invoice" },
-    { to: "/client/client-settings", icon: <FaGear />, text: "Settings" },
+    { to: "/client/invoice", icon: <FaFileInvoice />, text: "invoice",active:true },
+    { to: "/client/client-settings", icon: <FaGear />, text: "Settings",active:true },
 ];
 
 export const ADMIN_SIDE_BAR_ITEMS= [
@@ -79,19 +79,19 @@ export const ADMIN_SIDE_BAR_ITEMS= [
   ]
 
  export const VENDOR_SIDE_BAR_ITEMS=[
-    { to: "/vendor-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/list-all-developers", icon:  <FaUserLarge />, text: "List of Developers" },
-    { to: "/edit-vendor-profile", icon: <IoIosSettings />, text: "editProfile" },
-    { to: "/vendor-documents", icon: <IoDocuments />, text: "documents" },
-    { to: "/vendor-upload-invoice", icon: <FaFileInvoice />, text: "Invoice" },
-    { to: "/vendor-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
-    { to: "/vendor/vendor-settings", icon: <FaGear />, text: "Settings" },
+    { to: "/vendor-dashboard", icon: <MdSpaceDashboard />, text: "dashboard",active:true },
+    { to: "/list-all-developers", icon:  <FaUserLarge />, text: "List of Developers" ,active:true},
+    { to: "/edit-vendor-profile", icon: <IoIosSettings />, text: "editProfile",active:true },
+    { to: "/vendor-documents", icon: <IoDocuments />, text: "documents" ,active:true},
+    { to: "/vendor-upload-invoice", icon: <FaFileInvoice />, text: "Invoice" ,active:true},
+    { to: "/vendor-time-reporting", icon: <BsClockFill />, text: "timeReporting",active:true },
+    { to: "/vendor/vendor-settings", icon: <FaGear />, text: "Settings",active:true },
   ];
   
   export const SUPERADMIN_SIDE_BAR_ITEMS=[
-    { to: "/super-admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/super-admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
-    { to: "/super-admin/client-listing", icon: <FaUsers />, text: "Clients" },
-    { to: "/super-admin/support-agents", icon: <FaUsers />, text: "Support Agents" },
-    { to: "/super-admin/manage-shift", icon: <FaUserClock />, text: "Manage Agent Shift" },
+    { to: "/super-admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" ,active:true},
+    { to: "/super-admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" ,active:true},
+    { to: "/super-admin/client-listing", icon: <FaUsers />, text: "Clients",active:true },
+    { to: "/super-admin/support-agents", icon: <FaUsers />, text: "Support Agents",active:true },
+    { to: "/super-admin/manage-shift", icon: <FaUserClock />, text: "Manage Agent Shift",active:true },
   ]; 

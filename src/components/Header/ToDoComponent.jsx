@@ -10,6 +10,7 @@ import Tabs from '../common/LeaveRequest/Tabs';
 import DeleteToDo from '../common/Modals/DeleteToDo';
 import { getAdminTodos, getDeleteTodo, getEditToDo } from '../../redux/slices/adminDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { GiPlainCircle } from "react-icons/gi";
 
 function ToDoComponent({ showToDo, setShowToDo }) {
     const dispatch = useDispatch()
@@ -25,7 +26,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
     useEffect(() => {
         // Log selected candidates to see state updates
         console.log('Selected Candidates:', details);
-      }, [details]);
+    }, [details]);
 
 
     const handleCloseToDo = () => {
@@ -97,20 +98,21 @@ function ToDoComponent({ showToDo, setShowToDo }) {
         dispatch(getAdminTodos(filter))
     }
     const getSelectedCandidateDetails = (canId) => {
-        if(canId){
-        const candidateDetails = employeeList .flatMap(itm => itm).find(candidate => candidate.id === canId);
-            console.log(candidateDetails?.name,"candidateDetails")
+        if (canId) {
+            const candidateDetails = employeeList.flatMap(itm => itm).find(candidate => candidate.id === canId);
+            console.log(candidateDetails?.name, "candidateDetails")
             setDetails(candidateDetails?.name)
-            console.log(details,"details Inside")
-             return candidateDetails?.name
+            console.log(details, "details Inside")
+            return candidateDetails?.name
+        }
     }
-}
-    console.log(details,"details outside")
+    console.log(details, "details outside")
     console.log(selectedCandidates?.name, "newDetails")
 
 
     return (
         <div>
+
             <Offcanvas show={showToDo} placement="end" className="todo-canvas" onHide={handleCloseToDo}>
                 <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
                     <div className="d-flex align-items-center gap-2">
@@ -196,6 +198,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                             <div className="d-flex align-items-center gap-1 today-text font-14">
                                                                                 <span><FaCalendarDays /></span>
                                                                                 <span>{item.due_date.slice(0, 10)}</span>
+
                                                                             </div>
                                                                             {currentTab === "assigned_to" && (
                                                                                 <div className="d-flex align-items-center gap-1 assigned-user font-14">
@@ -211,6 +214,7 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                         ))
                                                     ) : (
                                                         <p className='todo-error'>❌ No Completed Tasks Yet! ✅✨</p>
+
                                                     )
                                                 ) : (
                                                     <div>
@@ -244,10 +248,14 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                                     />
                                                                                 </div>
                                                                                 <div>
-                                                                                    <p className="mb-0 fw-semibold">{item.title}</p>
+                                                                                    <div className="d-flex mb-0 gap-2"> <p className="fw-semibold">{item.title}</p>
+                                                                                     <span style={{ color: `${item?.priority_color}` }}><GiPlainCircle /></span>
+                                                                                     <p >{item.priority.charAt(0).toUpperCase()+ item.priority.slice(1)} Priority </p>
+                                                                                     </div>
                                                                                     <p className="mb-2 font-14">{stripHtmlTags(item.description)}</p>
                                                                                     <div className="d-flex align-items-center gap-3">
                                                                                         <div className="d-flex align-items-center gap-1 today-text font-14">
+
                                                                                             <span><FaCalendarDays /></span>
                                                                                             <span>{item.due_date.slice(0, 10)}</span>
                                                                                         </div>

@@ -37,8 +37,8 @@ const JobOfferedTab = () => {
     newRecord: "",
   });
 
-  const { jobPostedData } = useSelector((state) => state.clientData);
-
+  const { singleJobPost } = useSelector((state) => state.clientData);
+console.log(singleJobPost,"singleJobPost")
   useEffect(() => {
     if (selectedTab === "offerTemplate") getTemplateLists();
   }, [selectedTab]);
@@ -55,7 +55,7 @@ const JobOfferedTab = () => {
             ) || false
         );
         const hiresCandidate =
-          jobPostedData?.job?.job_applications?.hired || [];
+          singleJobPost?.job?.job_applications?.hired || [];
         const isAlreadyHired = hiresCandidate.filter(
           (can) => can.developer.email === signedCompleted.memberInfos[0]
         );
@@ -67,16 +67,18 @@ const JobOfferedTab = () => {
             //   newStatus: JOB_STATUS.hired,
             // };
 
-            // let payload = {
-            //   developerId: developerId,
-            //   jobId: signed?.meta_data?.jobId,
-            //   newStatus: JOB_STATUS.hired,
-            // };
-            // dispatch(changeJobStatus("offered", newData));
+            let payload = {
+              developerId: 1620,
+              jobId: signed?.meta_data?.jobId,
+              newStatus: JOB_STATUS.hired,
+              applicationId:2
+            };
+            dispatch(changeJobStatus("offered", payload));
           });
           // let newData={
           //   "applicationId": statusModal?.id,
           //   "newStatus":data.status
+          //   "jobId"
           // }
           // dispatch(changeJobStatus("offered",newData))
         }
@@ -100,10 +102,9 @@ const JobOfferedTab = () => {
       case "owner":
         if (stepValue === CANDIDATE) {
           const finalCandidates =
-            jobPostedData?.job?.job_applications?.interviews
-              ?.interview_completed || [];
+            singleJobPost?.job?.job_applications?.offered || [];
           if (finalCandidates.length === 0) {
-            const message = "Interview is completed yet for this job";
+            const message = "No interview is completed yet for this job";
             toast.error(message, { position: "top-center" });
             return;
           }

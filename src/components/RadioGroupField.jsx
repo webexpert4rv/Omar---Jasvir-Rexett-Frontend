@@ -7,6 +7,8 @@ const RadioGroupField = ({
   radioOptions,
   label,
   register,
+  onChangeRequired = false,
+  rules
 }) => {
   return (
     <>
@@ -18,21 +20,36 @@ const RadioGroupField = ({
         ) : (
           ""
         )}
-        <div className="position-relative">
-          {radioOptions?.map(({ label, value }) => (
-            <Form.Check
-              {...register(
-                fieldName,
-                (onchange = (e) => {
-                  handleMarkAsStatusChange(e.target.value);
-                })
-              )}
-              type="checkbox"
-              label={label}
-              value={value}
-            />
-          ))}
-        </div>
+        {onChangeRequired ? (
+          <div className="position-relative">
+            {radioOptions?.map(({ label, value }) => (
+              <Form.Check
+                {...register(
+                  fieldName,
+                  (onchange = (e) => {
+                    handleMarkAsStatusChange(e.target.value);
+                  })
+                )}
+                type="checkbox"
+                label={label}
+                value={value}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="position-relative">
+            {radioOptions?.map(({ label, value }) => (
+              <Form.Check
+                {...register(
+                  fieldName,rules
+                )}
+                type="checkbox"
+                label={label}
+                value={value}
+              />
+            ))}
+          </div>
+        )}
       </Form.Group>
     </>
   );

@@ -434,6 +434,21 @@ const SingleJobDetails = () => {
     }
   };
 
+  const cardCurrentStatus = (status) => {
+    switch (status) {
+      case "completed":
+        return "Completed";
+      case "pending":
+        return "Need to Schedule";
+      case "declined":
+        return "Declined";
+      case "scheduled":
+        return "Scheduled";
+      default:
+        return;
+    }
+  };
+
   const handleSuggestions = () => {
     let payload = {
       clientId: clientId,
@@ -664,12 +679,13 @@ const SingleJobDetails = () => {
     setAgreementDetail(!showagreement);
   };
 
-  const handleChangeJobStatus = (developerId, jobId, status) => {
-    console.log(status,"stat")
+  const handleChangeJobStatus = (developerId, jobId, status,application) => {
+    console.log(status, "stat");
     let payload = {
       developerId: developerId,
       jobId: jobId,
       newStatus: status,
+      "applicationId":application ,
     };
     dispatch(
       changeJobStatus(currentTab, payload, () => {
@@ -1156,16 +1172,7 @@ const SingleJobDetails = () => {
                               <span
                                 className={`status-${item.interview.status.toLowerCase()}`}
                               >
-                                {item.interview.status
-                                  .toLowerCase()
-                                  .split(" ")
-                                  .map((word) =>
-                                    word === "complete"
-                                      ? "Complete"
-                                      : word.charAt(0).toUpperCase() +
-                                        word.slice(1)
-                                  )
-                                  .join(" ")}
+                                {cardCurrentStatus(item.interview.status)}
                               </span>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
@@ -1225,7 +1232,8 @@ const SingleJobDetails = () => {
                                         handleChangeJobStatus(
                                           item?.developer_id,
                                           item?.job_id,
-                                          "hired"
+                                          "offered",
+                                          item?.interview?.id
                                         )
                                       }
                                     >
@@ -1457,7 +1465,14 @@ const SingleJobDetails = () => {
                                   <div>
                                     <span className="associate-text">
                                       <span className="associate">
-                                        Experience : <b>3 years</b>
+                                        Experience :{" "}
+                                        <b>
+                                          {
+                                            item?.developer?.developer_detail
+                                              ?.total_experience
+                                          }{" "}
+                                          years
+                                        </b>
                                       </span>
                                     </span>
                                     <span className="associate-text">
@@ -1506,19 +1521,15 @@ const SingleJobDetails = () => {
                     })}
                     {scheduledInterviews.length > 0 && (
                       <>
-                        {/* <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5> */}
-                        {/* <div className="interview-scheduled pt-2 mb-3">
-                                    <Row> */}
                         {scheduledInterviews.map((item) => (
                           <Col lg={4} key={item.id}>
                             <InterviewCard
                               handleShowMeetingInfo={handleShowMeetingInfo}
+                              cardCurrentStatus={cardCurrentStatus}
                               item={item}
                             />
                           </Col>
                         ))}
-                        {/* </Row>
-                                </div> */}
                       </>
                     )}
                   </Row>
