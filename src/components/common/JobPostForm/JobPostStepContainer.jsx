@@ -412,21 +412,20 @@ const JobPostStepContainer = ({ role }) => {
       payload["optional_skills"] = formattedOptionSkills;
       payload["job_skills"] = createPayloadForJobSkills(traitSkill);
     }
-    console.log(payload, "this is payload");
-    // if (isEdit === true) {
-    //   dispatch(
-    //     clientUpdatePost(
-    //       payload,
-    //       isEdit,
-    //       activeStep,
-    //       jobID,
-    //       userId,
-    //       increaseStep
-    //     )
-    //   );
-    // } else {
-    //   dispatch(clientJobPost(payload, activeStep, userId, increaseStep));
-    // }
+    if (isEdit === true) {
+      dispatch(
+        clientUpdatePost(
+          payload,
+          isEdit,
+          activeStep,
+          jobID,
+          userId,
+          increaseStep
+        )
+      );
+    } else {
+      dispatch(clientJobPost(payload, activeStep, userId, increaseStep));
+    }
   };
 
   return (
