@@ -51,7 +51,7 @@ const SCREENING_OPTIONS = [
     ideal_answer: "Yes",
     question: "Are you comfortable commuting to this job's location?",
     inputType: "radio",
-    web_type: "input",
+    web_type: "radio",
   },
   {
     optionId: 5,
@@ -70,7 +70,7 @@ const SCREENING_OPTIONS = [
     question_type: "Skill",
     question: "How many years of work experience do you have with [Skill]?",
     inputType: "radio",
-    web_type: "radio",
+    web_type: "input",
   },
   {
     optionId: 7,
@@ -90,6 +90,7 @@ const SCREENING_OPTIONS = [
     question: "",
     inputType: "",
     ideal_answer: "",
+    web_type: "",
   },
 ];
 const YES_NO_OPTIONS = [
@@ -135,6 +136,7 @@ const JobPostStep3 = ({
   useEffect(() => {
     dispatch(getSkillOptions());
   }, []);
+  console.log(watch("screening_questions"),"these are scrr")
 
   useEffect(() => {
     let skill = skillOptions.map((item) => {
@@ -156,6 +158,8 @@ const JobPostStep3 = ({
       alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
       optionId: opt.optionId,
       inputType: opt.inputType,
+      web_type: opt.web_type,
+
     });
   };
   const isFieldAlreadyAdded = (optId) => {
