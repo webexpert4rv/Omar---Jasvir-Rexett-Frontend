@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Col, Form, Row, Button } from "react-bootstrap";
 import { IoClose } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import CommonInput from "../../atomic/CommonInput";
 import CreatableSelect from "react-select/creatable";
 import { LANGUAGE_PREFERENCES_OPTIONS } from "./constant";
+import { getSkillOptions } from "../../../redux/slices/developerDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const SCREENING_OPTIONS = [
   {
@@ -17,16 +19,18 @@ const SCREENING_OPTIONS = [
     question_type: "Years",
     question: "How many years of experience do you currently have?",
     inputType: "radio",
+    web_type: "input",
   },
   {
     optionId: 2,
     label: "Education",
     question_type: "Degree",
     title: "",
-    question: "Have you completed the following level of education: [Degree]",
+    question: "What is the highest level of education you have attained?",
     ideal_answer: "Yes",
     uniqueId: "2",
     inputType: "radio",
+    web_type: "input",
   },
   {
     optionId: 3,
@@ -36,6 +40,7 @@ const SCREENING_OPTIONS = [
     question: "What is your level of proficiency in [Language]?",
     uniqueId: "3",
     inputType: "radio",
+    web_type: "input",
   },
 
   {
@@ -46,6 +51,7 @@ const SCREENING_OPTIONS = [
     ideal_answer: "Yes",
     question: "Are you comfortable commuting to this job's location?",
     inputType: "radio",
+    web_type: "input",
   },
   {
     optionId: 5,
@@ -55,14 +61,16 @@ const SCREENING_OPTIONS = [
     question: "Are you comfortable working in a remote setting?",
     ideal_answer: "Yes",
     inputType: "radio",
+    web_type: "radio",
   },
   {
     optionId: 6,
     label: "Expertise with Skill",
     title: "",
     question_type: "Skill",
-    question: "Have many years of work experience do you have with [Skill]?",
+    question: "How many years of work experience do you have with [Skill]?",
     inputType: "radio",
+    web_type: "radio",
   },
   {
     optionId: 7,
@@ -72,6 +80,7 @@ const SCREENING_OPTIONS = [
     inputType: "radio",
     ideal_answer: "Yes",
     uniqueId: "1",
+    web_type: "radio",
   },
   {
     optionId: 8,
@@ -104,7 +113,7 @@ const JobPostStep3 = ({
   clearErrors,
   isRegistrationStep = false,
   invalidFieldRequired = false,
-  handleCreateOption
+  handleCreateOption,
 }) => {
   const { t } = useTranslation();
   const { fields, append, remove } = useFieldArray({
@@ -112,10 +121,31 @@ const JobPostStep3 = ({
     name: "screening_questions",
   });
 
+  const { skillOptions } = useSelector((state) => state.developerData);
+
+  const dispatch = useDispatch();
+  const [skillList, setSkillList] = useState([]);
+
   // const handleOnChange = (item) => {
   //   console.log(item, "event")
   //   setDegree(item)
   // }
+  console.log(skillOptions, "skillOptions");
+
+  useEffect(() => {
+    dispatch(getSkillOptions());
+  }, []);
+
+  useEffect(() => {
+    let skill = skillOptions.map((item) => {
+      return {
+        label: item.title,
+        value: item.title,
+      };
+    });
+    setSkillList(skill);
+  }, [skillOptions]);
+
   const handleAddField = (opt) => {
     append({
       question_type: opt.question_type,
@@ -125,7 +155,7 @@ const JobPostStep3 = ({
       must_have: false,
       alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
       optionId: opt.optionId,
-      inputType:opt.inputType,
+      inputType: opt.inputType,
     });
   };
   const isFieldAlreadyAdded = (optId) => {
@@ -142,13 +172,12 @@ const JobPostStep3 = ({
 
   const handleChangeCustom = (e, idx) => {
     const { name, value, type, checked } = e.target;
-  
-    const newValue = type === 'checkbox' ? checked : value;
-  
+
+    const newValue = type === "checkbox" ? checked : value;
+
     setValue(name, newValue);
-  
   };
-  
+
   return (
     <div>
       <section className="job-post-section">
@@ -357,10 +386,38 @@ const JobPostStep3 = ({
                               // options={LANGUAGE_PREFERENCES_OPTIONS}
                               // className="common-field font-14"
                               placeholder={`Enter ${field?.question_type} name`}
-                            >{LANGUAGE_PREFERENCES_OPTIONS?.map((option)=>(
-                               <option value={option.value}>{option.label}</option>
+                            >
+                              {LANGUAGE_PREFERENCES_OPTIONS?.map((option) => (
+                                <option value={option.value}>
+                                  {option.label}
+                                </option>
                               ))}
-                              </Form.Select>
+                            </Form.Select>
+                          </>
+                        )}
+
+                      {field?.question_type &&
+                        field?.question_type === "Skill" && (
+                          <>
+                            <Form.Label className="font-14">
+                              {field?.question_type}
+                            </Form.Label>
+                            <Form.Select
+                              // type="text"
+                              className={`common-field font-14`}
+                              {...register(`screening_questions.${idx}.title`, {
+                                required: t("required_message"),
+                              })}
+                              // options={LANGUAGE_PREFERENCES_OPTIONS}
+                              // className="common-field font-14"
+                              placeholder={`Enter ${field?.question_type} name`}
+                            >
+                              {skillList?.map((option) => (
+                                <option value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </Form.Select>
                           </>
                         )}
 
@@ -389,7 +446,9 @@ const JobPostStep3 = ({
                   <Col md="4" className="mb-md-0 mb-4">
                     <Form.Group>
                       <Form.Label className="font-14">Ideal answer</Form.Label>
-                      {field?.ideal_answer === "Yes" || field?.ideal_answer === "yes" || field?.ideal_answer === "no" ? (
+                      {field?.ideal_answer === "Yes" ||
+                      field?.ideal_answer === "yes" ||
+                      field?.ideal_answer === "no" ? (
                         <Form.Select
                           {...register(
                             `screening_questions.${idx}.ideal_answer`,
@@ -554,25 +613,24 @@ const JobPostStep3 = ({
         <p className="font-14 mb-2">Add screening questions:</p>
         <div className="mb-3">
           {SCREENING_OPTIONS.map((curElem, idx) => (
-            <Button
-              key={idx}
-              onClick={() => {
-                handleAddField(curElem);
-              }}
-              disabled={isFieldAlreadyAdded(curElem?.optionId)}
-              // disabled={() => {
-              //   isFieldAlreadyAdded(curElem?.title);
-              // }}
-              variant="transparent"
-              className="outline-main-btn px-4 py-2 d-inline-block me-1 mb-1 rounded-full cursor-pointer"
-            >
-              {isFieldAlreadyAdded(curElem?.optionId) ? (
-                <FiCheck />
-              ) : (
-                <FiPlus />
-              )}
-              {curElem.label}
-            </Button>
+            <Fragment key={idx}>
+              <Button
+                  key={idx}
+                  onClick={() => {
+                    handleAddField(curElem);
+                  }}
+                  disabled={curElem.question_type !== 'custom' && isFieldAlreadyAdded(curElem?.optionId)}
+                  variant="transparent"
+                  className="outline-main-btn px-4 py-2 d-inline-block me-1 mb-1 rounded-full cursor-pointer"
+                >
+                  {isFieldAlreadyAdded(curElem?.optionId) ? (
+                    <FiCheck />
+                  ) : (
+                    <FiPlus />
+                  )}
+                  {curElem.label}
+                </Button>
+            </Fragment>
           ))}
         </div>
         <h4 className="section-head font-18 border-0 pb-0 mb-2">

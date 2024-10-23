@@ -67,16 +67,18 @@ console.log(singleJobPost,"singleJobPost")
             //   newStatus: JOB_STATUS.hired,
             // };
 
-            // let payload = {
-            //   developerId: developerId,
-            //   jobId: signed?.meta_data?.jobId,
-            //   newStatus: JOB_STATUS.hired,
-            // };
-            // dispatch(changeJobStatus("offered", newData));
+            let payload = {
+              developerId: 1620,
+              jobId: signed?.meta_data?.jobId,
+              newStatus: JOB_STATUS.hired,
+              applicationId:2
+            };
+            dispatch(changeJobStatus("offered", payload));
           });
           // let newData={
           //   "applicationId": statusModal?.id,
           //   "newStatus":data.status
+          //   "jobId"
           // }
           // dispatch(changeJobStatus("offered",newData))
         }
