@@ -618,11 +618,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                     )
                   }
                 >
-                  Schedule Interview
+                  Re-schedule Interview
                 </button>
               </div>
             )}
-            <div>
+          { details?.interview?.status!=="declined" &&  <div>
               <Button
                 variant="transparent"
                 className="outline-main-btn font-14"
@@ -630,18 +630,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
               >
                 {loader ? <RexettSpinner /> : "Check Interview Status"}
               </Button>
-              {/* <Button
-                variant="transparent"
-                className="outline-main-btn font-14"
-                onClick={() =>
-                  getMeetingDetails(
-                    "AAMkADU2NjE0OWIwLWU1MjAtNGJlNi1hNjc0LTZlYzg0NDk5YzAzMwBGAAAAAACurO6i5qZvQIspx2LtckmfBwAw6FGqZi1CQY5xHP3TIqn7AAAAAAENAAAw6FGqZi1CQY5xHP3TIqn7AABa3yFlAAA="
-                  )
-                }
-              >
-                {loader ? <RexettSpinner /> : "Check microsoft"}
-              </Button> */}
-            </div>
+            </div>}
           </div>
           {showDetailsSection && (
             <div className="detailedSection" style={{ marginTop: "10px" }}>

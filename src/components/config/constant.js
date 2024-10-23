@@ -17,16 +17,16 @@ import { FaList } from "react-icons/fa6";
 const permission_role_name=localStorage.getItem("permission_role_name") || "admin"
 
 export const DEVELOPER_SIDE_BAR_ITEMS = [
-    { to: "/developer/dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/developer/developer-cv", icon: <FaUserLarge />, text: "cv" },
-    { to: "/developer/edit-developer-profile", icon: <IoIosSettings />, text:"editProfile" },
-    { to: "/developer/developer-documents", icon: <IoDocuments />, text: "documents" },
-    { to: "/developer/job-posted", icon: <FaListUl />, text: "jobs" },
-    { to: "/developer/developer-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
-    { to: "/developer/project-history", icon: <FaList />, text: "Project History" },
-    { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
-    { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
-    { to: "/developer/developer-settings", icon: <FaGear />, text: "Settings" },
+    { to: "/developer/dashboard", icon: <MdSpaceDashboard />, text: "dashboard",active:true },
+    { to: "/developer/developer-cv", icon: <FaUserLarge />, text: "cv",active:true },
+    { to: "/developer/edit-developer-profile", icon: <IoIosSettings />, text:"editProfile",active:true },
+    { to: "/developer/developer-documents", icon: <IoDocuments />, text: "documents",active:true },
+    { to: "/developer/job-posted", icon: <FaListUl />, text: "jobs",active:true },
+    { to: "/developer/developer-time-reporting", icon: <BsClockFill />, text: "timeReporting",active:true},
+    { to: "/developer/project-history", icon: <FaList />, text: "Project History",active:true },
+    { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday",active:true },
+    { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip",active:true},
+    { to: "/developer/developer-settings", icon: <FaGear />, text: "Settings",active:true },
 
 
 ];

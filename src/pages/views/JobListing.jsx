@@ -155,7 +155,7 @@ const JobListing = () => {
         <ScreenLoader />
       ) : (
         <>
-          {/* <Tabs
+          <Tabs
             defaultActiveKey="all"
             id="justify-tab-example"
             activeKey={activeTab}
@@ -237,7 +237,7 @@ const JobListing = () => {
                 </div>
               )}
             </Tab>
-          </Tabs> */}
+          </Tabs>
         </>
       )}
     </>

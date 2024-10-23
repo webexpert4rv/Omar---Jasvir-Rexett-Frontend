@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { FaLink } from 'react-icons/fa';
 import devImg from '../../assets/img/user-img.jpg';
 
-const InterviewCard = ({ handleShowMeetingInfo, item }) => {
+const InterviewCard = ({ handleShowMeetingInfo, item ,cardCurrentStatus}) => {
   const [copied, setCopied] = useState(false);
   const [remainingTime, setRemainingTime] = useState('');
 
@@ -51,13 +51,19 @@ const InterviewCard = ({ handleShowMeetingInfo, item }) => {
             {item?.developer?.name}
           </p>
           <div>
+                                    
+                                      <span className="font-14 fw-normal d-block">
+                                        {item?.developer?.email}
+                                      </span>
+                                    </div>
+          <div>
             <span className="associate-text">
               <span className="associate">{item?.interview?.meeting_date}, Time : {item?.interview?.meeting_time}</span>
             </span>
           </div>
         </div>
         <div className="mb-2 status-interview">
-          <span className="status-upcoming">{remainingTime}</span>
+          <span className="status-upcoming">{cardCurrentStatus(item?.interview?.status)}</span>
         </div>
         <div className="d-flex align-items-center justify-content-between">
           <Button variant="transparent" className="link-btn font-14 text-decoration-none" onClick={copyLinkToClipboard}>

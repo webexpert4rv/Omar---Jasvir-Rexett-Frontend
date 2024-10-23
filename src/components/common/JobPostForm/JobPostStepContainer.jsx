@@ -58,6 +58,7 @@ const DEFAULT_SCREENING_DATA = [
     question: "How many years of experience do you currently have?",
     isRecommended: true,
     inputType: "input",
+    web_type: "input",
   },
   {
     optionId: 2,
@@ -65,9 +66,10 @@ const DEFAULT_SCREENING_DATA = [
     question_type: "Degree",
     title: "",
     ideal_answer: "Yes",
-    question: "Have you completed the following level of education: [Degree]",
+    question: "What is the highest level of education you have attained?",
     isRecommended: true,
     inputType: "radio",
+    web_type: "input",
   },
   {
     optionId: 3,
@@ -77,6 +79,7 @@ const DEFAULT_SCREENING_DATA = [
     question: "What is your level of proficiency in [Language]?",
     isRecommended: true,
     inputType: "radio",
+    web_type: "input",
   },
 ];
 
@@ -339,14 +342,22 @@ const JobPostStepContainer = ({ role }) => {
     // adding input type as radio if response type is yes/no and "input" if response type is subjective for custom question
 
     const { screening_questions } = stepData;
+    // const tempScreeningQuestions = [...screening_questions];
+    // const index = tempScreeningQuestions.findIndex(
+    //   (curElem) => curElem?.question_type === "custom"
+    // );
+    // if (index !== -1) {
+    //   tempScreeningQuestions[index].inputType =
+    //     tempScreeningQuestions?.[index]?.responseType;
+    // }
     const tempScreeningQuestions = [...screening_questions];
-    const index = tempScreeningQuestions.findIndex(
-      (curElem) => curElem?.question_type === "custom"
-    );
-    if (index !== -1) {
-      tempScreeningQuestions[index].inputType =
-        tempScreeningQuestions?.[index]?.responseType;
-    }
+
+    tempScreeningQuestions.forEach((curElem) => {
+      if (curElem?.question_type === "custom") {
+        curElem.inputType = curElem.responseType;
+      }
+    });
+
     console.log(tempScreeningQuestions, "tempScreeningQuestions");
     let payload = {};
 
@@ -401,7 +412,6 @@ const JobPostStepContainer = ({ role }) => {
       payload["optional_skills"] = formattedOptionSkills;
       payload["job_skills"] = createPayloadForJobSkills(traitSkill);
     }
-    console.log(payload, "this is payload");
     if (isEdit === true) {
       dispatch(
         clientUpdatePost(
