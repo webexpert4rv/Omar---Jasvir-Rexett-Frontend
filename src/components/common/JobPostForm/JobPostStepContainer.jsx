@@ -57,7 +57,7 @@ const DEFAULT_SCREENING_DATA = [
     question_type: "",
     question: "How many years of experience do you currently have?",
     isRecommended: true,
-    inputType: "input",
+    input_type: "text",
     web_type: "input",
   },
   {
@@ -68,7 +68,7 @@ const DEFAULT_SCREENING_DATA = [
     ideal_answer: "Yes",
     question: "What is the highest level of education you have attained?",
     isRecommended: true,
-    inputType: "radio",
+    input_type: "text",
     web_type: "input",
   },
   {
@@ -78,7 +78,7 @@ const DEFAULT_SCREENING_DATA = [
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
     isRecommended: true,
-    inputType: "radio",
+    input_type: "radio",
     web_type: "input",
   },
 ];
@@ -347,15 +347,16 @@ const JobPostStepContainer = ({ role }) => {
     //   (curElem) => curElem?.question_type === "custom"
     // );
     // if (index !== -1) {
-    //   tempScreeningQuestions[index].inputType =
+    //   tempScreeningQuestions[index].input_type =
     //     tempScreeningQuestions?.[index]?.responseType;
     // }
     const tempScreeningQuestions = [...screening_questions];
 
     tempScreeningQuestions.forEach((curElem) => {
       if (curElem?.question_type === "custom") {
-        curElem.inputType = curElem.responseType;
-        curElem.web_type = curElem.responseType
+        curElem.input_type = curElem.responseType === "radio" ? "radio" :"text";
+        curElem.web_type = curElem.responseType;
+        curElem.isRecommended=false
       }
     });
 
