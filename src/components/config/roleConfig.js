@@ -43,8 +43,8 @@ const roleConfig = {
   employee:{
     sidebarItems: ADMIN_SIDE_BAR_ITEMS,
     floatingOptions: OTHER_OPTIONS_ADMIN,
-    headerProps: { role: "admin" },
-    privateRoute:"/admin/dashboard",
+    headerProps: { role: "employee" },
+    privateRoute:"/manager/dashboard",
     publicRoute:'/member-login'
   },
   otp:{

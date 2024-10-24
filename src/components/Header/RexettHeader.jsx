@@ -47,7 +47,7 @@ const RexettHeader = ({handleCollapseSidebar, collapseLayout }) => {
     const data = {
       "single-job": "/client/job-posted",
       "client-single-developer": "/client/dashboard",
-      "admin-single-job": "/admin/admin-job-listing",
+      "admin-single-job": "/admin/job-listing",
       "admin": "admin/notification-admin",
       "client": "client/notification-client",
       "developer": "developer/notification-developer",

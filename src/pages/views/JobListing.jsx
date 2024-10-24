@@ -22,15 +22,30 @@ import { useTranslation } from "react-i18next";
 import { PiChatsFill } from "react-icons/pi";
 import { MdWorkHistory } from "react-icons/md";
 import { JOB_LISTING_PER_PAGE } from "./constant";
+import { accessModalAccordingToRoles } from "../../components/common/EditProfile/helper";
 
 const JobListing = () => {
   const [page, setPage] = useState(1);
   const [activeTab, setActiveTab] = useState("all");
+  const role = localStorage.getItem("role")
+  console.log(role,"role")
   const dispatch = useDispatch();
-  const { jobList, jobCategoryList, screenLoader } = useSelector(
+  const { screenLoader, allPermissionDetails } = useSelector(state => state.adminData)
+  const [accessPermissions, setAccessPermissions] = useState([]);
+  const { jobList, jobCategoryList } = useSelector(
     (state) => state.clientData
   );
+
   const { t } = useTranslation();
+
+
+  useEffect(() => {
+    if (allPermissionDetails?.permissionCategories?.length > 0) {
+      let permission = accessModalAccordingToRoles(allPermissionDetails?.permissionCategories, "job listing")
+      setAccessPermissions(permission?.permissions)
+    }
+  }, [allPermissionDetails?.permissionCategories])
+
 
   useEffect(() => {
     dispatch(getJobCategoryList());
@@ -147,7 +162,18 @@ const JobListing = () => {
     }
   };
 
-  const stagesTooltip = (text) => <Tooltip>{text}</Tooltip>;
+  const stagesTooltip = (text) => <Tooltip>{text}</Tooltip>
+  
+  const subModulesAccess = (slug) => {
+    if (role == "employee") {
+      if (accessPermissions?.length > 0) {
+        let slugWithPermission = accessPermissions?.find((item) => item.slug == slug)
+        return slugWithPermission?.status == "active" ? true : false
+      }
+    } else {
+      return true
+    }
+  }
 
   return (
     <>

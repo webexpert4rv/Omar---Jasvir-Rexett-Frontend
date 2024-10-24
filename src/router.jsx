@@ -154,6 +154,7 @@ const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
 const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 let currentRole=localStorage.getItem("permission_role_name") || "admin"
+console.log(currentRole,"currentRole")
 
 export const route = [
   {
@@ -585,13 +586,15 @@ export const route = [
     private: true,
   },
   {
-    path: `/${currentRole}/${currentRole}-documents`,
+    // path: `/${currentRole}/${currentRole}-documents`,
+    path: `/${currentRole}/documents`,
     element: <AdminDocuments />,
     isAdmin: true,
     private: true,
   },
   {
-    path: `/${currentRole}/${currentRole}-time-reporting`,
+    // path: `/${currentRole}/${currentRole}-time-reporting`,
+    path: `/${currentRole}/time-reporting`,
     element: <AdminTimeReporting />,
     isAdmin: true,
     private: true,
@@ -609,7 +612,7 @@ export const route = [
     private: true,
   },
   {
-    path: `/${currentRole}/${currentRole}-invoice`,
+    path: `/${currentRole}/invoice`,
     // element: <AdminInvoice />,
     element: <Revenue />,
     isAdmin: true,
@@ -634,13 +637,15 @@ export const route = [
     private: true,
   },
   {
-    path: `/${currentRole}/${currentRole}-job-listing`,
+    // path: `/${currentRole}/${currentRole}-job-listing`,
+    path: `/${currentRole}/job-listing`,
     element: <AdminJobListing />,
     isAdmin: true,
     private: true,
   },
   {
-    path: `/${currentRole}/${currentRole}-single-job/:id`,
+    // path: `/${currentRole}/${currentRole}-single-job/:id`,
+    path: `/${currentRole}/single-job/:id`,
     element: <AdminSingleJob />,
     isAdmin: true,
     private: true,

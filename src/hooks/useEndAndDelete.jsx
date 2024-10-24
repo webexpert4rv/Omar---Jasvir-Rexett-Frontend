@@ -44,7 +44,7 @@ const useEndAndDelete = () => {
     setShowDeleteModal(false);
     setModalLoader(false);
     setIdToDelete(false);
-    navigate("/admin/admin-job-listing")
+    navigate("/admin/job-listing")
   }
   const failureCallback = () => {
     setShowDeleteModal(false);
