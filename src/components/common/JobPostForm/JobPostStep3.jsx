@@ -18,7 +18,7 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "Years",
     question: "How many years of experience do you currently have?",
-    inputType: "radio",
+    input_type: "radio",
     web_type: "input",
   },
   {
@@ -29,7 +29,7 @@ const SCREENING_OPTIONS = [
     question: "What is the highest level of education you have attained?",
     ideal_answer: "Yes",
     uniqueId: "2",
-    inputType: "radio",
+    input_type: "radio",
     web_type: "input",
   },
   {
@@ -39,7 +39,7 @@ const SCREENING_OPTIONS = [
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
     uniqueId: "3",
-    inputType: "radio",
+    input_type: "radio",
     web_type: "input",
   },
 
@@ -50,7 +50,7 @@ const SCREENING_OPTIONS = [
     question_type: "",
     ideal_answer: "Yes",
     question: "Are you comfortable commuting to this job's location?",
-    inputType: "radio",
+    input_type: "radio",
     web_type: "radio",
   },
   {
@@ -60,7 +60,7 @@ const SCREENING_OPTIONS = [
     question_type: "",
     question: "Are you comfortable working in a remote setting?",
     ideal_answer: "Yes",
-    inputType: "radio",
+    input_type: "radio",
     web_type: "radio",
   },
   {
@@ -69,7 +69,7 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "Skill",
     question: "How many years of work experience do you have with [Skill]?",
-    inputType: "radio",
+    input_type: "radio",
     web_type: "input",
   },
   {
@@ -77,7 +77,7 @@ const SCREENING_OPTIONS = [
     label: "Onsite Work",
     title: "",
     question: "Are you comfortable working in an onsite setting?",
-    inputType: "radio",
+    input_type: "radio",
     ideal_answer: "Yes",
     uniqueId: "1",
     web_type: "radio",
@@ -88,7 +88,7 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "custom",
     question: "",
-    inputType: "",
+    input_type: "",
     ideal_answer: "",
     web_type: "",
   },
@@ -149,16 +149,18 @@ const JobPostStep3 = ({
   }, [skillOptions]);
 
   const handleAddField = (opt) => {
+    console.log(opt,"newopt")
     append({
       question_type: opt.question_type,
       question: opt.question,
       title: opt?.title,
       ideal_answer: opt?.ideal_answer ? opt.ideal_answer : "",
       must_have: false,
-      alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
+      // alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
       optionId: opt.optionId,
-      inputType: opt.inputType,
+      input_type: opt.input_type,
       web_type: opt.web_type,
+      isRecommended:false
 
     });
   };
